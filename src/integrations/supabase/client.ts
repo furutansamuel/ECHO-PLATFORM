@@ -54,7 +54,7 @@ function createStubClient(): SupabaseClient {
       resetPasswordForEmail: async () => ({ data: null, error: null }),
     },
     from: () => queryBuilder,
-    rpc: asyncNull,
+    rpc: async () => ({ data: null, error: null }),
     channel: () => channel,
     removeChannel: async () => ({ error: null }),
     removeAllChannels: async () => ({ error: null }),
