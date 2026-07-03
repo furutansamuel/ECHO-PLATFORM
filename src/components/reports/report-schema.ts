@@ -1,0 +1,60 @@
+import { z } from 'zod';
+
+export const reportSchema = z.object({
+  category: z.string().min(1, 'Please select a hazard category'),
+  title: z.string().min(5, 'Title must be at least 5 characters').max(100),
+  description: z.string().min(10, 'Description must be at least 10 characters').max(1000),
+  estimatedSize: z.string().min(1, 'Please estimate the size'),
+  affectedArea: z.string().min(1, 'Please describe the affected area'),
+  dateObserved: z.string().min(1, 'Date is required'),
+  timeObserved: z.string().min(1, 'Time is required'),
+  immediateRisk: z.string().min(1, 'Risk assessment is required'),
+  environmentalImpact: z.string().min(1, 'Impact assessment is required'),
+  requiredAction: z.string().min(1, 'Action recommendation is required'),
+  images: z.array(z.string()).min(1, 'At least one image is required'),
+  video: z.string().optional(),
+  location: z.object({
+    lat: z.number(),
+    lng: z.number(),
+    address: z.string().min(1, 'Address is required'),
+    ward: z.string().min(1, 'Ward is required'),
+    lga: z.string().min(1, 'LGA is required'),
+    state: z.string().min(1, 'State is required'),
+    landmark: z.string().optional(),
+  }),
+  severity: z.enum(['Low', 'Medium', 'High', 'Critical']),
+  isAnonymous: z.boolean(),
+  notifyVolunteers: z.boolean(),
+  shareWithCommunity: z.boolean(),
+  receiveUpdates: z.boolean(),
+});
+
+export type ReportFormData = z.infer<typeof reportSchema>;
+
+export const defaultValues: Partial<ReportFormData> = {
+  category: '',
+  title: '',
+  description: '',
+  estimatedSize: '',
+  affectedArea: '',
+  dateObserved: new Date().toISOString().split('T')[0],
+  timeObserved: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+  immediateRisk: '',
+  environmentalImpact: '',
+  requiredAction: '',
+  images: [],
+  location: {
+    lat: 6.5244,
+    lng: 3.3792,
+    address: '',
+    ward: '',
+    lga: '',
+    state: 'Lagos',
+    landmark: '',
+  },
+  severity: 'Medium',
+  isAnonymous: false,
+  notifyVolunteers: true,
+  shareWithCommunity: true,
+  receiveUpdates: true,
+};
