@@ -1,74 +1,49 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ShieldCheck, Users, MapPin, Cpu, Trees } from 'lucide-react';
-import { useEffect } from 'react';
+import { FileText, CheckCircle2, HeartPulse, Users } from 'lucide-react';
 import { useSpring, animated } from '@react-spring/web';
 
-const trustBadges = [
-  { icon: Cpu, text: 'AI Powered' },
-  { icon: Users, text: 'Community Driven' },
-  { icon: ShieldCheck, text: 'Secure Reporting' },
-  { icon: MapPin, text: 'Location Aware' },
-  { icon: Trees, text: 'Built for Nigeria' },
-];
-
 const stats = [
-  { value: 1250, label: 'Hazard Reports' },
-  { value: 890, label: 'Verified Reports' },
-  { value: 45, label: 'Communities Served' },
-  { value: 120, label: 'Cleanup Events' },
-  { value: 1500, label: 'Active Volunteers' },
-  { value: 34000, label: 'Impact Points Earned' },
+  { icon: FileText, value: 1250, label: 'Reports Submitted', suffix: '', tone: 'text-primary', bg: 'bg-primary/10' },
+  { icon: CheckCircle2, value: 890, label: 'Cases Resolved', suffix: '', tone: 'text-emerald-600', bg: 'bg-emerald-500/10' },
+  { icon: HeartPulse, value: 82, label: 'Health Score', suffix: '/100', tone: 'text-sky-600', bg: 'bg-sky-500/10' },
+  { icon: Users, value: 45, label: 'Active Communities', suffix: '', tone: 'text-amber-600', bg: 'bg-amber-500/10' },
 ];
 
 const AnimatedNumber = ({ n }: { n: number }) => {
-    const { number } = useSpring({
-        from: { number: 0 },
-        number: n,
-        delay: 200,
-        config: { mass: 1, tension: 20, friction: 10 },
-    });
-
-    return <animated.div>{number.to((n) => n.toLocaleString('en-US', { maximumFractionDigits: 0 }))}</animated.div>;
+  const { number } = useSpring({
+    from: { number: 0 },
+    number: n,
+    delay: 100,
+    config: { mass: 1, tension: 40, friction: 15 },
+  });
+  return <animated.span>{number.to((v) => Math.round(v).toLocaleString('en-US'))}</animated.span>;
 };
 
 export function Stats() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <section ref={ref} className="py-12 lg:py-24 bg-background">
+    <section ref={ref} className="border-y border-border/60 bg-muted/30 py-12 lg:py-16">
       <div className="container mx-auto px-4">
-        {/* Trust Badges */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12 lg:mb-20">
-          {trustBadges.map((badge, index) => (
-            <motion.div
-              key={index}
-              className="flex items-center gap-4 justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <badge.icon className="h-8 w-8 text-primary" />
-              <span className="font-semibold text-muted-foreground">{badge.text}</span>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Animated Counters */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
           {stats.map((stat, index) => (
             <motion.div
-              key={index}
-              className="p-4 rounded-lg"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-5 shadow-premium transition-all hover:-translate-y-1 hover:shadow-xl md:p-6"
             >
-              <div className="text-4xl lg:text-5xl font-bold text-primary">
-                {isInView && <AnimatedNumber n={stat.value} />}
+              <div className={`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl ${stat.bg}`}>
+                <stat.icon className={`h-5 w-5 ${stat.tone}`} />
               </div>
-              <p className="text-muted-foreground mt-2">{stat.label}</p>
+              <div className="text-3xl font-black tracking-tight text-foreground md:text-4xl">
+                {isInView && <AnimatedNumber n={stat.value} />}
+                <span className="text-lg text-muted-foreground">{stat.suffix}</span>
+              </div>
+              <p className="mt-1 text-sm font-medium text-muted-foreground">{stat.label}</p>
             </motion.div>
           ))}
         </div>
