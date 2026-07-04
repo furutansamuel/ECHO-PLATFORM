@@ -4,7 +4,7 @@ import { useDemo } from '@/hooks/use-demo';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Sparkles, Presentation, RefreshCcw, LayoutPanelLeft } from 'lucide-react';
+import { Sparkles, Presentation, RefreshCcw, LayoutPanelLeft, ShieldAlert } from 'lucide-react';
 import { DashboardSearch } from '@/components/dashboard/DashboardSearch';
 import { QuickActionsWidget } from '@/components/dashboard/QuickActionsWidget';
 import { IntelligenceDashboard } from '@/components/dashboard/IntelligenceDashboard';
