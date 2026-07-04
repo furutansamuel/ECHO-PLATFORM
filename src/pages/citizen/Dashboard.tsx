@@ -86,8 +86,8 @@ export default function CitizenDashboard() {
 
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-black tracking-tight text-foreground">Command Center</h1>
-          <p className="text-muted-foreground font-medium">Real-time environmental monitoring and impact tracking.</p>
+          <h1 className="text-3xl font-black tracking-tight text-foreground">Environmental Intelligence</h1>
+          <p className="text-muted-foreground font-medium">Real-time community health monitoring and impact tracking.</p>
         </div>
         <div className="w-full md:w-auto">
           <DashboardSearch />
