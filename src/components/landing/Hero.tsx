@@ -1,91 +1,83 @@
-import React, { useRef } from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-
-const slides = [
-    {
-        image: "https://storage.googleapis.com/dala-prod-public-storage/generated-images/060df7fc-fb5a-4109-890a-cb6e43e9b598/community-cleanup-nigeria-ea6844ea-1782830747692.webp",
-        headline: "Empowering Communities for a Cleaner Nigeria",
-        subtext: "Join thousands of volunteers in community-led cleanups. Together, we can transform our environment, one neighborhood at a time.",
-        primaryCta: "Report a Hazard",
-        primaryLink: "/report",
-        secondaryCta: "Track Reports",
-        secondaryLink: "/reports",
-    },
-    {
-        image: "https://storage.googleapis.com/dala-prod-public-storage/generated-images/060df7fc-fb5a-4109-890a-cb6e43e9b598/flood-resilience-nigeria-a1876433-1782830747950.webp",
-        headline: "Building Resilience Against Environmental Challenges",
-        subtext: "From flood control to waste management, ECHO provides the tools and data to build more resilient and sustainable communities.",
-        primaryCta: "Explore the Map",
-        primaryLink: "/map",
-        secondaryCta: "Learn More",
-        secondaryLink: "/knowledge",
-    },
-    {
-        image: "https://storage.googleapis.com/dala-prod-public-storage/generated-images/060df7fc-fb5a-4109-890a-cb6e43e9b598/waste-management-nigeria-ee164d06-1782830748298.webp",
-        headline: "Modernizing Waste Management for a Healthier Future",
-        subtext: "Leverage our platform to report illegal dumpsites and support initiatives for effective waste sorting and recycling.",
-        primaryCta: "Report a Dumpsite",
-        primaryLink: "/report?category=illegal-dumpsite",
-        secondaryCta: "See Impact",
-        secondaryLink: "/rewards",
-    },
-    {
-        image: "https://storage.googleapis.com/dala-prod-public-storage/generated-images/060df7fc-fb5a-4109-890a-cb6e43e9b598/ai-environmental-intelligence-nigeria-aab908d7-1782830748089.webp",
-        headline: "AI-Powered Insights for Environmental Intelligence",
-        subtext: "Our advanced AI analyzes reports to identify trends, predict risks, and guide community action for maximum impact.",
-        primaryCta: "Discover AI Features",
-        primaryLink: "/ai-intelligence",
-        secondaryCta: "View Health Score",
-        secondaryLink: "/community-health",
-    },
-];
+import { ShieldAlert, LineChart, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export function Hero() {
-  const plugin = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true })
-  );
-
   return (
-    <div className="relative w-full">
-        <Carousel
-            plugins={[plugin.current]}
-            className="w-full"
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.reset}
-            opts={{ loop: true }}
-        >
-            <CarouselContent>
-            {slides.map((slide, index) => (
-                <CarouselItem key={index}>
-                    <div className="relative h-[60vh] md:h-[80vh] w-full">
-                        <img src={slide.image} alt={slide.headline} className="h-full w-full object-cover"/>
-                        <div className="absolute inset-0 bg-black/50" />
-                        <div className="absolute inset-0 container mx-auto px-4 flex flex-col items-start justify-center text-white space-y-4 md:space-y-6">
-                            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                                {slide.headline}
-                            </h1>
-                            <p className="text-lg md:text-xl max-w-2xl text-white/90 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
-                                {slide.subtext}
-                            </p>
-                            <div className="flex flex-wrap gap-4 pt-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
-                                <Button size="lg" asChild>
-                                    <Link to={slide.primaryLink}>{slide.primaryCta}</Link>
-                                </Button>
-                                <Button size="lg" variant="secondary" asChild>
-                                    <Link to={slide.secondaryLink}>{slide.secondaryCta}</Link>
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </CarouselItem>
-            ))}
-            </CarouselContent>
-            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex" />
-            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex" />
-        </Carousel>
-    </div>
+    <section className="relative overflow-hidden bg-background">
+      {/* Ambient gradient orbs */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -top-40 -left-20 h-[520px] w-[520px] rounded-full bg-primary/20 blur-3xl" />
+        <div className="absolute -bottom-40 -right-20 h-[520px] w-[520px] rounded-full bg-accent/20 blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 h-[380px] w-[380px] -translate-x-1/2 rounded-full bg-sky-400/10 blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-4 py-20 md:py-28 lg:py-32">
+        <div className="mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            AI-Powered Environmental Community Health Observatory
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.05 }}
+            className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+          >
+            Cleaner communities,{' '}
+            <span className="bg-gradient-to-br from-primary via-accent to-emerald-500 bg-clip-text text-transparent">
+              powered by ECHO
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl"
+          >
+            Report environmental hazards, monitor community health, and drive real
+            change with AI-verified intelligence.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          >
+            <Button size="lg" className="h-12 px-8 text-base shadow-premium" asChild>
+              <Link to="/report">
+                <ShieldAlert className="mr-2 h-5 w-5" />
+                Report Hazard
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" className="h-12 border-primary/20 bg-background/60 px-8 text-base backdrop-blur" asChild>
+              <Link to="/reports">
+                <LineChart className="mr-2 h-5 w-5" />
+                Track My Reports
+              </Link>
+            </Button>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mt-6 text-sm text-muted-foreground"
+          >
+            Free for citizens • Built for Nigeria • Trusted by community leaders
+          </motion.p>
+        </div>
+      </div>
+    </section>
   );
 }
