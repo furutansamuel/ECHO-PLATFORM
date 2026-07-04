@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icons } from '@/components/icons';
-import { Facebook, Twitter, Instagram, Linkedin, Leaf } from 'lucide-react';
+import { Leaf, Share2, MessageCircle, Camera, Briefcase } from 'lucide-react';
 
 const productLinks = [
   { name: 'Live Map', href: '/map' },
