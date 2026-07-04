@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
-import { Input } from '@/components/ui/input';
+import { Facebook, Twitter, Instagram, Linkedin, Leaf } from 'lucide-react';
 
 const productLinks = [
-  { name: 'Features', href: '/dashboard' },
   { name: 'Live Map', href: '/map' },
   { name: 'Report Hazard', href: '/report' },
   { name: 'AI Intelligence', href: '/ai-intelligence' },
@@ -16,94 +14,115 @@ const resourceLinks = [
   { name: 'Knowledge Centre', href: '/knowledge' },
   { name: 'Cleanup Events', href: '/community-insights' },
   { name: 'Impact Center', href: '/rewards' },
-  { name: 'Community Insights', href: '/community-insights' },
+  { name: 'FAQ', href: '/faq' },
+];
+
+const companyLinks = [
+  { name: 'About ECHO', href: '/about' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 const legalLinks = [
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
-  { name: 'FAQ', href: '/faq' },
   { name: 'Privacy Policy', href: '/' },
   { name: 'Terms of Service', href: '/' },
+  { name: 'Cookie Policy', href: '/' },
+  { name: 'Accessibility', href: '/' },
 ];
 
-const socialLinks = [
-  { name: 'Facebook', href: '#', icon: 'facebook' },
-  { name: 'Twitter', href: '#', icon: 'twitter' },
-  { name: 'Instagram', href: '#', icon: 'instagram' },
-  { name: 'LinkedIn', href: '#', icon: 'linkedin' },
+const socials = [
+  { name: 'Facebook', icon: Facebook, href: '#' },
+  { name: 'Twitter', icon: Twitter, href: '#' },
+  { name: 'Instagram', icon: Instagram, href: '#' },
+  { name: 'LinkedIn', icon: Linkedin, href: '#' },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 pt-20 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
-          
-          {/* Brand and CTA */}
-          <div className="lg:col-span-4 space-y-4 pr-8">
-            <Link to="/" className="flex items-center gap-2">
-                <Icons.logo className="h-8 w-8 text-primary" />
-                <span className="font-bold text-xl tracking-tight text-white">ECHO</span>
+    <footer className="border-t border-border/60 bg-muted/40">
+      <div className="container mx-auto px-4 py-12 lg:py-14">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-6">
+          {/* Brand */}
+          <div className="col-span-2 md:col-span-2">
+            <Link to="/" className="inline-flex items-center gap-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
+                <Leaf className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-lg font-black tracking-tight text-foreground">ECHO</span>
             </Link>
-            <p className="text-gray-400 text-sm">
-              A community-powered platform for a cleaner, safer Nigeria. Report environmental hazards, track progress, and join a network of citizens dedicated to creating resilient communities.
+            <p className="mt-3 max-w-xs text-sm text-muted-foreground">
+              Environmental Community Health Observatory — AI-powered environmental
+              intelligence for cleaner, safer communities.
             </p>
-            <form className="pt-2 space-y-2" onSubmit={(e) => e.preventDefault()}>
-                <label htmlFor="newsletter" className="text-sm font-medium">Stay updated on our progress</label>
-                <div className="flex items-center gap-2">
-                    <Input id="newsletter" type="email" placeholder="Enter your email" className="bg-gray-800 border-gray-700 text-white"/>
-                    <Button type="submit" variant="secondary">Subscribe</Button>
-                </div>
-            </form>
+            <div className="mt-4 flex items-center gap-2">
+              {socials.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  aria-label={s.name}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/60 bg-card text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                >
+                  <s.icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* Links */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:col-span-8 gap-8 lg:pl-10">
-            <div>
-              <h4 className="font-bold mb-4 text-white">Product</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                {productLinks.map((link) => (
-                  <li key={link.name}><Link to={link.href} className="hover:text-white transition-colors">{link.name}</Link></li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-4 text-white">Company</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                {resourceLinks.map((link) => (
-                  <li key={link.name}><Link to={link.href} className="hover:text-white transition-colors">{link.name}</Link></li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-4 text-white">Legal</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                {legalLinks.map((link) => (
-                  <li key={link.name}><Link to={link.href} className="hover:text-white transition-colors">{link.name}</Link></li>
-                ))}
-              </ul>
-            </div>
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">Features</h4>
+            <ul className="mt-3 space-y-2 text-sm">
+              {productLinks.map((l) => (
+                <li key={l.name}>
+                  <Link to={l.href} className="text-muted-foreground transition-colors hover:text-primary">
+                    {l.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">Resources</h4>
+            <ul className="mt-3 space-y-2 text-sm">
+              {resourceLinks.map((l) => (
+                <li key={l.name}>
+                  <Link to={l.href} className="text-muted-foreground transition-colors hover:text-primary">
+                    {l.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">Company</h4>
+            <ul className="mt-3 space-y-2 text-sm">
+              {companyLinks.map((l) => (
+                <li key={l.name}>
+                  <Link to={l.href} className="text-muted-foreground transition-colors hover:text-primary">
+                    {l.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">Legal</h4>
+            <ul className="mt-3 space-y-2 text-sm">
+              {legalLinks.map((l) => (
+                <li key={l.name}>
+                  <Link to={l.href} className="text-muted-foreground transition-colors hover:text-primary">
+                    {l.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-sm text-gray-500 text-center sm:text-left">
-            &copy; {new Date().getFullYear()} ECHO. Premium Civic Technology for Nigeria.
-          </p>
-          <div className="flex items-center gap-4 mt-4 sm:mt-0">
-            {socialLinks.map((link) => {
-              // Map icon name to Lucide or Icons
-              const Icon = Icons[link.icon as keyof typeof Icons] || Icons.logo;
-              return (
-                <Link key={link.name} to={link.href} className="text-gray-500 hover:text-white transition-colors">
-                  <Icon className="h-5 w-5" />
-                  <span className="sr-only">{link.name}</span>
-                </Link>
-              );
-            })}
-          </div>
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
+          <p>© {new Date().getFullYear()} ECHO — Environmental Community Health Observatory.</p>
+          <p>Built for Nigeria 🇳🇬 · Powered by community</p>
         </div>
       </div>
     </footer>
