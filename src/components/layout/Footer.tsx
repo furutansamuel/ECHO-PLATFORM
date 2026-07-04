@@ -30,10 +30,10 @@ const legalLinks = [
 ];
 
 const socials = [
-  { name: 'Facebook', icon: Facebook, href: '#' },
-  { name: 'Twitter', icon: Twitter, href: '#' },
-  { name: 'Instagram', icon: Instagram, href: '#' },
-  { name: 'LinkedIn', icon: Linkedin, href: '#' },
+  { name: 'Facebook', icon: Share2, href: '#' },
+  { name: 'Twitter', icon: MessageCircle, href: '#' },
+  { name: 'Instagram', icon: Camera, href: '#' },
+  { name: 'LinkedIn', icon: Briefcase, href: '#' },
 ];
 
 export function Footer() {
