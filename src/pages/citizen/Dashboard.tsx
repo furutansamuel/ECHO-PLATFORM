@@ -100,6 +100,8 @@ export default function CitizenDashboard() {
             </Link>
           </Button>
         </div>
+      </div>
+
 
       <div className="grid grid-cols-12 gap-6 auto-rows-min">
         {/* Main Intelligence Section - Large Bento Piece */}
