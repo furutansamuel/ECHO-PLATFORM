@@ -35,6 +35,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import { DemoHints } from '@/components/dashboard/DemoHints';
+import { PremiumBottomNav } from '@/components/layout/PremiumBottomNav';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['citizen', 'volunteer', 'administrator'] },
