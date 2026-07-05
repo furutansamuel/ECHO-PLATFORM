@@ -93,7 +93,12 @@ export const useIntelligenceData = () => {
       if (summaryResult.data) setIntelligenceSummary(summaryResult.data);
       if (aiAnalysisResult.data) setAiAnalysis(aiAnalysisResult.data);
       if (analyticsResult.data) setAnalyticsData(analyticsResult.data);
-      if (articlesResult.data) setArticles(articlesResult.data);
+      if (articlesResult.data && articlesResult.data.length > 0) {
+        setArticles(articlesResult.data);
+      } else {
+        const { FALLBACK_ARTICLES } = await import('@/lib/fallback-articles');
+        setArticles(FALLBACK_ARTICLES);
+      }
       if (campaignsResult.data) setCampaigns(campaignsResult.data);
       if (alertsResult.data) setAlerts(alertsResult.data);
 
