@@ -126,6 +126,12 @@ export const useIntelligenceData = () => {
     let cancelled = false;
     const isDemo = localStorage.getItem('echo_demo_mode') === 'true';
 
+    // Always seed knowledge articles with the fallback set so the Knowledge
+    // Centre is never empty in demo mode or when the DB has no rows yet.
+    import('@/lib/fallback-articles').then((m) => {
+      if (!cancelled) setArticles((prev) => (prev.length > 0 ? prev : m.FALLBACK_ARTICLES));
+    });
+
     if (!isDemo && supabase) {
       fetchData();
     } else if (isDemo) {
