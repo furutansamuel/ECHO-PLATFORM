@@ -62,13 +62,7 @@ const footerItems = [
   { name: 'Settings', href: '/settings', icon: Settings, roles: ['citizen', 'volunteer', 'administrator'] },
 ];
 
-const mobileBottomItems = [
-  { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Map', href: '/map', icon: MapIcon },
-  { name: 'Report', href: '/report', icon: AlertTriangle },
-  { name: 'Notifications', href: '/notifications', icon: Bell },
-  { name: 'Profile', href: '/profile', icon: User },
-];
+// Mobile bottom nav is rendered by <PremiumBottomNav /> — items live there.
 
 export function DashboardLayout() {
   const { profile, logout } = useAuth();
