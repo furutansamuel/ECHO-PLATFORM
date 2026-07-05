@@ -25,28 +25,28 @@ const ProfilePage: React.FC = () => {
     <div className="p-4 md:p-6 space-y-8 max-w-5xl mx-auto pb-20">
       {/* Profile Header */}
       <Card className="border-none shadow-2xl overflow-hidden">
-        <div className="h-32 bg-gradient-to-r from-primary via-secondary to-accent" />
-        <CardContent className="relative pt-0 px-8">
-          <div className="flex flex-col md:flex-row items-end md:items-center gap-6 -mt-16 mb-8">
-            <Avatar className="h-32 w-32 border-4 border-white shadow-2xl">
+        <div className="h-28 sm:h-32 md:h-40 bg-gradient-to-r from-primary via-secondary to-accent" />
+        <CardContent className="relative px-4 pt-0 sm:px-6 md:px-8">
+          <div className="flex flex-col items-center gap-4 -mt-14 mb-8 text-center md:flex-row md:items-end md:gap-6 md:text-left">
+            <Avatar className="h-24 w-24 border-4 border-background shadow-2xl sm:h-28 sm:w-28 md:h-32 md:w-32">
               <AvatarImage src={profile?.avatar_url || ''} />
-              <AvatarFallback className="bg-primary text-white text-4xl font-black">
+              <AvatarFallback className="bg-primary text-primary-foreground text-3xl font-black md:text-4xl">
                 {profile?.full_name?.split(' ').map((n: string) => n[0]).join('') || 'JD'}
               </AvatarFallback>
             </Avatar>
-            <div className="flex-grow space-y-1 text-center md:text-left">
-              <div className="flex flex-col md:flex-row md:items-center gap-2">
-                <h1 className="text-3xl font-black tracking-tight">{profile?.full_name || 'Guest User'}</h1>
-                <Badge className="w-fit mx-auto md:mx-0 bg-primary/10 text-primary border-primary/20 uppercase text-[10px] font-black tracking-widest">
+            <div className="flex-grow space-y-1 md:pb-2">
+              <div className="flex flex-col items-center gap-2 md:flex-row md:items-center">
+                <h1 className="text-2xl font-black tracking-tight sm:text-3xl">{profile?.full_name || 'Guest User'}</h1>
+                <Badge className="w-fit bg-primary/10 text-primary border-primary/20 uppercase text-[10px] font-black tracking-widest">
                   {profile?.role || 'Citizen'}
                 </Badge>
               </div>
-              <p className="text-muted-foreground italic flex items-center justify-center md:justify-start gap-2">
+              <p className="text-sm text-muted-foreground flex items-center justify-center gap-2 md:justify-start">
                 <Mail className="h-3 w-3" />
                 {user?.email || 'No email provided'}
               </p>
             </div>
-            <Button variant="outline" className="rounded-full gap-2 border-primary/20">
+            <Button variant="outline" className="rounded-full gap-2 border-primary/20 md:pb-2">
               <Edit3 className="h-4 w-4" />
               Edit Profile
             </Button>
