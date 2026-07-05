@@ -109,8 +109,8 @@ export default function CitizenDashboard() {
           <IntelligenceDashboard />
         </div>
 
-        {/* Quick Actions - Small Bento Piece */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-3">
+        {/* Quick Actions - Full-width Bento Piece so all 4 cards stay visible */}
+        <div className="col-span-12">
           <QuickActionsWidget />
         </div>
 
