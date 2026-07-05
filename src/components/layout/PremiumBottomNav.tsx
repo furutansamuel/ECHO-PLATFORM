@@ -24,109 +24,193 @@ interface Props {
   alertsCount?: number;
 }
 
-/**
- * ECHO Premium Smart Nav
- * Floating pill bottom navigation with a liquid scoop under the active tab.
- * Active icon rises inside a circular button; inactive icons stay muted.
- */
-export function PremiumBottomNav({ items = DEFAULT_ITEMS, alertsCount = 0 }: Props) {
+export function PremiumBottomNav({
+  items = DEFAULT_ITEMS,
+  alertsCount = 0,
+}: Props) {
   const location = useLocation();
 
-  const enriched = items.map((it) =>
-    it.name === 'Alerts' ? { ...it, badge: alertsCount } : it,
+  const enriched = items.map((item) =>
+    item.name === 'Alerts'
+      ? { ...item, badge: alertsCount }
+      : item
   );
 
   const activeIndex = Math.max(
     0,
-    enriched.findIndex((it) =>
-      it.href === '/dashboard'
-        ? location.pathname === '/dashboard' || location.pathname === '/'
-        : location.pathname.startsWith(it.href),
-    ),
+    enriched.findIndex((item) =>
+      item.href === '/dashboard'
+        ? location.pathname === '/' ||
+          location.pathname === '/dashboard'
+        : location.pathname.startsWith(item.href)
+    )
   );
-  const safeActive = activeIndex === -1 ? 0 : activeIndex;
 
   const count = enriched.length;
-  // Position of the floating circle center as a percentage across the pill.
-  const activePercent = ((safeActive + 0.5) / count) * 100;
+  const activePercent = ((activeIndex + 0.5) / count) * 100;
 
   return (
     <nav
-      aria-label="Primary"
+      aria-label="Primary Navigation"
       className="pointer-events-none fixed inset-x-0 bottom-0 z-50 md:hidden"
-      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 0.75rem)' }}
+      style={{
+        paddingBottom: 'max(env(safe-area-inset-bottom),0.75rem)',
+      }}
     >
       <div className="pointer-events-auto mx-auto w-[min(94vw,26rem)]">
         <div className="relative">
-          {/* Floating pill */}
-          <div className="relative h-16 rounded-[2rem] border border-white/10 bg-slate-900/85 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] backdrop-blur-2xl">
-            {/* Liquid scoop – subtle notch that morphs to active tab */}
+
+          {/* Navigation Bar */}
+          <div
+            className="
+              relative
+              h-16
+              rounded-[2rem]
+              border
+              border-white/15
+              bg-gradient-to-r
+              from-primary/95
+              via-secondary/95
+              to-accent/95
+              backdrop-blur-2xl
+              shadow-[0_20px_60px_-15px_rgba(27,94,32,0.45)]
+            "
+          >
+
+            {/* Liquid Scoop */}
             <motion.div
               aria-hidden
-              className="absolute -top-4 h-8 w-16 -translate-x-1/2 rounded-b-[2rem] bg-slate-900/85 backdrop-blur-2xl"
-              style={{
-                boxShadow:
-                  'inset 0 6px 12px -6px rgba(255,255,255,0.08)',
+              className="
+                absolute
+                -top-4
+                h-8
+                w-16
+                -translate-x-1/2
+                rounded-b-[2rem]
+                bg-gradient-to-r
+                from-primary/95
+                via-secondary/95
+                to-accent/95
+              "
+              initial={false}
+              animate={{
+                left: `${activePercent}%`,
               }}
-              initial={false}
-              animate={{ left: `${activePercent}%` }}
-              transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+              transition={{
+                type: 'spring',
+                stiffness: 260,
+                damping: 26,
+              }}
             />
 
-            {/* Floating active circle */}
+            {/* Active Button */}
             <motion.div
               aria-hidden
-              className="absolute -top-5 h-14 w-14 -translate-x-1/2 rounded-full bg-gradient-to-br from-primary to-emerald-600 shadow-[0_10px_25px_-5px_rgba(16,185,129,0.5)] ring-4 ring-slate-900/85"
+              className="
+                absolute
+                -top-5
+                h-14
+                w-14
+                -translate-x-1/2
+                rounded-full
+                bg-gradient-to-br
+                from-white
+                via-green-50
+                to-accent
+                ring-4
+                ring-primary/30
+                shadow-[0_12px_30px_rgba(67,160,71,0.45)]
+              "
               initial={false}
-              animate={{ left: `${activePercent}%` }}
-              transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+              animate={{
+                left: `${activePercent}%`,
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 260,
+                damping: 26,
+              }}
             />
 
-            {/* Tabs */}
+            {/* Navigation Items */}
             <ul className="relative flex h-full items-center">
-              {enriched.map((item, i) => {
-                const isActive = i === safeActive;
+              {enriched.map((item, index) => {
+                const isActive = index === activeIndex;
                 const Icon = item.icon;
+
                 return (
-                  <li key={item.href} className="flex-1">
+                  <li
+                    key={item.href}
+                    className="flex-1"
+                  >
                     <Link
                       to={item.href}
                       aria-label={item.name}
                       aria-current={isActive ? 'page' : undefined}
                       className={cn(
-                        'group relative mx-auto flex h-12 w-12 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60',
+                        'group relative mx-auto flex h-12 w-12 items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
                       )}
                     >
                       <motion.span
                         initial={false}
                         animate={{
                           y: isActive ? -22 : 0,
-                          scale: isActive ? 1.15 : 1,
+                          scale: isActive ? 1.18 : 1,
                         }}
-                        transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 320,
+                          damping: 22,
+                        }}
                         className={cn(
                           'relative flex items-center justify-center',
                           isActive
-                            ? 'text-white'
-                            : 'text-slate-400 group-hover:text-slate-200',
+                            ? 'text-primary'
+                            : 'text-white/75 group-hover:text-white'
                         )}
                       >
                         <Icon className="h-5 w-5" />
-                        {item.badge && item.badge > 0 ? (
+
+                        {item.badge && item.badge > 0 && (
                           <span
-                            aria-label={`${item.badge} unread alerts`}
-                            className="absolute -right-2 -top-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-slate-900"
+                            className="
+                              absolute
+                              -right-2
+                              -top-1
+                              flex
+                              h-4
+                              min-w-[1rem]
+                              items-center
+                              justify-center
+                              rounded-full
+                              bg-red-500
+                              px-1
+                              text-[10px]
+                              font-bold
+                              text-white
+                              ring-2
+                              ring-primary
+                            "
                           >
-                            {item.badge > 9 ? '9+' : item.badge}
+                            {item.badge > 9
+                              ? '9+'
+                              : item.badge}
                           </span>
-                        ) : null}
+                        )}
                       </motion.span>
 
-                      {/* Label for inactive tabs */}
                       <motion.span
                         initial={false}
-                        animate={{ opacity: isActive ? 0 : 1 }}
-                        className="absolute bottom-1 text-[10px] font-medium text-slate-400"
+                        animate={{
+                          opacity: isActive ? 0 : 1,
+                        }}
+                        className="
+                          absolute
+                          bottom-1
+                          text-[10px]
+                          font-medium
+                          text-white/75
+                        "
                       >
                         {item.name}
                       </motion.span>
