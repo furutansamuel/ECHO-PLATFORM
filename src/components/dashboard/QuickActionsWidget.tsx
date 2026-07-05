@@ -1,43 +1,47 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Icons } from "@/components/ui/icons";
-import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { AlertTriangle, Users, Map, Award } from "lucide-react";
 
 const actions = [
   {
     title: "Report Hazard",
-    icon: Icons.alertTriangle,
-    color: "bg-red-500/10 text-red-600 dark:text-red-400",
-    hover: "hover:bg-red-500/20",
+    icon: AlertTriangle,
+    href: "/report",
+    tone: "bg-rose-500/10 text-rose-600 hover:bg-rose-500/15 border-rose-500/20",
   },
   {
     title: "Join Cleanup",
-    icon: Icons.users,
-    color: "bg-green-500/10 text-green-600 dark:text-green-400",
-    hover: "hover:bg-green-500/20",
+    icon: Users,
+    href: "/community-insights",
+    tone: "bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/15 border-emerald-500/20",
   },
   {
     title: "View Live Map",
-    icon: Icons.map,
-    color: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-    hover: "hover:bg-blue-500/20",
+    icon: Map,
+    href: "/map",
+    tone: "bg-sky-500/10 text-sky-600 hover:bg-sky-500/15 border-sky-500/20",
   },
   {
     title: "Impact Center",
-    icon: Icons.award,
-    color: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
-    hover: "hover:bg-purple-500/20",
+    icon: Award,
+    href: "/rewards",
+    tone: "bg-violet-500/10 text-violet-600 hover:bg-violet-500/15 border-violet-500/20",
   },
 ];
 
 export function QuickActionsWidget() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-full">
-        {actions.map((action, index) => (
-            <Button key={index} variant="outline" className={`flex flex-col h-24 items-center justify-center gap-2 text-sm font-semibold rounded-lg premium-shadow transition-all ${action.color} ${action.hover}`}>
-                <action.icon className="h-6 w-6" />
-                <span>{action.title}</span>
-            </Button>
-        ))}
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      {actions.map((action) => (
+        <Link
+          key={action.title}
+          to={action.href}
+          aria-label={action.title}
+          className={`group flex min-h-[92px] flex-col items-center justify-center gap-2 rounded-2xl border bg-card p-3 text-center text-xs font-semibold shadow-premium transition-all hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[104px] sm:text-sm ${action.tone}`}
+        >
+          <action.icon className="h-5 w-5 sm:h-6 sm:w-6" />
+          <span className="leading-tight">{action.title}</span>
+        </Link>
+      ))}
     </div>
   );
 }

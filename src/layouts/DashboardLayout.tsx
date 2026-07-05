@@ -35,6 +35,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import { DemoHints } from '@/components/dashboard/DemoHints';
+import { PremiumBottomNav } from '@/components/layout/PremiumBottomNav';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['citizen', 'volunteer', 'administrator'] },
@@ -62,13 +63,7 @@ const footerItems = [
   { name: 'Settings', href: '/settings', icon: Settings, roles: ['citizen', 'volunteer', 'administrator'] },
 ];
 
-const mobileBottomItems = [
-  { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Map', href: '/map', icon: MapIcon },
-  { name: 'Report', href: '/report', icon: AlertTriangle },
-  { name: 'Notifications', href: '/notifications', icon: Bell },
-  { name: 'Profile', href: '/profile', icon: User },
-];
+// Mobile bottom nav is rendered by <PremiumBottomNav /> — items live there.
 
 export function DashboardLayout() {
   const { profile, logout } = useAuth();
@@ -309,29 +304,7 @@ export function DashboardLayout() {
           <Outlet />
         </main>
 
-        <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-20 pb-4 items-center justify-around border-t border-border/40 bg-background/80 backdrop-blur-2xl md:hidden">
-          {mobileBottomItems.map((item) => {
-            const isActive = location.pathname === item.href;
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={cn(
-                  'flex h-full w-14 flex-col items-center justify-center gap-1 transition-colors',
-                  isActive ? 'text-primary' : 'text-muted-foreground'
-                )}
-              >
-                <Icon className={cn('h-5 w-5', isActive && 'stroke-[2.5px]')} />
-                <span className="text-[10px] font-medium">{item.name}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <Button className="md:hidden fixed bottom-20 right-4 h-14 w-14 rounded-full shadow-lg z-50">
-          <AlertTriangle className="h-6 w-6" />
-        </Button>
+        <PremiumBottomNav />
       </div>
     </div>
   );

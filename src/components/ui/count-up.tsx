@@ -19,8 +19,17 @@ export const CountUp = (props: CountUpProps) => {
     });
 
     return (
-        <div ref={ref}>
-            {inView ? <CountUpLib isCounting end={props.end} duration={props.duration} thousandsSeparator={props.separator} /> : <span>{props.start}</span>}
-        </div>
+        <span ref={ref} className="inline-block tabular-nums">
+            {inView ? (
+                <CountUpLib
+                    isCounting
+                    end={props.end}
+                    duration={props.duration}
+                    thousandsSeparator={props.separator}
+                />
+            ) : (
+                <span>{props.start}</span>
+            )}
+        </span>
     );
 };
