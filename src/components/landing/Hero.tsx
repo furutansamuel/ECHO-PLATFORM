@@ -94,7 +94,7 @@ export function Hero() {
       </div>
 
 
-      <div className="container mx-auto px-4 py-20 md:py-28 lg:py-36">
+      <div className="container relative mx-auto px-4 py-20 md:py-28 lg:py-36">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={rise(12)}
