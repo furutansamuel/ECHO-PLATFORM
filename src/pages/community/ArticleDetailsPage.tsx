@@ -18,6 +18,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useDocumentTitle } from '@/hooks/use-document-title';
+import { SafeImage } from '@/components/ui/safe-image';
 
 const ArticleDetailsPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
