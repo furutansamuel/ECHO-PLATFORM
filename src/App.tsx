@@ -72,6 +72,7 @@ function App() {
                 <Route path="/rewards" element={<RewardsPage />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/settings" element={<SettingsPage />} />
                 
                 {/* Intelligence Routes */}
                 <Route path="/map" element={<InteractiveMapPage />} />
