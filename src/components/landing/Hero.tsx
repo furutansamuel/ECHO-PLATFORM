@@ -67,12 +67,15 @@ export function Hero() {
             key={s.src}
             src={s.src}
             alt={s.alt}
+            width={1920}
+            height={1080}
             loading={i === 0 ? 'eager' : 'lazy'}
+            fetchPriority={i === 0 ? 'high' : 'low'}
             decoding="async"
-            onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
+            onError={() => setFailed((prev) => ({ ...prev, [i]: true }))}
             className={cn(
               'absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out',
-              i === index && loaded[i] ? 'opacity-100' : 'opacity-0'
+              i === index && !failed[i] ? 'opacity-100' : 'opacity-0'
             )}
           />
         ))}
