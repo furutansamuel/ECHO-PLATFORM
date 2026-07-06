@@ -158,8 +158,18 @@
     @apply border-border outline-ring/50;
     letter-spacing: var(--tracking-normal);
   }
+  html, body {
+    @apply overflow-x-hidden;
+  }
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
   h1, h2, h3, h4, h5, h6 {
     @apply font-black tracking-tight;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
