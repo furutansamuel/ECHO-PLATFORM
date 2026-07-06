@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from 'react-router-dom';
+import { SafeImage } from '@/components/ui/safe-image';
 
 const CATEGORIES = [
   'All',
@@ -72,9 +73,9 @@ const KnowledgeCentre: React.FC = () => {
       {!loading && filteredArticles.length > 0 && activeCategory === 'All' && !searchQuery && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <Card className="lg:col-span-8 overflow-hidden border-none shadow-2xl relative group h-[400px]">
-            <img 
-              src={articles[0]?.cover_image || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1000"} 
-              alt={articles[0]?.title}
+            <SafeImage
+              src={articles[0]?.cover_image || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=70&w=1200"}
+              alt={articles[0]?.title || 'Featured article'}
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -180,8 +181,8 @@ const KnowledgeCentre: React.FC = () => {
               >
                 <Card className="overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all h-full flex flex-col group">
                   <div className="h-48 relative overflow-hidden">
-                    <img 
-                      src={article.cover_image || `https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=600&sig=${idx}`} 
+                    <SafeImage
+                      src={article.cover_image || `https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=70&w=800&sig=${idx}`}
                       alt={article.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />

@@ -27,7 +27,7 @@ const slides = [
 export function Hero() {
   const prefersReducedMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
-  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
+  const [failed, setFailed] = useState<Record<number, boolean>>({});
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const clearTimer = () => {
@@ -59,27 +59,30 @@ export function Hero() {
   const settle = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
 
   return (
-    <section className="relative overflow-hidden bg-background">
+    <section className="relative overflow-hidden">
       {/* Carousel background */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0">
+        {/* Fallback gradient sits BEHIND images */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-background to-accent/30" />
         {slides.map((s, i) => (
           <img
             key={s.src}
             src={s.src}
             alt={s.alt}
+            width={1920}
+            height={1080}
             loading={i === 0 ? 'eager' : 'lazy'}
+            fetchPriority={i === 0 ? 'high' : 'low'}
             decoding="async"
-            onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
+            onError={() => setFailed((prev) => ({ ...prev, [i]: true }))}
             className={cn(
               'absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out',
-              i === index && loaded[i] ? 'opacity-100' : 'opacity-0'
+              i === index && !failed[i] ? 'opacity-100' : 'opacity-0'
             )}
           />
         ))}
-        {/* Fallback gradient in case images fail */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-background to-accent/30" />
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background/85 dark:from-background/80 dark:via-background/70 dark:to-background/90" />
+        {/* Dark overlay for readability sits ABOVE images */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/55 to-background/85 dark:from-background/80 dark:via-background/70 dark:to-background/90" />
         {/* Subtle grain / dots */}
         <div
           className="absolute inset-0 opacity-[0.15]"
@@ -90,7 +93,8 @@ export function Hero() {
         />
       </div>
 
-      <div className="container mx-auto px-4 py-20 md:py-28 lg:py-36">
+
+      <div className="container relative mx-auto px-4 py-20 md:py-28 lg:py-36">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={rise(12)}

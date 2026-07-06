@@ -18,6 +18,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useDocumentTitle } from '@/hooks/use-document-title';
+import { SafeImage } from '@/components/ui/safe-image';
 
 const ArticleDetailsPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -111,8 +112,8 @@ const ArticleDetailsPage: React.FC = () => {
 
       {/* Main Image */}
       <div className="my-10 rounded-3xl overflow-hidden shadow-2xl h-[400px] relative">
-        <img 
-          src={article.cover_image || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1200"} 
+        <SafeImage
+          src={article.cover_image || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=70&w=1200"}
           alt={article.title}
           className="w-full h-full object-cover"
         />
