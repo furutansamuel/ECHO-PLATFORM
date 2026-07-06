@@ -30,7 +30,7 @@ const WelcomeHeader = () => {
         {getGreeting()}, <span className="text-primary">{firstName}</span> 👋
       </h1>
       <p className="text-sm text-muted-foreground font-medium mt-1">
-        Your environmental updates at a glance.
+        Monitor your community's environmental health.
       </p>
     </motion.div>
   );
