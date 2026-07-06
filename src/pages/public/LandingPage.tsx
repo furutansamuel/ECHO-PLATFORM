@@ -27,7 +27,7 @@ const LandingPage = () => {
         <UpcomingEvents />
         <KnowledgeCenter />
         <Cta />
-        <Partners />
+
       </main>
       <Footer />
     </div>
