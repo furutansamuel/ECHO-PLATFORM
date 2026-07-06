@@ -42,7 +42,7 @@ const navItems = [
   { name: 'Interactive Map', href: '/map', icon: MapIcon, roles: ['citizen', 'volunteer', 'administrator'] },
   { name: 'AI Intelligence', href: '/ai-intelligence', icon: BrainCircuit, roles: ['citizen', 'volunteer', 'administrator'] },
   { name: 'Community Health', href: '/community-health', icon: HeartPulse, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'Cleanup Events', href: '/events', icon: Calendar, roles: ['citizen', 'volunteer', 'administrator'] },
+  { name: 'Cleanup Events', href: '/community-insights', icon: Calendar, roles: ['citizen', 'volunteer', 'administrator'] },
   { name: 'Impact Center', href: '/rewards', icon: Award, roles: ['citizen', 'volunteer', 'administrator'] },
   { name: 'Community Insights', href: '/community-insights', icon: Users, roles: ['citizen', 'volunteer', 'administrator'] },
   { name: 'Knowledge Centre', href: '/knowledge', icon: BookOpen, roles: ['citizen', 'volunteer', 'administrator'] },
@@ -186,7 +186,10 @@ export function DashboardLayout() {
       </aside>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-border/40 bg-background/60 px-4 backdrop-blur-xl md:px-8">
+        <header
+          className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-border/40 bg-background/80 px-4 backdrop-blur-xl md:px-8"
+          style={{ paddingTop: 'max(env(safe-area-inset-top), 0px)' }}
+        >
           <div className="flex items-center gap-4">
             <Sheet>
               <SheetTrigger asChild>
@@ -298,7 +301,11 @@ export function DashboardLayout() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 pb-24 md:p-8 md:pb-12">
+        <main
+          data-scroll-root
+          className="flex-1 overflow-y-auto p-4 pb-28 md:p-8 md:pb-12"
+          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 7rem)' }}
+        >
           <DemoHints />
           <Outlet />
         </main>
