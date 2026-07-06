@@ -10,9 +10,16 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  * of throwing "Cannot read properties of null".
  */
 
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+// Publishable (anon) credentials — safe to expose to the browser.
+// Falls back to env overrides if a developer wants to point at a different
+// project locally.
+const DEFAULT_URL = "https://mreipdzudahzsrakntxm.supabase.co";
+const DEFAULT_PUBLISHABLE_KEY = "sb_publishable_LqP0QWJKXpOXoJRmzOwaiw_Of5HBVTI";
+
+const url = (import.meta.env.VITE_SUPABASE_URL as string | undefined) || DEFAULT_URL;
 const anonKey = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
-  import.meta.env.VITE_SUPABASE_ANON_KEY) as string | undefined;
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  DEFAULT_PUBLISHABLE_KEY) as string;
 
 export const isSupabaseConfigured = Boolean(url && anonKey);
 

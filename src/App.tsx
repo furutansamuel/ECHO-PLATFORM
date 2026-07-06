@@ -23,6 +23,7 @@ const ReportDetailsPage = lazy(() => import("@/pages/citizen/ReportDetailsPage")
 const NotificationsPage = lazy(() => import("@/pages/citizen/NotificationsPage"));
 const RewardsPage = lazy(() => import("@/pages/citizen/RewardsPage"));
 const ProfilePage = lazy(() => import("@/pages/citizen/ProfilePage"));
+const SettingsPage = lazy(() => import("@/pages/citizen/SettingsPage"));
 const AIIntelligencePage = lazy(() => import("@/pages/intelligence/AIIntelligencePage"));
 const AnalyticsPage = lazy(() => import("@/pages/intelligence/AnalyticsPage"));
 const InteractiveMapPage = lazy(() => import("@/pages/intelligence/InteractiveMapPage"));
@@ -71,6 +72,7 @@ function App() {
                 <Route path="/rewards" element={<RewardsPage />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/settings" element={<SettingsPage />} />
                 
                 {/* Intelligence Routes */}
                 <Route path="/map" element={<InteractiveMapPage />} />
