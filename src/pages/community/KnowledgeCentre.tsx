@@ -181,8 +181,8 @@ const KnowledgeCentre: React.FC = () => {
               >
                 <Card className="overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all h-full flex flex-col group">
                   <div className="h-48 relative overflow-hidden">
-                    <img 
-                      src={article.cover_image || `https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=600&sig=${idx}`} 
+                    <SafeImage
+                      src={article.cover_image || `https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=70&w=800&sig=${idx}`}
                       alt={article.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
