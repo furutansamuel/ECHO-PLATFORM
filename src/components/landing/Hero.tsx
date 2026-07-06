@@ -27,7 +27,7 @@ const slides = [
 export function Hero() {
   const prefersReducedMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
-  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
+  const [failed, setFailed] = useState<Record<number, boolean>>({});
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const clearTimer = () => {
