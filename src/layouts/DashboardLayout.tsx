@@ -264,6 +264,17 @@ export function DashboardLayout() {
                         <span>{item.name}</span>
                       </Link>
                     ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        logout();
+                      }}
+                      className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-destructive hover:bg-destructive/10"
+                    >
+                      <LogOut className="h-5 w-5" />
+                      <span>Logout</span>
+                    </button>
                   </div>
                 </div>
               </SheetContent>
