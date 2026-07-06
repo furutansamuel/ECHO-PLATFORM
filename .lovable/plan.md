@@ -1,79 +1,57 @@
+# ECHO Stabilization & Recovery Plan
 
-# ECHO Premium UI/UX Transformation
+Goal: audit and stabilize the app end-to-end. No redesign, no new features, no backend/auth changes.
 
-This is a large, multi-phase visual refresh of an already-working app. I'll work **incrementally**, preserving every route, feature, hook, Supabase call, and business rule. Only presentation-layer files change.
+## 1. Animations (glitches, replay, bounce, layout shifts)
+- Sweep `src/components/landing/*`, `src/components/dashboard/*`, `src/pages/**`, `src/components/rewards/AchievementAnimation.tsx`, `src/components/intelligence/HealthScore/HealthGauge.tsx`.
+- Convert every `whileInView` / repeating `motion` into `useInView(ref, { once: true, amount: 0.2 })` + `initial`/`animate` pattern.
+- Remove `type: 'spring'` bounces where they cause visible jitter; standardize on `ease: [0.16,1,0.3,1]`, 0.4–0.6s.
+- Wrap all `motion` variants with `useReducedMotion()` → skip transforms, keep opacity only.
+- Ensure animated containers use `will-change: transform, opacity` only during the transition; avoid animating `height`/layout properties (use `opacity`+`translateY`).
+- Guarantee `CountUp` and similar counters run once (ref guard already in `Stats.tsx`; apply the same to other counters in `ContributionStats`, `EnvironmentalStatsWidget`, `RewardsSummaryWidget`).
 
----
+## 2. Landing page stabilization
+- Hero: keep current layout; fix image list, add explicit `width/height` on `<img>` to prevent CLS, add `fetchpriority="eager"` on first slide, keep `loading="lazy"` on rest, ensure fallback gradient always renders under images, verify `useReducedMotion` disables auto-rotate.
+- Stats: already stabilized — verify only.
+- CoreFeatures / HowItWorks / IntelligenceBento / HazardCategories / CommunityImpact / UpcomingEvents / KnowledgeCenter / Cta: audit each for `whileInView` replay, mobile overflow (`overflow-x-hidden` at section level), and grid breakpoints (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3/4`).
+- Partners was previously deleted per prior memory — leave removed (no re-add).
+- Footer: verify all links resolve to existing routes.
 
-## Phase 1 — Design System Foundation (touched first, powers everything else)
+## 3. Hero carousel image fix
+- Replace any broken Unsplash URLs with verified stable IDs, add `onError` fallback (swap to gradient placeholder), preload first slide via `<link rel="preload" as="image">` in `index.html` only if needed.
+- Confirm `loaded[i]` gating still allows first paint (set `loaded[0]=true` optimistically after `onLoad` or on `eager` slide).
 
-**Files:** `src/index.css`, `tailwind.config.ts` (if present), a new `src/lib/design-tokens.ts` only if needed.
+## 4. Knowledge Centre images
+- `src/components/landing/KnowledgeCenter.tsx` + `src/pages/community/KnowledgeCentre.tsx` + `src/components/dashboard/KnowledgeCentrePreview.tsx` + `src/lib/fallback-articles.ts`: verify every image URL 200s; standardize to reliable Unsplash `?auto=format&fit=crop&w=1200&q=70`; unify `ArticleImage` fallback component and reuse across the three surfaces.
 
-- Introduce semantic HSL tokens for the ECHO palette:
-  - `--forest` (primary), `--emerald`, `--sky`, `--amber`, `--coral`
-  - Surfaces: `--surface`, `--surface-elevated`, `--surface-glass`
-  - Gradients: `--gradient-forest`, `--gradient-sky`, `--gradient-aurora`
-  - Shadows: `--shadow-soft`, `--shadow-elevated`, `--shadow-glow`
-- Keep existing `--primary` mapped to forest green so no component breaks.
-- Add utility classes: `.glass-card`, `.premium-card`, `.stat-card`, `.bento-tile` — used by new sections without editing shadcn primitives.
-- Typography scale tightened; add display font pairing via `<link>` in `index.html` (no new dep).
+## 5. Routing & links audit
+- Cross-check every `<Link to>` / `href` against `src/App.tsx` route table. Known routes: `/`, `/about`, `/contact`, `/faq`, `/auth/login|register|forgot-password`, `/dashboard`, `/report`, `/reports`, `/reports/:id`, `/rewards`, `/notifications`, `/profile`, `/map`, `/ai-intelligence`, `/community-health`, `/analytics`, `/knowledge`, `/knowledge/:slug`, `/community-insights`, `/search`.
+- Redirect or fix any stale targets (`/events`, `/dashboard/*` legacy). Remove duplicate route declarations if any.
+- Verify Header, Footer, PremiumBottomNav, DashboardLayout sidebar, dashboard widgets, landing CTAs.
 
-## Phase 2 — Landing Page (compact + premium)
+## 6. Responsive layout & safe areas
+- `DashboardLayout`: keep existing `padding-bottom: calc(env(safe-area-inset-bottom) + 7rem)` + `padding-top: env(safe-area-inset-top)`.
+- Add `overflow-x-hidden` to `<body>` in `index.css` to kill horizontal scroll from decorative blurs.
+- Audit sticky headers (`Header.tsx`, dashboard header) for `top-0 z-40` + backdrop-blur and iOS notch.
+- Fix any fixed-position CTAs that overlap the bottom nav on mobile.
+- Ensure long titles wrap (`break-words`) in cards.
 
-Edit **only** landing components; keep `LandingPage.tsx` section order intact where possible, remove/replace only what the brief calls out.
+## 7. Dead code / unused imports
+- Run repo sweep: unused imports flagged by tsgo; delete `src/pages/Dashboard.tsx` and `src/pages/ModulePages.tsx` if unreferenced; remove commented-out blocks; delete unused motion variants.
+- Do not remove any component still imported anywhere.
 
-- **Hero** (`Hero.tsx`): keep carousel infra but replace slide copy with concise ECHO messaging; enforce single H1, 2-line subtitle, primary CTA "Report Hazard" → `/report`, secondary "Track My Reports" → `/reports`.
-- **Stats** (`Stats.tsx`): collapse to 4 premium stat cards (Reports Submitted, Cases Resolved, Environmental Health Score, Active Communities) with icon + count-up.
-- **CoreFeatures**: enforce exactly 6 cards (AI Intelligence, Community Reporting, GIS Mapping, Government Collaboration, Analytics, Rewards & Impact).
-- **HowItWorks**: 4 concise steps.
-- **AiPreview / MapPreview / CommunityHealth**: consolidate into one Bento preview component `IntelligenceBento.tsx` (map tile, AI insights tile, health score tile, active incidents tile). Remove the three separate sections from `LandingPage.tsx`.
-- **CommunityImpact**: replace placeholder testimonials with "Community Impact Highlights" grid.
-- **Partners** (`Partners.tsx`): rename to "Technology Stack" and swap placeholder logos for real tech icons (React, Supabase, Leaflet, Tailwind, Recharts, Lovable AI) — no fake partners.
-- **Cta**: keep, restyle with gradient + glassmorphism.
-- **Footer** (`Footer.tsx`): trim to compact premium footer with the exact link set requested (About, Features, Resources, Contact, FAQ, Privacy, Terms, Cookie, Accessibility, Social, ©). Replace hardcoded `bg-gray-900 text-white` with semantic tokens.
+## 8. Rendering perf
+- Memoize static arrays declared inside components (move `slides`, `articles`, `stats` to module scope — already done in most).
+- Wrap heavy list children with `React.memo` where props are stable.
+- Replace inline `style={{}}` recreated per render with Tailwind classes where equivalent.
 
-## Phase 3 — Dashboard (Bento consolidation, no feature loss)
+## 9. Verification
+- `bunx tsgo --noEmit` clean.
+- `bun run build` succeeds.
+- Playwright smoke: load `/`, `/dashboard` (with injected session if available), `/knowledge`, `/map`, `/reports`, `/rewards` at 390x844, 820x1180, 1440x900; screenshot each; check console for errors and network for 4xx/5xx on images.
 
-Edit `src/pages/citizen/Dashboard.tsx` and add **wrapper** widgets that reuse existing ones (no logic changes).
+## 10. Deliverable
+- Final chat report listing: issues found (grouped by area), files modified, fixes applied, remaining recommendations.
 
-- Rename H1 "Command Center" → **"Environmental Intelligence"** (brief explicitly forbids "Command Center").
-- Add persistent floating/pinned **Report Hazard** CTA in the dashboard header (always visible).
-- New composite widgets that *compose* existing ones (no data-layer rewrite):
-  - `EnvironmentalConditionsCard` — wraps existing weather/air/water summary widgets in tabs.
-  - `CommunityEngagementCard` — wraps `CommunityActivityWidget` + `VolunteerWidget` in tabs.
-  - `EnvironmentalIntelligenceCard` — wraps `RecentReports` + `AnalyticsSection` summaries with "View Reports" / "Open Analytics" links (Reports page untouched).
-  - `AlertCenterCard` — wraps `NotificationsWidget` with a critical-alerts strip on top.
-  - `AIIntelligenceCard` — wraps `AISummaryWidget` insights/trends/recommendations tabs.
-- Re-layout with a balanced 12-col Bento so above-the-fold shows: Intelligence hero tile, Alert Center, Quick Actions, Report CTA. Secondary rows: Conditions, Engagement, Rewards, Leaderboard.
-
-## Phase 4 — Global Polish
-
-- Add `LoadingSkeleton`, `EmptyState`, `ErrorState` primitives under `src/components/ui/states.tsx` and swap in the most-visible pages.
-- Standardize card padding/radius/shadow via the new `.premium-card` utility.
-- Fix known layout jumps: `min-h-*` on widgets that fetch async, `h-dvh` instead of `h-screen` where relevant.
-- A11y: `aria-label` on icon buttons, ensure Amber vs Coral have icons+text (not color-only).
-
-## Phase 5 — Redeploy (clean)
-
-- Confirm current `package.json` has `build:dev`.
-- Run `rm -rf node_modules/.vite dist` then `bun install` then `bun run build` locally in the sandbox to prove a cold rebuild succeeds.
-- Then invoke `preview_ui--publish` (which always deploys from the current committed project state — Lovable does not reuse cached artifacts across publishes).
-- Smoke-check `/`, `/dashboard`, `/map`, `/ai-intelligence`, `/community-health` via headless Chromium after build; report any console errors.
-
----
-
-## Explicit non-goals (per your rules)
-
-- No routing, auth, Supabase, backend, schema, or business-logic changes.
-- No feature removals — every existing widget stays mounted somewhere; consolidated widgets are wrappers, not rewrites.
-- No new heavy deps; no bundle-size regressions.
-- Keep "ECHO — Environmental Community Health Observatory" naming everywhere; purge militarized terms.
-
-## Technical notes
-
-- All colors go through HSL semantic tokens in `index.css`; components use `bg-primary`, `text-foreground`, `.premium-card`, etc. No `text-white`/`bg-gray-900` literals in new/edited files.
-- Composite dashboard widgets are pure presentational wrappers — they import and render the existing widget components with a shared shell, so no hook or data-fetch changes.
-- Font pairing added via preconnect + `<link>` in `index.html` — zero JS cost.
-- Estimated diff: ~15 landing/dashboard files edited, ~4 new wrapper components, 1 CSS token pass. No files deleted.
-
-Reply **approve** and I'll execute Phases 1→5 in order, or tell me which phase to skip/reorder.
+## Out of scope (won't touch)
+- Supabase, auth flows, edge functions, DB schema, business logic, visual redesign, new features, Partners re-add.
