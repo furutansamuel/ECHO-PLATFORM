@@ -53,6 +53,7 @@ export function Header() {
           ? 'border-b border-border/40 bg-background/80 backdrop-blur-xl'
           : 'bg-transparent'
       )}
+      style={{ paddingTop: 'max(env(safe-area-inset-top), 0px)' }}
     >
       <div className="container flex h-20 max-w-screen-2xl items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
