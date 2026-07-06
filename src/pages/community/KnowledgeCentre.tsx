@@ -73,9 +73,9 @@ const KnowledgeCentre: React.FC = () => {
       {!loading && filteredArticles.length > 0 && activeCategory === 'All' && !searchQuery && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <Card className="lg:col-span-8 overflow-hidden border-none shadow-2xl relative group h-[400px]">
-            <img 
-              src={articles[0]?.cover_image || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1000"} 
-              alt={articles[0]?.title}
+            <SafeImage
+              src={articles[0]?.cover_image || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=70&w=1200"}
+              alt={articles[0]?.title || 'Featured article'}
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
