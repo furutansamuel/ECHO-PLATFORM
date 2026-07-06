@@ -11,7 +11,6 @@ import { UpcomingEvents } from '@/components/landing/UpcomingEvents';
 import { CommunityImpact } from '@/components/landing/CommunityImpact';
 import { KnowledgeCenter } from '@/components/landing/KnowledgeCenter';
 import { Cta } from '@/components/landing/Cta';
-import { Partners } from '@/components/landing/Partners';
 
 const LandingPage = () => {
   return (
@@ -28,7 +27,7 @@ const LandingPage = () => {
         <UpcomingEvents />
         <KnowledgeCenter />
         <Cta />
-        <Partners />
+
       </main>
       <Footer />
     </div>

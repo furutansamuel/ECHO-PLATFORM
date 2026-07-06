@@ -1,42 +1,102 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ShieldAlert, LineChart, Sparkles } from 'lucide-react';
+import { ShieldAlert, LineChart, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+
+const slides = [
+  {
+    src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=70',
+    alt: 'Misty forest at sunrise',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=70',
+    alt: 'Sunlight through green forest',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1504809652271-98ba1e4bcbcc?auto=format&fit=crop&w=1920&q=70',
+    alt: 'River flowing through green valley',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=1920&q=70',
+    alt: 'Mountain lake reflection',
+  },
+];
 
 export function Hero() {
   const prefersReducedMotion = useReducedMotion();
-  // When the user prefers reduced motion, skip the y-offset slide and
-  // just cross-fade in place — respects OS-level accessibility settings
-  // without removing the animation entirely.
+  const [index, setIndex] = useState(0);
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const clearTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const startTimer = useCallback(() => {
+    if (prefersReducedMotion) return;
+    clearTimer();
+    timerRef.current = setInterval(() => {
+      setIndex((i) => (i + 1) % slides.length);
+    }, 6000);
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    startTimer();
+    return clearTimer;
+  }, [startTimer]);
+
+  const go = (next: number) => {
+    setIndex((next + slides.length) % slides.length);
+    startTimer();
+  };
+
   const rise = (y: number) => (prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y });
   const settle = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
 
   return (
     <section className="relative overflow-hidden bg-background">
-      {/* Ambient gradient orbs */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-20 h-[520px] w-[520px] rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute -bottom-40 -right-20 h-[520px] w-[520px] rounded-full bg-accent/20 blur-3xl" />
-        <div className="absolute top-1/3 left-1/2 h-[380px] w-[380px] -translate-x-1/2 rounded-full bg-sky-400/10 blur-3xl" />
-        <div className="hero-drift absolute top-10 right-1/4 h-64 w-64 rounded-full bg-emerald-400/10 blur-3xl" />
+      {/* Carousel background */}
+      <div className="absolute inset-0 -z-10">
+        {slides.map((s, i) => (
+          <img
+            key={s.src}
+            src={s.src}
+            alt={s.alt}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
+            className={cn(
+              'absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out',
+              i === index && loaded[i] ? 'opacity-100' : 'opacity-0'
+            )}
+          />
+        ))}
+        {/* Fallback gradient in case images fail */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-background to-accent/30" />
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background/85 dark:from-background/80 dark:via-background/70 dark:to-background/90" />
+        {/* Subtle grain / dots */}
         <div
-          className="absolute inset-0 opacity-[0.35] dark:opacity-[0.15]"
+          className="absolute inset-0 opacity-[0.15]"
           style={{
-            backgroundImage: 'radial-gradient(rgba(0,0,0,0.06) 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(rgba(255,255,255,0.35) 1px, transparent 1px)',
             backgroundSize: '24px 24px',
-            maskImage: 'radial-gradient(ellipse 60% 60% at 50% 20%, black, transparent)',
           }}
         />
       </div>
 
-      <div className="container mx-auto px-4 py-20 md:py-28 lg:py-32">
+      <div className="container mx-auto px-4 py-20 md:py-28 lg:py-36">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={rise(12)}
             animate={settle}
             transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary"
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-background/60 px-4 py-1.5 text-xs font-semibold text-primary backdrop-blur-md"
           >
             <Sparkles className="h-3.5 w-3.5" />
             AI-Powered Environmental Community Health Observatory
@@ -58,7 +118,7 @@ export function Hero() {
             initial={rise(16)}
             animate={settle}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl"
+            className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
           >
             Report environmental hazards, monitor community health, and drive real
             change with AI-verified intelligence.
@@ -76,7 +136,12 @@ export function Hero() {
                 Report Hazard
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="h-12 border-primary/20 bg-background/60 px-8 text-base backdrop-blur" asChild>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-12 border-primary/30 bg-background/60 px-8 text-base backdrop-blur"
+              asChild
+            >
               <Link to="/reports">
                 <LineChart className="mr-2 h-5 w-5" />
                 Track My Reports
@@ -92,6 +157,42 @@ export function Hero() {
           >
             Free for citizens • Built for Nigeria • Trusted by community leaders
           </motion.p>
+        </div>
+
+        {/* Carousel controls */}
+        <div className="mt-12 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={() => go(index - 1)}
+            aria-label="Previous slide"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-background/60 text-foreground backdrop-blur-md transition-colors hover:bg-background/80"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div className="flex items-center gap-2" role="tablist" aria-label="Hero slides">
+            {slides.map((s, i) => (
+              <button
+                key={s.src}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                aria-label={`Go to slide ${i + 1}`}
+                onClick={() => go(i)}
+                className={cn(
+                  'h-1.5 rounded-full transition-all duration-500',
+                  i === index ? 'w-8 bg-primary' : 'w-2 bg-foreground/30 hover:bg-foreground/50'
+                )}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => go(index + 1)}
+            aria-label="Next slide"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-background/60 text-foreground backdrop-blur-md transition-colors hover:bg-background/80"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </section>
