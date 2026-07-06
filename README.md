@@ -1,120 +1,433 @@
-# React + Vite + shadcn/ui Starter Template
+# 🌍 ECHO – Environmental Community Health Observatory
 
-A modern React starter template built with Vite, TypeScript, Tailwind CSS, and shadcn/ui components.
+![ECHO Banner](docs/banner.png)
 
-## 🚀 Features
+> **Empowering communities through environmental intelligence, citizen participation, artificial intelligence, and real-time data.**
 
-- ⚡️ **Vite** - Fast build tool and development server
-- ⚛️ **React 18** - Latest React with hooks support
-- 🎯 **TypeScript** - Type safety and better developer experience
-- 🎨 **Tailwind CSS** - Utility-first CSS framework
-- 🧩 **shadcn/ui** - Beautifully designed components built with Radix UI
-- 📦 **Path Mapping** - Clean imports with `@/` prefix
+ECHO (Environmental Community Health Observatory) is a next-generation Environmental Intelligence Platform designed to help citizens, communities, organizations, and government agencies collaboratively monitor, report, analyze, and respond to environmental and public health challenges.
 
-## 📦 Included shadcn/ui Components
+The platform combines **AI-powered insights**, **community-driven reporting**, **interactive GIS mapping**, **real-time analytics**, and **data visualization** to promote cleaner, safer, and healthier communities.
 
-- Button
-- Card
-- Input
-- Label
-- Badge
-- Dialog
-- And more...
+---
 
-## 🛠️ Getting Started
+# 🚀 Vision
 
-1. **Install dependencies**
+To become the leading digital platform that enables communities and governments to make informed environmental decisions through technology, data, and collaboration.
 
-   ```bash
-   npm install
-   ```
+---
 
-2. **Start development server**
+# 🎯 Mission
 
-   ```bash
-   npm run dev
-   ```
+ECHO empowers people to:
 
-3. **Build for production**
+- Report environmental hazards quickly
+- Monitor environmental conditions
+- Participate in community cleanup initiatives
+- Receive environmental alerts
+- Access environmental intelligence
+- Promote healthier and more sustainable communities
 
-   ```bash
-   npm run build
-   ```
+---
 
-4. **Preview production build**
-   ```bash
-   npm run preview
-   ```
+# ✨ Core Features
 
-## 📁 Project Structure
+## 🤖 AI Environmental Intelligence
 
-```
+- AI-assisted environmental insights
+- Risk prediction
+- Environmental trend analysis
+- Smart recommendations
+- Environmental hotspot detection
+
+---
+
+## 🗺️ Interactive GIS Mapping
+
+- Interactive environmental maps
+- Hazard visualization
+- Geographic clustering
+- Community incident locations
+- Environmental heatmaps
+
+---
+
+## 🚨 Hazard Reporting
+
+Users can report:
+
+- Illegal dumping
+- Flooding
+- Air pollution
+- Water pollution
+- Noise pollution
+- Waste accumulation
+- Environmental emergencies
+- Public health concerns
+
+Reports include:
+
+- Photos
+- GPS location
+- Severity level
+- Description
+- Status tracking
+
+---
+
+## 🧹 Cleanup Events
+
+Organize and manage community cleanup campaigns.
+
+Features include:
+
+- Upcoming events
+- Event registration
+- Attendance tracking
+- Volunteer participation
+- Event history
+- Interactive event maps
+
+---
+
+## 👥 Community Hub
+
+A dedicated community engagement space for:
+
+- Discussions
+- Announcements
+- Volunteers
+- Community leaderboards
+- Environmental campaigns
+- Local initiatives
+
+---
+
+## 📊 Analytics Dashboard
+
+Interactive dashboards displaying:
+
+- Environmental statistics
+- Community reports
+- Trends
+- Active incidents
+- Environmental scores
+- Performance metrics
+
+---
+
+## 🔔 Notifications
+
+Real-time notifications for:
+
+- New reports
+- Cleanup events
+- Community announcements
+- Environmental alerts
+- System updates
+
+---
+
+## 🎁 Rewards System
+
+Encourages community participation through:
+
+- Points
+- Achievements
+- Badges
+- Community recognition
+- Leaderboards
+
+---
+
+## 📚 Knowledge Centre
+
+Educational resources covering:
+
+- Environmental awareness
+- Recycling
+- Climate change
+- Public health
+- Sustainability
+- Community best practices
+
+---
+
+## 👤 User Profiles
+
+Users can:
+
+- Manage personal information
+- View contribution history
+- Track rewards
+- Monitor reports
+- Update preferences
+
+---
+
+# 📱 Responsive Design
+
+Optimized for:
+
+- 📱 Android
+- 📱 iPhone
+- 💻 Desktop
+- 💻 Laptop
+- 📱 Tablets
+
+Responsive layouts ensure consistent performance across all supported devices.
+
+---
+
+# 🛠 Technology Stack
+
+### Frontend
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- Framer Motion
+- React Router
+- Lucide Icons
+
+### Backend
+
+- Supabase
+
+Including:
+
+- Authentication
+- PostgreSQL Database
+- Row Level Security (RLS)
+- Storage
+- Realtime
+- Edge-ready APIs
+
+---
+
+# 🔐 Authentication
+
+ECHO supports secure authentication using Supabase.
+
+Features include:
+
+- Email & Password Sign In
+- User Registration
+- Password Reset
+- Protected Routes
+- Role-based Access (RLS)
+
+---
+
+# 🗄 Database
+
+The platform utilizes Supabase PostgreSQL.
+
+Core tables include:
+
+- Profiles
+- Reports
+- Notifications
+- Cleanup Events
+- Event Registrations
+- User Roles
+
+Additional tables may be added as the platform evolves.
+
+---
+
+# 🎨 UI/UX Highlights
+
+- Premium modern interface
+- Glassmorphism
+- Responsive layouts
+- Smooth animations
+- AI-inspired design language
+- Interactive dashboards
+- Accessible components
+- Dark mode support
+
+---
+
+# ⚡ Performance
+
+The application is optimized for:
+
+- Fast rendering
+- GPU-accelerated animations
+- Responsive layouts
+- Mobile performance
+- Accessibility
+- Lazy loading
+- Optimized assets
+
+---
+
+# 📂 Project Structure
+
+```text
 src/
 ├── components/
-│   └── ui/              # shadcn/ui components
+├── pages/
+├── layouts/
+├── features/
+├── hooks/
+├── integrations/
 ├── lib/
-│   └── utils.ts         # Utility functions
-├── App.tsx              # Main application component
-├── index.css            # Global styles with Tailwind
-└── main.tsx             # Application entry point
+├── utils/
+├── styles/
+├── assets/
+└── App.tsx
 ```
-
-## 🎨 Customization
-
-### Adding New shadcn/ui Components
-
-This template is pre-configured with shadcn/ui. You can add more components by creating them in the `src/components/ui/` directory.
-
-### Tailwind Configuration
-
-The Tailwind configuration is set up with shadcn/ui color variables. You can customize colors and other design tokens in:
-
-- `tailwind.config.js` - Tailwind configuration
-- `src/index.css` - CSS custom properties for themes
-
-### TypeScript Configuration
-
-Path mapping is configured for clean imports:
-
-```typescript
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-```
-
-## 🌗 Dark Mode
-
-The template includes dark mode support through Tailwind's `dark:` classes and CSS custom properties.
-
-## 📚 Learn More
-
-- [Vite Documentation](https://vitejs.dev/)
-- [React Documentation](https://react.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Radix UI](https://www.radix-ui.com/)
-
-## 🤝 Contributing
-
-Feel free to submit issues and enhancement requests!
-
-**⚡ Powered by [Dala](https://dala.gebeya.com)** - The AI-powered web development platform that helps you build full-stack applications faster.
 
 ---
 
-## 🤖 What is Dala?
+# 🚀 Getting Started
 
-**[Gebeya Dala](https://dala.gebeya.com)** is an intelligent web development platform that accelerates your React development workflow. Build, preview, and deploy web applications, and instant development environments.
+## Clone the repository
 
-🔗 **Try Dala:** [dala.gebeya.com](https://dala.gebeya.com)
+```bash
+git clone https://github.com/your-username/echo.git
+```
 
-### Why Use Dala?
+## Navigate to the project
 
-- **AI-Powered Development** - Get intelligent code suggestions and automated component generation
-- **Instant Preview** - See your changes live in real-time sandbox environments
-- **Zero Setup** - No local environment configuration needed
-- **Collaborative** - Build and share projects with your team
-- **Deployment Ready** - One-click deployment to production
+```bash
+cd echo
+```
+
+## Install dependencies
+
+Using Bun
+
+```bash
+bun install
+```
+
+Or npm
+
+```bash
+npm install
+```
 
 ---
 
-Built with ❤️ by the Dala team to help developers build faster and smarter.
+## Configure Environment Variables
+
+Copy:
+
+```text
+.env.example
+```
+
+to
+
+```text
+.env
+```
+
+Then update:
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
+```
+
+---
+
+## Start Development
+
+```bash
+bun run dev
+```
+
+or
+
+```bash
+npm run dev
+```
+
+---
+
+## Build Production
+
+```bash
+bun run build
+```
+
+or
+
+```bash
+npm run build
+```
+
+---
+
+## Preview Production
+
+```bash
+bun run preview
+```
+
+or
+
+```bash
+npm run preview
+```
+
+---
+
+# 🔒 Security
+
+- Environment variables are excluded from version control.
+- Row Level Security (RLS) protects user data.
+- Authentication is handled securely through Supabase.
+- Sensitive credentials are never committed to the repository.
+
+---
+
+# 🧪 Project Status
+
+Current Stage:
+
+**Minimum Viable Product (MVP)**
+
+Future roadmap includes:
+
+- AI-powered environmental forecasting
+- IoT sensor integration
+- Satellite imagery
+- Advanced GIS analytics
+- Government administration portal
+- Offline reporting
+- Progressive Web App (PWA)
+- Multi-language support
+
+---
+
+# 🤝 Contributing
+
+Contributions, feature requests, and bug reports are welcome.
+
+Please open an issue or submit a pull request for improvements.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License unless otherwise specified.
+
+---
+
+# 👨‍💻 Developed By
+
+**Furutan Lawrence Samuel**
+
+Environmental Community Health Observatory (ECHO)
+
+Building technology for cleaner, healthier, and smarter communities.
+
+---
+
+⭐ If you found this project interesting, consider giving it a star on GitHub!
