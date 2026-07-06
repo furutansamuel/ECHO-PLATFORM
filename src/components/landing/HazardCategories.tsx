@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Trash2, Droplet, Wind, CloudFog, Factory } from 'lucide-react';
 
 const categories = [
-  { name: 'Plastic Waste', icon: Trash2, slug: 'plastic-waste' },
-  { name: 'Flood', icon: Droplet, slug: 'flood' },
-  { name: 'Blocked Drainage', icon: CloudFog, slug: 'blocked-drainage' },
-  { name: 'Illegal Dumpsite', icon: Trash2, slug: 'illegal-dumpsite' },
-  { name: 'Stagnant Water', icon: Droplet, slug: 'stagnant-water' },
-  { name: 'Water Pollution', icon: Factory, slug: 'water-pollution' },
-  { name: 'Air Pollution', icon: Wind, slug: 'air-pollution' },
-  { name: 'Illegal Burning', icon: Wind, slug: 'illegal-burning' },
-  { name: 'Other Hazards', icon: ArrowRight, slug: 'other' },
+  { name: 'Plastic Waste', icon: Trash2, slug: 'plastic-waste', gradient: 'gradient-primary' },
+  { name: 'Flood', icon: Droplet, slug: 'flood', gradient: 'gradient-analytics' },
+  { name: 'Blocked Drainage', icon: CloudFog, slug: 'blocked-drainage', gradient: 'gradient-secondary' },
+  { name: 'Illegal Dumpsite', icon: Trash2, slug: 'illegal-dumpsite', gradient: 'gradient-community' },
+  { name: 'Stagnant Water', icon: Droplet, slug: 'stagnant-water', gradient: 'gradient-analytics' },
+  { name: 'Water Pollution', icon: Factory, slug: 'water-pollution', gradient: 'gradient-ai' },
+  { name: 'Air Pollution', icon: Wind, slug: 'air-pollution', gradient: 'gradient-secondary' },
+  { name: 'Illegal Burning', icon: Wind, slug: 'illegal-burning', gradient: 'gradient-community' },
+  { name: 'Other Hazards', icon: ArrowRight, slug: 'other', gradient: 'gradient-success' },
 ];
 
 export function HazardCategories() {
@@ -31,7 +31,9 @@ export function HazardCategories() {
               <Card className="group hover:border-primary transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl premium-shadow">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-lg font-semibold">{category.name}</CardTitle>
-                  <category.icon className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                  <div className={`icon-badge ${category.gradient} h-11 w-11 transition-transform duration-300 group-hover:scale-110`}>
+                    <category.icon className="h-5 w-5" />
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground group-hover:text-primary">

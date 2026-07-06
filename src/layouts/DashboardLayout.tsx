@@ -3,7 +3,6 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Icons } from '@/components/icons';
 import { 
   LayoutDashboard, 
-  AlertTriangle, 
   ClipboardList, 
   Map as MapIcon, 
   HeartPulse, 
@@ -71,7 +70,7 @@ export function DashboardLayout() {
   const { isDemoMode, isPresentationMode, setPresentationMode } = useDemo();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {

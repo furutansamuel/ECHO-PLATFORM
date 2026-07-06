@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { 
   FileText, 
   CheckCircle2, 
@@ -8,7 +8,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useReportsStore } from '@/hooks/use-reports-store';
 
 const mockActivities = [
@@ -61,19 +61,30 @@ const mockActivities = [
 
 const ActivityTimeline = () => {
   const { reports: storeReports } = useReportsStore();
+  const prefersReducedMotion = useReducedMotion();
 
-  const allActivities = [
-    ...storeReports.map(report => ({
-      type: 'Hazard Submitted',
-      title: `New report: ${report.title}`,
-      description: `Reported at ${report.location.address || 'Unknown Location'}.`,
-      time: 'Just now',
-      icon: FileText,
-      color: 'text-orange-500',
-      bg: 'bg-orange-500/10'
-    })),
-    ...mockActivities
-  ].slice(0, 10);
+  // Memoized so a stable list is only recomputed when the underlying
+  // reports actually change, and each item gets an identity (`id`) that
+  // survives new reports being added to the front of the list. Without
+  // a stable id, using the array index as the React key meant every
+  // existing activity got remounted (and replayed its entrance
+  // animation) whenever a new report shifted everyone's index down.
+  const allActivities = useMemo(
+    () => [
+      ...storeReports.map((report) => ({
+        id: `report-${report.id}`,
+        type: 'Hazard Submitted',
+        title: `New report: ${report.title}`,
+        description: `Reported at ${report.location.address || 'Unknown Location'}.`,
+        time: 'Just now',
+        icon: FileText,
+        color: 'text-orange-500',
+        bg: 'bg-orange-500/10',
+      })),
+      ...mockActivities.map((activity, i) => ({ id: `mock-${i}`, ...activity })),
+    ].slice(0, 10),
+    [storeReports]
+  );
 
   return (
     <div className="bg-card border rounded-2xl shadow-sm h-full flex flex-col overflow-hidden">
@@ -84,10 +95,10 @@ const ActivityTimeline = () => {
         <div className="relative space-y-6 before:absolute before:inset-0 before:ml-4 before:translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-border before:to-transparent">
           {allActivities.map((activity, index) => (
             <motion.div 
-              key={index} 
-              initial={{ opacity: 0, x: -10 }}
+              key={activity.id} 
+              initial={prefersReducedMotion ? false : { opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: prefersReducedMotion ? 0 : index * 0.1 }}
               className="relative flex items-start gap-6 group"
             >
               <div className="flex items-center justify-center w-8 h-8 rounded-xl border bg-card shadow-sm shrink-0 z-10 transition-transform group-hover:scale-110">
@@ -115,4 +126,4 @@ const ActivityTimeline = () => {
   );
 };
 
-export default ActivityTimeline;
+export default React.memo(ActivityTimeline);

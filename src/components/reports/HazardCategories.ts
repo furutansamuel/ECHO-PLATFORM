@@ -8,7 +8,6 @@ import {
   Mountain, 
   AlertTriangle,
   CloudRain,
-  Stethoscope,
   Factory,
   Layers
 } from 'lucide-react';

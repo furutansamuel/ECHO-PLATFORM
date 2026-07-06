@@ -41,7 +41,7 @@ export function RecentActivityWidget() {
       <CardContent>
         <div className="space-y-6">
           {activities.map((activity, index) => (
-            <div key={index} className="flex gap-4">
+            <div key={activity.title} className="flex gap-4">
               <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center shrink-0">
                 <activity.icon className="h-5 w-5 text-muted-foreground" />
               </div>

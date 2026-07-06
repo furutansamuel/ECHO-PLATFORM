@@ -3,9 +3,6 @@ import {
   Trophy, 
   Star, 
   TrendingUp, 
-  Award, 
-  Leaf, 
-  ShieldCheck,
   Zap
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlertTriangle, ShieldCheck, TrendingUp, Users, Activity } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const insightData = [
   {
@@ -38,14 +38,15 @@ const insightData = [
 ];
 
 const EnvironmentalInsights = () => {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {insightData.map((item, index) => (
         <motion.div 
-          key={index} 
-          initial={{ opacity: 0, scale: 0.95 }}
+          key={item.title} 
+          initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: index * 0.1 }}
+          transition={{ delay: prefersReducedMotion ? 0 : index * 0.1 }}
           className="bg-card rounded-2xl border p-5 shadow-sm hover:shadow-md transition-all cursor-default group"
         >
           <div className="flex items-center gap-4 mb-4">
@@ -64,4 +65,4 @@ const EnvironmentalInsights = () => {
   );
 };
 
-export default EnvironmentalInsights;
+export default React.memo(EnvironmentalInsights);

@@ -44,7 +44,7 @@ export default function RegisterPage() {
           navigate('/login');
         }
       }
-    } catch (error: any) {
+    } catch {
       toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);

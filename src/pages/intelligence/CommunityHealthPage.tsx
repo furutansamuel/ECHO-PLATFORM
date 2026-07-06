@@ -2,11 +2,11 @@ import React from 'react';
 import HealthGauge from '@/components/intelligence/HealthScore/HealthGauge';
 import { useIntelligenceData } from '@/hooks/use-intelligence-data';
 import { Skeleton } from '@/components/ui/skeleton';
-import { HeartPulse, TrendingUp, Info, ShieldAlert, Activity, CheckCircle, ArrowRight } from 'lucide-react';
+import { HeartPulse, TrendingUp, Info, ShieldAlert, CheckCircle, ArrowRight } from 'lucide-react';
 import CategoryScores from '@/components/intelligence/HealthScore/CategoryScores';
 import HistoricalHealthChart from '@/components/intelligence/HealthScore/HistoricalHealthChart';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 export default function CommunityHealthPage() {

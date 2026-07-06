@@ -1,6 +1,6 @@
 // src/components/landing/Stats.tsx
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { FileText, CheckCircle2, HeartPulse, Users } from 'lucide-react';
 import { useSpring, animated } from '@react-spring/web';
 
@@ -32,6 +32,7 @@ const AnimatedNumber = React.memo(({ n, animate, delay = 0 }: { n: number; anima
 export function Stats() {
   const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <section
@@ -47,7 +48,7 @@ export function Stats() {
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.08 }}
               className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-5 shadow-premium transition-all hover:-translate-y-1 hover:shadow-xl md:p-6"

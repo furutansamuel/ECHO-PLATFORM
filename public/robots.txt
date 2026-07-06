@@ -1,0 +1,19 @@
+# TODO: replace echo.example.com below with your real deployed domain
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /report
+Disallow: /reports
+Disallow: /rewards
+Disallow: /notifications
+Disallow: /profile
+Disallow: /map
+Disallow: /ai-intelligence
+Disallow: /community-health
+Disallow: /analytics
+Disallow: /community-insights
+Disallow: /knowledge
+Disallow: /search
+Disallow: /auth
+
+Sitemap: https://echo.example.com/sitemap.xml

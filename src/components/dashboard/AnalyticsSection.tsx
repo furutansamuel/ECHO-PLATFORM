@@ -97,7 +97,7 @@ const AnalyticsSection = () => {
           </div>
           <div className="w-full md:w-48 space-y-3 mt-4 md:mt-0">
             {categoryData.map((item, index) => (
-              <div key={index} className="flex items-center gap-2">
+              <div key={item.name} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
                 <span className="text-sm font-medium">{item.name}</span>
                 <span className="text-sm text-muted-foreground ml-auto">{Math.round((item.value / 1178) * 100)}%</span>

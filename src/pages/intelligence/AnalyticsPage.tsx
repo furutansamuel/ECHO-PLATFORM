@@ -7,8 +7,6 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer, 
-  LineChart, 
-  Line, 
   PieChart, 
   Pie, 
   Cell,
@@ -19,10 +17,8 @@ import {
 import { 
   BarChart3, 
   TrendingUp, 
-  PieChart as PieChartIcon, 
   Filter,
   Download,
-  Calendar,
   Layers,
   Info,
   RefreshCw,
@@ -30,15 +26,14 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useIntelligenceData } from '@/hooks/use-intelligence-data';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 
 export default function AnalyticsPage() {
-  const { analyticsData, hazardReports, intelligenceSummary, aiAnalysis, loading } = useIntelligenceData();
+  const { analyticsData, loading } = useIntelligenceData();
 const COLORS = ['#1B5E20', '#2E7D32', '#43A047', '#66BB6A', '#81C784', '#A5D6A7', '#C8E6C9'];
 const SEVERITY_COLORS = {
   Critical: '#C62828',

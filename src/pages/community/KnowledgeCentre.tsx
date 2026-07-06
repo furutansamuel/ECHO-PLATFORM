@@ -5,7 +5,6 @@ import {
   Search, 
   Bookmark, 
   Clock, 
-  ChevronRight, 
   Filter,
   ArrowRight,
   TrendingUp,

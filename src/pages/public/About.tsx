@@ -1,5 +1,6 @@
 import React from 'react';
-import { Leaf, Target, Users, Globe } from 'lucide-react';
+import { Leaf, Target } from 'lucide-react';
+import { useDocumentTitle } from '@/hooks/use-document-title';
 
 const teamMembers = [
     { name: 'Dr. Amina Yusuf', role: 'Founder & Lead Environmental Scientist', image: 'https://randomuser.me/api/portraits/women/48.jpg' },
@@ -9,6 +10,10 @@ const teamMembers = [
 ];
 
 export default function AboutPage() {
+  useDocumentTitle(
+    'About Us',
+    'Learn about ECHO\'s mission to build a cleaner, safer, and more resilient Nigeria through community-powered environmental intelligence.'
+  );
   return (
     <div className="bg-background">
       {/* Hero Section */}

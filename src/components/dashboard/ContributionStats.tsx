@@ -9,11 +9,12 @@ import {
   Activity,
   ArrowUpRight
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useReportsStore } from '@/hooks/use-reports-store';
 
 const ContributionStats = () => {
   const { stats } = useReportsStore();
+  const prefersReducedMotion = useReducedMotion();
 
   const contributionStats = [
     { label: 'Hazards Reported', value: stats.hazardsReported.toString(), icon: FileText, color: 'text-green-500', bg: 'bg-green-500/10' },
@@ -28,11 +29,11 @@ const ContributionStats = () => {
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       {contributionStats.map((stat, index) => (
         <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 10 }}
+          key={stat.label}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.05 }}
-          whileHover={{ y: -4 }}
+          transition={{ delay: prefersReducedMotion ? 0 : index * 0.05 }}
+          whileHover={prefersReducedMotion ? undefined : { y: -4 }}
           className="bg-card border rounded-2xl p-5 text-center transition-all cursor-pointer group shadow-sm hover:shadow-md hover:border-primary/20"
         >
           <div className={`mx-auto w-11 h-11 rounded-2xl ${stat.bg} flex items-center justify-center mb-4 transform transition-transform group-hover:rotate-6`}>
@@ -54,4 +55,4 @@ const ContributionStats = () => {
   );
 };
 
-export default ContributionStats;
+export default React.memo(ContributionStats);

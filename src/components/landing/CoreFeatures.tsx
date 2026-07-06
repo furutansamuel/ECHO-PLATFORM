@@ -9,7 +9,7 @@ const features = [
     desc: 'Verified insights, hotspot detection and risk prediction powered by machine learning.',
     href: '/ai-intelligence',
     tone: 'from-primary/20 to-emerald-400/10',
-    iconTone: 'text-primary',
+    solid: 'from-primary to-emerald-600',
   },
   {
     icon: Users,
@@ -17,7 +17,7 @@ const features = [
     desc: 'Report hazards in under a minute with photos, location and severity.',
     href: '/report',
     tone: 'from-sky-500/20 to-cyan-400/10',
-    iconTone: 'text-sky-600',
+    solid: 'from-sky-500 to-cyan-500',
   },
   {
     icon: Map,
@@ -25,7 +25,7 @@ const features = [
     desc: 'Explore live incidents, clusters and environmental layers across your region.',
     href: '/map',
     tone: 'from-emerald-500/20 to-teal-400/10',
-    iconTone: 'text-emerald-600',
+    solid: 'from-emerald-500 to-teal-500',
   },
   {
     icon: Landmark,
@@ -33,7 +33,7 @@ const features = [
     desc: 'Structured, verified data streams to speed up official response and action.',
     href: '/community-insights',
     tone: 'from-amber-500/20 to-yellow-400/10',
-    iconTone: 'text-amber-600',
+    solid: 'from-amber-500 to-yellow-500',
   },
   {
     icon: BarChart3,
@@ -41,7 +41,7 @@ const features = [
     desc: 'Trends, community health scores and long-term impact dashboards.',
     href: '/community-health',
     tone: 'from-violet-500/20 to-purple-400/10',
-    iconTone: 'text-violet-600',
+    solid: 'from-violet-500 to-purple-500',
   },
   {
     icon: Award,
@@ -49,7 +49,7 @@ const features = [
     desc: 'Earn points and recognition for contributions that improve your community.',
     href: '/rewards',
     tone: 'from-rose-500/20 to-pink-400/10',
-    iconTone: 'text-rose-600',
+    solid: 'from-rose-500 to-pink-500',
   },
 ];
 
@@ -73,8 +73,8 @@ export function CoreFeatures() {
               className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-6 shadow-premium transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl"
             >
               <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${f.tone} opacity-0 transition-opacity group-hover:opacity-100`} />
-              <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${f.tone}`}>
-                <f.icon className={`h-6 w-6 ${f.iconTone}`} />
+              <div className={`icon-badge mb-4 bg-gradient-to-br ${f.solid} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
+                <f.icon className="h-5 w-5" />
               </div>
               <h3 className="text-lg font-bold text-foreground">{f.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>

@@ -2,9 +2,16 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ShieldAlert, LineChart, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 export function Hero() {
+  const prefersReducedMotion = useReducedMotion();
+  // When the user prefers reduced motion, skip the y-offset slide and
+  // just cross-fade in place — respects OS-level accessibility settings
+  // without removing the animation entirely.
+  const rise = (y: number) => (prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y });
+  const settle = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
+
   return (
     <section className="relative overflow-hidden bg-background">
       {/* Ambient gradient orbs */}
@@ -12,13 +19,22 @@ export function Hero() {
         <div className="absolute -top-40 -left-20 h-[520px] w-[520px] rounded-full bg-primary/20 blur-3xl" />
         <div className="absolute -bottom-40 -right-20 h-[520px] w-[520px] rounded-full bg-accent/20 blur-3xl" />
         <div className="absolute top-1/3 left-1/2 h-[380px] w-[380px] -translate-x-1/2 rounded-full bg-sky-400/10 blur-3xl" />
+        <div className="hero-drift absolute top-10 right-1/4 h-64 w-64 rounded-full bg-emerald-400/10 blur-3xl" />
+        <div
+          className="absolute inset-0 opacity-[0.35] dark:opacity-[0.15]"
+          style={{
+            backgroundImage: 'radial-gradient(rgba(0,0,0,0.06) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+            maskImage: 'radial-gradient(ellipse 60% 60% at 50% 20%, black, transparent)',
+          }}
+        />
       </div>
 
       <div className="container mx-auto px-4 py-20 md:py-28 lg:py-32">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={rise(12)}
+            animate={settle}
             transition={{ duration: 0.5 }}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary"
           >
@@ -27,8 +43,8 @@ export function Hero() {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={rise(16)}
+            animate={settle}
             transition={{ duration: 0.6, delay: 0.05 }}
             className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
           >
@@ -39,8 +55,8 @@ export function Hero() {
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={rise(16)}
+            animate={settle}
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl"
           >
@@ -49,8 +65,8 @@ export function Hero() {
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={rise(16)}
+            animate={settle}
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >

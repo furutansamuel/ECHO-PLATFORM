@@ -7,8 +7,7 @@ import {
   ChevronLeft, 
   Save, 
   X,
-  CheckCircle2,
-  AlertCircle
+  CheckCircle2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -41,7 +40,7 @@ export default function ReportWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState('');
-  const { saveReport, saveDraft, draft, deleteDraft } = useReportsStore();
+  const { saveReport, saveDraft, draft } = useReportsStore();
 
   const methods = useForm<ReportFormData>({
     resolver: zodResolver(reportSchema) as any,
@@ -49,7 +48,7 @@ export default function ReportWizard() {
     mode: 'onChange',
   });
 
-  const { watch, handleSubmit, trigger, formState: { errors, isValid } } = methods;
+  const { watch, handleSubmit, trigger } = methods;
   const formData = watch();
 
   // Auto-save draft
@@ -103,7 +102,7 @@ export default function ReportWizard() {
       
       saveReport(report);
       setCurrentStep(STEPS.length - 1); // Move to Success Step
-    } catch (error) {
+    } catch {
       toast.error('Failed to submit report. Please try again.');
     } finally {
       setIsSubmitting(false);

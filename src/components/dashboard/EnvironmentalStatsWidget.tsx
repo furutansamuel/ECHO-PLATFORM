@@ -36,7 +36,7 @@ export function EnvironmentalStatsWidget() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-full">
       {statItems.map((stat, index) => (
-        <Card key={index} className="bg-background/60 backdrop-blur-sm premium-shadow">
+        <Card key={stat.title} className="bg-background/60 backdrop-blur-sm premium-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               {stat.title}

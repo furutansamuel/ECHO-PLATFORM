@@ -54,7 +54,7 @@ const getMockActivities = (reportId: string): ReportActivity[] => [
 const ReportDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   
   // In a real app, we would fetch data from Supabase here
   const report = getMockReport(id || 'default');

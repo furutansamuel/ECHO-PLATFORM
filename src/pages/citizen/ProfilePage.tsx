@@ -1,7 +1,7 @@
 import React from 'react';
 import { Shield, Award, Settings, LogOut, Mail, Edit3, FileText, CheckCircle, Users, Calendar, BookOpen, Clock, TrendingUp, Target, Heart, Zap, Megaphone } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';

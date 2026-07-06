@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -181,6 +182,79 @@
 
   .eco-gradient-soft {
     @apply bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5;
+  }
+
+  /* --- Premium gradient system (section 3) ---
+     Named, purpose-specific gradients so components reach for one
+     class instead of hand-rolling `from-x via-y to-z` combinations
+     with slightly different stops every time. */
+  .gradient-primary   { @apply bg-gradient-to-br from-emerald-700 via-primary to-emerald-600; }
+  .gradient-secondary { @apply bg-gradient-to-br from-emerald-600 via-secondary to-teal-500; }
+  .gradient-analytics { @apply bg-gradient-to-br from-blue-600 to-cyan-500; }
+  .gradient-community { @apply bg-gradient-to-br from-orange-500 to-amber-400; }
+  .gradient-ai         { @apply bg-gradient-to-br from-purple-600 to-indigo-500; }
+  .gradient-success    { @apply bg-gradient-to-br from-green-600 to-lime-500; }
+
+  /* Alternating section background (section 11) — subtle, not flat white,
+     not so busy it hurts readability. */
+  .section-bg-soft {
+    @apply bg-gradient-to-b from-muted/40 via-background to-background;
+  }
+
+  /* Gradient icon container (section 8): a circular, tinted badge behind
+     a lucide icon. Pass a gradient-* class as a sibling utility, e.g.
+     className={cn('icon-badge', 'gradient-primary')} */
+  .icon-badge {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300;
+  }
+  .icon-badge:hover {
+    @apply -translate-y-0.5 shadow-lg;
+  }
+
+  /* Premium card lift (section 5): opt-in, so we don't change every
+     shadcn Card used in forms/dashboards app-wide — only sections that
+     explicitly want the elevated marketing-page treatment. */
+  .card-premium {
+    @apply relative rounded-2xl border border-border/60 bg-card shadow-premium transition-all duration-300;
+  }
+  .card-premium:hover {
+    @apply -translate-y-1 border-primary/20 shadow-xl;
+  }
+
+  /* Button hover glow (section 4). Kept as a separate utility rather than
+     baked into the base Button so it only applies where we opt in. */
+  .btn-glow {
+    @apply transition-all duration-300;
+    box-shadow: 0 4px 14px 0 rgb(27 94 32 / 0.25);
+  }
+  .btn-glow:hover {
+    box-shadow: 0 6px 20px 0 rgb(27 94 32 / 0.35);
+  }
+  .btn-glow:active {
+    transform: scale(0.97);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-premium:hover,
+    .icon-badge:hover,
+    [data-slot="button"] {
+      transform: none !important;
+    }
+  }
+}
+
+/* Hero decorative drift — slow, subtle, GPU-only (transform), and fully
+   disabled for prefers-reduced-motion below. */
+@keyframes hero-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, 24px); }
+}
+.hero-drift {
+  animation: hero-drift 14s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-drift {
+    animation: none;
   }
 }
 

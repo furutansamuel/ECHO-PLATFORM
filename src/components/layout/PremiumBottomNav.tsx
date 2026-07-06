@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Home, Map as MapIcon, ShieldAlert, Bell, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -46,8 +46,13 @@ export function PremiumBottomNav({
     )
   );
 
-  const count = enriched.length;
-  const activePercent = ((activeIndex + 0.5) / count) * 100;
+  const prefersReducedMotion = useReducedMotion();
+  const indicatorTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { type: 'spring' as const, stiffness: 260, damping: 26 };
+  const iconTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { type: 'spring' as const, stiffness: 320, damping: 22 };
 
   return (
     <nav
@@ -77,61 +82,6 @@ export function PremiumBottomNav({
             "
           >
 
-            {/* Liquid Scoop */}
-            <motion.div
-              aria-hidden
-              className="
-                absolute
-                -top-4
-                h-8
-                w-16
-                -translate-x-1/2
-                rounded-b-[2rem]
-                bg-gradient-to-r
-                from-primary/95
-                via-secondary/95
-                to-accent/95
-              "
-              initial={false}
-              animate={{
-                left: `${activePercent}%`,
-              }}
-              transition={{
-                type: 'spring',
-                stiffness: 260,
-                damping: 26,
-              }}
-            />
-
-            {/* Active Button */}
-            <motion.div
-              aria-hidden
-              className="
-                absolute
-                -top-5
-                h-14
-                w-14
-                -translate-x-1/2
-                rounded-full
-                bg-gradient-to-br
-                from-white
-                via-green-50
-                to-accent
-                ring-4
-                ring-primary/30
-                shadow-[0_12px_30px_rgba(67,160,71,0.45)]
-              "
-              initial={false}
-              animate={{
-                left: `${activePercent}%`,
-              }}
-              transition={{
-                type: 'spring',
-                stiffness: 260,
-                damping: 26,
-              }}
-            />
-
             {/* Navigation Items */}
             <ul className="relative flex h-full items-center">
               {enriched.map((item, index) => {
@@ -141,8 +91,53 @@ export function PremiumBottomNav({
                 return (
                   <li
                     key={item.href}
-                    className="flex-1"
+                    className="relative flex-1"
                   >
+                    {isActive && (
+                      <>
+                        {/* Liquid Scoop — position is driven by layoutId (transform/FLIP), never `left` */}
+                        <motion.div
+                          layoutId="bottom-nav-scoop"
+                          aria-hidden
+                          className="
+                            absolute
+                            -top-4
+                            left-1/2
+                            h-8
+                            w-16
+                            -translate-x-1/2
+                            rounded-b-[2rem]
+                            bg-gradient-to-r
+                            from-primary/95
+                            via-secondary/95
+                            to-accent/95
+                          "
+                          transition={indicatorTransition}
+                        />
+                        {/* Active Button glow */}
+                        <motion.div
+                          layoutId="bottom-nav-glow"
+                          aria-hidden
+                          className="
+                            absolute
+                            -top-5
+                            left-1/2
+                            h-14
+                            w-14
+                            -translate-x-1/2
+                            rounded-full
+                            bg-gradient-to-br
+                            from-white
+                            via-green-50
+                            to-accent
+                            ring-4
+                            ring-primary/30
+                            shadow-[0_12px_30px_rgba(67,160,71,0.45)]
+                          "
+                          transition={indicatorTransition}
+                        />
+                      </>
+                    )}
                     <Link
                       to={item.href}
                       aria-label={item.name}
@@ -157,11 +152,7 @@ export function PremiumBottomNav({
                           y: isActive ? -22 : 0,
                           scale: isActive ? 1.18 : 1,
                         }}
-                        transition={{
-                          type: 'spring',
-                          stiffness: 320,
-                          damping: 22,
-                        }}
+                        transition={iconTransition}
                         className={cn(
                           'relative flex items-center justify-center',
                           isActive
