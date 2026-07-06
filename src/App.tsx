@@ -5,12 +5,16 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { DemoProvider } from "@/hooks/use-demo";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
+import { MainLayout } from "@/layouts/MainLayout";
 
 // Lazy-loaded pages for code splitting (reduces build memory)
 const Login = lazy(() => import("@/pages/auth/Login"));
 const Register = lazy(() => import("@/pages/auth/Register"));
 const ForgotPassword = lazy(() => import("@/pages/auth/ForgotPassword"));
 const LandingPage = lazy(() => import("@/pages/public/LandingPage"));
+const About = lazy(() => import("@/pages/public/About"));
+const Contact = lazy(() => import("@/pages/public/Contact"));
+const FAQ = lazy(() => import("@/pages/public/FAQ"));
 const Dashboard = lazy(() => import("@/pages/citizen/Dashboard"));
 const ReportHazard = lazy(() => import("@/pages/citizen/ReportHazard"));
 const TrackReportsPage = lazy(() => import("@/pages/citizen/TrackReportsPage"));
@@ -40,6 +44,14 @@ function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<LandingPage />} />
+
+              {/* Public informational pages (previously linked from the
+                  footer but not wired to any route - fixed here) */}
+              <Route element={<MainLayout />}>
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/faq" element={<FAQ />} />
+              </Route>
               
               {/* Auth Routes */}
               <Route path="/auth">

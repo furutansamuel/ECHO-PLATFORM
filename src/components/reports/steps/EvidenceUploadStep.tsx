@@ -8,9 +8,7 @@ import {
   Image as ImageIcon, 
   Video,
   Plus,
-  Trash2,
-  RefreshCw,
-  CheckCircle2
+  Trash2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';

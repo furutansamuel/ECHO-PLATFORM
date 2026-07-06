@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Star, X } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Star, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface AchievementAnimationProps {
@@ -18,6 +18,21 @@ export const AchievementAnimation: React.FC<AchievementAnimationProps> = ({
   onClose
 }) => {
   const [show, setShow] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  // Computed once per mount so re-renders (e.g. from parent state changes)
+  // don't reshuffle the sparkle trajectories mid-animation.
+  const sparkles = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, i) => ({
+        id: i,
+        duration: 2 + Math.random() * 2,
+        delay: Math.random() * 2,
+        xOffset: i % 2 === 0 ? 50 : -50,
+        marginLeft: (i - 6) * 15,
+      })),
+    []
+  );
 
   useEffect(() => {
     if (achievement) {
@@ -43,27 +58,29 @@ export const AchievementAnimation: React.FC<AchievementAnimationProps> = ({
             exit={{ scale: 0.8, opacity: 0, y: -20 }}
             className="relative w-full max-w-sm bg-card border-2 border-primary/30 rounded-3xl p-8 text-center shadow-2xl overflow-hidden"
           >
-            {/* Background sparkle effect */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              {[...Array(12)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  animate={{ 
-                    y: [0, -100, -200],
-                    x: [0, (i % 2 === 0 ? 50 : -50)],
-                    opacity: [0, 1, 0],
-                    scale: [0, 1, 0.5]
-                  }}
-                  transition={{ 
-                    duration: 2 + Math.random() * 2, 
-                    repeat: Infinity,
-                    delay: Math.random() * 2
-                  }}
-                  className="absolute bottom-0 left-1/2 w-2 h-2 rounded-full bg-highlight/40"
-                  style={{ marginLeft: `${(i - 6) * 15}px` }}
-                />
-              ))}
-            </div>
+            {/* Background sparkle effect (skipped for prefers-reduced-motion) */}
+            {!prefersReducedMotion && (
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {sparkles.map((s) => (
+                  <motion.div
+                    key={s.id}
+                    animate={{
+                      y: [0, -100, -200],
+                      x: [0, s.xOffset],
+                      opacity: [0, 1, 0],
+                      scale: [0, 1, 0.5],
+                    }}
+                    transition={{
+                      duration: s.duration,
+                      repeat: Infinity,
+                      delay: s.delay,
+                    }}
+                    className="absolute bottom-0 left-1/2 w-2 h-2 rounded-full bg-highlight/40"
+                    style={{ marginLeft: `${s.marginLeft}px` }}
+                  />
+                ))}
+              </div>
+            )}
 
             <Button 
               variant="ghost" 
@@ -79,8 +96,8 @@ export const AchievementAnimation: React.FC<AchievementAnimationProps> = ({
 
             <motion.div
               initial={{ rotate: -10 }}
-              animate={{ rotate: [10, -10, 10] }}
-              transition={{ duration: 0.5, repeat: 3 }}
+              animate={prefersReducedMotion ? { rotate: 0 } : { rotate: [10, -10, 10] }}
+              transition={{ duration: 0.5, repeat: prefersReducedMotion ? 0 : 3 }}
               className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 mb-6"
             >
               <achievement.icon className="w-12 h-12 text-primary" />

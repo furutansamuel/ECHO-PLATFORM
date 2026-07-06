@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, Clock, Eye, ShieldCheck, UserPlus, PlayCircle, CheckCircle, XCircle, Info } from 'lucide-react';
+import { CheckCircle2, Clock, Eye, ShieldCheck, UserPlus, PlayCircle, CheckCircle, Info } from 'lucide-react';
 import { ReportStatus } from '@/types/reports';
 import { cn } from '@/lib/utils';
 

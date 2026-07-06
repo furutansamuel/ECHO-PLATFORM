@@ -26,7 +26,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-12 lg:py-24 bg-white">
+    <section className="py-12 lg:py-24 section-bg-soft">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-4xl font-bold text-primary">How ECHO Works</h2>
@@ -39,7 +39,7 @@ export function HowItWorks() {
           <div className="hidden lg:block absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
-              <div key={index} className="relative text-center">
+              <div key={step.title} className="relative text-center">
                 <div className="flex justify-center mb-4">
                     <div className="bg-primary/10 p-4 rounded-full">
                         <div className="bg-primary text-white p-4 rounded-full">

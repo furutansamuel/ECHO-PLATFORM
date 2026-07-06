@@ -1,8 +1,10 @@
 import { useAuth } from '@/hooks/use-auth';
-import { motion } from 'framer-motion';
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const WelcomeHeader = () => {
   const { profile } = useAuth();
+  const prefersReducedMotion = useReducedMotion();
 
   if (!profile) {
     return null;
@@ -19,7 +21,7 @@ const WelcomeHeader = () => {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, x: -20 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
       className="flex flex-col"
@@ -34,4 +36,4 @@ const WelcomeHeader = () => {
   );
 };
 
-export default WelcomeHeader;
+export default React.memo(WelcomeHeader);

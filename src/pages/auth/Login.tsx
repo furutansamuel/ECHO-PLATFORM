@@ -33,7 +33,7 @@ export default function LoginPage() {
         toast.success('Logged in successfully');
         navigate('/dashboard');
       }
-    } catch (error: any) {
+    } catch {
       toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);

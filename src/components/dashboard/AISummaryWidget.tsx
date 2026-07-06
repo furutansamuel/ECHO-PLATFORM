@@ -35,7 +35,7 @@ export function AISummaryWidget() {
       <CardContent>
         <ul className="space-y-4">
           {aiInsights.map((insight, index) => (
-            <li key={index} className="flex items-center gap-4">
+            <li key={insight.title} className="flex items-center gap-4">
               <div className={`h-2 w-2 rounded-full ${insight.color}`} />
               <div className="flex-1">
                 <p className="font-semibold">{insight.title}</p>

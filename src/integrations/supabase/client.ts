@@ -45,6 +45,7 @@ function createStubClient(): SupabaseClient {
     auth: {
       getSession: async () => ({ data: { session: null }, error: null }),
       getUser: async () => ({ data: { user: null }, error: null }),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onAuthStateChange: (_cb: unknown) => ({
         data: { subscription: { unsubscribe: () => undefined } },
       }),

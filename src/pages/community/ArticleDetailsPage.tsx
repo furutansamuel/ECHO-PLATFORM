@@ -8,7 +8,6 @@ import {
   Calendar,
   User,
   CheckCircle,
-  Tag,
   ChevronRight,
   MessageSquare
 } from 'lucide-react';
@@ -18,12 +17,18 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useDocumentTitle } from '@/hooks/use-document-title';
 
 const ArticleDetailsPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const { articles, loading } = useIntelligenceData();
 
   const article = articles.find(a => a.slug === slug);
+
+  useDocumentTitle(
+    article ? article.title : 'Knowledge Centre',
+    article ? article.excerpt : undefined
+  );
 
   if (loading && !article) {
     return (

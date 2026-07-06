@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { useDocumentTitle } from '@/hooks/use-document-title';
 
 const faqItems = [
   {
@@ -38,6 +39,10 @@ const faqItems = [
 ];
 
 export default function FAQPage() {
+  useDocumentTitle(
+    'Frequently Asked Questions',
+    'Answers to common questions about how ECHO works, hazard reporting, privacy, and rewards.'
+  );
   return (
     <div className="bg-background">
       <section className="py-20 bg-primary/5">
@@ -53,7 +58,7 @@ export default function FAQPage() {
         <div className="container mx-auto px-4 max-w-4xl">
             <Accordion type="single" collapsible className="w-full space-y-4">
                 {faqItems.map((item, index) => (
-                    <AccordionItem key={index} value={`item-${index}`} className="border-b-0 rounded-lg bg-white premium-shadow">
+                    <AccordionItem key={item.question} value={`item-${index}`} className="border-b-0 rounded-lg bg-white premium-shadow">
                         <AccordionTrigger className="p-6 text-lg font-semibold text-left hover:no-underline">
                             {item.question}
                         </AccordionTrigger>

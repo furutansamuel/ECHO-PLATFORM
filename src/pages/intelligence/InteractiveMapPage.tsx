@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export default function InteractiveMapPage() {
-  const { hazardReports, intelligenceSummary, aiAnalysis, loading } = useIntelligenceData();
+  const { hazardReports, aiAnalysis, loading } = useIntelligenceData();
 
   return (
     <div className="h-[calc(100vh-5rem)] w-full flex flex-col lg:flex-row overflow-hidden">

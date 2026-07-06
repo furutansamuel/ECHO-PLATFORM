@@ -4,7 +4,6 @@ import {
   Calendar, 
   Clock, 
   Tag, 
-  AlertTriangle, 
   Map as MapIcon, 
   Navigation,
   User,
@@ -34,7 +33,7 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-let DefaultIcon = L.icon({
+const DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
     iconSize: [25, 41],

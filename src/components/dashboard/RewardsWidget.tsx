@@ -65,7 +65,7 @@ const RewardsWidget = () => {
           <div className="flex gap-3">
             {badges.map((badge, index) => (
               <motion.div 
-                key={index} 
+                key={badge.name} 
                 whileHover={{ y: -5, scale: 1.05 }}
                 className={`w-12 h-12 rounded-xl ${badge.bg} flex items-center justify-center border border-border/40 hover:border-primary/30 shadow-sm transition-all cursor-pointer`}
                 title={badge.name}

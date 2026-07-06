@@ -60,7 +60,7 @@ const KnowledgeCentrePreview = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
         {topics.map((topic, index) => (
           <motion.div 
-            key={index} 
+            key={topic.title} 
             whileHover={{ y: -4, border: '1px solid rgba(27, 94, 32, 0.2)' }}
             className="p-5 rounded-2xl border bg-muted/5 transition-all cursor-pointer group"
           >

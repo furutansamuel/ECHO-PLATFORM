@@ -34,7 +34,7 @@ export function CleanupEventsWidget() {
       </CardHeader>
       <CardContent className="space-y-4">
         {events.map((event, index) => (
-          <div key={index} className="border p-3 rounded-lg bg-muted/20">
+          <div key={event.name} className="border p-3 rounded-lg bg-muted/20">
             <div className="flex gap-4">
               <Image src={event.imageUrl} alt={event.name} width={100} height={100} className="rounded-md object-cover hidden sm:block" />
               <div className="flex-1 space-y-2">

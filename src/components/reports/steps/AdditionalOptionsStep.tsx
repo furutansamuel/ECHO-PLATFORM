@@ -5,17 +5,15 @@ import {
   Users, 
   Share2, 
   Bell,
-  FileText,
   ShieldCheck,
-  Globe,
-  Zap
+  Globe
 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { ReportFormData } from '../report-schema';
 
 export default function AdditionalOptionsStep() {
-  const { register, watch, setValue } = useFormContext<ReportFormData>();
+  const { watch, setValue } = useFormContext<ReportFormData>();
   
   const isAnonymous = watch('isAnonymous');
   const notifyVolunteers = watch('notifyVolunteers');
