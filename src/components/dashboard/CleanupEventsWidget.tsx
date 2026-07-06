@@ -1,4 +1,5 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icons } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -59,7 +60,9 @@ export function CleanupEventsWidget() {
         ))}
       </CardContent>
        <CardFooter className="pt-4">
-        <Button className="w-full" variant="outline">See All Events</Button>
+        <Button className="w-full" variant="outline" asChild>
+          <Link to="/community-insights">See All Events</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

@@ -6,6 +6,7 @@ import { DemoProvider } from "@/hooks/use-demo";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { MainLayout } from "@/layouts/MainLayout";
+import ScrollToTop from "@/components/ScrollToTop";
 
 // Lazy-loaded pages for code splitting (reduces build memory)
 const Login = lazy(() => import("@/pages/auth/Login"));
@@ -40,6 +41,7 @@ function App() {
     <DemoProvider>
       <AuthProvider>
         <Router>
+          <ScrollToTop />
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
               {/* Public Routes */}
