@@ -187,8 +187,8 @@ export function DashboardLayout() {
 
       <div className="flex flex-1 flex-col overflow-hidden">
         <header
-          className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-border/40 bg-background/80 px-4 backdrop-blur-xl md:px-8"
-          style={{ paddingTop: 'max(env(safe-area-inset-top), 0px)' }}
+          className="sticky top-0 z-20 flex min-h-20 items-center justify-between border-b border-border/40 bg-background/80 px-4 py-2 backdrop-blur-xl md:px-8"
+          style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
         >
           <div className="flex items-center gap-4">
             <Sheet>
