@@ -141,12 +141,22 @@ export const useIntelligenceData = () => {
     // Only subscribe to realtime when not in demo mode
     if (isDemo || !supabase) return;
 
-    const channel = supabase.channel('realtime-all')
-      .on('postgres_changes', { event: '*', schema: 'public' }, (payload) => {
-        console.log('Change received!', payload);
-        if (!cancelled) fetchData();
-      })
-      .subscribe();
+    // Unique channel name per mount avoids
+    // "cannot add postgres_changes callbacks after subscribe()" and duplicate-
+    // subscription errors when the hook mounts in multiple components.
+    const channelName = `realtime-echo-${Math.random().toString(36).slice(2, 10)}`;
+    const channel = supabase.channel(channelName);
+    channel.on(
+      'postgres_changes' as never,
+      { event: '*', schema: 'public' },
+      (payload: unknown) => {
+        if (!cancelled) {
+          console.debug('[ECHO] realtime change', payload);
+          fetchData();
+        }
+      },
+    );
+    channel.subscribe();
 
     return () => {
       cancelled = true;
