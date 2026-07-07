@@ -205,6 +205,7 @@ if (data) {
     {children}
   </AuthContext.Provider>
 );
+}
 
 export function useAuth() {
   const context = useContext(AuthContext);
