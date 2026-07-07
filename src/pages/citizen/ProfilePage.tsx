@@ -110,17 +110,7 @@ const ProfilePage: React.FC = () => {
               <TrendingUp className="h-5 w-5 text-primary" />
               Environmental Impact Summary
             </h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 text-center">
-                <FileText className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-2xl font-black text-primary">{MOCK_IMPACT_STATS.reportsSubmitted}</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Reports Submitted</p>
-              </div>
-              <div className="p-4 bg-secondary/5 rounded-xl border border-secondary/10 text-center">
-                <CheckCircle className="h-6 w-6 mx-auto mb-2 text-secondary" />
-                <p className="text-2xl font-black text-secondary">{MOCK_IMPACT_STATS.verifiedReports}</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Verified Reports</p>
-              </div>
+            
               <div className="p-4 bg-accent/5 rounded-xl border border-accent/10 text-center">
                 <Users className="h-6 w-6 mx-auto mb-2 text-accent" />
                 <p className="text-2xl font-black text-accent">{MOCK_IMPACT_STATS.communitiesHelped}</p>
@@ -145,11 +135,6 @@ const ProfilePage: React.FC = () => {
                 <Target className="h-6 w-6 mx-auto mb-2 text-primary" />
                 <p className="text-2xl font-black text-primary">{MOCK_IMPACT_STATS.environmentalScore}</p>
                 <p className="text-[10px] font-bold uppercase text-muted-foreground">Environmental Score</p>
-              </div>
-              <div className="p-4 bg-secondary/5 rounded-xl border border-secondary/10 text-center">
-                <TrendingUp className="h-6 w-6 mx-auto mb-2 text-secondary" />
-                <p className="text-2xl font-black text-secondary">#42</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Community Rank</p>
               </div>
             </div>
           </div>
