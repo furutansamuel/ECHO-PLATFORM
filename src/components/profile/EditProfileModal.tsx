@@ -64,6 +64,7 @@ const handleSave = async () => {
         phone,
         avatar_url: avatarUrl,
         role: profile?.role || "citizen",
+        updated_at: new Date().toISOString(),
       });
 
     if (error) throw error;
