@@ -1,4 +1,5 @@
-import React from 'react';
+import EditProfileModal from "@/components/profile/EditProfileModal";
+import { useState } from "react";
 import { Shield, Award, Settings, LogOut, Mail, Edit3, FileText, CheckCircle, Users, Calendar, BookOpen, Clock, TrendingUp, Target, Heart, Zap, Megaphone } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,7 +8,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
-import EditProfileModal from "@/components/profile/EditProfileModal";
 import { 
   MOCK_IMPACT_POINTS, 
   MOCK_IMPACT_STATS, 
