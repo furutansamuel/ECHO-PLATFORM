@@ -15,6 +15,7 @@ interface UserProfile {
 interface AuthContextType {
   user: User | null;
   profile: UserProfile | null;
+  userStats: any;
   loading: boolean;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -50,7 +51,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let alive = true;
 
-    const isDemo = typeof window !== "undefined" && localStorage.getItem("echo_demo_mode") === "true";
+    const isDemo =
+      import.meta.env.DEV &&
+      typeof window !== "undefined" &&
+      localStorage.getItem("echo_demo_mode") === "true";
     if (isDemo) {
       setUser(DEMO_USER);
       setProfile(DEMO_PROFILE);
@@ -173,7 +177,9 @@ if (data) {
 };
   
   const logout = async () => {
-    const isDemo = localStorage.getItem("echo_demo_mode") === "true";
+    const isDemo =
+      import.meta.env.DEV &&
+      localStorage.getItem("echo_demo_mode") === "true";
     if (isDemo) {
       localStorage.removeItem("echo_demo_mode");
       localStorage.removeItem("echo_presentation_mode");
