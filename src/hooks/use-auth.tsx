@@ -17,6 +17,7 @@ interface AuthContextType {
   profile: UserProfile | null;
   loading: boolean;
   logout: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -144,6 +145,25 @@ if (data) {
     };
   }, []);
 
+
+  const refreshProfile = async () => {
+  if (!user) return;
+
+  try {
+    const { data } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (data) {
+      setProfile(data as UserProfile);
+    }
+  } catch (err) {
+    console.error("[ECHO] refresh profile failed", err);
+  }
+};
+  
   const logout = async () => {
     const isDemo = localStorage.getItem("echo_demo_mode") === "true";
     if (isDemo) {
