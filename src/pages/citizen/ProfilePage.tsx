@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
+import EditProfileModal from "@/components/profile/EditProfileModal";
 import { 
   MOCK_IMPACT_POINTS, 
   MOCK_IMPACT_STATS, 
@@ -20,6 +21,7 @@ const ProfilePage: React.FC = () => {
   const { user, profile, logout } = useAuth();
   const { currentLevel, nextLevel, progress, pointsToNext } = calculateProgressToNextLevel(MOCK_IMPACT_POINTS);
   const earnedBadges = ACHIEVEMENT_BADGES.filter(b => b.earned);
+  const [editOpen, setEditOpen] = React.useState(false);
 
   return (
     <div className="p-4 md:p-6 space-y-8 max-w-5xl mx-auto pb-20">
@@ -46,7 +48,7 @@ const ProfilePage: React.FC = () => {
                 {user?.email || 'No email provided'}
               </p>
             </div>
-            <Button variant="outline" className="rounded-full gap-2 border-primary/20 md:pb-2">
+            <Button variant="outline" className="rounded-full gap-2 border-primary/20 md:pb-2" onClick={() => setEditOpen(true)}>
               <Edit3 className="h-4 w-4" />
               Edit Profile
             </Button>
@@ -301,5 +303,8 @@ const ProfilePage: React.FC = () => {
     </div>
   );
 };
-
+<EditProfileModal
+    open={editOpen}
+    onOpenChange={setEditOpen}
+/>
 export default ProfilePage;
