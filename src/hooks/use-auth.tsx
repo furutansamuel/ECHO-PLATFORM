@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const lastFetchedProfileFor = useRef<string | null>(null);
+  const [userStats, setUserStats] = useState(null);
 
   useEffect(() => {
     let alive = true;
@@ -72,10 +73,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       lastFetchedProfileFor.current = userId;
       try {
         const { data, error } = await supabase
-  .from("profiles")
-  .select("*")
-  .eq("id", userId)
-  .maybeSingle();
+          .from("profiles")
+          .select("*")
+          .eq("id", userId)
+          .maybeSingle();
+        const { data: stats } = await supabase
+          .from("user_stats")
+          .select("*")
+          .eq("user_id", user.id)
+          .single();
+
+setUserStats(stats);
 
 if (!alive) return;
 
@@ -187,6 +195,7 @@ if (data) {
     value={{
       user,
       profile,
+      userStats,
       loading,
       logout,
       refreshProfile,
