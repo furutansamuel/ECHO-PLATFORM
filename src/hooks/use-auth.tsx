@@ -80,8 +80,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const { data: stats } = await supabase
           .from("user_stats")
           .select("*")
-          .eq("user_id", user.id)
-          .single();
+          .eq("user_id", userId)
+          .maybeSingle();
 
 setUserStats(stats);
 
