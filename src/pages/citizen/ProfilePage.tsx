@@ -19,9 +19,9 @@ import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS } from '@/lib/community-data';
 
 const ProfilePage: React.FC = () => {
   const { user, profile, logout } = useAuth();
+  const [editOpen, setEditOpen] = React.useState(false);
   const { currentLevel, nextLevel, progress, pointsToNext } = calculateProgressToNextLevel(MOCK_IMPACT_POINTS);
   const earnedBadges = ACHIEVEMENT_BADGES.filter(b => b.earned);
-  const [editOpen, setEditOpen] = React.useState(false);
 
   return (
     <div className="p-4 md:p-6 space-y-8 max-w-5xl mx-auto pb-20">
@@ -300,11 +300,12 @@ const ProfilePage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      <EditProfileModal
+  open={editOpen}
+  onOpenChange={setEditOpen}
+/>
     </div>
   );
 };
-<EditProfileModal
-    open={editOpen}
-    onOpenChange={setEditOpen}
-/>
+
 export default ProfilePage;
