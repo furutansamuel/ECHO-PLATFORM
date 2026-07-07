@@ -71,15 +71,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       lastFetchedProfileFor.current = userId;
       try {
         const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", userId)
-          .maybeSingle();
-        if (!alive) return;
-        if (error && (error as { code?: string }).code !== "PGRST116") {
-          console.error("[ECHO] profile fetch error", error);
-        }
-        setProfile((data as UserProfile) ?? { id: userId, role: "citizen" });
+  .from("profiles")
+  .select("*")
+  .eq("id", userId)
+  .maybeSingle();
+
+if (!alive) return;
+
+if (error && (error as { code?: string }).code !== "PGRST116") {
+  console.error("[ECHO] profile fetch error", error);
+}
+
+if (data) {
+  setProfile(data as UserProfile);
+} else {
+  const {
+    data: { user: authUser },
+  } = await supabase.auth.getUser();
+
+  const { data: newProfile, error: insertError } = await supabase
+    .from("profiles")
+    .insert({
+      id: userId,
+      full_name:
+        authUser?.user_metadata?.full_name ||
+        authUser?.user_metadata?.display_name ||
+        authUser?.email ||
+        "Citizen",
+      role: "citizen",
+    })
+    .select()
+    .single();
+
+  if (insertError) {
+    console.error("[ECHO] profile creation error", insertError);
+    setProfile({ id: userId, role: "citizen" });
+  } else {
+    setProfile(newProfile as UserProfile);
+  }
+}
       } catch (err) {
         if (!alive) return;
         console.error("[ECHO] profile fetch failed", err);
