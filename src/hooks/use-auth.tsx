@@ -183,13 +183,19 @@ if (data) {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, profile, loading, logout, isAuthenticated: !!user }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-}
+  <AuthContext.Provider
+    value={{
+      user,
+      profile,
+      loading,
+      logout,
+      refreshProfile,
+      isAuthenticated: !!user,
+    }}
+  >
+    {children}
+  </AuthContext.Provider>
+);
 
 export function useAuth() {
   const context = useContext(AuthContext);
