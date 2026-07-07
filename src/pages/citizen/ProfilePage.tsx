@@ -18,7 +18,7 @@ import {
 import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS } from '@/lib/community-data';
 
 const ProfilePage: React.FC = () => {
-  const { user, profile, logout } = useAuth();
+  const { user, profile, logout, refreshProfile } = useAuth();
   const [editOpen, setEditOpen] = useState(false);
   const { currentLevel, nextLevel, progress, pointsToNext } = calculateProgressToNextLevel(MOCK_IMPACT_POINTS);
   const earnedBadges = ACHIEVEMENT_BADGES.filter(b => b.earned);
