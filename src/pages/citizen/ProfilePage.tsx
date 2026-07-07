@@ -301,9 +301,11 @@ const ProfilePage: React.FC = () => {
         </CardContent>
       </Card>
       <EditProfileModal
-  open={editOpen}
-  onOpenChange={setEditOpen}
-/>
+        open={editOpen}
+        onOpenChange={setEditOpen}
+        profile={profile}
+        userId={user?.id}
+        />
     </div>
   );
 };
