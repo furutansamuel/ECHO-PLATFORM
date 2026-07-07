@@ -110,7 +110,7 @@ const ProfilePage: React.FC = () => {
               <TrendingUp className="h-5 w-5 text-primary" />
               Environmental Impact Summary
             </h4>
-            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="p-4 bg-accent/5 rounded-xl border border-accent/10 text-center">
                 <Users className="h-6 w-6 mx-auto mb-2 text-accent" />
                 <p className="text-2xl font-black text-accent">{MOCK_IMPACT_STATS.communitiesHelped}</p>
