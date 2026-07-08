@@ -113,8 +113,15 @@ export const useReportsStore = () => {
     const storedDraft = localStorage.getItem(STORAGE_KEY_DRAFTS);
     if (storedDraft) setDraft(JSON.parse(storedDraft));
 
-    const storedStats = localStorage.getItem(STORAGE_KEY_STATS);
-    if (storedStats) setStats(JSON.parse(storedStats));
+    if (isDemoMode) {
+      const storedStats = localStorage.getItem(STORAGE_KEY_STATS);
+      
+    if (storedStats) {
+      setStats(JSON.parse(storedStats));
+    } else {
+      setStats(DEMO_STATS);
+    }
+  }
 
     const storedNotifications = localStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
     if (storedNotifications) setNotifications(JSON.parse(storedNotifications));
