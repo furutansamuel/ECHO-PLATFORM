@@ -79,17 +79,28 @@ const STORAGE_KEY_NOTIFICATIONS = 'echo_notifications';
 export const useReportsStore = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [draft, setDraft] = useState<Partial<Report> | null>(null);
-  const [stats, setStats] = useState<ReportStats>({
-    totalReports: 124,
-    verifiedReports: 89,
-    pendingReports: 35,
-    resolvedReports: 56,
-    ecoPoints: 2450,
-    cleanupEvents: 12,
-    volunteerHours: 48,
-    hazardsReported: 124,
-    reportsVerified: 89,
-  });
+  const DEMO_STATS: ReportStats = {
+  totalReports: 124,
+  verifiedReports: 89,
+  pendingReports: 35,
+  resolvedReports: 56,
+  ecoPoints: 2450,
+  cleanupEvents: 12,
+  volunteerHours: 48,
+  hazardsReported: 124,
+  reportsVerified: 89,
+};
+  const EMPTY_STATS: ReportStats = {
+  totalReports: 0,
+  verifiedReports: 0,
+  pendingReports: 0,
+  resolvedReports: 0,
+  ecoPoints: 0,
+  cleanupEvents: 0,
+  volunteerHours: 0,
+  hazardsReported: 0,
+  reportsVerified: 0,
+};
   const [notifications, setNotifications] = useState<EchoNotification[]>([]);
 
   useEffect(() => {
