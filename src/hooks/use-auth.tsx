@@ -52,7 +52,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let alive = true;
 
     const isDemo =
-      import.meta.env.DEV &&
       typeof window !== "undefined" &&
       localStorage.getItem("echo_demo_mode") === "true";
     if (isDemo) {
@@ -136,7 +135,11 @@ if (data) {
       if (!alive) return;
       const nextUser = session?.user ?? null;
       setUser(nextUser);
+      
       if (nextUser) {
+        localStorage.removeItem("echo_demo_mode");
+        localStorage.removeItem("echo_presentation_mode");
+        
         void fetchProfile(nextUser.id).finally(() => alive && setLoading(false));
       } else {
         lastFetchedProfileFor.current = null;
