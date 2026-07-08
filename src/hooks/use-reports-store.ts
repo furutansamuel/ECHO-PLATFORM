@@ -78,6 +78,7 @@ const STORAGE_KEY_STATS = 'echo_stats';
 const STORAGE_KEY_NOTIFICATIONS = 'echo_notifications';
 
 export const useReportsStore = () => {
+  const { isDemoMode } = useDemo();
   const [reports, setReports] = useState<Report[]>([]);
   const [draft, setDraft] = useState<Partial<Report> | null>(null);
   const DEMO_STATS: ReportStats = {
