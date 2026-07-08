@@ -125,12 +125,18 @@ export const useReportsStore = () => {
 
     const storedNotifications = localStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
     if (storedNotifications) setNotifications(JSON.parse(storedNotifications));
-  }, []);
+  }, [isDemoMode]);
 
   const saveReport = (report: Report) => {
     const updatedReports = [report, ...reports];
     setReports(updatedReports);
-    localStorage.setItem(STORAGE_KEY_REPORTS, JSON.stringify(updatedReports));
+    
+    if (isDemoMode) {
+      localStorage.setItem(
+        STORAGE_KEY_REPORTS,
+        JSON.stringify(updatedReports)
+      );
+    }
 
     // Update stats
     const updatedStats = {
@@ -140,7 +146,10 @@ export const useReportsStore = () => {
       ecoPoints: stats.ecoPoints + 50, // Award 50 points for reporting
     };
     setStats(updatedStats);
-    localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(updatedStats));
+    
+    if (isDemoMode) {
+      localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(updatedStats));
+    }
 
     // Add notification
     const newNotification: EchoNotification = {
