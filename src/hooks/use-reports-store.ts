@@ -107,8 +107,13 @@ export const useReportsStore = () => {
   const [notifications, setNotifications] = useState<EchoNotification[]>([]);
 
   useEffect(() => {
-    const storedReports = localStorage.getItem(STORAGE_KEY_REPORTS);
-    if (storedReports) setReports(JSON.parse(storedReports));
+    if (isDemoMode) {
+      const storedReports = localStorage.getItem(STORAGE_KEY_REPORTS);
+    
+      if (storedReports) {
+        setReports(JSON.parse(storedReports));
+      }
+    }
 
     const storedDraft = localStorage.getItem(STORAGE_KEY_DRAFTS);
     if (storedDraft) setDraft(JSON.parse(storedDraft));
@@ -122,9 +127,14 @@ export const useReportsStore = () => {
       setStats(DEMO_STATS);
     }
   }
-
-    const storedNotifications = localStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
-    if (storedNotifications) setNotifications(JSON.parse(storedNotifications));
+    
+    if (isDemoMode) {
+      const storedNotifications = localStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
+      
+    if (storedNotifications) {
+      setNotifications(JSON.parse(storedNotifications));
+    }
+  }
   }, [isDemoMode]);
 
   const saveReport = (report: Report) => {
