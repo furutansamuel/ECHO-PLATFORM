@@ -1,3 +1,4 @@
+import { useDemo } from '@/hooks/use-demo';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -101,6 +102,7 @@ export const useReportsStore = () => {
   hazardsReported: 0,
   reportsVerified: 0,
 };
+  const [stats, setStats] = useState<ReportStats>(EMPTY_STATS);
   const [notifications, setNotifications] = useState<EchoNotification[]>([]);
 
   useEffect(() => {
