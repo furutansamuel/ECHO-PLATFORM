@@ -51,18 +51,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let alive = true;
 
-    const isDemo =
-      typeof window !== "undefined" &&
-      localStorage.getItem("echo_demo_mode") === "true";
-    if (isDemo) {
-      setUser(DEMO_USER);
-      setProfile(DEMO_PROFILE);
-      setLoading(false);
-      return () => {
-        alive = false;
-      };
-    }
-
     // If Supabase isn't configured, resolve immediately so the UI still renders.
     if (!isSupabaseConfigured) {
       setLoading(false);
