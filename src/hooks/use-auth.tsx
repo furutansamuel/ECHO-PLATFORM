@@ -183,16 +183,27 @@ if (data) {
     const isDemo =
       import.meta.env.DEV &&
       localStorage.getItem("echo_demo_mode") === "true";
+    // Clear demo data
+    localStorage.removeItem("echo_demo_mode");
+    localStorage.removeItem("echo_presentation_mode");
+    localStorage.removeItem("echo_reports");
+    localStorage.removeItem("echo_drafts");
+    localStorage.removeItem("echo_stats");
+    localStorage.removeItem("echo_notifications");
+    localStorage.removeItem("echo_dismissed_hints");
+    
     if (isDemo) {
-      localStorage.removeItem("echo_demo_mode");
-      localStorage.removeItem("echo_presentation_mode");
       window.location.href = "/";
       return;
     }
+    
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) toast.error(error.message);
-      else toast.success("Logged out successfully");
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Logged out successfully");
+      }
     } catch (err) {
       console.error(err);
       toast.error("Could not sign out");
