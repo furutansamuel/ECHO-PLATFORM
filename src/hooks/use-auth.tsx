@@ -178,34 +178,36 @@ if (data) {
 };
   
   const logout = async () => {
-    const isDemo =
-      import.meta.env.DEV &&
-      localStorage.getItem("echo_demo_mode") === "true";
-    // Clear demo data
-    localStorage.removeItem("echo_demo_mode");
-    localStorage.removeItem("echo_presentation_mode");
-    localStorage.removeItem("echo_reports");
-    localStorage.removeItem("echo_drafts");
-    localStorage.removeItem("echo_stats");
-    localStorage.removeItem("echo_notifications");
-    localStorage.removeItem("echo_dismissed_hints");
-    
-    if (isDemo) {
-      window.location.href = "/";
-      return;
+  const isDemo =
+    import.meta.env.DEV &&
+    sessionStorage.getItem("echo_demo_mode") === "true";
+
+  // Clear demo data
+  sessionStorage.removeItem("echo_demo_mode");
+  sessionStorage.removeItem("echo_presentation_mode");
+  sessionStorage.removeItem("echo_reports");
+  sessionStorage.removeItem("echo_drafts");
+  sessionStorage.removeItem("echo_stats");
+  sessionStorage.removeItem("echo_notifications");
+  sessionStorage.removeItem("echo_dismissed_hints");
+
+  if (isDemo) {
+    window.location.href = "/";
+    return;
+  }
+
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Logged out successfully");
     }
-    
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success("Logged out successfully");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Could not sign out");
-    }
+  } catch (err) {
+    console.error(err);
+    toast.error("Could not sign out");
+  }
   };
 
   return (
