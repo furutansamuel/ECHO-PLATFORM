@@ -33,25 +33,16 @@ export default function RewardsPage() {
     sessionStorage.getItem("echo_demo_mode") === "true";
 
   const impactPoints =
-    user && userStats?.eco_points
-      ? userStats.eco_points
-      : MOCK_IMPACT_POINTS;
+  userStats?.eco_points ?? MOCK_IMPACT_POINTS;
 
-  const impactStats =
-    user && userStats
-      ? userStats
-      : MOCK_IMPACT_STATS;
+const impactStats =
+  userStats ?? MOCK_IMPACT_STATS;
 
-  const pointHistory =
-    user && userStats?.point_history
-      ? userStats.point_history
-      : MOCK_POINT_HISTORY;
+const pointHistory =
+  userStats?.point_history ?? MOCK_POINT_HISTORY;
 
-  const badges =
-    user && userStats?.badges
-      ? userStats.badges
-      : ACHIEVEMENT_BADGES;
-
+const badges =
+  userStats?.badges ?? ACHIEVEMENT_BADGES;
   const { currentLevel, nextLevel, progress, pointsToNext } =
     calculateProgressToNextLevel(impactPoints);
 
