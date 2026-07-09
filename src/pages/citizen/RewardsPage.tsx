@@ -27,7 +27,7 @@ import {
 } from '@/lib/impact-constants';
 
 export default function RewardsPage() {
-  const { user, userStats } = useAuth();
+  const { userStats } = useAuth();
 
   const isDemo =
     sessionStorage.getItem("echo_demo_mode") === "true";
