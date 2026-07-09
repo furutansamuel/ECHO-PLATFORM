@@ -30,6 +30,14 @@ export default function LoginPage() {
       if (error) {
         toast.error(error.message);
       } else {
+        // Clear all demo data after successful real login
+        localStorage.removeItem('echo_demo_mode');
+        localStorage.removeItem('echo_presentation_mode');
+        localStorage.removeItem('echo_reports');
+        localStorage.removeItem('echo_drafts');
+        localStorage.removeItem('echo_stats');
+        localStorage.removeItem('echo_notifications');
+        
         toast.success('Logged in successfully');
         navigate('/dashboard');
       }
