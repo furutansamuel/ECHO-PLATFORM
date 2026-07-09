@@ -124,14 +124,14 @@ if (data) {
       const nextUser = session?.user ?? null;
       setUser(nextUser);
       
-      if (nextUser) {
-  localStorage.removeItem("echo_demo_mode");
-  localStorage.removeItem("echo_presentation_mode");
-  localStorage.removeItem("echo_reports");
-  localStorage.removeItem("echo_drafts");
-  localStorage.removeItem("echo_stats");
-  localStorage.removeItem("echo_notifications");
-  localStorage.removeItem("echo_dismissed_hints");
+     if (nextUser) {
+  sessionStorage.removeItem("echo_demo_mode");
+  sessionStorage.removeItem("echo_presentation_mode");
+  sessionStorage.removeItem("echo_reports");
+  sessionStorage.removeItem("echo_drafts");
+  sessionStorage.removeItem("echo_stats");
+  sessionStorage.removeItem("echo_notifications");
+  sessionStorage.removeItem("echo_dismissed_hints");
 
   setUser(nextUser);
 
