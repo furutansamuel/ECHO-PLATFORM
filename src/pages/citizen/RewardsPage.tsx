@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/contexts/AuthContext";
 import { 
   Award, 
   TrendingUp, 
@@ -26,9 +27,36 @@ import {
 } from '@/lib/impact-constants';
 
 export default function RewardsPage() {
-  const { currentLevel, nextLevel, progress, pointsToNext } = calculateProgressToNextLevel(MOCK_IMPACT_POINTS);
-  const earnedBadges = ACHIEVEMENT_BADGES.filter(b => b.earned);
-  const lockedBadges = ACHIEVEMENT_BADGES.filter(b => !b.earned);
+  const { user, userStats } = useAuth();
+
+  const isDemo =
+    sessionStorage.getItem("echo_demo_mode") === "true";
+
+  const impactPoints =
+    user && userStats?.eco_points
+      ? userStats.eco_points
+      : MOCK_IMPACT_POINTS;
+
+  const impactStats =
+    user && userStats
+      ? userStats
+      : MOCK_IMPACT_STATS;
+
+  const pointHistory =
+    user && userStats?.point_history
+      ? userStats.point_history
+      : MOCK_POINT_HISTORY;
+
+  const badges =
+    user && userStats?.badges
+      ? userStats.badges
+      : ACHIEVEMENT_BADGES;
+
+  const { currentLevel, nextLevel, progress, pointsToNext } =
+    calculateProgressToNextLevel(impactPoints);
+
+  const earnedBadges = badges.filter((b: any) => b.earned);
+  const lockedBadges = badges.filter((b: any) => !b.earned);
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
@@ -44,7 +72,7 @@ export default function RewardsPage() {
           </div>
           <div>
             <p className="text-[10px] font-black uppercase tracking-widest text-primary/70">Impact Points</p>
-            <p className="text-3xl font-black text-primary">{MOCK_IMPACT_POINTS.toLocaleString()}</p>
+            <p className="text-3xl font-black text-primary">{impactPoints.toLocaleString()}</p>
           </div>
         </div>
       </div>
@@ -78,9 +106,9 @@ export default function RewardsPage() {
             {/* Quick Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: 'Reports', value: MOCK_IMPACT_STATS.reportsSubmitted, icon: FileText },
-                { label: 'Verified', value: MOCK_IMPACT_STATS.verifiedReports, icon: CheckCircle },
-                { label: 'Events', value: MOCK_IMPACT_STATS.cleanupEventsJoined, icon: Calendar },
+                { label: 'Reports', value: impactStats.reportsSubmitted, icon: FileText },
+{ label: 'Verified', value: impactStats.verifiedReports, icon: CheckCircle },
+{ label: 'Events', value: impactStats.cleanupEventsJoined, icon: Calendar },
                 { label: 'Rank', value: '#42', icon: TrendingUp },
               ].map((stat, i) => (
                 <div key={i} className="p-4 rounded-2xl bg-muted/30 border border-muted/10 text-center">
@@ -104,15 +132,15 @@ export default function RewardsPage() {
           <CardContent className="space-y-4">
             <div className="p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
               <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Environmental Score</p>
-              <p className="text-3xl font-black italic">{MOCK_IMPACT_STATS.environmentalScore}/100</p>
+              <p className="text-3xl font-black italic">{impactStats.environmentalScore}/100</p>
             </div>
             <div className="p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
               <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Communities Helped</p>
-              <p className="text-3xl font-black italic">{MOCK_IMPACT_STATS.communitiesHelped} Areas</p>
+              <p className="text-3xl font-black italic">{impactStats.communitiesHelped} Areas</p>
             </div>
             <div className="p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
               <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Volunteer Hours</p>
-              <p className="text-3xl font-black italic">{MOCK_IMPACT_STATS.volunteerHours}h</p>
+              <p className="text-3xl font-black italic">{impactStats.volunteerHours}h</p>
             </div>
           </CardContent>
         </Card>
