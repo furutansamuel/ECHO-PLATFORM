@@ -64,6 +64,11 @@ export default function RewardsPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-4xl font-black tracking-tighter uppercase">Impact Center</h1>
+          {isDemo && (
+  <Badge variant="secondary">
+    Demo Mode
+  </Badge>
+)}
           <p className="text-muted-foreground italic text-lg">Your contribution to a safer, cleaner environment</p>
         </div>
         <div className="bg-primary/10 border-2 border-primary/20 p-4 rounded-2xl flex items-center gap-4 shadow-sm">
@@ -154,7 +159,7 @@ export default function RewardsPage() {
             Earned Badges
           </h2>
           <Badge className="bg-primary/10 text-primary border-primary/20 font-black">
-            {earnedBadges.length} of {ACHIEVEMENT_BADGES.length}
+            {earnedBadges.length} of {badges.length}
           </Badge>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
