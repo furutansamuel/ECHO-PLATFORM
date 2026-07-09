@@ -125,15 +125,25 @@ if (data) {
       setUser(nextUser);
       
       if (nextUser) {
-        localStorage.removeItem("echo_demo_mode");
-        localStorage.removeItem("echo_presentation_mode");
-        
-        void fetchProfile(nextUser.id).finally(() => alive && setLoading(false));
-      } else {
-        lastFetchedProfileFor.current = null;
-        setProfile(null);
-        setLoading(false);
-      }
+  localStorage.removeItem("echo_demo_mode");
+  localStorage.removeItem("echo_presentation_mode");
+  localStorage.removeItem("echo_reports");
+  localStorage.removeItem("echo_drafts");
+  localStorage.removeItem("echo_stats");
+  localStorage.removeItem("echo_notifications");
+  localStorage.removeItem("echo_dismissed_hints");
+
+  setUser(nextUser);
+
+  void fetchProfile(nextUser.id).finally(() => {
+    if (alive) setLoading(false);
+  });
+} else {
+  lastFetchedProfileFor.current = null;
+  setUser(null);
+  setProfile(null);
+  setLoading(false);
+}
     });
 
     // Safety net: even if onAuthStateChange never fires, don't gate forever.
