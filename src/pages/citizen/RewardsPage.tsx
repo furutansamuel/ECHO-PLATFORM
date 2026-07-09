@@ -154,7 +154,7 @@ const badges =
           </Badge>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {earnedBadges.map((badge) => (
+          {earnedBadges.map((badge: any) => (
             <Card key={badge.id} className="border-muted/20 shadow-sm hover:shadow-md transition-all hover:border-primary/50 group">
               <CardContent className="pt-6">
                 <div className="flex flex-col items-center text-center space-y-3">
@@ -186,7 +186,7 @@ const badges =
             Next Achievements
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {lockedBadges.map((badge) => (
+            {lockedBadges.map((badge: any) => (
               <Card key={badge.id} className="border-muted/20 shadow-sm opacity-70 hover:opacity-100 transition-all">
                 <CardContent className="pt-6">
                   <div className="flex flex-col items-center text-center space-y-3">
@@ -219,7 +219,7 @@ const badges =
         <Card className="border-muted/20 shadow-sm">
           <CardContent className="pt-6">
             <div className="space-y-4">
-              {MOCK_POINT_HISTORY.map((entry, index) => (
+              {pointHistory.map((entry: any, index: number) => (
                 <div key={entry.id}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -243,7 +243,7 @@ const badges =
                       <span className="font-black text-primary">+{entry.points}</span>
                     </div>
                   </div>
-                  {index < MOCK_POINT_HISTORY.length - 1 && <Separator className="my-4" />}
+                  {index < pointHistory.length - 1 && <Separator className="my-4" />}
                 </div>
               ))}
             </div>
