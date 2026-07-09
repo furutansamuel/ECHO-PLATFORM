@@ -31,12 +31,13 @@ export default function LoginPage() {
         toast.error(error.message);
       } else {
         // Clear all demo data after successful real login
-        localStorage.removeItem('echo_demo_mode');
-        localStorage.removeItem('echo_presentation_mode');
-        localStorage.removeItem('echo_reports');
-        localStorage.removeItem('echo_drafts');
-        localStorage.removeItem('echo_stats');
-        localStorage.removeItem('echo_notifications');
+sessionStorage.removeItem('echo_demo_mode');
+sessionStorage.removeItem('echo_presentation_mode');
+sessionStorage.removeItem('echo_reports');
+sessionStorage.removeItem('echo_drafts');
+sessionStorage.removeItem('echo_stats');
+sessionStorage.removeItem('echo_notifications');
+sessionStorage.removeItem('echo_dismissed_hints');
         
         toast.success('Logged in successfully');
         navigate('/dashboard');
@@ -51,7 +52,7 @@ export default function LoginPage() {
   // For Demo Mode, we can use a guest account or mock it if needed
   const handleDemoMode = async (role: 'citizen' | 'administrator') => {
     // Enable demo mode in localStorage so AuthProvider picks it up
-    localStorage.setItem('echo_demo_mode', 'true');
+    sessionStorage.setItem('echo_demo_mode', 'true');
     toast.success(`Entering Demo Mode as ${role}...`);
     // Small delay to let state propagate, then navigate
     setTimeout(() => {
