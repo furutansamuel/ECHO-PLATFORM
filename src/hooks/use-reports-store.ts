@@ -1,3 +1,4 @@
+import { useDemo } from '@/hooks/use-demo';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -77,39 +78,75 @@ const STORAGE_KEY_STATS = 'echo_stats';
 const STORAGE_KEY_NOTIFICATIONS = 'echo_notifications';
 
 export const useReportsStore = () => {
+  const { isDemoMode } = useDemo();
   const [reports, setReports] = useState<Report[]>([]);
   const [draft, setDraft] = useState<Partial<Report> | null>(null);
-  const [stats, setStats] = useState<ReportStats>({
-    totalReports: 124,
-    verifiedReports: 89,
-    pendingReports: 35,
-    resolvedReports: 56,
-    ecoPoints: 2450,
-    cleanupEvents: 12,
-    volunteerHours: 48,
-    hazardsReported: 124,
-    reportsVerified: 89,
-  });
+  const DEMO_STATS: ReportStats = {
+  totalReports: 124,
+  verifiedReports: 89,
+  pendingReports: 35,
+  resolvedReports: 56,
+  ecoPoints: 2450,
+  cleanupEvents: 12,
+  volunteerHours: 48,
+  hazardsReported: 124,
+  reportsVerified: 89,
+};
+  const EMPTY_STATS: ReportStats = {
+  totalReports: 0,
+  verifiedReports: 0,
+  pendingReports: 0,
+  resolvedReports: 0,
+  ecoPoints: 0,
+  cleanupEvents: 0,
+  volunteerHours: 0,
+  hazardsReported: 0,
+  reportsVerified: 0,
+};
+  const [stats, setStats] = useState<ReportStats>(EMPTY_STATS);
   const [notifications, setNotifications] = useState<EchoNotification[]>([]);
 
   useEffect(() => {
-    const storedReports = localStorage.getItem(STORAGE_KEY_REPORTS);
-    if (storedReports) setReports(JSON.parse(storedReports));
+    if (isDemoMode) {
+      const storedReports = localStorage.getItem(STORAGE_KEY_REPORTS);
+    
+      if (storedReports) {
+        setReports(JSON.parse(storedReports));
+      }
+    }
 
     const storedDraft = localStorage.getItem(STORAGE_KEY_DRAFTS);
     if (storedDraft) setDraft(JSON.parse(storedDraft));
 
-    const storedStats = localStorage.getItem(STORAGE_KEY_STATS);
-    if (storedStats) setStats(JSON.parse(storedStats));
-
-    const storedNotifications = localStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
-    if (storedNotifications) setNotifications(JSON.parse(storedNotifications));
-  }, []);
+    if (isDemoMode) {
+      const storedStats = localStorage.getItem(STORAGE_KEY_STATS);
+      
+    if (storedStats) {
+      setStats(JSON.parse(storedStats));
+    } else {
+      setStats(DEMO_STATS);
+    }
+  }
+    
+    if (isDemoMode) {
+      const storedNotifications = localStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
+      
+    if (storedNotifications) {
+      setNotifications(JSON.parse(storedNotifications));
+    }
+  }
+  }, [isDemoMode]);
 
   const saveReport = (report: Report) => {
     const updatedReports = [report, ...reports];
     setReports(updatedReports);
-    localStorage.setItem(STORAGE_KEY_REPORTS, JSON.stringify(updatedReports));
+    
+    if (isDemoMode) {
+      localStorage.setItem(
+        STORAGE_KEY_REPORTS,
+        JSON.stringify(updatedReports)
+      );
+    }
 
     // Update stats
     const updatedStats = {
@@ -119,7 +156,10 @@ export const useReportsStore = () => {
       ecoPoints: stats.ecoPoints + 50, // Award 50 points for reporting
     };
     setStats(updatedStats);
-    localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(updatedStats));
+    
+    if (isDemoMode) {
+      localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(updatedStats));
+    }
 
     // Add notification
     const newNotification: EchoNotification = {

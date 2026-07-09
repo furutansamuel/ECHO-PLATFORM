@@ -51,19 +51,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let alive = true;
 
-    const isDemo =
-      import.meta.env.DEV &&
-      typeof window !== "undefined" &&
-      localStorage.getItem("echo_demo_mode") === "true";
-    if (isDemo) {
-      setUser(DEMO_USER);
-      setProfile(DEMO_PROFILE);
-      setLoading(false);
-      return () => {
-        alive = false;
-      };
-    }
-
     // If Supabase isn't configured, resolve immediately so the UI still renders.
     if (!isSupabaseConfigured) {
       setLoading(false);
@@ -136,13 +123,27 @@ if (data) {
       if (!alive) return;
       const nextUser = session?.user ?? null;
       setUser(nextUser);
+      
       if (nextUser) {
-        void fetchProfile(nextUser.id).finally(() => alive && setLoading(false));
-      } else {
-        lastFetchedProfileFor.current = null;
-        setProfile(null);
-        setLoading(false);
-      }
+  localStorage.removeItem("echo_demo_mode");
+  localStorage.removeItem("echo_presentation_mode");
+  localStorage.removeItem("echo_reports");
+  localStorage.removeItem("echo_drafts");
+  localStorage.removeItem("echo_stats");
+  localStorage.removeItem("echo_notifications");
+  localStorage.removeItem("echo_dismissed_hints");
+
+  setUser(nextUser);
+
+  void fetchProfile(nextUser.id).finally(() => {
+    if (alive) setLoading(false);
+  });
+} else {
+  lastFetchedProfileFor.current = null;
+  setUser(null);
+  setProfile(null);
+  setLoading(false);
+}
     });
 
     // Safety net: even if onAuthStateChange never fires, don't gate forever.
@@ -180,16 +181,27 @@ if (data) {
     const isDemo =
       import.meta.env.DEV &&
       localStorage.getItem("echo_demo_mode") === "true";
+    // Clear demo data
+    localStorage.removeItem("echo_demo_mode");
+    localStorage.removeItem("echo_presentation_mode");
+    localStorage.removeItem("echo_reports");
+    localStorage.removeItem("echo_drafts");
+    localStorage.removeItem("echo_stats");
+    localStorage.removeItem("echo_notifications");
+    localStorage.removeItem("echo_dismissed_hints");
+    
     if (isDemo) {
-      localStorage.removeItem("echo_demo_mode");
-      localStorage.removeItem("echo_presentation_mode");
       window.location.href = "/";
       return;
     }
+    
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) toast.error(error.message);
-      else toast.success("Logged out successfully");
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Logged out successfully");
+      }
     } catch (err) {
       console.error(err);
       toast.error("Could not sign out");
