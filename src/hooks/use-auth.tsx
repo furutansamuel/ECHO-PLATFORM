@@ -40,7 +40,6 @@ const DEMO_PROFILE: UserProfile = {
   full_name: "Demo Showcase User",
   avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Demo",
 };
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -53,11 +52,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // If Supabase isn't configured, resolve immediately so the UI still renders.
     if (!isSupabaseConfigured) {
-      setLoading(false);
-      return () => {
-        alive = false;
-      };
-    }
+  const demoMode =
+    sessionStorage.getItem("echo_demo_mode") === "true";
+
+  if (demoMode) {
+    setUser(DEMO_USER);
+    setProfile(DEMO_PROFILE);
+  }
+
+  setLoading(false);
+
+  return () => {
+    alive = false;
+  };
+}
 
     const fetchProfile = async (userId: string) => {
       if (lastFetchedProfileFor.current === userId) return;
@@ -68,11 +76,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .select("*")
           .eq("id", userId)
           .maybeSingle();
-        const { data: stats } = await supabase
-          .from("user_stats")
-          .select("*")
-          .eq("user_id", userId)
-          .maybeSingle();
+        const { data: stats, error: statsError } = await supabase
+  .from("user_stats")
+  .select("*")
+  .eq("user_id", userId)
+  .maybeSingle();
+
+if (statsError) {
+  console.error("[ECHO] stats fetch error", statsError);
+}
+
+setUserStats(stats ?? null);
 
 setUserStats(stats);
 
@@ -122,18 +136,16 @@ if (data) {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!alive) return;
       const nextUser = session?.user ?? null;
-      setUser(nextUser);
       
-      if (nextUser) {
-  localStorage.removeItem("echo_demo_mode");
-  localStorage.removeItem("echo_presentation_mode");
-  localStorage.removeItem("echo_reports");
-  localStorage.removeItem("echo_drafts");
-  localStorage.removeItem("echo_stats");
-  localStorage.removeItem("echo_notifications");
-  localStorage.removeItem("echo_dismissed_hints");
-
-  setUser(nextUser);
+     if (nextUser) {
+       setUser(nextUser);
+  sessionStorage.removeItem("echo_demo_mode");
+  sessionStorage.removeItem("echo_presentation_mode");
+  sessionStorage.removeItem("echo_reports");
+  sessionStorage.removeItem("echo_drafts");
+  sessionStorage.removeItem("echo_stats");
+  sessionStorage.removeItem("echo_notifications");
+  sessionStorage.removeItem("echo_dismissed_hints");
 
   void fetchProfile(nextUser.id).finally(() => {
     if (alive) setLoading(false);
@@ -163,49 +175,60 @@ if (data) {
   if (!user) return;
 
   try {
-    const { data } = await supabase
+    const { data: profileData } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", user.id)
       .maybeSingle();
 
-    if (data) {
-      setProfile(data as UserProfile);
+    const { data: statsData } = await supabase
+      .from("user_stats")
+      .select("*")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (profileData) {
+      setProfile(profileData as UserProfile);
     }
+
+    setUserStats(statsData ?? null);
+
   } catch (err) {
     console.error("[ECHO] refresh profile failed", err);
   }
 };
   
   const logout = async () => {
-    const isDemo =
-      import.meta.env.DEV &&
-      localStorage.getItem("echo_demo_mode") === "true";
-    // Clear demo data
-    localStorage.removeItem("echo_demo_mode");
-    localStorage.removeItem("echo_presentation_mode");
-    localStorage.removeItem("echo_reports");
-    localStorage.removeItem("echo_drafts");
-    localStorage.removeItem("echo_stats");
-    localStorage.removeItem("echo_notifications");
-    localStorage.removeItem("echo_dismissed_hints");
-    
-    if (isDemo) {
-      window.location.href = "/";
-      return;
+  const isDemo =
+    import.meta.env.DEV &&
+    sessionStorage.getItem("echo_demo_mode") === "true";
+
+  // Clear demo data
+  sessionStorage.removeItem("echo_demo_mode");
+  sessionStorage.removeItem("echo_presentation_mode");
+  sessionStorage.removeItem("echo_reports");
+  sessionStorage.removeItem("echo_drafts");
+  sessionStorage.removeItem("echo_stats");
+  sessionStorage.removeItem("echo_notifications");
+  sessionStorage.removeItem("echo_dismissed_hints");
+
+  if (isDemo) {
+    window.location.href = "/";
+    return;
+  }
+
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Logged out successfully");
     }
-    
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success("Logged out successfully");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Could not sign out");
-    }
+  } catch (err) {
+    console.error(err);
+    toast.error("Could not sign out");
+  }
   };
 
   return (
