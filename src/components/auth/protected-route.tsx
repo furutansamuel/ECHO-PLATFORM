@@ -11,7 +11,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   const location = useLocation();
   const isDemoMode =
     typeof window !== "undefined" &&
-    localStorage.getItem("echo_demo_mode") === "true";
+    sessionStorage.getItem("echo_demo_mode") === "true";
 
   if (loading) {
     return (
