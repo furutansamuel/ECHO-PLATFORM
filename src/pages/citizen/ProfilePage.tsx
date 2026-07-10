@@ -330,77 +330,66 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             </h4>
             <Card className="border-muted/20">
               <CardContent className="pt-6">
-                <div className="space-y-4">
-                  {pointHistory.length > 0 ? (
-  pointHistory.slice(0, 5).map((entry, index) => (
-    <div key={entry.id}>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            {entry.type === 'report' && (
-              <FileText className="h-4 w-4 text-primary" />
-            )}
-            {entry.type === 'verification' && (
-              <CheckCircle className="h-4 w-4 text-primary" />
-            )}
-            {entry.type === 'article' && (
-              <BookOpen className="h-4 w-4 text-primary" />
-            )}
-            {entry.type === 'campaign' && (
-              <Users className="h-4 w-4 text-primary" />
-            )}
-            {entry.type === 'cleanup' && (
-              <Calendar className="h-4 w-4 text-primary" />
-            )}
-            {entry.type === 'community' && (
-              <Heart className="h-4 w-4 text-primary" />
-            )}
+  <div className="space-y-4">
+    {pointHistory.length > 0 ? (
+      pointHistory.slice(0, 5).map((entry, index) => (
+        <div key={entry.id}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                {entry.type === 'report' && (
+                  <FileText className="h-4 w-4 text-primary" />
+                )}
+                {entry.type === 'verification' && (
+                  <CheckCircle className="h-4 w-4 text-primary" />
+                )}
+                {entry.type === 'article' && (
+                  <BookOpen className="h-4 w-4 text-primary" />
+                )}
+                {entry.type === 'campaign' && (
+                  <Users className="h-4 w-4 text-primary" />
+                )}
+                {entry.type === 'cleanup' && (
+                  <Calendar className="h-4 w-4 text-primary" />
+                )}
+                {entry.type === 'community' && (
+                  <Heart className="h-4 w-4 text-primary" />
+                )}
+              </div>
+
+              <div>
+                <p className="font-bold text-sm">
+                  {entry.description}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {new Date(entry.date).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4 text-primary" />
+              <span className="font-black text-primary">
+                +{entry.points}
+              </span>
+            </div>
           </div>
 
-          <div>
-            <p className="font-bold text-sm">
-              {entry.description}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {new Date(entry.date).toLocaleDateString(
-                'en-US',
-                {
-                  month: 'short',
-                  day: 'numeric',
-                }
-              )}
-            </p>
-          </div>
+          {index < pointHistory.slice(0, 5).length - 1 && (
+            <Separator className="my-4" />
+          )}
         </div>
-
-        <div className="flex items-center gap-2">
-          <Zap className="h-4 w-4 text-primary" />
-          <span className="font-black text-primary">
-            +{entry.points}
-          </span>
-        </div>
-      </div>
-
-      {index < pointHistory.slice(0, 5).length - 1 && (
-        <Separator className="my-4" />
-      )}
-    </div>
-  ))
-) : (
-  <p className="text-center text-muted-foreground py-8">
-    No recent activity yet.
-  </p>
-)}
-    </div>
-  ))
-) : (
-  <p className="text-center text-muted-foreground py-8">
-    No recent activity yet.
-  </p>
-)}
-                    
-                </div>
-              </CardContent>
+      ))
+    ) : (
+      <p className="text-center text-muted-foreground py-8">
+        No recent activity yet.
+      </p>
+    )}
+  </div>
+</CardContent>
             </Card>
           </div>
 
