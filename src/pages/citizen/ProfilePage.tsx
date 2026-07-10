@@ -45,7 +45,8 @@ const impactStats =
       };
 
 const badges =
-  userStats?.badges ?? ACHIEVEMENT_BADGES;
+  userStats?.badges ??
+  (isDemo ? ACHIEVEMENT_BADGES : []);
 
 const pointHistory =
   userStats?.point_history ??
@@ -168,23 +169,23 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="p-4 bg-accent/5 rounded-xl border border-accent/10 text-center">
                 <Users className="h-6 w-6 mx-auto mb-2 text-accent" />
-                <p className="text-2xl font-black text-accent">{MOCK_IMPACT_STATS.communitiesHelped}</p>
+                <p className="text-2xl font-black text-accent">{impactStats.communitiesHelped}</p>
                 <p className="text-[10px] font-bold uppercase text-muted-foreground">Communities Helped</p>
               </div>
               <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 text-center">
                 <Calendar className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-2xl font-black text-primary">{MOCK_IMPACT_STATS.cleanupEventsJoined}</p>
+                <p className="text-2xl font-black text-primary">{impactStats.cleanupEventsJoined}</p>
                 <p className="text-[10px] font-bold uppercase text-muted-foreground">Cleanup Events</p>
               </div>
               
               <div className="p-4 bg-accent/5 rounded-xl border border-accent/10 text-center">
                 <Clock className="h-6 w-6 mx-auto mb-2 text-accent" />
-                <p className="text-2xl font-black text-accent">{MOCK_IMPACT_STATS.volunteerHours}h</p>
+                <p className="text-2xl font-black text-accent">{impactStats.volunteerHours}h</p>
                 <p className="text-[10px] font-bold uppercase text-muted-foreground">Volunteer Hours</p>
               </div>
               <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 text-center">
                 <Target className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-2xl font-black text-primary">{MOCK_IMPACT_STATS.environmentalScore}</p>
+                <p className="text-2xl font-black text-primary">{impactStats.environmentalScore}</p>
                 <p className="text-[10px] font-bold uppercase text-muted-foreground">Environmental Score</p>
               </div>
             </div>
@@ -220,7 +221,19 @@ const earnedBadges = badges.filter((b: any) => b.earned);
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {MOCK_CAMPAIGNS.filter(c => c.status === 'active').slice(0, 3).map(c => (
+                  {isDemo
+  ? MOCK_CAMPAIGNS
+      .filter(c => c.status === 'active')
+      .slice(0, 3)
+      .map(c => (
+          // existing card
+      ))
+  : (
+      <p className="text-sm text-muted-foreground">
+        No active campaigns yet.
+      </p>
+    )
+                  }
                     <div key={c.id} className="flex items-center gap-3 p-2 rounded-lg bg-primary/5">
                       <span className="text-xl">{c.emoji}</span>
                       <div className="flex-grow">
@@ -239,7 +252,16 @@ const earnedBadges = badges.filter((b: any) => b.earned);
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {MOCK_VOLUNTEERS.slice(0, 3).map(v => (
+                  {isDemo
+  ? MOCK_VOLUNTEERS.slice(0, 3).map(v => (
+      // existing card
+    ))
+  : (
+      <p className="text-sm text-muted-foreground">
+        No volunteer activities yet.
+      </p>
+    )
+                  }
                     <div key={v.id} className="flex items-center gap-3 p-2 rounded-lg bg-green-50">
                       <span className="text-xl">{v.emoji}</span>
                       <div className="flex-grow">
@@ -263,19 +285,35 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
               <div className="flex justify-between items-center py-2 border-b border-muted">
                 <span className="text-sm text-muted-foreground">Member Since</span>
-                <span className="text-sm font-bold italic">January 2024</span>
+                <span className="text-sm font-bold italic">
+  {profile?.created_at
+    ? new Date(profile.created_at).toLocaleDateString()
+    : 'Not available'}
+</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-muted">
                 <span className="text-sm text-muted-foreground">Last Activity</span>
-                <span className="text-sm font-bold italic">2 hours ago</span>
+                <span className="text-sm font-bold italic">
+  No activity yet
+</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-muted">
                 <span className="text-sm text-muted-foreground">Preferred Region</span>
-                <span className="text-sm font-bold italic">Lagos, Nigeria</span>
+                <span className="text-sm font-bold italic">
+  {profile?.region || 'Not set'}
+</span>
+                <span className="text-sm font-bold italic">
+  Not set
+</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-muted">
                 <span className="text-sm text-muted-foreground">Organization</span>
-                <span className="text-sm font-bold italic">Individual Citizen</span>
+                <span className="text-sm font-bold italic">
+  {profile?.organization || 'Not set'}
+</span>
+                <span className="text-sm font-bold italic">
+  Not set
+</span>
               </div>
             </div>
           </div>
@@ -289,7 +327,15 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             <Card className="border-muted/20">
               <CardContent className="pt-6">
                 <div className="space-y-4">
-                  {MOCK_POINT_HISTORY.slice(0, 5).map((entry, index) => (
+                  {pointHistory.length > 0 ? (
+  pointHistory.slice(0, 5).map((entry, index) => (
+    // existing code
+  ))
+) : (
+  <p className="text-center text-muted-foreground py-8">
+    No recent activity yet.
+  </p>
+)}
                     <div key={entry.id}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
