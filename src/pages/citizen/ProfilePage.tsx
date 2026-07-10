@@ -398,32 +398,7 @@ const earnedBadges = badges.filter((b: any) => b.earned);
     No recent activity yet.
   </p>
 )}
-                    <div key={entry.id}>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-primary/10 rounded-lg">
-                            {entry.type === 'report' && <FileText className="h-4 w-4 text-primary" />}
-                            {entry.type === 'verification' && <CheckCircle className="h-4 w-4 text-primary" />}
-                            {entry.type === 'article' && <BookOpen className="h-4 w-4 text-primary" />}
-                            {entry.type === 'campaign' && <Users className="h-4 w-4 text-primary" />}
-                            {entry.type === 'cleanup' && <Calendar className="h-4 w-4 text-primary" />}
-                            {entry.type === 'community' && <Heart className="h-4 w-4 text-primary" />}
-                          </div>
-                          <div>
-                            <p className="font-bold text-sm">{entry.description}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Zap className="h-4 w-4 text-primary" />
-                          <span className="font-black text-primary">+{entry.points}</span>
-                        </div>
-                      </div>
-                      {index < 4 && <Separator className="my-4" />}
-                    </div>
-                  ))}
+                    
                 </div>
               </CardContent>
             </Card>
