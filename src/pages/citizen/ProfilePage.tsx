@@ -109,8 +109,21 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             </Card>
             <Card className="premium-shadow border-none bg-accent/5 text-center p-4">
               <p className="text-xs font-bold uppercase text-muted-foreground">Community Rank</p>
-              <h3 className="text-3xl font-black text-accent">42</h3>
-              <p className="text-[10px] italic text-muted-foreground mt-1">Top 5%</p>
+              <h3 className="text-3xl font-black text-accent">
+  {user && userStats?.community_rank
+    ? `#${userStats.community_rank}`
+    : isDemo
+    ? '#42'
+    : 'N/A'}
+</h3>
+
+<p className="text-[10px] italic text-muted-foreground mt-1">
+  {userStats?.community_rank_percentile
+    ? `Top ${userStats.community_rank_percentile}%`
+    : isDemo
+    ? 'Top 5%'
+    : ''}
+</p>
             </Card>
           </div>
 
