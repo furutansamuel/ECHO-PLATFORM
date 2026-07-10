@@ -48,7 +48,8 @@ const badges =
   userStats?.badges ?? ACHIEVEMENT_BADGES;
 
 const pointHistory =
-  userStats?.point_history ?? MOCK_POINT_HISTORY;
+  userStats?.point_history ??
+  (isDemo ? MOCK_POINT_HISTORY : []);
 
 const {
   currentLevel,
