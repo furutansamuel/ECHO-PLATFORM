@@ -221,28 +221,35 @@ const earnedBadges = badges.filter((b: any) => b.earned);
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {isDemo
-  ? MOCK_CAMPAIGNS
-      .filter(c => c.status === 'active')
-      .slice(0, 3)
-      .map(c => (
-          // existing card
-      ))
-  : (
-      <p className="text-sm text-muted-foreground">
-        No active campaigns yet.
-      </p>
-    )
-                  }
-                    <div key={c.id} className="flex items-center gap-3 p-2 rounded-lg bg-primary/5">
-                      <span className="text-xl">{c.emoji}</span>
-                      <div className="flex-grow">
-                        <p className="text-xs font-bold">{c.title}</p>
-                        <p className="text-[10px] text-muted-foreground">{c.participants} participants</p>
-                      </div>
-                      <Badge className="bg-primary/10 text-primary border-none text-[9px]">Active</Badge>
-                    </div>
-                  ))}
+                  {isDemo ? (
+  MOCK_CAMPAIGNS
+    .filter(c => c.status === 'active')
+    .slice(0, 3)
+    .map(c => (
+      <div
+        key={c.id}
+        className="flex items-center gap-3 p-2 rounded-lg bg-primary/5"
+      >
+        <span className="text-xl">{c.emoji}</span>
+
+        <div className="flex-grow">
+          <p className="text-xs font-bold">{c.title}</p>
+          <p className="text-[10px] text-muted-foreground">
+            {c.participants} participants
+          </p>
+        </div>
+
+        <Badge className="bg-primary/10 text-primary border-none text-[9px]">
+          Active
+        </Badge>
+      </div>
+    ))
+) : (
+  <p className="text-sm text-muted-foreground">
+    No active campaigns yet.
+  </p>
+)}
+                    
                 </CardContent>
               </Card>
               <Card className="border-muted/20">
@@ -252,25 +259,31 @@ const earnedBadges = badges.filter((b: any) => b.earned);
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {isDemo
-  ? MOCK_VOLUNTEERS.slice(0, 3).map(v => (
-      // existing card
-    ))
-  : (
-      <p className="text-sm text-muted-foreground">
-        No volunteer activities yet.
-      </p>
-    )
-                  }
-                    <div key={v.id} className="flex items-center gap-3 p-2 rounded-lg bg-green-50">
-                      <span className="text-xl">{v.emoji}</span>
-                      <div className="flex-grow">
-                        <p className="text-xs font-bold">{v.title}</p>
-                        <p className="text-[10px] text-muted-foreground">{v.date} • {v.location}</p>
-                      </div>
-                      <Badge className="bg-green-100 text-green-700 border-none text-[9px]">Registered</Badge>
-                    </div>
-                  ))}
+                  {isDemo ? (
+  MOCK_VOLUNTEERS.slice(0, 3).map(v => (
+    <div
+      key={v.id}
+      className="flex items-center gap-3 p-2 rounded-lg bg-green-50"
+    >
+      <span className="text-xl">{v.emoji}</span>
+
+      <div className="flex-grow">
+        <p className="text-xs font-bold">{v.title}</p>
+        <p className="text-[10px] text-muted-foreground">
+          {v.date} • {v.location}
+        </p>
+      </div>
+
+      <Badge className="bg-green-100 text-green-700 border-none text-[9px]">
+        Registered
+      </Badge>
+    </div>
+  ))
+) : (
+  <p className="text-sm text-muted-foreground">
+    No volunteer activities yet.
+  </p>
+)}
                 </CardContent>
               </Card>
             </div>
@@ -299,21 +312,12 @@ const earnedBadges = badges.filter((b: any) => b.earned);
               </div>
               <div className="flex justify-between items-center py-2 border-b border-muted">
                 <span className="text-sm text-muted-foreground">Preferred Region</span>
-                <span className="text-sm font-bold italic">
-  {profile?.region || 'Not set'}
-</span>
-                <span className="text-sm font-bold italic">
-  Not set
-</span>
+                <span className="text-sm font-bold italic"> {profile?.region || 'Not set'}</span>
+                
               </div>
               <div className="flex justify-between items-center py-2 border-b border-muted">
                 <span className="text-sm text-muted-foreground">Organization</span>
-                <span className="text-sm font-bold italic">
-  {profile?.organization || 'Not set'}
-</span>
-                <span className="text-sm font-bold italic">
-  Not set
-</span>
+                <span className="text-sm font-bold italic">{profile?.organization || 'Not set'}</span>
               </div>
             </div>
           </div>
@@ -328,8 +332,15 @@ const earnedBadges = badges.filter((b: any) => b.earned);
               <CardContent className="pt-6">
                 <div className="space-y-4">
                   {pointHistory.length > 0 ? (
+  pointHisto{pointHistory.length > 0 ? (
   pointHistory.slice(0, 5).map((entry, index) => (
-    // existing code
+    <div key={entry.id}>
+      {/* your existing activity JSX */}
+
+      {index < pointHistory.slice(0, 5).length - 1 && (
+        <Separator className="my-4" />
+      )}
+    </div>
   ))
 ) : (
   <p className="text-center text-muted-foreground py-8">
