@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '@/hooks/use-auth';
 import { useDemo, type DemoHint } from '@/hooks/use-demo';
 import { toast } from 'sonner';
 import { useLocation } from 'react-router-dom';
@@ -44,12 +45,13 @@ const DEMO_HINTS: DemoHint[] = [
 
 export function DemoHints() {
   const { isDemoMode, dismissedHints, dismissHint } = useDemo();
-  const location = useLocation();
+const { user } = useAuth();
+const location = useLocation();
   const [hintIndex, setHintIndex] = useState(0);
   const [hasShownWelcome, setHasShownWelcome] = useState(false);
 
   useEffect(() => {
-    if (!isDemoMode) return;
+  if (!isDemoMode || user) return;
 
     // Show welcome hint once on first dashboard visit
     if (!hasShownWelcome && location.pathname === '/dashboard') {
@@ -70,7 +72,7 @@ export function DemoHints() {
 
   // Show contextual hints based on current route
   useEffect(() => {
-    if (!isDemoMode) return;
+  if (!isDemoMode || user) return;
 
     const currentHint = DEMO_HINTS.find(
       (h) => h.route === location.pathname && !dismissedHints.includes(h.id) && h.id !== 'welcome'
