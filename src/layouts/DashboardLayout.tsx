@@ -313,7 +313,7 @@ export function DashboardLayout() {
 
         <main
           data-scroll-root
-          className="flex-1 overflow-y-auto p-4 pb-28 md:p-8 md:pb-12"
+          className="flex-1 overflow-x-hidden p-4 pb-28 md:p-8 md:pb-12"
           style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 7rem)' }}
         >
           <DemoHints />
