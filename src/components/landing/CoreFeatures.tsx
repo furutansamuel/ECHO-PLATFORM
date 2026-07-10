@@ -69,9 +69,6 @@ function FeatureCard({ f }: { f: Feature }) {
       to={f.href}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      onTouchStart={() => setActive(true)}
-      onTouchEnd={() => setActive(false)}
-      onTouchCancel={() => setActive(false)}
       className={`relative overflow-hidden rounded-2xl border p-6 shadow-premium transition-all transform-gpu ${
         active
           ? '-translate-y-1 border-primary/30 shadow-xl'
