@@ -20,8 +20,44 @@ import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS } from '@/lib/community-data';
 const ProfilePage: React.FC = () => {
   const { user, profile, logout, userStats, refreshProfile } = useAuth();
   const [editOpen, setEditOpen] = useState(false);
-  const { currentLevel, nextLevel, progress, pointsToNext } = calculateProgressToNextLevel(MOCK_IMPACT_POINTS);
-  const earnedBadges = ACHIEVEMENT_BADGES.filter(b => b.earned);
+  const isDemo =
+  sessionStorage.getItem('echo_demo_mode') === 'true';
+
+const impactPoints =
+  user && userStats?.eco_points
+    ? userStats.eco_points
+    : isDemo
+    ? MOCK_IMPACT_POINTS
+    : 0;
+
+const impactStats =
+  user && userStats
+    ? userStats
+    : isDemo
+    ? MOCK_IMPACT_STATS
+    : {
+        reportsSubmitted: 0,
+        verifiedReports: 0,
+        cleanupEventsJoined: 0,
+        environmentalScore: 0,
+        communitiesHelped: 0,
+        volunteerHours: 0,
+      };
+
+const badges =
+  userStats?.badges ?? ACHIEVEMENT_BADGES;
+
+const pointHistory =
+  userStats?.point_history ?? MOCK_POINT_HISTORY;
+
+const {
+  currentLevel,
+  nextLevel,
+  progress,
+  pointsToNext,
+} = calculateProgressToNextLevel(impactPoints);
+
+const earnedBadges = badges.filter((b: any) => b.earned);
 
   return (
     <div className="p-4 md:p-6 space-y-8 max-w-5xl mx-auto pb-20">
@@ -58,18 +94,36 @@ const ProfilePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card className="premium-shadow border-none bg-primary/5 text-center p-4">
               <p className="text-xs font-bold uppercase text-muted-foreground">Impact Points</p>
-              <h3 className="text-3xl font-black text-primary">{MOCK_IMPACT_POINTS.toLocaleString()}</h3>
+             <h3 className="text-3xl font-black text-primary"> {impactPoints.toLocaleString()}</h3>
               <p className="text-[10px] italic text-muted-foreground mt-1">{currentLevel.emoji} {currentLevel.name}</p>
             </Card>
             <Card className="premium-shadow border-none bg-secondary/5 text-center p-4">
               <p className="text-xs font-bold uppercase text-muted-foreground">Reports</p>
-              <h3 className="text-3xl font-black text-secondary">{MOCK_IMPACT_STATS.reportsSubmitted}</h3>
-              <p className="text-[10px] italic text-muted-foreground mt-1">{MOCK_IMPACT_STATS.verifiedReports} Verified</p>
+              <h3 className="text-3xl font-black text-secondary">
+  {impactStats.reportsSubmitted}
+</h3>
+
+<p className="text-[10px] italic text-muted-foreground mt-1">
+  {impactStats.verifiedReports} Verified
+</p>
             </Card>
             <Card className="premium-shadow border-none bg-accent/5 text-center p-4">
               <p className="text-xs font-bold uppercase text-muted-foreground">Community Rank</p>
-              <h3 className="text-3xl font-black text-accent">42</h3>
-              <p className="text-[10px] italic text-muted-foreground mt-1">Top 5%</p>
+              <h3 className="text-3xl font-black text-accent">
+  {user && userStats?.community_rank
+    ? `#${userStats.community_rank}`
+    : isDemo
+    ? '#42'
+    : 'N/A'}
+</h3>
+
+<p className="text-[10px] italic text-muted-foreground mt-1">
+  {userStats?.community_rank_percentile
+    ? `Top ${userStats.community_rank_percentile}%`
+    : isDemo
+    ? 'Top 5%'
+    : ''}
+</p>
             </Card>
           </div>
 
