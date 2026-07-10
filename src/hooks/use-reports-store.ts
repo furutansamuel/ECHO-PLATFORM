@@ -1,6 +1,7 @@
 import { useDemo } from '@/hooks/use-demo';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { useAuth } from "@/hooks/use-auth";
 
 export type HazardCategory = 
   | 'Plastic Waste'
