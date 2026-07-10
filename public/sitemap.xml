@@ -4,22 +4,22 @@
      else in this app sits behind auth and shouldn't be indexed. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://echo.example.com/</loc>
+    <loc>https://echo-ng.vercel.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://echo.example.com/about</loc>
+    <loc>https://echo-ng.vercel.app/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://echo.example.com/faq</loc>
+    <loc>https://echo-ng.vercel.app/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://echo.example.com/contact</loc>
+    <loc>https://echo-ng.vercel.app/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
