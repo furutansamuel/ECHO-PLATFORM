@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BrainCircuit, Users, Map, Landmark, BarChart3, Award } from 'lucide-react';
 
@@ -53,6 +53,56 @@ const features = [
   },
 ];
 
+type Feature = (typeof features)[number];
+
+// Drives the "hovered" look from real pointer/touch events instead of CSS
+// :hover. This avoids the "sticky hover" glitch that happens when a browser
+// reports hover-capable input on a touch device (e.g. Chrome's "Desktop
+// site" mode on Android) — with pure CSS :hover there is no event that ever
+// clears the state on a device with no mouse, so tapped cards stay stuck
+// mid-animation. Controlling it explicitly means touchend always resets it.
+function FeatureCard({ f }: { f: Feature }) {
+  const [active, setActive] = useState(false);
+
+  return (
+    <Link
+      to={f.href}
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+      onTouchStart={() => setActive(true)}
+      onTouchEnd={() => setActive(false)}
+      onTouchCancel={() => setActive(false)}
+      className={`relative overflow-hidden rounded-2xl border p-6 shadow-premium transition-all transform-gpu ${
+        active
+          ? '-translate-y-1 border-primary/30 shadow-xl'
+          : 'border-border/60'
+      } bg-card`}
+    >
+      <div
+        className={`absolute inset-0 -z-10 bg-gradient-to-br ${f.tone} transition-opacity ${
+          active ? 'opacity-100' : 'opacity-60'
+        }`}
+      />
+      <div
+        className={`icon-badge mb-4 bg-gradient-to-br ${f.solid} shadow-lg transition-transform transform-gpu duration-300 ${
+          active ? 'scale-110' : ''
+        }`}
+      >
+        <f.icon className="h-5 w-5" />
+      </div>
+      <h3 className="text-lg font-bold text-foreground">{f.title}</h3>
+      <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
+      <span
+        className={`mt-4 inline-flex items-center text-sm font-semibold text-primary transition-opacity ${
+          active ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        Explore →
+      </span>
+    </Link>
+  );
+}
+
 export function CoreFeatures() {
   return (
     <section className="bg-background py-16 lg:py-24">
@@ -67,21 +117,7 @@ export function CoreFeatures() {
         </div>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
-            <Link
-              key={f.title}
-              to={f.href}
-              className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-6 shadow-premium transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl"
-            >
-              <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${f.tone} opacity-0 transition-opacity group-hover:opacity-100`} />
-              <div className={`icon-badge mb-4 bg-gradient-to-br ${f.solid} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
-                <f.icon className="h-5 w-5" />
-              </div>
-              <h3 className="text-lg font-bold text-foreground">{f.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
-              <span className="mt-4 inline-flex items-center text-sm font-semibold text-primary opacity-0 transition-opacity group-hover:opacity-100">
-                Explore →
-              </span>
-            </Link>
+            <FeatureCard key={f.title} f={f} />
           ))}
         </div>
       </div>
