@@ -3,6 +3,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* See the touch-detection script in index.html. Once a real touch has
+   happened, html.is-touch is set, and every hover:/group-hover: utility
+   below is disabled — this is what stops hover-driven lift/scale/translate
+   effects from sticking or firing on scroll on touch devices, including
+   Android Chrome/Brave in "Desktop site" mode where (hover: hover) is
+   reported even though there is no mouse. :active (tap-press) still works
+   normally and is unaffected. */
+@custom-variant hover (&:hover:not(:where(html.is-touch) *));
+@custom-variant group-hover (:where(.group):hover:not(:where(html.is-touch) *) &);
+
 :root {
   --background: #FAFAFA;
   --foreground: #212121;
@@ -217,7 +227,7 @@
   .icon-badge {
     @apply inline-flex h-11 w-11 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300;
   }
-  .icon-badge:hover {
+  .icon-badge:hover:not(:where(html.is-touch) *) {
     @apply -translate-y-0.5 shadow-lg;
   }
 
@@ -227,7 +237,7 @@
   .card-premium {
     @apply relative rounded-2xl border border-border/60 bg-card shadow-premium transition-all duration-300;
   }
-  .card-premium:hover {
+  .card-premium:hover:not(:where(html.is-touch) *) {
     @apply -translate-y-1 border-primary/20 shadow-xl;
   }
 
