@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as Sonner from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface DemoHint {
   id: string;
@@ -24,28 +25,28 @@ const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [isDemoMode, setIsDemoMode] = useState(() => {
-    return localStorage.getItem('echo_demo_mode') === 'true';
+    return sessionStorage.getItem('echo_demo_mode') === 'true';
   });
 
   const [isPresentationMode, setIsPresentationMode] = useState(() => {
-    return localStorage.getItem('echo_presentation_mode') === 'true';
+    return sessionStorage.getItem('echo_presentation_mode') === 'true';
   });
 
   const [dismissedHints, setDismissedHints] = useState<string[]>(() => {
-    const saved = localStorage.getItem('echo_dismissed_hints');
+    const saved = sessionStorage.getItem('echo_dismissed_hints');
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('echo_demo_mode', String(isDemoMode));
+    sessionStorage.setItem('echo_demo_mode', String(isDemoMode));
     if (!isDemoMode) {
       setIsPresentationMode(false);
-      localStorage.setItem('echo_presentation_mode', 'false');
+      sessionStorage.setItem('echo_presentation_mode', 'false');
     }
   }, [isDemoMode]);
 
   useEffect(() => {
-    localStorage.setItem('echo_presentation_mode', String(isPresentationMode));
+    sessionStorage.setItem('echo_presentation_mode', String(isPresentationMode));
     if (isPresentationMode) {
       document.body.classList.add('presentation-mode');
     } else {
@@ -54,15 +55,39 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   }, [isPresentationMode]);
 
   useEffect(() => {
-    localStorage.setItem('echo_dismissed_hints', JSON.stringify(dismissedHints));
+    sessionStorage.setItem('echo_dismissed_hints', JSON.stringify(dismissedHints));
   }, [dismissedHints]);
+  useEffect(() => {
+  const { data: authListener } =
+    supabase.auth.onAuthStateChange((_event, session) => {
+      const realUserAuthenticated = !!session?.user;
+
+      if (realUserAuthenticated && isDemoMode) {
+        sessionStorage.removeItem('echo_demo_mode');
+        sessionStorage.removeItem('echo_presentation_mode');
+        sessionStorage.removeItem('echo_dismissed_hints');
+        sessionStorage.removeItem('echo_reports');
+        sessionStorage.removeItem('echo_drafts');
+        sessionStorage.removeItem('echo_stats');
+        sessionStorage.removeItem('echo_notifications');
+
+        setIsDemoMode(false);
+        setIsPresentationMode(false);
+        setDismissedHints([]);
+      }
+    });
+
+  return () => {
+    authListener.subscription.unsubscribe();
+  };
+}, [isDemoMode]);
 
   const resetDemo = () => {
-    localStorage.removeItem('echo_reports');
-    localStorage.removeItem('echo_drafts');
-    localStorage.removeItem('echo_stats');
-    localStorage.removeItem('echo_notifications');
-    localStorage.removeItem('echo_dismissed_hints');
+    sessionStorage.removeItem('echo_reports');
+    sessionStorage.removeItem('echo_drafts');
+    sessionStorage.removeItem('echo_stats');
+    sessionStorage.removeItem('echo_notifications');
+    sessionStorage.removeItem('echo_dismissed_hints');
     setDismissedHints([]);
     Sonner.toast.success('Demo data reset to default states');
     // Reload to apply changes if needed
