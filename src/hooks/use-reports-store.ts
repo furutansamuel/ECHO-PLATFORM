@@ -1,6 +1,7 @@
 import { useDemo } from '@/hooks/use-demo';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { useAuth } from "@/hooks/use-auth";
 
 export type HazardCategory = 
   | 'Plastic Waste'
@@ -79,6 +80,7 @@ const STORAGE_KEY_NOTIFICATIONS = 'echo_notifications';
 
 export const useReportsStore = () => {
   const { isDemoMode } = useDemo();
+  const { user, userStats } = useAuth();
   const [reports, setReports] = useState<Report[]>([]);
   const [draft, setDraft] = useState<Partial<Report> | null>(null);
   const DEMO_STATS: ReportStats = {
@@ -103,12 +105,13 @@ export const useReportsStore = () => {
   hazardsReported: 0,
   reportsVerified: 0,
 };
+
   const [stats, setStats] = useState<ReportStats>(EMPTY_STATS);
   const [notifications, setNotifications] = useState<EchoNotification[]>([]);
 
   useEffect(() => {
     if (isDemoMode) {
-      const storedReports = localStorage.getItem(STORAGE_KEY_REPORTS);
+      const storedReports = sessionStorage.getItem(STORAGE_KEY_REPORTS);
     
       if (storedReports) {
         setReports(JSON.parse(storedReports));
@@ -118,31 +121,45 @@ export const useReportsStore = () => {
     const storedDraft = localStorage.getItem(STORAGE_KEY_DRAFTS);
     if (storedDraft) setDraft(JSON.parse(storedDraft));
 
-    if (isDemoMode) {
-      const storedStats = localStorage.getItem(STORAGE_KEY_STATS);
-      
-    if (storedStats) {
-      setStats(JSON.parse(storedStats));
-    } else {
-      setStats(DEMO_STATS);
-    }
+   if (!user && isDemoMode) {
+  const storedStats = sessionStorage.getItem(STORAGE_KEY_STATS);
+
+  if (storedStats) {
+    setStats(JSON.parse(storedStats));
+  } else {
+    setStats(DEMO_STATS);
   }
+}
+
+if (user && userStats) {
+  setStats({
+    totalReports: userStats.reportsSubmitted ?? 0,
+    verifiedReports: userStats.verifiedReports ?? 0,
+    pendingReports: userStats.pendingReports ?? 0,
+    resolvedReports: userStats.resolvedReports ?? 0,
+    ecoPoints: userStats.eco_points ?? 0,
+    cleanupEvents: userStats.cleanupEventsJoined ?? 0,
+    volunteerHours: userStats.volunteerHours ?? 0,
+    hazardsReported: userStats.hazardsReported ?? 0,
+    reportsVerified: userStats.verifiedReports ?? 0,
+  });
+}
     
     if (isDemoMode) {
-      const storedNotifications = localStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
+      const storedNotifications = sessionStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
       
     if (storedNotifications) {
       setNotifications(JSON.parse(storedNotifications));
     }
   }
-  }, [isDemoMode]);
+  }, [isDemoMode, user, userStats]);
 
   const saveReport = (report: Report) => {
     const updatedReports = [report, ...reports];
     setReports(updatedReports);
     
     if (isDemoMode) {
-      localStorage.setItem(
+      sessionStorage.setItem(
         STORAGE_KEY_REPORTS,
         JSON.stringify(updatedReports)
       );
@@ -157,8 +174,11 @@ export const useReportsStore = () => {
     };
     setStats(updatedStats);
     
-    if (isDemoMode) {
-      localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(updatedStats));
+    if (!user && isDemoMode) {
+  sessionStorage.setItem(
+  STORAGE_KEY_STATS,
+  JSON.stringify(updatedStats)
+);
     }
 
     // Add notification
@@ -172,29 +192,29 @@ export const useReportsStore = () => {
     };
     const updatedNotifications = [newNotification, ...notifications];
     setNotifications(updatedNotifications);
-    localStorage.setItem(STORAGE_KEY_NOTIFICATIONS, JSON.stringify(updatedNotifications));
+    sessionStorage.setItem(STORAGE_KEY_NOTIFICATIONS, JSON.stringify(updatedNotifications));
 
     // Clear draft
     setDraft(null);
-    localStorage.removeItem(STORAGE_KEY_DRAFTS);
+    sessionStorage.removeItem(STORAGE_KEY_DRAFTS);
 
     toast.success('Hazard report submitted successfully!');
   };
 
   const saveDraft = (partialReport: Partial<Report>) => {
     setDraft(partialReport);
-    localStorage.setItem(STORAGE_KEY_DRAFTS, JSON.stringify(partialReport));
+    sessionStorage.setItem(STORAGE_KEY_DRAFTS, JSON.stringify(partialReport));
   };
 
   const deleteDraft = () => {
     setDraft(null);
-    localStorage.removeItem(STORAGE_KEY_DRAFTS);
+    sessionStorage.removeItem(STORAGE_KEY_DRAFTS);
   };
 
   const markNotificationAsRead = (id: string) => {
     const updated = notifications.map(n => n.id === id ? { ...n, read: true } : n);
     setNotifications(updated);
-    localStorage.setItem(STORAGE_KEY_NOTIFICATIONS, JSON.stringify(updated));
+    sessionStorage.setItem(STORAGE_KEY_NOTIFICATIONS, JSON.stringify(updated));
   };
 
   return {

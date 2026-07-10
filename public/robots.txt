@@ -1,19 +1,22 @@
-# TODO: replace echo.example.com below with your real deployed domain
 User-agent: *
 Allow: /
+Allow: /about
+Allow: /faq
+Allow: /contact
+Allow: /map
+Allow: /ai-intelligence
+Allow: /community-health
+Allow: /analytics
+Allow: /community-insights
+Allow: /knowledge
+Allow: /search
+
 Disallow: /dashboard
 Disallow: /report
 Disallow: /reports
 Disallow: /rewards
 Disallow: /notifications
 Disallow: /profile
-Disallow: /map
-Disallow: /ai-intelligence
-Disallow: /community-health
-Disallow: /analytics
-Disallow: /community-insights
-Disallow: /knowledge
-Disallow: /search
 Disallow: /auth
 
-Sitemap: https://echo.example.com/sitemap.xml
+Sitemap: https://echo-ng.vercel.app/sitemap.xml
