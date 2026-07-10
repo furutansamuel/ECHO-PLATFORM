@@ -49,6 +49,23 @@
       "url": "https://echo-ng.vercel.app/"
     }
     </script>
+    <script>
+      // Real touch can't be spoofed by "Request Desktop Site" the way the
+      // CSS (hover) / (pointer) media features can. As soon as a genuine
+      // touch happens, mark <html> so hover-driven effects (which have no
+      // reliable "un-hover" event on touch and would otherwise stick/bounce)
+      // are switched off for the rest of the session.
+      (function () {
+        window.addEventListener(
+          "touchstart",
+          function () {
+            document.documentElement.classList.add("is-touch");
+          },
+          { once: true, passive: true }
+        );
+      })();
+    </script>
+  </head>
   </head>
   <body>
     <div id="root"></div>
