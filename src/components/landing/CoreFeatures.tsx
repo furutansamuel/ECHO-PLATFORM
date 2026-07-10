@@ -72,7 +72,7 @@ export function CoreFeatures() {
               to={f.href}
               className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-6 shadow-premium transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl"
             >
-              <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${f.tone} opacity-0 transition-opacity group-hover:opacity-100`} />
+              <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${f.tone} opacity-60 transition-opacity group-hover:opacity-100`}>
               <div className={`icon-badge mb-4 bg-gradient-to-br ${f.solid} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
                 <f.icon className="h-5 w-5" />
               </div>
