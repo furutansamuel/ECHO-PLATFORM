@@ -116,7 +116,7 @@ export function DashboardLayout() {
 
   return (
     <div className={cn(
-      "flex min-h-screen w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary",
+      "flex min-h-[100dvh] w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary",
       isPresentationMode && "presentation-mode"
     )}>
       <aside

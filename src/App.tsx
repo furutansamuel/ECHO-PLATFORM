@@ -38,7 +38,7 @@ const CommunityInsights = lazy(() => import("@/pages/community/CommunityInsights
 const GlobalSearchPage = lazy(() => import("@/pages/intelligence/GlobalSearchPage"));
 
 function LoadingFallback() {
-  return <div className="flex items-center justify-center min-h-screen"><p>Loading...</p></div>;
+  return <div className="flex items-center justify-center min-h-[100dvh]"><p>Loading...</p></div>;
 }
 
 function App() {
