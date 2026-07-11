@@ -127,7 +127,7 @@ export function DashboardLayout() {
       >
         <div className="flex items-center justify-between p-4">
           {!collapsed && (
-            <Link to="/dashboard" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <Icons.logo className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold tracking-tight text-sidebar-foreground">ECHO</span>
             </Link>
@@ -197,9 +197,9 @@ export function DashboardLayout() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-64 p-0">
+              <SheetContent side="left" className="w-[85vw] max-w-sm p-0">
                 <div className="border-b p-4">
-                  <Link to="/dashboard" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
                     <Icons.logo className="h-8 w-8 text-primary" />
                     <span className="text-xl font-bold tracking-tight">ECHO</span>
                   </Link>
@@ -233,7 +233,7 @@ export function DashboardLayout() {
                           key={item.href}
                           to={item.href}
                           className={cn(
-                            'flex items-center gap-3 rounded-lg px-3 py-2',
+                            'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all'
                             location.pathname === item.href
                               ? 'bg-primary text-white'
                               : 'text-foreground hover:bg-secondary'
@@ -253,7 +253,7 @@ export function DashboardLayout() {
                         key={item.href}
                         to={item.href}
                         className={cn(
-                          'flex items-center gap-3 rounded-lg px-3 py-2',
+                          'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all'
                           location.pathname === item.href
                             ? 'bg-primary text-white'
                             : 'text-foreground hover:bg-secondary'
