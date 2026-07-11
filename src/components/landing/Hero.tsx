@@ -15,11 +15,11 @@ const slides = [
     alt: 'Community environmental cleanup in Nigeria',
   },
   {
-    src: '/images/flood-monitoring.jpeg',
+    src: '/images/flood-monitoring.jpg',
     alt: 'Flood monitoring and environmental hazards in Nigeria',
   },
   {
-    src: '/images/environ-dash.jpeg',
+    src: '/images/environ-dash.jpg',
     alt: 'Environmental intelligence dashboard and analytics',
   },
 ];
