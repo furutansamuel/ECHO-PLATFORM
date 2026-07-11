@@ -19,7 +19,7 @@ const slides = [
     alt: 'Flood monitoring and environmental hazards in Nigeria',
   },
   {
-    src: '/images/environmental-dashboard.jpeg',
+    src: '/images/environ-dash.jpeg',
     alt: 'Environmental intelligence dashboard and analytics',
   },
 ];
