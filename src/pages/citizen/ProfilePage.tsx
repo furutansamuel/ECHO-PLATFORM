@@ -35,12 +35,14 @@ const impactStats =
     : userStats;
 
 const badges =
-  userStats?.badges ??
-  (isDemo ? ACHIEVEMENT_BADGES : []);
+  isDemo
+    ? ACHIEVEMENT_BADGES
+    : userStats?.badges ?? [];
 
 const pointHistory =
-  userStats?.point_history ??
-  (isDemo ? MOCK_POINT_HISTORY : []);
+  isDemo
+    ? MOCK_POINT_HISTORY
+    : userStats?.point_history ?? [];
 
   if (user && !isDemo && loading) {
   return <ProfileSkeleton />;
@@ -55,6 +57,8 @@ const {
 
 const earnedBadges = badges.filter((b: any) => b.earned);
 
+const recentActivities = pointHistory.slice(0, 5);
+
   return (
     <div className="p-4 md:p-6 space-y-8 max-w-5xl mx-auto pb-20">
       {/* Profile Header */}
@@ -65,7 +69,15 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             <Avatar className="h-24 w-24 border-4 border-background shadow-2xl sm:h-28 sm:w-28 md:h-32 md:w-32">
               <AvatarImage src={profile?.avatar_url || ''} />
               <AvatarFallback className="bg-primary text-primary-foreground text-3xl font-black md:text-4xl">
-                {profile?.full_name?.split(' ').map((n: string) => n[0]).join('') || 'JD'}
+                {
+  loading
+    ? ''
+    : profile?.full_name
+        ?.split(' ')
+        .map((n) => n[0])
+        .join('')
+        || 'JD'
+                }
               </AvatarFallback>
             </Avatar>
             <div className="flex-grow space-y-1 md:pb-2">
@@ -145,7 +157,10 @@ const earnedBadges = badges.filter((b: any) => b.earned);
                 <span className="font-bold">Progress</span>
                 <span className="font-black text-primary">{progress}%</span>
               </div>
-              <Progress value={progress} className="h-3" />
+              <Progress
+  value={loading ? undefined : progress}
+  className="h-3"
+/>
               {nextLevel && (
                 <p className="text-xs text-muted-foreground italic">
                   {pointsToNext} more points to reach {nextLevel.emoji} {nextLevel.name}
@@ -326,7 +341,7 @@ const earnedBadges = badges.filter((b: any) => b.earned);
               <CardContent className="pt-6">
   <div className="space-y-4">
     {pointHistory.length > 0 ? (
-      pointHistory.slice(0, 5).map((entry, index) => (
+      recentActivities.map((entry, index) => (
         <div key={entry.id}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -372,7 +387,7 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             </div>
           </div>
 
-          {index < pointHistory.slice(0, 5).length - 1 && (
+          {index < recentActivities.length - 1 && (
             <Separator className="my-4" />
           )}
         </div>
