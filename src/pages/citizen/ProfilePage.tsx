@@ -51,13 +51,9 @@ const pointHistory =
     ? MOCK_POINT_HISTORY
     : userStats?.point_history ?? [];
 
-  if (
-  user &&
-  !isDemo &&
-  (!profile || !userStats)
-) {
+  if (user && !isDemo && loading) {
   return <ProfileSkeleton />;
-  }
+}
 const {
   currentLevel,
   nextLevel,
