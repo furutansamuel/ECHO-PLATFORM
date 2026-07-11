@@ -84,9 +84,7 @@ export function Hero() {
           />
         ))}
         {/* Dark overlay for readability sits ABOVE images */}
-        {/* Light overlay for readability */}
-{/* Soft green-dark overlay */}
-<div className="absolute inset-0 bg-gradient-to-b from-emerald-950/25 via-black/20 to-black/35"/>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/55 to-background/85 dark:from-background/80 dark:via-background/70 dark:to-background/90" />
         {/* Subtle grain / dots */}
         <div
           className="absolute inset-0 opacity-[0.15]"
