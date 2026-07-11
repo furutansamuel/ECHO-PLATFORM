@@ -107,26 +107,22 @@ export function Hero() {
           </motion.div>
 
           <motion.h1
-            initial={rise(16)}
-            animate={settle}
-            transition={{ duration: 0.6, delay: 0.05 }}
-            className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
-          >
-            Cleaner communities,{' '}
-            <span className="bg-gradient-to-br from-primary via-accent to-emerald-500 bg-clip-text text-transparent">
-              powered by ECHO
-            </span>
-          </motion.h1>
+  initial={rise(16)}
+  animate={settle}
+  transition={{ duration: 0.6, delay: 0.05 }}
+  className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+>
+  Environmental Community Health Observatory (ECHO)
+</motion.h1>
 
           <motion.p
-            initial={rise(16)}
-            animate={settle}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
-          >
-            Report environmental hazards, monitor community health, and drive real
-            change with AI-verified intelligence.
-          </motion.p>
+  initial={rise(16)}
+  animate={settle}
+  transition={{ duration: 0.6, delay: 0.15 }}
+  className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
+>
+  Cleaner communities powered by AI-driven environmental intelligence for reporting, monitoring, and responding to environmental hazards.
+</motion.p>
 
           <motion.div
             initial={rise(16)}
