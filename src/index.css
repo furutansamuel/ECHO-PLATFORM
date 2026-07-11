@@ -184,6 +184,16 @@
 }
 
 @layer utilities {
+	/* Hides the native scrollbar on horizontally-scrolling rows (e.g. the
+     Knowledge Centre category filter pills) so they read as an intentional
+     swipeable row instead of a cramped, scrollbar-cluttered one on mobile. */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
   .glass {
     @apply bg-white/40 backdrop-blur-xl border border-white/30 shadow-premium;
   }
