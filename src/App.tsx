@@ -58,6 +58,10 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/faq" element={<FAQ />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+<Route path="/terms-of-service" element={<TermsOfService />} />
+<Route path="/cookie-policy" element={<CookiePolicy />} />
+<Route path="/accessibility" element={<Accessibility />} />
               </Route>
               
               {/* Auth Routes */}
