@@ -116,12 +116,12 @@ export function DashboardLayout() {
 
   return (
     <div className={cn(
-      "flex min-h-[100dvh] w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary",
+      "flex min-h-screen w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary",
       isPresentationMode && "presentation-mode"
     )}>
       <aside
         className={cn(
-          'hidden md:flex flex-col border-r border-border/40 bg-sidebar/50 backdrop-blur-sm transition-[width] duration-300 ease-in-out z-30',
+          'hidden md:flex flex-col border-r border-border/40 bg-sidebar/50 backdrop-blur-xl transition-all duration-300 ease-in-out z-30',
           collapsed ? 'w-[70px]' : 'w-64'
         )}
       >
@@ -184,10 +184,11 @@ export function DashboardLayout() {
           </TooltipProvider>
         </div>
       </aside>
-<div className="flex flex-1 flex-col">
+
+      <div className="flex flex-1 flex-col overflow-hidden">
         <header
-          className="sticky top-0 z-20 flex min-h-20 items-center justify-between border-b border-border/40 bg-background/80 px-4 py-2 backdrop-blur-xl md:px-8"
-          style={{ paddingTop: '0.5rem' }}
+          className="sticky top-0 z-20 flex min-h-20 items-center justify-between border-b border-border/40 bg-background px-4 py-2 md:px-8"
+          style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
         >
           <div className="flex items-center gap-4">
             <Sheet>
@@ -313,7 +314,7 @@ export function DashboardLayout() {
 
         <main
           data-scroll-root
-          className="flex-1 overflow-x-hidden p-4 pb-28 md:p-8 md:pb-12"
+          className="flex-1 overflow-y-auto p-4 pb-28 md:p-8 md:pb-12"
           style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 7rem)' }}
         >
           <DemoHints />
@@ -325,3 +326,4 @@ export function DashboardLayout() {
     </div>
   );
 }
+
