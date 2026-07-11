@@ -32,7 +32,14 @@ const impactPoints =
 const impactStats =
   isDemo
     ? MOCK_IMPACT_STATS
-    : userStats;
+    : userStats ?? {
+        reportsSubmitted: 0,
+        verifiedReports: 0,
+        cleanupEventsJoined: 0,
+        environmentalScore: 0,
+        communitiesHelped: 0,
+        volunteerHours: 0,
+      };
 
 const badges =
   isDemo
@@ -44,10 +51,13 @@ const pointHistory =
     ? MOCK_POINT_HISTORY
     : userStats?.point_history ?? [];
 
-  if (user && !isDemo && loading) {
+  if (
+  user &&
+  !isDemo &&
+  (!profile || !userStats)
+) {
   return <ProfileSkeleton />;
-}
-
+  }
 const {
   currentLevel,
   nextLevel,
@@ -118,19 +128,15 @@ const recentActivities = pointHistory.slice(0, 5);
             <Card className="premium-shadow border-none bg-accent/5 text-center p-4">
               <p className="text-xs font-bold uppercase text-muted-foreground">Community Rank</p>
               <h3 className="text-3xl font-black text-accent">
-  {user && userStats?.community_rank
-    ? `#${userStats.community_rank}`
-    : isDemo
-    ? '#42'
-    : 'N/A'}
+  {userStats?.community_rank
+  ? `#${userStats.community_rank}`
+  : '—'}
 </h3>
 
 <p className="text-[10px] italic text-muted-foreground mt-1">
   {userStats?.community_rank_percentile
-    ? `Top ${userStats.community_rank_percentile}%`
-    : isDemo
-    ? 'Top 5%'
-    : ''}
+  ? `Top ${userStats.community_rank_percentile}%`
+  : 'Not ranked'}
 </p>
             </Card>
           </div>
