@@ -265,7 +265,7 @@ const AIIntelligencePage: React.FC = () => {
           <CardContent className="space-y-4">
             {aiAnalysis?.recommendations?.map((rec, idx) => (
               <motion.div 
-                key={idx}
+                key={rec.type ?? idx}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.1 }}
