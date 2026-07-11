@@ -10,6 +10,9 @@ interface UserProfile {
   role: UserRole;
   full_name?: string;
   avatar_url?: string;
+  created_at?: string;
+  region?: string;
+  organization?: string;
 }
 
 interface AuthContextType {
