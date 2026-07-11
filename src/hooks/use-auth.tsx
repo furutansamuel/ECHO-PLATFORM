@@ -75,51 +75,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 lastFetchedProfileFor.current = userId;
       try {
-        const [
-  profileResult,
-  statsResult,
-] = await Promise.all([
-  supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .maybeSingle(),
+  const [profileResult, statsResult] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .maybeSingle(),
 
-  supabase
-    .from("user_stats")
-    .select("*")
-    .eq("user_id", userId)
-    .maybeSingle(),
-]);
+    supabase
+      .from("user_stats")
+      .select("*")
+      .eq("user_id", userId)
+      .maybeSingle(),
+  ]);
 
-const {
-  data,
-  error,
-} = profileResult;
+  const { data, error } = profileResult;
 
-const {
-  data: stats,
-  error: statsError,
-} = statsResult;
+  const {
+    data: stats,
+    error: statsError,
+  } = statsResult;
 
-const [profileResult, statsResult] = await Promise.all([
-const [profileResult, statsResult] = await Promise.all([
-  supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .maybeSingle(),
-
-  supabase
-    .from("user_stats")
-    .select("*")
-    .eq("user_id", userId)
-    .maybeSingle(),
-]);
-
-const { data, error } = profileResult;
-const { data: stats, error: statsError } = statsResult;
-
+  // rest of code...
 
 if (!alive) return;
 
