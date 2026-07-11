@@ -23,7 +23,7 @@ export default function CitizenDashboard() {
 
   if (isPresentationMode) {
     return (
-      <div className="space-y-8 p-6 md:p-12 bg-background min-h-screen">
+      <div className="space-y-8 p-6 md:p-12 bg-background min-h-[100dvh]">
         <div className="flex items-center justify-between border-b pb-6">
           <div className="space-y-1">
             <h1 className="text-4xl font-black tracking-tight text-primary">ECHO PLATFORM</h1>
