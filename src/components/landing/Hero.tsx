@@ -84,7 +84,8 @@ export function Hero() {
           />
         ))}
         {/* Dark overlay for readability sits ABOVE images */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/55 to-background/85 dark:from-background/80 dark:via-background/70 dark:to-background/90" />
+        {/* Light overlay for readability */}
+<div className="absolute inset-0 bg-white/55" />
         {/* Subtle grain / dots */}
         <div
           className="absolute inset-0 opacity-[0.15]"
@@ -102,8 +103,8 @@ export function Hero() {
             initial={rise(12)}
             animate={settle}
             transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-background/60 px-4 py-1.5 text-xs font-semibold text-primary backdrop-blur-md"
-          >
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-green-800 backdrop-blur-md"
+            >
             <Sparkles className="h-3.5 w-3.5" />
             Environmental Intelligence for Safer Communities
           </motion.div>
@@ -113,7 +114,7 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.05 }}
-  className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+  className="text-4xl font-black leading-[1.05] tracking-tight text-black md:text-6xl lg:text-7xl"
 >
   Environmental Community Health Observatory (ECHO)
 </motion.h1>
@@ -122,7 +123,7 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.15 }}
-  className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
+  className="mx-auto mt-6 max-w-2xl text-lg text-gray-700 md:text-xl"
 >
   Empowering communities to report, monitor, and respond to environmental hazards through AI-driven environmental intelligence.
 </motion.p>
