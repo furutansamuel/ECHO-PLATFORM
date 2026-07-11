@@ -56,9 +56,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     sessionStorage.getItem("echo_demo_mode") === "true";
 
   if (demoMode) {
-    setUser(DEMO_USER);
-    setProfile(DEMO_PROFILE);
-  }
+  setUser(DEMO_USER);
+  setProfile(DEMO_PROFILE);
+  setUserStats(null);
+}
 
   setLoading(false);
 
@@ -68,34 +69,66 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
     const fetchProfile = async (userId: string) => {
-      if (lastFetchedProfileFor.current === userId) return;
-      lastFetchedProfileFor.current = userId;
-      try {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", userId)
-          .maybeSingle();
-        const { data: stats, error: statsError } = await supabase
-  .from("user_stats")
-  .select("*")
-  .eq("user_id", userId)
-  .maybeSingle();
-
-if (statsError) {
-  console.error("[ECHO] stats fetch error", statsError);
+      if (loading && lastFetchedProfileFor.current === userId) {
+  return;
 }
 
-setUserStats(stats ?? null);
+lastFetchedProfileFor.current = userId;
+      try {
+        const [
+  profileResult,
+  statsResult,
+] = await Promise.all([
+  supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .maybeSingle(),
+
+  supabase
+    .from("user_stats")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle(),
+]);
+
+const {
+  data,
+  error,
+} = profileResult;
+
+const {
+  data: stats,
+  error: statsError,
+} = statsResult;
+
+const [profileResult, statsResult] = await Promise.all([
+  supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .maybeSingle(),
+
+  supabase
+    .from("user_stats")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle(),
+]);
+
+const { data, error } = profileResult;
+const { data: stats, error: statsError } = statsResult;
 
 if (!alive) return;
 
-if (error && (error as { code?: string }).code !== "PGRST116") {
-  console.error("[ECHO] profile fetch error", error);
-}
+setProfile(
+  data
+    ? (data as UserProfile)
+    : { id: userId, role: "citizen" }
+);
 
-if (data) {
-  setProfile(data as UserProfile);
+setUserStats(stats ?? null);
+setLoading(false);
 } else {
   const {
     data: { user: authUser },
@@ -122,10 +155,21 @@ if (data) {
     setProfile(newProfile as UserProfile);
   }
 }
+        if (alive) {
+  setLoading(false);
+        }
+        
       } catch (err) {
-        if (!alive) return;
-        console.error("[ECHO] profile fetch failed", err);
-        setProfile({ id: userId, role: "citizen" });
+  if (!alive) return;
+
+  console.error("[ECHO] profile fetch failed", err);
+
+  setProfile({
+    id: userId,
+    role: "citizen",
+  });
+
+  setLoading(false);
       }
     };
 
@@ -145,21 +189,30 @@ if (data) {
   sessionStorage.removeItem("echo_notifications");
   sessionStorage.removeItem("echo_dismissed_hints");
 
-  void fetchProfile(nextUser.id).finally(() => {
-    if (alive) setLoading(false);
-  });
+  setLoading(true);
+  
+  void fetchProfile(nextUser.id);
+       
 } else {
   lastFetchedProfileFor.current = null;
+
   setUser(null);
   setProfile(null);
+  setUserStats(null);
   setLoading(false);
-}
+     }
     });
 
     // Safety net: even if onAuthStateChange never fires, don't gate forever.
     const failSafe = setTimeout(() => {
-      if (alive) setLoading(false);
-    }, 4000);
+  if (
+    alive &&
+    !profile &&
+    !user
+  ) {
+    setLoading(false);
+  }
+}, 4000);
 
     return () => {
       alive = false;
