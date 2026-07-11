@@ -1,5 +1,6 @@
 import EditProfileModal from "@/components/profile/EditProfileModal";
 import { useState } from "react";
+import ProfileSkeleton from "@/components/profile/ProfileSkeleton";
 import { Shield, Award, Settings, LogOut, Mail, Edit3, FileText, CheckCircle, Users, Calendar, BookOpen, Clock, TrendingUp, Target, Heart, Zap, Megaphone } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,31 +19,20 @@ import {
 import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS } from '@/lib/community-data';
 
 const ProfilePage: React.FC = () => {
-  const { user, profile, logout, userStats, refreshProfile } = useAuth();
+  const { user, profile, logout, userStats, loading, refreshProfile } = useAuth();
   const [editOpen, setEditOpen] = useState(false);
   const isDemo =
   sessionStorage.getItem('echo_demo_mode') === 'true';
 
 const impactPoints =
-  user && userStats?.eco_points
-    ? userStats.eco_points
-    : isDemo
+  isDemo
     ? MOCK_IMPACT_POINTS
-    : 0;
+    : userStats?.eco_points ?? 0;
 
 const impactStats =
-  user && userStats
-    ? userStats
-    : isDemo
+  isDemo
     ? MOCK_IMPACT_STATS
-    : {
-        reportsSubmitted: 0,
-        verifiedReports: 0,
-        cleanupEventsJoined: 0,
-        environmentalScore: 0,
-        communitiesHelped: 0,
-        volunteerHours: 0,
-      };
+    : userStats;
 
 const badges =
   userStats?.badges ??
@@ -51,6 +41,10 @@ const badges =
 const pointHistory =
   userStats?.point_history ??
   (isDemo ? MOCK_POINT_HISTORY : []);
+
+  if (user && !isDemo && loading) {
+  return <ProfileSkeleton />;
+}
 
 const {
   currentLevel,
