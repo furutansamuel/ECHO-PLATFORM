@@ -115,12 +115,10 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.05 }}
-  className="text-4xl font-black leading-[1.05] tracking-tight text-black md:text-6xl lg:text-7xl"
->
+  className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+          >
   Environmental Community Health Observatory (
-  <span className="bg-gradient-to-br from-primary via-accent to-emerald-500 bg-clip-text text-transparent">
-              powered by ECHO
-            </span>
+  <span className="bg-gradient-to-br from-primary via-accent to-emerald-500 bg-clip-text text-transparent">ECHO</span>
   )
 </motion.h1>
 
