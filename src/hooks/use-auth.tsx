@@ -88,8 +88,6 @@ if (statsError) {
 
 setUserStats(stats ?? null);
 
-setUserStats(stats);
-
 if (!alive) return;
 
 if (error && (error as { code?: string }).code !== "PGRST116") {
