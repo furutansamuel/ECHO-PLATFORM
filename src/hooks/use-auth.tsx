@@ -69,9 +69,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
     const fetchProfile = async (userId: string) => {
-      if (loading && lastFetchedProfileFor.current === userId) {
+      if (lastFetchedProfileFor.current === userId) {
   return;
-}
+      }
 
 lastFetchedProfileFor.current = userId;
       try {
@@ -211,12 +211,8 @@ if (alive) {
     });
 
     // Safety net: even if onAuthStateChange never fires, don't gate forever.
-    const failSafe = setTimeout(() => {
-  if (
-    alive &&
-    !profile &&
-    !user
-  ) {
+   const failSafe = setTimeout(() => {
+  if (alive) {
     setLoading(false);
   }
 }, 4000);
