@@ -85,7 +85,8 @@ export function Hero() {
         ))}
         {/* Dark overlay for readability sits ABOVE images */}
         {/* Light overlay for readability */}
-<div className="absolute inset-0 bg-white/55" />
+{/* Soft green-dark overlay */}
+<div className="absolute inset-0 bg-gradient-to-b from-emerald-950/25 via-black/20 to-black/35"/>
         {/* Subtle grain / dots */}
         <div
           className="absolute inset-0 opacity-[0.15]"
@@ -116,15 +117,18 @@ export function Hero() {
   transition={{ duration: 0.6, delay: 0.05 }}
   className="text-4xl font-black leading-[1.05] tracking-tight text-black md:text-6xl lg:text-7xl"
 >
-  Environmental Community Health Observatory (ECHO)
+  Environmental Community Health Observatory (
+  <span className="text-primary">ECHO</span>
+  <span className="text-emerald-600">ECHO</span>
+  )
 </motion.h1>
 
           <motion.p
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.15 }}
-  className="mx-auto mt-6 max-w-2xl text-lg text-gray-700 md:text-xl"
->
+  className="mx-auto mt-6 max-w-2xl text-lg text-gray-900 md:text-xl"
+   >        
   Empowering communities to report, monitor, and respond to environmental hazards through AI-driven environmental intelligence.
 </motion.p>
 
@@ -157,7 +161,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="mt-6 text-sm text-muted-foreground"
+            className="mt-6 text-sm text-gray-800"
           >
             Free for citizens • Built for Nigeria • Trusted by community leaders
           </motion.p>
