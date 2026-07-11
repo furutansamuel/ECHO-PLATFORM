@@ -1,4 +1,8 @@
 import EditProfileModal from "@/components/profile/EditProfileModal";
+import { EnvironmentalImpactSummary } from "@/components/profile/EnvironmentalImpactSummary";
+import { AchievementBadges } from "@/components/profile/AchievementBadges";
+import { CommunityEngagement } from "@/components/profile/CommunityEngagement";
+import { AccountInformation } from "@/components/profile/AccountInformation";
 import { useState } from "react";
 import ProfileSkeleton from "@/components/profile/ProfileSkeleton";
 import { Shield, Award, Settings, LogOut, Mail, Edit3, FileText, CheckCircle, Users, Calendar, BookOpen, Clock, TrendingUp, Target, Heart, Zap, Megaphone } from 'lucide-react';
@@ -171,166 +175,32 @@ const recentActivities = pointHistory.slice(0, 5);
             </div>
           </div>
 
-          {/* Environmental Impact Summary */}
+          {/* Environmental Impact Summary — own component, own Card, memoized:
+              see src/components/profile/EnvironmentalImpactSummary.tsx */}
           <div className="mb-8">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-primary" />
-              Environmental Impact Summary
-            </h4>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 bg-accent/5 rounded-xl border border-accent/10 text-center">
-                <Users className="h-6 w-6 mx-auto mb-2 text-accent" />
-                <p className="text-2xl font-black text-accent">{impactStats.communitiesHelped}</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Communities Helped</p>
-              </div>
-              <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 text-center">
-                <Calendar className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-2xl font-black text-primary">{impactStats.cleanupEventsJoined}</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Cleanup Events</p>
-              </div>
-              
-              <div className="p-4 bg-accent/5 rounded-xl border border-accent/10 text-center">
-                <Clock className="h-6 w-6 mx-auto mb-2 text-accent" />
-                <p className="text-2xl font-black text-accent">{impactStats.volunteerHours}h</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Volunteer Hours</p>
-              </div>
-              <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 text-center">
-                <Target className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-2xl font-black text-primary">{impactStats.environmentalScore}</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Environmental Score</p>
-              </div>
-            </div>
+            <EnvironmentalImpactSummary stats={impactStats} />
           </div>
 
-          {/* Achievement Badges */}
+          {/* Achievement Badges — own component, own Card, memoized:
+              see src/components/profile/AchievementBadges.tsx */}
           <div className="mb-8">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <Award className="h-5 w-5 text-primary" />
-              Achievement Badges
-            </h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-              {earnedBadges.map((badge) => (
-                <div key={badge.id} className="p-4 rounded-2xl bg-primary/5 border border-primary/10 flex flex-col items-center gap-2 hover:shadow-md transition-all">
-                  <div className="text-4xl">{badge.emoji}</div>
-                  <span className="text-[10px] font-black uppercase text-center">{badge.name}</span>
-                </div>
-              ))}
-            </div>
+            <AchievementBadges badges={earnedBadges} />
           </div>
 
-          {/* Community Engagement */}
+          {/* Community Engagement — own component, own Card, memoized:
+              see src/components/profile/CommunityEngagement.tsx */}
           <div className="mb-8">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <Users className="h-5 w-5 text-primary" />
-              Community Engagement
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="border-muted/20">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-bold flex items-center gap-2">
-                    <Megaphone className="h-4 w-4 text-primary" /> My Campaigns
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {isDemo ? (
-  MOCK_CAMPAIGNS
-    .filter(c => c.status === 'active')
-    .slice(0, 3)
-    .map(c => (
-      <div
-        key={c.id}
-        className="flex items-center gap-3 p-2 rounded-lg bg-primary/5"
-      >
-        <span className="text-xl">{c.emoji}</span>
-
-        <div className="flex-grow">
-          <p className="text-xs font-bold">{c.title}</p>
-          <p className="text-[10px] text-muted-foreground">
-            {c.participants} participants
-          </p>
-        </div>
-
-        <Badge className="bg-primary/10 text-primary border-none text-[9px]">
-          Active
-        </Badge>
-      </div>
-    ))
-) : (
-  <p className="text-sm text-muted-foreground">
-    No active campaigns yet.
-  </p>
-)}
-                    
-                </CardContent>
-              </Card>
-              <Card className="border-muted/20">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-bold flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-primary" /> My Volunteer Activities
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {isDemo ? (
-  MOCK_VOLUNTEERS.slice(0, 3).map(v => (
-    <div
-      key={v.id}
-      className="flex items-center gap-3 p-2 rounded-lg bg-green-50"
-    >
-      <span className="text-xl">{v.emoji}</span>
-
-      <div className="flex-grow">
-        <p className="text-xs font-bold">{v.title}</p>
-        <p className="text-[10px] text-muted-foreground">
-          {v.date} • {v.location}
-        </p>
-      </div>
-
-      <Badge className="bg-green-100 text-green-700 border-none text-[9px]">
-        Registered
-      </Badge>
-    </div>
-  ))
-) : (
-  <p className="text-sm text-muted-foreground">
-    No volunteer activities yet.
-  </p>
-)}
-                </CardContent>
-              </Card>
-            </div>
+            <CommunityEngagement isDemo={isDemo} campaigns={MOCK_CAMPAIGNS} volunteers={MOCK_VOLUNTEERS} />
           </div>
 
-          {/* Account Information */}
+          {/* Account Information — own component, own Card, memoized:
+              see src/components/profile/AccountInformation.tsx */}
           <div className="mb-8">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <Shield className="h-5 w-5 text-primary" />
-              Account Information
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-              <div className="flex justify-between items-center py-2 border-b border-muted">
-                <span className="text-sm text-muted-foreground">Member Since</span>
-                <span className="text-sm font-bold italic">
-  {profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString()
-    : 'Not available'}
-</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-muted">
-                <span className="text-sm text-muted-foreground">Last Activity</span>
-                <span className="text-sm font-bold italic">
-  No activity yet
-</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-muted">
-                <span className="text-sm text-muted-foreground">Preferred Region</span>
-                <span className="text-sm font-bold italic"> {profile?.region || 'Not set'}</span>
-                
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-muted">
-                <span className="text-sm text-muted-foreground">Organization</span>
-                <span className="text-sm font-bold italic">{profile?.organization || 'Not set'}</span>
-              </div>
-            </div>
+            <AccountInformation
+              memberSince={profile?.created_at}
+              region={profile?.region}
+              organization={profile?.organization}
+            />
           </div>
 
           {/* Recent Activity */}
@@ -339,7 +209,7 @@ const recentActivities = pointHistory.slice(0, 5);
               <Clock className="h-5 w-5 text-primary" />
               Recent Activity
             </h4>
-            <Card className="border-muted/20">
+            <Card className="border-muted/20 [contain:content]">
               <CardContent className="pt-6">
   <div className="space-y-4">
     {pointHistory.length > 0 ? (
