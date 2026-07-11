@@ -109,7 +109,7 @@ export function Hero() {
             Environmental Intelligence for Safer Communities
           </motion.div>
 
-          <motion.h2
+          <motion.h1
   id="hero-heading"
   initial={rise(16)}
   animate={settle}
@@ -117,7 +117,7 @@ export function Hero() {
   className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
 >
   Environmental Community Health Observatory (ECHO)
-</motion.h2>
+</motion.h1>
 
           <motion.p
   initial={rise(16)}
