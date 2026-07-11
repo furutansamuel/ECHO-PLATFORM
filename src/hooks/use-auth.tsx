@@ -103,6 +103,7 @@ const {
 } = statsResult;
 
 const [profileResult, statsResult] = await Promise.all([
+const [profileResult, statsResult] = await Promise.all([
   supabase
     .from("profiles")
     .select("*")
@@ -119,16 +120,19 @@ const [profileResult, statsResult] = await Promise.all([
 const { data, error } = profileResult;
 const { data: stats, error: statsError } = statsResult;
 
+
 if (!alive) return;
 
-setProfile(
-  data
-    ? (data as UserProfile)
-    : { id: userId, role: "citizen" }
-);
+if (statsError) {
+  console.error("[ECHO] stats fetch error", statsError);
+}
 
-setUserStats(stats ?? null);
-setLoading(false);
+if (error && (error as { code?: string }).code !== "PGRST116") {
+  console.error("[ECHO] profile fetch error", error);
+}
+
+if (data) {
+  setProfile(data as UserProfile);
 } else {
   const {
     data: { user: authUser },
@@ -155,9 +159,12 @@ setLoading(false);
     setProfile(newProfile as UserProfile);
   }
 }
-        if (alive) {
+
+setUserStats(stats ?? null);
+
+if (alive) {
   setLoading(false);
-        }
+}
         
       } catch (err) {
   if (!alive) return;
