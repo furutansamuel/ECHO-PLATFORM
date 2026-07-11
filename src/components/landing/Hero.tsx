@@ -61,7 +61,6 @@ export function Hero() {
   return (
   <section
     className="relative overflow-hidden"
-    aria-labelledby="hero-heading"
   >
       {/* Carousel background */}
       <div className="absolute inset-0">
