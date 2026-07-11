@@ -118,8 +118,9 @@ export function Hero() {
   className="text-4xl font-black leading-[1.05] tracking-tight text-black md:text-6xl lg:text-7xl"
 >
   Environmental Community Health Observatory (
-  <span className="text-primary">ECHO</span>
-  <span className="text-emerald-600">ECHO</span>
+  <span className="bg-gradient-to-br from-primary via-accent to-emerald-500 bg-clip-text text-transparent">
+              powered by ECHO
+            </span>
   )
 </motion.h1>
 
