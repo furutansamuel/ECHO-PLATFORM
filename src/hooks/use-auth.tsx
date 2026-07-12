@@ -176,8 +176,6 @@ if (alive) {
   sessionStorage.removeItem("echo_notifications");
   sessionStorage.removeItem("echo_dismissed_hints");
 
-  setLoading(true);
-  
   void fetchProfile(nextUser.id);
        
 } else {
