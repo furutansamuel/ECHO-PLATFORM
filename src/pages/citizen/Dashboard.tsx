@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Sparkles, Presentation, RefreshCcw, ShieldAlert } from 'lucide-react';
 import { DashboardSearch } from '@/components/dashboard/DashboardSearch';
-import { QuickActionsWidget } from '@/components/dashboard/QuickActionsWidget';
 import { IntelligenceDashboard } from '@/components/dashboard/IntelligenceDashboard';
 import { RecentReports } from '@/components/dashboard/RecentReports';
 import { CleanupEventsWidget } from '@/components/dashboard/CleanupEventsWidget';
@@ -106,11 +105,6 @@ export default function CitizenDashboard() {
         {/* Main Intelligence Section - Large Bento Piece */}
         <div className="col-span-12 lg:col-span-9 row-span-2">
           <IntelligenceDashboard />
-        </div>
-
-        {/* Quick Actions - Full-width Bento Piece so all 4 cards stay visible */}
-        <div className="col-span-12">
-          <QuickActionsWidget />
         </div>
 
         {/* Recent Reports - Wide Bento Piece */}
