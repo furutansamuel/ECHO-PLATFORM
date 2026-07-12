@@ -269,47 +269,10 @@ const CommunityInsights: React.FC = () => {
         </TabsContent>
 
         {/* FEED TAB */}
-        <TabsContent value="feed" className="m-0 space-y-4">
-          {MOCK_FEED.map(post => (
-            <Card key={post.id} className="border-none shadow-lg hover:shadow-xl transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-xs font-black text-primary">
-                    {post.avatar}
-                  </div>
-                  <div className="flex-grow space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm">{post.author}</span>
-                      <Badge variant="outline" className="text-[9px] uppercase border-primary/20 text-primary">{post.type}</Badge>
-                      <span className="text-[10px] text-muted-foreground ml-auto">{post.date}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{post.content}</p>
-                    {post.imageUrl && (
-                      <div className="h-40 rounded-xl bg-muted overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover" alt="" />
-                      </div>
-                    )}
-                    <div className="flex items-center gap-4 pt-2">
-                      <Button variant="ghost" size="sm" className="h-8 gap-1 text-xs" onClick={() => toggleLike(post.id)}>
-                        <Heart className={`h-3.5 w-3.5 ${likedPosts.includes(post.id) ? 'fill-red-500 text-red-500' : ''}`} />
-                        {post.likes + (likedPosts.includes(post.id) ? 1 : 0)}
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-8 gap-1 text-xs">
-                        <span>💬</span> {post.comments}
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-8 gap-1 text-xs">
-                        <Share2 className="h-3.5 w-3.5" /> {post.shares}
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-8 gap-1 text-xs ml-auto">
-                        <Bookmark className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
+        <TabsContent value="feed" className="m-0 space-y-6">
+  <CreatePost />
+  <PostFeed />
+</TabsContent>
 
         {/* EVENTS TAB */}
         <TabsContent value="events" className="m-0 space-y-8">
