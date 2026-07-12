@@ -1,7 +1,5 @@
 import EditProfileModal from "@/components/profile/EditProfileModal";
-import { EnvironmentalImpactSummary } from "@/components/profile/EnvironmentalImpactSummary";
 import { AchievementBadges } from "@/components/profile/AchievementBadges";
-import { CommunityEngagement } from "@/components/profile/CommunityEngagement";
 import { AccountInformation } from "@/components/profile/AccountInformation";
 import { useState } from "react";
 import ProfileSkeleton from "@/components/profile/ProfileSkeleton";
@@ -20,7 +18,6 @@ import {
   ACHIEVEMENT_BADGES,
   calculateProgressToNextLevel 
 } from '@/lib/impact-constants';
-import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS } from '@/lib/community-data';
 
 const ProfilePage: React.FC = () => {
   const { user, profile, logout, userStats, loading, refreshProfile } = useAuth();
@@ -177,9 +174,6 @@ const recentActivities = pointHistory.slice(0, 5);
 
           {/* Environmental Impact Summary — own component, own Card, memoized:
               see src/components/profile/EnvironmentalImpactSummary.tsx */}
-          <div className="mb-8">
-            <EnvironmentalImpactSummary stats={impactStats} />
-          </div>
 
           {/* Achievement Badges — own component, own Card, memoized:
               see src/components/profile/AchievementBadges.tsx */}
@@ -189,9 +183,6 @@ const recentActivities = pointHistory.slice(0, 5);
 
           {/* Community Engagement — own component, own Card, memoized:
               see src/components/profile/CommunityEngagement.tsx */}
-          <div className="mb-8">
-            <CommunityEngagement isDemo={isDemo} campaigns={MOCK_CAMPAIGNS} volunteers={MOCK_VOLUNTEERS} />
-          </div>
 
           {/* Account Information — own component, own Card, memoized:
               see src/components/profile/AccountInformation.tsx */}
