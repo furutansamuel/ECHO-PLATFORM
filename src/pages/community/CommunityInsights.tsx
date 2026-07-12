@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import CreatePost from "@/components/community/CreatePost";
-import PostFeed from "@/components/community/PostFeed";
+import CreatePost from '@/components/community/CreatePost';
+import PostFeed from '@/components/community/PostFeed';
 import { Users, MapPin, Calendar, Bookmark, Share2, Heart, TrendingUp, Award, Clock, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -270,9 +270,9 @@ const CommunityInsights: React.FC = () => {
 
         {/* FEED TAB */}
         <TabsContent value="feed" className="m-0 space-y-6">
-  <CreatePost />
-  <PostFeed />
-</TabsContent>
+          <CreatePost/>
+          <PostFeed/>
+        </TabsContent>
 
         {/* EVENTS TAB */}
         <TabsContent value="events" className="m-0 space-y-8">
