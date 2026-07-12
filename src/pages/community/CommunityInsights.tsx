@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import CreatePost from "@/components/community/CreatePost";
+import PostFeed from "@/components/community/PostFeed";
 import { Users, MapPin, Calendar, Bookmark, Share2, Heart, TrendingUp, Award, Clock, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
