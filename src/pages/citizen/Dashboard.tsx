@@ -9,7 +9,6 @@ import { DashboardSearch } from '@/components/dashboard/DashboardSearch';
 import { QuickActionsWidget } from '@/components/dashboard/QuickActionsWidget';
 import { IntelligenceDashboard } from '@/components/dashboard/IntelligenceDashboard';
 import { RecentReports } from '@/components/dashboard/RecentReports';
-import { NotificationsWidget } from '@/components/dashboard/NotificationsWidget';
 import { CleanupEventsWidget } from '@/components/dashboard/CleanupEventsWidget';
 import { RewardsSummaryWidget } from '@/components/dashboard/RewardsSummaryWidget';
 import { CommunityActivityWidget } from '@/components/dashboard/CommunityActivityWidget';
@@ -112,11 +111,6 @@ export default function CitizenDashboard() {
         {/* Quick Actions - Full-width Bento Piece so all 4 cards stay visible */}
         <div className="col-span-12">
           <QuickActionsWidget />
-        </div>
-
-        {/* Notifications - Small Bento Piece */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-3">
-          <NotificationsWidget />
         </div>
 
         {/* Recent Reports - Wide Bento Piece */}
