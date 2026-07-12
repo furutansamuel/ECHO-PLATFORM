@@ -113,49 +113,50 @@ const impactStats = userStats ?? {
       </div>
 
 
-      <div className="grid grid-cols-12 gap-6 auto-rows-min">
-        {/* Main Intelligence Section - Large Bento Piece */}
-        <div className="col-span-12 lg:col-span-9 row-span-2">
-          <IntelligenceDashboard />
-      div className="col-span-12">
+      
+        <div className="grid grid-cols-12 gap-6 auto-rows-min">
+  {/* Environmental Impact Summary - Top KPI Section */}
+  <div className="col-span-12">
     <EnvironmentalImpactSummary stats={impactStats} />
   </div>
-        </div>
 
-        {/* Recent Reports - Wide Bento Piece */}
-        <div className="col-span-12 lg:col-span-8">
-          <RecentReports />
-        </div>
+  {/* Main Intelligence Section */}
+  <div className="col-span-12 lg:col-span-8">
+    <IntelligenceDashboard />
+  </div>
 
-        {/* Rewards Summary - Tall Bento Piece */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-4 row-span-2">
-          <RewardsSummaryWidget />
-        </div>
+  {/* Rewards Summary */}
+  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+    <RewardsSummaryWidget />
+  </div>
 
-        {/* Community Activity - Square Bento Piece */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
-          <CommunityActivityWidget />
-        </div>
+  {/* Recent Reports */}
+  <div className="col-span-12 lg:col-span-8">
+    <RecentReports />
+  </div>
 
-        {/* Volunteer & Campaigns - Dynamic Pieces */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
-          <VolunteerWidget />
-        </div>
-        
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
-          <CampaignWidget />
-        </div>
+  {/* Community Widgets */}
+  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+    <CommunityActivityWidget />
+  </div>
 
-        {/* Leaderboard & Cleanup Events - Bottom Row */}
-        <div className="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <LeaderboardWidget />
-          <CleanupEventsWidget />
-        </div>
+  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+    <VolunteerWidget />
+  </div>
 
-        <div className="col-span-12 lg:col-span-4">
-          <ChallengeWidget />
-        </div>
-      </div>
-    </div>
+  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+    <CampaignWidget />
+  </div>
+
+  {/* Bottom Widgets */}
+  <div className="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <LeaderboardWidget />
+    <CleanupEventsWidget />
+  </div>
+
+  <div className="col-span-12 lg:col-span-4">
+    <ChallengeWidget />
+  </div>
+</div>
   );
 }
