@@ -70,7 +70,7 @@ const recentActivities = pointHistory.slice(0, 5);
     <div className="p-4 md:p-6 space-y-8 max-w-5xl mx-auto pb-20">
       {/* Profile Header */}
       <Card className="border-none shadow-2xl overflow-hidden">
-        <div className="h-28 sm:h-32 md:h-40 bg-gradient-to-r from-primary via-secondary to-accent" />
+        <div className="h-20 sm:h-24 md:h-28 bg-gradient-to-r from-primary via-secondary to-accent"/>
         <CardContent className="relative px-4 pt-0 sm:px-6 md:px-8">
           <div className="flex flex-col items-center gap-4 -mt-14 mb-8 text-center md:flex-row md:items-end md:gap-6 md:text-left">
             <Avatar className="h-24 w-24 border-4 border-background shadow-2xl sm:h-28 sm:w-28 md:h-32 md:w-32">
