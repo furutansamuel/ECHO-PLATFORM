@@ -233,8 +233,7 @@ export function DashboardLayout() {
                           key={item.href}
                           to={item.href}
                           className={cn(
-                            'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all',
-                            location.pathname === item.href
+                            'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all', location.pathname === item.href
                               ? 'bg-primary text-white'
                               : 'text-foreground hover:bg-secondary'
                           )}
