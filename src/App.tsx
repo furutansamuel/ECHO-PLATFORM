@@ -42,7 +42,6 @@ function LoadingFallback() {
 }
 
 function App() {
-  console.log("CURRENT PATH:", window.location.pathname);
   return (
     <DemoProvider>
       <AuthProvider>
