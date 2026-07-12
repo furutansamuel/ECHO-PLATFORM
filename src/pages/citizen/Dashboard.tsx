@@ -158,5 +158,6 @@ const impactStats = userStats ?? {
     <ChallengeWidget />
   </div>
 </div>
+    </div>
   );
 }
