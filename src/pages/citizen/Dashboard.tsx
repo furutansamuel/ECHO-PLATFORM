@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDemo } from '@/hooks/use-demo';
+import { useAuth } from '@/hooks/use-auth';
+import { EnvironmentalImpactSummary } from '@/components/profile/EnvironmentalImpactSummary';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,6 +19,16 @@ import { LeaderboardWidget } from '@/components/dashboard/LeaderboardWidget';
 import { ChallengeWidget } from '@/components/dashboard/ChallengeWidget';
 
 export default function CitizenDashboard() {
+  const { userStats } = useAuth();
+
+const impactStats = userStats ?? {
+  reportsSubmitted: 0,
+  verifiedReports: 0,
+  cleanupEventsJoined: 0,
+  environmentalScore: 0,
+  communitiesHelped: 0,
+  volunteerHours: 0,
+};
   const { isDemoMode, isPresentationMode, setPresentationMode, resetDemo } = useDemo();
 
   if (isPresentationMode) {
@@ -105,6 +117,9 @@ export default function CitizenDashboard() {
         {/* Main Intelligence Section - Large Bento Piece */}
         <div className="col-span-12 lg:col-span-9 row-span-2">
           <IntelligenceDashboard />
+      div className="col-span-12">
+    <EnvironmentalImpactSummary stats={impactStats} />
+  </div>
         </div>
 
         {/* Recent Reports - Wide Bento Piece */}
