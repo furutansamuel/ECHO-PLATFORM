@@ -1,26 +1,26 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ShieldAlert, LineChart, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShieldAlert, LineChart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const slides = [
   {
-    src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=70',
-    alt: 'Misty forest at sunrise',
+    src: '/images/lafia-aerial.jpeg',
+    alt: 'Aerial view of Lafia, Nasarawa State, Nigeria',
   },
   {
-    src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=70',
-    alt: 'Sunlight through green forest',
+    src: '/images/community-cleanup.jpeg',
+    alt: 'Community environmental cleanup in Nigeria',
   },
   {
-    src: 'https://images.unsplash.com/photo-1504809652271-98ba1e4bcbcc?auto=format&fit=crop&w=1920&q=70',
-    alt: 'River flowing through green valley',
+    src: '/images/flood-mon1.jpeg',
+    alt: 'Flood monitoring and environmental hazards in Nigeria',
   },
   {
-    src: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=1920&q=70',
-    alt: 'Mountain lake reflection',
+    src: '/images/environ-dash.jpg',
+    alt: 'Environmental intelligence dashboard and analytics',
   },
 ];
 
@@ -59,7 +59,9 @@ export function Hero() {
   const settle = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
 
   return (
-    <section className="relative overflow-hidden">
+  <section
+    className="relative overflow-hidden"
+  >
       {/* Carousel background */}
       <div className="absolute inset-0">
         {/* Fallback gradient sits BEHIND images */}
@@ -100,33 +102,32 @@ export function Hero() {
             initial={rise(12)}
             animate={settle}
             transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-background/60 px-4 py-1.5 text-xs font-semibold text-primary backdrop-blur-md"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            AI-Powered Environmental Community Health Observatory
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-semibold text-foreground backdrop-blur-md"
+            >
+            <span className="beacon-dot beacon-dot--active text-accent" aria-hidden="true" />
+            Live — Environmental Signal Network
           </motion.div>
 
           <motion.h1
-            initial={rise(16)}
-            animate={settle}
-            transition={{ duration: 0.6, delay: 0.05 }}
-            className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+  id="hero-heading"
+  initial={rise(16)}
+  animate={settle}
+  transition={{ duration: 0.6, delay: 0.05 }}
+  className="text-4xl leading-[1.05] text-foreground md:text-6xl lg:text-7xl"
           >
-            Cleaner communities,{' '}
-            <span className="bg-gradient-to-br from-primary via-accent to-emerald-500 bg-clip-text text-transparent">
-              powered by ECHO
-            </span>
-          </motion.h1>
+  Environmental Community Health Observatory (
+  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">ECHO</span>
+  )
+</motion.h1>
 
           <motion.p
-            initial={rise(16)}
-            animate={settle}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
-          >
-            Report environmental hazards, monitor community health, and drive real
-            change with AI-verified intelligence.
-          </motion.p>
+  initial={rise(16)}
+  animate={settle}
+  transition={{ duration: 0.6, delay: 0.15 }}
+  className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
+   >        
+  Empowering communities to report, monitor, and respond to environmental hazards through AI-driven environmental intelligence.
+</motion.p>
 
           <motion.div
             initial={rise(16)}
@@ -134,7 +135,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <Button size="lg" className="h-12 px-8 text-base shadow-premium" asChild>
+            <Button size="lg" className="btn-glow h-12 px-8 text-base shadow-premium" asChild>
               <Link to="/report">
                 <ShieldAlert className="mr-2 h-5 w-5" />
                 Report Hazard
@@ -202,3 +203,4 @@ export function Hero() {
     </section>
   );
 }
+
