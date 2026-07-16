@@ -149,7 +149,7 @@ const GlobalSearchPage: React.FC = () => {
                               </div>
                               <div className="flex-grow space-y-1">
                                 <div className="flex items-center justify-between">
-                                  <Badge variant="outline" className="text-[9px] uppercase font-bold">{report.severity}</Badge>
+                                  <span className={`beacon-badge beacon-badge--${report.severity === 'Low' ? 'safe' : report.severity === 'Medium' ? 'warning' : 'danger'}`}>{report.severity}</span>
                                   <span className="text-[9px] text-muted-foreground font-black uppercase tracking-tighter">{report.reference_number}</span>
                                 </div>
                                 <h4 className="font-bold text-sm line-clamp-1">{report.title || report.category}</h4>
@@ -284,3 +284,4 @@ const GlobalSearchPage: React.FC = () => {
 };
 
 export default GlobalSearchPage;
+

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ShieldAlert, LineChart, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShieldAlert, LineChart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -135,7 +135,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <Button size="lg" className="h-12 px-8 text-base shadow-premium" asChild>
+            <Button size="lg" className="btn-glow h-12 px-8 text-base shadow-premium" asChild>
               <Link to="/report">
                 <ShieldAlert className="mr-2 h-5 w-5" />
                 Report Hazard
@@ -203,3 +203,4 @@ export function Hero() {
     </section>
   );
 }
+

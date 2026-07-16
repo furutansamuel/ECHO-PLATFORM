@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* ECHO — "Beacon" brand system.
+   Headlines use a condensed display face for civic-signage authority.
+   Body text stays on the system-font stack below — no second font load,
+   which matters on a mobile-data-only connection. Swap=block keeps a
+   short flash of invisible text rather than a layout-shifting fallback
+   swap, since this is a headline face only (small total text volume). */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap');
+
 @custom-variant dark (&:is(.dark *));
 
 /* See the touch-detection script in index.html. Once a real touch has
@@ -14,48 +22,57 @@
 @custom-variant group-hover (:where(.group):hover:not(:where(html.is-touch) *) &);
 
 :root {
-  --background: #FAFAFA;
-  --foreground: #212121;
+  /* Beacon brand — deep civic navy identity, amber reserved for CTAs
+     and active alerts only (never decorative), and a resolved/warning/
+     danger status trio that's distinct from the brand colors so hazard
+     state is never ambiguous with "just branding". */
+  --background: #F7F9FB;
+  --foreground: #0B1420;
   --card: #FFFFFF;
-  --card-foreground: #212121;
+  --card-foreground: #0B1420;
   --popover: #FFFFFF;
-  --popover-foreground: #212121;
-  --primary: #1B5E20;
+  --popover-foreground: #0B1420;
+  --primary: #0B2545;
   --primary-foreground: #FFFFFF;
-  --secondary: #2E7D32;
+  --primary-rgb: 11, 37, 69;
+  --secondary: #16324F;
   --secondary-foreground: #FFFFFF;
-  --muted: #F5F5F5;
-  --muted-foreground: #616161;
-  --accent: #43A047;
-  --accent-foreground: #FFFFFF;
-  --destructive: #C62828;
+  --muted: #EEF2F6;
+  --muted-foreground: #55677D;
+  --accent: #FFB703;
+  --accent-foreground: #0B1420;
+  --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
-  --border: #E0E0E0;
-  --input: #E0E0E0;
-  --ring: #1B5E20;
+  --border: #DCE3EA;
+  --input: #DCE3EA;
+  --ring: #0B2545;
+  --status-safe: #1B5E20;
+  --status-warning: #F59E0B;
+  --status-danger: #DC2626;
   --chart-1: oklch(0.81 0.1 252);
   --chart-2: oklch(0.62 0.19 260);
   --chart-3: oklch(0.55 0.22 263);
   --chart-4: oklch(0.49 0.22 264);
   --chart-5: oklch(0.42 0.18 266);
   --sidebar: #FFFFFF;
-  --sidebar-foreground: #212121;
-  --sidebar-primary: #1B5E20;
+  --sidebar-foreground: #0B1420;
+  --sidebar-primary: #0B2545;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F5F5F5;
-  --sidebar-accent-foreground: #1B5E20;
-  --sidebar-border: #E0E0E0;
-  --sidebar-ring: #1B5E20;
-  --highlight-gold: #F9A825;
+  --sidebar-accent: #EEF2F6;
+  --sidebar-accent-foreground: #0B2545;
+  --sidebar-border: #DCE3EA;
+  --sidebar-ring: #0B2545;
+  --highlight-gold: #FFB703;
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Barlow Semi Condensed", "Segoe UI", Arial, sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
-  --radius: 1rem;
+  --radius: 0.625rem;
   --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
   --shadow-sm:
@@ -74,38 +91,44 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.269 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.371 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.275 0 0);
-  --input: oklch(0.325 0 0);
-  --ring: oklch(0.556 0 0);
+  /* Beacon at night: amber is the literal signal color glowing against
+     deep navy, instead of a repainted-gray shadcn default. */
+  --background: #070E17;
+  --foreground: #E9EEF3;
+  --card: #0F1D30;
+  --card-foreground: #E9EEF3;
+  --popover: #0F1D30;
+  --popover-foreground: #E9EEF3;
+  --primary: #3D7FD9;
+  --primary-foreground: #06101C;
+  --primary-rgb: 61, 127, 217;
+  --secondary: #16324F;
+  --secondary-foreground: #E9EEF3;
+  --muted: #142338;
+  --muted-foreground: #8CA0B6;
+  --accent: #FFB703;
+  --accent-foreground: #06101C;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #1E3348;
+  --input: #1E3348;
+  --ring: #3D7FD9;
+  --status-safe: #22C55E;
+  --status-warning: #F59E0B;
+  --status-danger: #EF4444;
   --chart-1: oklch(0.81 0.1 252);
   --chart-2: oklch(0.62 0.19 260);
   --chart-3: oklch(0.55 0.22 263);
   --chart-4: oklch(0.49 0.22 264);
   --chart-5: oklch(0.42 0.18 266);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.275 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --sidebar: #0F1D30;
+  --sidebar-foreground: #E9EEF3;
+  --sidebar-primary: #3D7FD9;
+  --sidebar-primary-foreground: #06101C;
+  --sidebar-accent: #142338;
+  --sidebar-accent-foreground: #E9EEF3;
+  --sidebar-border: #1E3348;
+  --sidebar-ring: #3D7FD9;
 }
 
 @theme inline {
@@ -142,10 +165,15 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-highlight: var(--highlight-gold);
+  --color-status-safe: var(--status-safe);
+  --color-status-warning: var(--status-warning);
+  --color-status-danger: var(--status-danger);
+  --color-primary-rgb: var(--primary-rgb);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
+  --font-display: var(--font-display);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -175,7 +203,11 @@
     -webkit-tap-highlight-color: transparent;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-black tracking-tight;
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight;
+  }
+  h1, h2 {
+    letter-spacing: -0.01em;
   }
   img {
     max-width: 100%;
@@ -198,6 +230,8 @@
     @apply bg-white/40 backdrop-blur-xl border border-white/30 shadow-premium;
   }
   
+  /* Name kept for compatibility with existing call sites (bg-primary/5
+     now resolves to Beacon navy automatically, not green). */
   .glass-green {
     @apply bg-primary/5 backdrop-blur-xl border border-primary/10 shadow-premium;
   }
@@ -214,16 +248,18 @@
     @apply bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5;
   }
 
-  /* --- Premium gradient system (section 3) ---
+  /* --- Beacon gradient system (section 3) ---
      Named, purpose-specific gradients so components reach for one
      class instead of hand-rolling `from-x via-y to-z` combinations
-     with slightly different stops every time. */
-  .gradient-primary   { @apply bg-gradient-to-br from-emerald-700 via-primary to-emerald-600; }
-  .gradient-secondary { @apply bg-gradient-to-br from-emerald-600 via-secondary to-teal-500; }
-  .gradient-analytics { @apply bg-gradient-to-br from-blue-600 to-cyan-500; }
-  .gradient-community { @apply bg-gradient-to-br from-orange-500 to-amber-400; }
-  .gradient-ai         { @apply bg-gradient-to-br from-purple-600 to-indigo-500; }
-  .gradient-success    { @apply bg-gradient-to-br from-green-600 to-lime-500; }
+     with slightly different stops every time. Brand gradients stay in
+     the navy family; category gradients (analytics/community/ai) keep
+     distinct hues since they mark different content types, not brand. */
+  .gradient-primary   { @apply bg-gradient-to-br from-[#0B2545] via-primary to-[#16324F]; }
+  .gradient-secondary { @apply bg-gradient-to-br from-[#16324F] via-secondary to-[#0B2545]; }
+  .gradient-analytics { @apply bg-gradient-to-br from-sky-700 to-sky-500; }
+  .gradient-community { @apply bg-gradient-to-br from-amber-500 to-accent; }
+  .gradient-ai         { @apply bg-gradient-to-br from-indigo-600 to-violet-500; }
+  .gradient-success    { @apply bg-gradient-to-br from-status-safe to-emerald-500; }
 
   /* Alternating section background (section 11) — subtle, not flat white,
      not so busy it hurts readability. */
@@ -255,10 +291,10 @@
      baked into the base Button so it only applies where we opt in. */
   .btn-glow {
     @apply transition-all duration-300;
-    box-shadow: 0 4px 14px 0 rgb(27 94 32 / 0.25);
+    box-shadow: 0 4px 14px 0 rgb(var(--primary-rgb) / 0.25);
   }
   .btn-glow:hover {
-    box-shadow: 0 6px 20px 0 rgb(27 94 32 / 0.35);
+    box-shadow: 0 6px 20px 0 rgb(var(--primary-rgb) / 0.35);
   }
   .btn-glow:active {
     transform: scale(0.97);
@@ -313,6 +349,41 @@
 .marker-cluster div {
 	color: white;
 	font-weight: bold;
+}
+
+/* Beacon severity badge — the signature element of the rebrand.
+   The dot pulses only while a hazard report is unresolved/active; once
+   marked resolved it goes static, so the animation itself carries real
+   status meaning instead of decorating an otherwise static pill.
+   Usage: <span class="beacon-badge beacon-badge--danger">
+            <span class="beacon-dot beacon-dot--active" /> Unresolved
+          </span> */
+.beacon-badge {
+  @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold;
+}
+.beacon-badge--safe {
+  @apply border-status-safe/30 bg-status-safe/10 text-status-safe;
+}
+.beacon-badge--warning {
+  @apply border-status-warning/30 bg-status-warning/10 text-status-warning;
+}
+.beacon-badge--danger {
+  @apply border-status-danger/30 bg-status-danger/10 text-status-danger;
+}
+.beacon-dot {
+  @apply h-2 w-2 rounded-full bg-current;
+}
+.beacon-dot--active {
+  animation: beacon-pulse 1.6s ease-in-out infinite;
+}
+@keyframes beacon-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
+  50% { opacity: 0.6; box-shadow: 0 0 0 4px transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .beacon-dot--active {
+    animation: none;
+  }
 }
 
 /* Presentation Mode Styles */

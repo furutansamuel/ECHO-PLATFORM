@@ -48,14 +48,20 @@ interface EnvironmentalMapProps {
 }
 
 const getHazardIcon = (category: string, severity: string) => {
-    // TODO: Create more specific icons based on category and severity
-    let iconColor = '#1B5E20'; // Default to primary green
-    if (severity === 'Critical') iconColor = '#C62828';
-    else if (severity === 'High') iconColor = '#F9A825'; 
-    else if (severity === 'Medium') iconColor = '#43A047';
+    // Beacon severity ramp for map pins — a real 4-step progression
+    // (green → amber → orange → red) rather than the old scale, where
+    // Low and Medium were both shades of green and barely distinguishable
+    // at pin size, so a Medium hazard looked just as "safe" as a Low one.
+    // Kept in sync with MapLegend.tsx — if this changes, update that too.
+    let iconColor = '#1B5E20'; // Low — status-safe
+    if (severity === 'Medium') iconColor = '#F59E0B';   // status-warning
+    else if (severity === 'High') iconColor = '#EA580C'; // orange — between warning and danger
+    else if (severity === 'Critical') iconColor = '#DC2626'; // status-danger
 
-    const isWaterHazard = ['Flood', 'Water Pollution', 'Stagnant Water', 'Blocked Drainage', 'Open Sewage'].includes(category);
-    if(isWaterHazard) iconColor = '#2563EB';
+    // Category no longer overrides severity color: a Critical flood and
+    // a Low stagnant-water report used to render as the same blue with
+    // no severity cue at all. Category is still filterable via
+    // MapFilters, so severity stays the thing color communicates here.
 
     const iconHtml = `
     <div style="background-color: ${iconColor};" class="w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-lg">

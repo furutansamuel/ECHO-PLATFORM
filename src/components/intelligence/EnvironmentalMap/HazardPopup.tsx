@@ -1,8 +1,26 @@
-import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/ui/icons";
 import { HazardReport } from "@/types/reports";
 import { Button } from "@/components/ui/button";
+import { VerificationBadge } from "@/components/verification/VerificationBadge";
 import { Navigation, BrainCircuit, ExternalLink } from "lucide-react";
+
+// Same severity → beacon-badge mapping used in RecentReports.tsx — High
+// and Critical both read as "danger" since the design system only has
+// one hazard-color tier above "warning".
+const severityVariant = (severity: string): 'safe' | 'warning' | 'danger' => {
+  switch (severity) {
+    case 'Low':
+      return 'safe';
+    case 'Medium':
+      return 'warning';
+    case 'High':
+    case 'Critical':
+    default:
+      return 'danger';
+  }
+};
+
+const RESOLVED_STATUSES = new Set(['Resolved', 'Closed']);
 
 interface HazardPopupProps {
   hazard: HazardReport;
@@ -12,10 +30,16 @@ export function HazardPopup({ hazard }: HazardPopupProps) {
   return (
     <div className="p-1 min-w-[220px] font-sans">
       <div className="flex items-center justify-between gap-4 mb-2">
-        <Badge variant="outline" className="text-[10px] font-black uppercase tracking-widest border-none text-red-600 bg-red-50">
+        <span className={`beacon-badge beacon-badge--${severityVariant(hazard.severity)}`}>
           {hazard.severity}
-        </Badge>
-        <span className="text-[10px] text-muted-foreground font-black uppercase">{hazard.status}</span>
+        </span>
+        <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground font-black uppercase">
+          <span
+            className={`beacon-dot ${!RESOLVED_STATUSES.has(hazard.status) ? 'beacon-dot--active' : ''}`}
+            aria-hidden="true"
+          />
+          {hazard.status}
+        </span>
       </div>
       
       <h3 className="font-black text-sm uppercase tracking-tight mb-1">{hazard.category}</h3>
@@ -40,10 +64,7 @@ export function HazardPopup({ hazard }: HazardPopupProps) {
 
       <div className="flex flex-col gap-2 pt-2 border-t border-muted/20">
         <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 text-[10px] font-bold text-green-600">
-            <Icons.checkCircle className="h-3 w-3" />
-            Verified
-            </div>
+            <VerificationBadge status={hazard.status} size="sm" />
             <div className="text-[9px] text-muted-foreground italic font-medium">
             {new Date(hazard.created_at).toLocaleDateString()}
             </div>
