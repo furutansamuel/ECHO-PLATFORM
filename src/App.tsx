@@ -62,6 +62,14 @@ function App() {
 <Route path="/terms-of-service" element={<TermsOfService />} />
 <Route path="/cookie-policy" element={<CookiePolicy />} />
 <Route path="/accessibility" element={<Accessibility />} />
+                
+                {/* Intelligence Routes */}
+                <Route path="/map" element={<InteractiveMapPage />} />
+                <Route path="/ai-intelligence" element={<AIIntelligencePage />} />
+                <Route path="/community-health" element={<CommunityHealthPage />} />
+                <Route path="/knowledge" element={<KnowledgeCentre />} />
+                <Route path="/knowledge/:slug" element={<ArticleDetailsPage />} />
+                <Route path="/community-insights" element={<CommunityInsights />} />
               </Route>
               
               {/* Auth Routes */}
@@ -82,14 +90,9 @@ function App() {
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 
-                {/* Intelligence Routes */}
-                <Route path="/map" element={<InteractiveMapPage />} />
-                <Route path="/ai-intelligence" element={<AIIntelligencePage />} />
-                <Route path="/community-health" element={<CommunityHealthPage />} />
+               {/* Intelligence Routes */}
                 <Route path="/analytics" element={<AnalyticsPage />} />
-                <Route path="/knowledge" element={<KnowledgeCentre />} />
-                <Route path="/knowledge/:slug" element={<ArticleDetailsPage />} />
-                <Route path="/community-insights" element={<CommunityInsights />} />
+                
                 <Route path="/search" element={<GlobalSearchPage />} />
               </Route>
 
