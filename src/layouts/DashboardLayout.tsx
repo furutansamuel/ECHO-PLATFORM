@@ -116,18 +116,18 @@ export function DashboardLayout() {
 
   return (
     <div className={cn(
-      "flex min-h-[100dvh] w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary",
+      "flex min-h-screen w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary",
       isPresentationMode && "presentation-mode"
     )}>
       <aside
         className={cn(
-          'hidden md:flex flex-col border-r border-border/40 bg-sidebar/50 backdrop-blur-sm transition-[width] duration-300 ease-in-out z-30',
+          'hidden md:flex flex-col border-r border-border/40 bg-sidebar/50 backdrop-blur-xl transition-all duration-300 ease-in-out z-30',
           collapsed ? 'w-[70px]' : 'w-64'
         )}
       >
         <div className="flex items-center justify-between p-4">
           {!collapsed && (
-            <Link to="/dashboard" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <Icons.logo className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold tracking-tight text-sidebar-foreground">ECHO</span>
             </Link>
@@ -184,10 +184,11 @@ export function DashboardLayout() {
           </TooltipProvider>
         </div>
       </aside>
-<div className="flex flex-1 flex-col">
+
+      <div className="flex flex-1 flex-col overflow-hidden">
         <header
-          className="sticky top-0 z-20 flex min-h-20 items-center justify-between border-b border-border/40 bg-background/80 px-4 py-2 backdrop-blur-xl md:px-8"
-          style={{ paddingTop: '0.5rem' }}
+          className="sticky top-0 z-20 flex min-h-20 items-center justify-between border-b border-border/40 bg-background px-4 py-2 md:px-8"
+          style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
         >
           <div className="flex items-center gap-4">
             <Sheet>
@@ -196,9 +197,9 @@ export function DashboardLayout() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-64 p-0">
+              <SheetContent side="left" className="w-[85vw] max-w-sm p-0">
                 <div className="border-b p-4">
-                  <Link to="/dashboard" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
                     <Icons.logo className="h-8 w-8 text-primary" />
                     <span className="text-xl font-bold tracking-tight">ECHO</span>
                   </Link>
@@ -232,8 +233,7 @@ export function DashboardLayout() {
                           key={item.href}
                           to={item.href}
                           className={cn(
-                            'flex items-center gap-3 rounded-lg px-3 py-2',
-                            location.pathname === item.href
+                            'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all', location.pathname === item.href
                               ? 'bg-primary text-white'
                               : 'text-foreground hover:bg-secondary'
                           )}
@@ -252,7 +252,7 @@ export function DashboardLayout() {
                         key={item.href}
                         to={item.href}
                         className={cn(
-                          'flex items-center gap-3 rounded-lg px-3 py-2',
+                          'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all',
                           location.pathname === item.href
                             ? 'bg-primary text-white'
                             : 'text-foreground hover:bg-secondary'
@@ -313,7 +313,7 @@ export function DashboardLayout() {
 
         <main
           data-scroll-root
-          className="flex-1 overflow-x-hidden p-4 pb-28 md:p-8 md:pb-12"
+          className="flex-1 overflow-y-auto p-4 pb-28 md:p-8 md:pb-12"
           style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 7rem)' }}
         >
           <DemoHints />
@@ -325,3 +325,4 @@ export function DashboardLayout() {
     </div>
   );
 }
+

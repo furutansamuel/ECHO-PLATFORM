@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDemo } from '@/hooks/use-demo';
+import { useAuth } from '@/hooks/use-auth';
+import { EnvironmentalImpactSummary } from '@/components/profile/EnvironmentalImpactSummary';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Sparkles, Presentation, RefreshCcw, ShieldAlert } from 'lucide-react';
 import { DashboardSearch } from '@/components/dashboard/DashboardSearch';
-import { QuickActionsWidget } from '@/components/dashboard/QuickActionsWidget';
 import { IntelligenceDashboard } from '@/components/dashboard/IntelligenceDashboard';
 import { RecentReports } from '@/components/dashboard/RecentReports';
-import { NotificationsWidget } from '@/components/dashboard/NotificationsWidget';
 import { CleanupEventsWidget } from '@/components/dashboard/CleanupEventsWidget';
 import { RewardsSummaryWidget } from '@/components/dashboard/RewardsSummaryWidget';
 import { CommunityActivityWidget } from '@/components/dashboard/CommunityActivityWidget';
@@ -19,6 +19,16 @@ import { LeaderboardWidget } from '@/components/dashboard/LeaderboardWidget';
 import { ChallengeWidget } from '@/components/dashboard/ChallengeWidget';
 
 export default function CitizenDashboard() {
+  const { userStats } = useAuth();
+
+const impactStats = userStats ?? {
+  reportsSubmitted: 0,
+  verifiedReports: 0,
+  cleanupEventsJoined: 0,
+  environmentalScore: 0,
+  communitiesHelped: 0,
+  volunteerHours: 0,
+};
   const { isDemoMode, isPresentationMode, setPresentationMode, resetDemo } = useDemo();
 
   if (isPresentationMode) {
@@ -103,56 +113,51 @@ export default function CitizenDashboard() {
       </div>
 
 
-      <div className="grid grid-cols-12 gap-6 auto-rows-min">
-        {/* Main Intelligence Section - Large Bento Piece */}
-        <div className="col-span-12 lg:col-span-9 row-span-2">
-          <IntelligenceDashboard />
-        </div>
+      
+        <div className="grid grid-cols-12 gap-6 auto-rows-min">
+  {/* Environmental Impact Summary - Top KPI Section */}
+  <div className="col-span-12">
+    <EnvironmentalImpactSummary stats={impactStats} />
+  </div>
 
-        {/* Quick Actions - Full-width Bento Piece so all 4 cards stay visible */}
-        <div className="col-span-12">
-          <QuickActionsWidget />
-        </div>
+  {/* Main Intelligence Section */}
+  <div className="col-span-12 lg:col-span-8">
+    <IntelligenceDashboard />
+  </div>
 
-        {/* Notifications - Small Bento Piece */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-3">
-          <NotificationsWidget />
-        </div>
+  {/* Rewards Summary */}
+  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+    <RewardsSummaryWidget />
+  </div>
 
-        {/* Recent Reports - Wide Bento Piece */}
-        <div className="col-span-12 lg:col-span-8">
-          <RecentReports />
-        </div>
+  {/* Recent Reports */}
+  <div className="col-span-12 lg:col-span-8">
+    <RecentReports />
+  </div>
 
-        {/* Rewards Summary - Tall Bento Piece */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-4 row-span-2">
-          <RewardsSummaryWidget />
-        </div>
+  {/* Community Widgets */}
+  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+    <CommunityActivityWidget />
+  </div>
 
-        {/* Community Activity - Square Bento Piece */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
-          <CommunityActivityWidget />
-        </div>
+  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+    <VolunteerWidget />
+  </div>
 
-        {/* Volunteer & Campaigns - Dynamic Pieces */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
-          <VolunteerWidget />
-        </div>
-        
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
-          <CampaignWidget />
-        </div>
+  <div className="col-span-12 md:col-span-6 lg:col-span-4">
+    <CampaignWidget />
+  </div>
 
-        {/* Leaderboard & Cleanup Events - Bottom Row */}
-        <div className="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <LeaderboardWidget />
-          <CleanupEventsWidget />
-        </div>
+  {/* Bottom Widgets */}
+  <div className="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <LeaderboardWidget />
+    <CleanupEventsWidget />
+  </div>
 
-        <div className="col-span-12 lg:col-span-4">
-          <ChallengeWidget />
-        </div>
-      </div>
+  <div className="col-span-12 lg:col-span-4">
+    <ChallengeWidget />
+  </div>
+</div>
     </div>
   );
 }

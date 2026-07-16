@@ -1,5 +1,8 @@
 import EditProfileModal from "@/components/profile/EditProfileModal";
+import { AchievementBadges } from "@/components/profile/AchievementBadges";
+import { AccountInformation } from "@/components/profile/AccountInformation";
 import { useState } from "react";
+import ProfileSkeleton from "@/components/profile/ProfileSkeleton";
 import { Shield, Award, Settings, LogOut, Mail, Edit3, FileText, CheckCircle, Users, Calendar, BookOpen, Clock, TrendingUp, Target, Heart, Zap, Megaphone } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,27 +18,22 @@ import {
   ACHIEVEMENT_BADGES,
   calculateProgressToNextLevel 
 } from '@/lib/impact-constants';
-import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS } from '@/lib/community-data';
 
 const ProfilePage: React.FC = () => {
-  const { user, profile, logout, userStats, refreshProfile } = useAuth();
+  const { user, profile, logout, userStats, loading, refreshProfile } = useAuth();
   const [editOpen, setEditOpen] = useState(false);
   const isDemo =
   sessionStorage.getItem('echo_demo_mode') === 'true';
 
 const impactPoints =
-  user && userStats?.eco_points
-    ? userStats.eco_points
-    : isDemo
+  isDemo
     ? MOCK_IMPACT_POINTS
-    : 0;
+    : userStats?.eco_points ?? 0;
 
 const impactStats =
-  user && userStats
-    ? userStats
-    : isDemo
+  isDemo
     ? MOCK_IMPACT_STATS
-    : {
+    : userStats ?? {
         reportsSubmitted: 0,
         verifiedReports: 0,
         cleanupEventsJoined: 0,
@@ -45,13 +43,18 @@ const impactStats =
       };
 
 const badges =
-  userStats?.badges ??
-  (isDemo ? ACHIEVEMENT_BADGES : []);
+  isDemo
+    ? ACHIEVEMENT_BADGES
+    : userStats?.badges ?? [];
 
 const pointHistory =
-  userStats?.point_history ??
-  (isDemo ? MOCK_POINT_HISTORY : []);
+  isDemo
+    ? MOCK_POINT_HISTORY
+    : userStats?.point_history ?? [];
 
+  if (user && !isDemo && loading) {
+  return <ProfileSkeleton />;
+}
 const {
   currentLevel,
   nextLevel,
@@ -61,17 +64,30 @@ const {
 
 const earnedBadges = badges.filter((b: any) => b.earned);
 
+const recentActivities = pointHistory.slice(0, 5);
+
   return (
     <div className="p-4 md:p-6 space-y-8 max-w-5xl mx-auto pb-20">
       {/* Profile Header */}
       <Card className="border-none shadow-2xl overflow-hidden">
-        <div className="h-28 sm:h-32 md:h-40 bg-gradient-to-r from-primary via-secondary to-accent" />
-        <CardContent className="relative px-4 pt-0 sm:px-6 md:px-8">
-          <div className="flex flex-col items-center gap-4 -mt-14 mb-8 text-center md:flex-row md:items-end md:gap-6 md:text-left">
-            <Avatar className="h-24 w-24 border-4 border-background shadow-2xl sm:h-28 sm:w-28 md:h-32 md:w-32">
-              <AvatarImage src={profile?.avatar_url || ''} />
+        <div className="h-20 sm:h-24 md:h-28 bg-gradient-to-r from-primary via-secondary to-accent" />
+        <CardContent className="relative px-4 pt-6 sm:px-6 md:px-8">
+          <div className="flex flex-col items-center gap-4 -mt-10 mb-8 text-center md:flex-row md:items-end md:gap-6 md:text-left">
+            <Avatar className="h-28 w-28 border-4 border-primary shadow-2xl sm:h-32 sm:w-32 md:h-36 md:w-36">
+              <AvatarImage
+  src={profile?.avatar_url || ""}
+  className="object-cover scale-110"
+/>
               <AvatarFallback className="bg-primary text-primary-foreground text-3xl font-black md:text-4xl">
-                {profile?.full_name?.split(' ').map((n: string) => n[0]).join('') || 'JD'}
+                {
+  loading
+    ? ''
+    : profile?.full_name
+        ?.split(' ')
+        .map((n) => n[0])
+        .join('')
+        || 'JD'
+                }
               </AvatarFallback>
             </Avatar>
             <div className="flex-grow space-y-1 md:pb-2">
@@ -112,19 +128,15 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             <Card className="premium-shadow border-none bg-accent/5 text-center p-4">
               <p className="text-xs font-bold uppercase text-muted-foreground">Community Rank</p>
               <h3 className="text-3xl font-black text-accent">
-  {user && userStats?.community_rank
-    ? `#${userStats.community_rank}`
-    : isDemo
-    ? '#42'
-    : 'N/A'}
+  {userStats?.community_rank
+  ? `#${userStats.community_rank}`
+  : '—'}
 </h3>
 
 <p className="text-[10px] italic text-muted-foreground mt-1">
   {userStats?.community_rank_percentile
-    ? `Top ${userStats.community_rank_percentile}%`
-    : isDemo
-    ? 'Top 5%'
-    : ''}
+  ? `Top ${userStats.community_rank_percentile}%`
+  : 'Not ranked'}
 </p>
             </Card>
           </div>
@@ -151,7 +163,10 @@ const earnedBadges = badges.filter((b: any) => b.earned);
                 <span className="font-bold">Progress</span>
                 <span className="font-black text-primary">{progress}%</span>
               </div>
-              <Progress value={progress} className="h-3" />
+              <Progress
+  value={loading ? undefined : progress}
+  className="h-3"
+/>
               {nextLevel && (
                 <p className="text-xs text-muted-foreground italic">
                   {pointsToNext} more points to reach {nextLevel.emoji} {nextLevel.name}
@@ -160,166 +175,26 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             </div>
           </div>
 
-          {/* Environmental Impact Summary */}
+          {/* Environmental Impact Summary — own component, own Card, memoized:
+              see src/components/profile/EnvironmentalImpactSummary.tsx */}
+
+          {/* Achievement Badges — own component, own Card, memoized:
+              see src/components/profile/AchievementBadges.tsx */}
           <div className="mb-8">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-primary" />
-              Environmental Impact Summary
-            </h4>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 bg-accent/5 rounded-xl border border-accent/10 text-center">
-                <Users className="h-6 w-6 mx-auto mb-2 text-accent" />
-                <p className="text-2xl font-black text-accent">{impactStats.communitiesHelped}</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Communities Helped</p>
-              </div>
-              <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 text-center">
-                <Calendar className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-2xl font-black text-primary">{impactStats.cleanupEventsJoined}</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Cleanup Events</p>
-              </div>
-              
-              <div className="p-4 bg-accent/5 rounded-xl border border-accent/10 text-center">
-                <Clock className="h-6 w-6 mx-auto mb-2 text-accent" />
-                <p className="text-2xl font-black text-accent">{impactStats.volunteerHours}h</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Volunteer Hours</p>
-              </div>
-              <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 text-center">
-                <Target className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-2xl font-black text-primary">{impactStats.environmentalScore}</p>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground">Environmental Score</p>
-              </div>
-            </div>
+            <AchievementBadges badges={earnedBadges} />
           </div>
 
-          {/* Achievement Badges */}
+          {/* Community Engagement — own component, own Card, memoized:
+              see src/components/profile/CommunityEngagement.tsx */}
+
+          {/* Account Information — own component, own Card, memoized:
+              see src/components/profile/AccountInformation.tsx */}
           <div className="mb-8">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <Award className="h-5 w-5 text-primary" />
-              Achievement Badges
-            </h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-              {earnedBadges.map((badge) => (
-                <div key={badge.id} className="p-4 rounded-2xl bg-primary/5 border border-primary/10 flex flex-col items-center gap-2 hover:shadow-md transition-all">
-                  <div className="text-4xl">{badge.emoji}</div>
-                  <span className="text-[10px] font-black uppercase text-center">{badge.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Community Engagement */}
-          <div className="mb-8">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <Users className="h-5 w-5 text-primary" />
-              Community Engagement
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="border-muted/20">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-bold flex items-center gap-2">
-                    <Megaphone className="h-4 w-4 text-primary" /> My Campaigns
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {isDemo ? (
-  MOCK_CAMPAIGNS
-    .filter(c => c.status === 'active')
-    .slice(0, 3)
-    .map(c => (
-      <div
-        key={c.id}
-        className="flex items-center gap-3 p-2 rounded-lg bg-primary/5"
-      >
-        <span className="text-xl">{c.emoji}</span>
-
-        <div className="flex-grow">
-          <p className="text-xs font-bold">{c.title}</p>
-          <p className="text-[10px] text-muted-foreground">
-            {c.participants} participants
-          </p>
-        </div>
-
-        <Badge className="bg-primary/10 text-primary border-none text-[9px]">
-          Active
-        </Badge>
-      </div>
-    ))
-) : (
-  <p className="text-sm text-muted-foreground">
-    No active campaigns yet.
-  </p>
-)}
-                    
-                </CardContent>
-              </Card>
-              <Card className="border-muted/20">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-bold flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-primary" /> My Volunteer Activities
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {isDemo ? (
-  MOCK_VOLUNTEERS.slice(0, 3).map(v => (
-    <div
-      key={v.id}
-      className="flex items-center gap-3 p-2 rounded-lg bg-green-50"
-    >
-      <span className="text-xl">{v.emoji}</span>
-
-      <div className="flex-grow">
-        <p className="text-xs font-bold">{v.title}</p>
-        <p className="text-[10px] text-muted-foreground">
-          {v.date} • {v.location}
-        </p>
-      </div>
-
-      <Badge className="bg-green-100 text-green-700 border-none text-[9px]">
-        Registered
-      </Badge>
-    </div>
-  ))
-) : (
-  <p className="text-sm text-muted-foreground">
-    No volunteer activities yet.
-  </p>
-)}
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Account Information */}
-          <div className="mb-8">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <Shield className="h-5 w-5 text-primary" />
-              Account Information
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-              <div className="flex justify-between items-center py-2 border-b border-muted">
-                <span className="text-sm text-muted-foreground">Member Since</span>
-                <span className="text-sm font-bold italic">
-  {profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString()
-    : 'Not available'}
-</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-muted">
-                <span className="text-sm text-muted-foreground">Last Activity</span>
-                <span className="text-sm font-bold italic">
-  No activity yet
-</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-muted">
-                <span className="text-sm text-muted-foreground">Preferred Region</span>
-                <span className="text-sm font-bold italic"> {profile?.region || 'Not set'}</span>
-                
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-muted">
-                <span className="text-sm text-muted-foreground">Organization</span>
-                <span className="text-sm font-bold italic">{profile?.organization || 'Not set'}</span>
-              </div>
-            </div>
+            <AccountInformation
+              memberSince={profile?.created_at}
+              region={profile?.region}
+              organization={profile?.organization}
+            />
           </div>
 
           {/* Recent Activity */}
@@ -328,11 +203,11 @@ const earnedBadges = badges.filter((b: any) => b.earned);
               <Clock className="h-5 w-5 text-primary" />
               Recent Activity
             </h4>
-            <Card className="border-muted/20">
+            <Card className="border-muted/20 [contain:content]">
               <CardContent className="pt-6">
   <div className="space-y-4">
     {pointHistory.length > 0 ? (
-      pointHistory.slice(0, 5).map((entry, index) => (
+      recentActivities.map((entry, index) => (
         <div key={entry.id}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -378,7 +253,7 @@ const earnedBadges = badges.filter((b: any) => b.earned);
             </div>
           </div>
 
-          {index < pointHistory.slice(0, 5).length - 1 && (
+          {index < recentActivities.length - 1 && (
             <Separator className="my-4" />
           )}
         </div>

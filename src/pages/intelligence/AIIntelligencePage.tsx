@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { useIntelligenceData } from '@/hooks/use-intelligence-data';
 import HealthGauge from '@/components/intelligence/HealthScore/HealthGauge';
+import { AISummaryNarrative } from '@/components/intelligence/AISummaryNarrative';
+import { AIKeyMetrics } from '@/components/intelligence/AIKeyMetrics';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -106,61 +108,26 @@ const AIIntelligencePage: React.FC = () => {
           </CardFooter>
         </Card>
 
-        {/* AI Environmental Summary */}
-        <Card className="lg:col-span-2 border-none shadow-2xl bg-gradient-to-br from-card to-accent/5">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-xl font-bold">
-              <BrainCircuit className="h-5 w-5 text-accent" />
-              AI Intelligence Executive Summary
-            </CardTitle>
-            <CardDescription>Synthetic analysis of current local conditions</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="p-4 rounded-xl bg-accent/5 border border-accent/10 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-2 opacity-20 group-hover:opacity-40 transition-opacity">
-                <BrainCircuit className="h-12 w-12" />
-              </div>
-              <p className="text-sm leading-relaxed relative z-10">
-                The current environmental intelligence for your community indicates a <strong>{intelligenceSummary?.community_status}</strong> status. 
-                Our AI model has detected {aiAnalysis?.flood_risk && aiAnalysis.flood_risk > 40 ? 'elevated flood risks' : 'stable environmental patterns'} 
-                based on recent report density. Waste accumulation remains a 
-                {aiAnalysis?.waste_accumulation && aiAnalysis.waste_accumulation > 50 ? ' significant concern' : ' managed area'} with {hazardReports.length} total hazards mapped. 
-                Immediate focus is recommended for {aiAnalysis?.recommendations?.[0]?.type || 'general sanitation'}.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="flex flex-col items-center p-3 rounded-lg bg-background shadow-sm border border-border/50">
-                <ShieldAlert className="h-5 w-5 text-destructive mb-2" />
-                <span className="text-xs font-bold uppercase text-muted-foreground">Avg Risk</span>
-                <span className="text-xl font-black">{((intelligenceSummary?.avg_risk_score || 0) * 10).toFixed(1)}</span>
-              </div>
-              <div className="flex flex-col items-center p-3 rounded-lg bg-background shadow-sm border border-border/50">
-                <Activity className="h-5 w-5 text-blue-500 mb-2" />
-                <span className="text-xs font-bold uppercase text-muted-foreground">Resol. Rate</span>
-                <span className="text-xl font-black">{intelligenceSummary?.resolution_rate}%</span>
-              </div>
-              <div className="flex flex-col items-center p-3 rounded-lg bg-background shadow-sm border border-border/50">
-                <Zap className="h-5 w-5 text-amber-500 mb-2" />
-                <span className="text-xs font-bold uppercase text-muted-foreground">Confidence</span>
-                <span className="text-xl font-black">{((aiAnalysis?.confidence_score || 0) * 100).toFixed(0)}%</span>
-              </div>
-              <div className="flex flex-col items-center p-3 rounded-lg bg-background shadow-sm border border-border/50">
-                <AlertCircle className="h-5 w-5 text-primary mb-2" />
-                <span className="text-xs font-bold uppercase text-muted-foreground">Reports</span>
-                <span className="text-xl font-black">{intelligenceSummary?.total_reports}</span>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                <span>Climate Impact Level</span>
-                <span>{aiAnalysis?.climate_impact}%</span>
-              </div>
-              <Progress value={aiAnalysis?.climate_impact || 0} className="h-2" />
-            </div>
-          </CardContent>
-        </Card>
+        {/* AI Environmental Summary — split into two independent, memoized
+            cards (src/components/intelligence/AISummaryNarrative.tsx and
+            AIKeyMetrics.tsx) so a refetch/re-render of one can't visually
+            bleed into or replay animations in the other. */}
+        <div className="lg:col-span-2 space-y-6">
+          <AISummaryNarrative
+            communityStatus={intelligenceSummary?.community_status}
+            floodRisk={aiAnalysis?.flood_risk}
+            wasteAccumulation={aiAnalysis?.waste_accumulation}
+            totalHazards={hazardReports.length}
+            topRecommendationType={aiAnalysis?.recommendations?.[0]?.type}
+          />
+          <AIKeyMetrics
+            avgRiskScore={intelligenceSummary?.avg_risk_score || 0}
+            resolutionRate={intelligenceSummary?.resolution_rate}
+            confidenceScore={aiAnalysis?.confidence_score || 0}
+            totalReports={intelligenceSummary?.total_reports}
+            climateImpact={aiAnalysis?.climate_impact}
+          />
+        </div>
       </div>
 
       {/* Intelligence Grid */}
@@ -265,7 +232,7 @@ const AIIntelligencePage: React.FC = () => {
           <CardContent className="space-y-4">
             {aiAnalysis?.recommendations?.map((rec, idx) => (
               <motion.div 
-                key={idx}
+                key={rec.type ?? idx}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.1 }}
