@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
   Select, 
   SelectContent, 
@@ -24,7 +23,6 @@ import {
 } from '@/components/ui/select';
 import { VerificationBadge } from '@/components/verification/VerificationBadge';
 import { ReportStatus } from '@/types/reports';
-import { cn } from '@/lib/utils';
 
 const mockReports = [
   {
@@ -84,13 +82,19 @@ const TrackReportsPage: React.FC = () => {
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity.toLowerCase()) {
-      case 'critical': return 'bg-destructive/10 text-destructive border-destructive/20';
-      case 'high': return 'bg-orange-500/10 text-orange-600 border-orange-500/20';
-      case 'medium': return 'bg-amber-500/10 text-amber-600 border-amber-500/20';
-      case 'low': return 'bg-primary/10 text-primary border-primary/20';
-      default: return 'bg-muted text-muted-foreground';
+  // Same severity → beacon-badge mapping used across the reports table
+  // and map popup, so "High severity" always means the same red
+  // everywhere in the app, not a page-local color choice.
+  const severityVariant = (severity: string): 'safe' | 'warning' | 'danger' => {
+    switch (severity) {
+      case 'Low':
+        return 'safe';
+      case 'Medium':
+        return 'warning';
+      case 'High':
+      case 'Critical':
+      default:
+        return 'danger';
     }
   };
 
@@ -201,9 +205,9 @@ const TrackReportsPage: React.FC = () => {
                     </div>
 
                     <div className="flex flex-row md:flex-col items-center md:items-end justify-between gap-3">
-                      <Badge variant="outline" className={cn("px-3 py-1", getSeverityColor(report.severity))}>
+                      <span className={`beacon-badge beacon-badge--${severityVariant(report.severity)}`}>
                         {report.severity} Severity
-                      </Badge>
+                      </span>
                       <div className="flex items-center text-primary font-bold text-sm">
                         Details
                         <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
