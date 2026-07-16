@@ -65,7 +65,7 @@ function App() {
                 
                 {/* Intelligence Routes */}
                 <Route path="/map" element={<InteractiveMapPage />} />
-                <Route path="/ai-intelligence" element={<AIIntelligencePage />} />
+                
                 <Route path="/community-health" element={<CommunityHealthPage />} />
                 <Route path="/knowledge" element={<KnowledgeCentre />} />
                 <Route path="/knowledge/:slug" element={<ArticleDetailsPage />} />
@@ -92,7 +92,7 @@ function App() {
                 
                {/* Intelligence Routes */}
                 <Route path="/analytics" element={<AnalyticsPage />} />
-                
+                <Route path="/ai-intelligence" element={<AIIntelligencePage />} />
                 <Route path="/search" element={<GlobalSearchPage />} />
               </Route>
 
