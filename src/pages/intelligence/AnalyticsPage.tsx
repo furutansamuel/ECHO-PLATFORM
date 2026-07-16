@@ -34,12 +34,14 @@ import { Progress } from '@/components/ui/progress';
 
 export default function AnalyticsPage() {
   const { analyticsData, loading } = useIntelligenceData();
-const COLORS = ['#1B5E20', '#2E7D32', '#43A047', '#66BB6A', '#81C784', '#A5D6A7', '#C8E6C9'];
+const COLORS = ['#0B2545', '#16324F', '#3D7FD9', '#FFB703', '#EA580C', '#DC2626', '#8CA0B6'];
+// Kept in sync with EnvironmentalMap.tsx / MapLegend.tsx — same 4-step
+// severity ramp everywhere in the app, not a page-local palette.
 const SEVERITY_COLORS = {
-  Critical: '#C62828',
-  High: '#EF5350',
-  Medium: '#F9A825',
-  Low: '#81C784'
+  Critical: '#DC2626',
+  High: '#EA580C',
+  Medium: '#F59E0B',
+  Low: '#1B5E20'
 };
 
 
@@ -150,11 +152,11 @@ const SEVERITY_COLORS = {
                   {severityData.find((s: any) => s.severity === 'Critical')?.count || 0}
                 </h3>
               </div>
-              <div className="p-2 bg-red-100 rounded-lg">
-                <ShieldAlert className="h-5 w-5 text-red-600" />
+              <div className="p-2 bg-destructive/10 rounded-lg">
+                <ShieldAlert className="h-5 w-5 text-destructive" />
               </div>
             </div>
-            <p className="text-[10px] text-red-600 font-bold mt-4 uppercase tracking-tighter">Requires immediate attention</p>
+            <p className="text-[10px] text-destructive font-bold mt-4 uppercase tracking-tighter">Requires immediate attention</p>
           </CardContent>
         </Card>
       </div>
@@ -312,3 +314,4 @@ const SEVERITY_COLORS = {
     </div>
   );
 }
+
