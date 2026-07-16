@@ -318,8 +318,22 @@ const CommunityInsights: React.FC = () => {
 
         {/* FEED TAB */}
         <TabsContent value="feed" className="m-0 space-y-6">
-          <CreatePost/>
-          <PostFeed/>
+          <PostFeed />
+
+{user ? (
+  <CreatePost />
+) : (
+  <Card>
+    <CardContent className="py-8 text-center">
+      <p className="mb-4 text-muted-foreground">
+        Sign in to share environmental reports and community updates.
+      </p>
+      <Button asChild>
+        <Link to="/login">Sign In</Link>
+      </Button>
+    </CardContent>
+  </Card>
+)}
         </TabsContent>
 
         {/* EVENTS TAB */}
