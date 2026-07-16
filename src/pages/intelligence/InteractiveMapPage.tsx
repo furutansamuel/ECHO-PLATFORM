@@ -68,7 +68,7 @@ export default function InteractiveMapPage() {
             {[1, 2].map(i => (
               <div key={i} className="flex gap-4 p-3 rounded-xl hover:bg-muted transition-colors cursor-pointer group border border-border/50">
                 <div className="shrink-0 pt-1">
-                  <ShieldAlert className="h-4 w-4 text-orange-500" />
+                  <ShieldAlert className="h-4 w-4 text-status-danger" />
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs font-bold leading-tight line-clamp-1 group-hover:text-primary transition-colors">Rising water levels in Ward B</p>
