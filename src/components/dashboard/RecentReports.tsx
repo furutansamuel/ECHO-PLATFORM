@@ -2,21 +2,40 @@ import { useNavigate } from 'react-router-dom';
 import { useReportsStore } from '@/hooks/use-reports-store';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { 
-  Badge 
-} from '@/components/ui/badge';
+
+type Severity = 'Low' | 'Medium' | 'High' | 'Critical';
+
+// Maps the report's real severity to a beacon-badge tier. High and
+// Critical both read as "danger" — the underlying data only has one
+// hazard-color tier above "warning", so that's an honest mapping rather
+// than inventing a fourth visual tier the design system doesn't have.
+const severityVariant = (severity: string): 'safe' | 'warning' | 'danger' => {
+  switch (severity as Severity) {
+    case 'Low':
+      return 'safe';
+    case 'Medium':
+      return 'warning';
+    case 'High':
+    case 'Critical':
+    default:
+      return 'danger';
+  }
+};
+
+// The dot only pulses while a report is still active. Resolved/Closed
+// reports get a static dot — the animation itself carries status meaning.
+const RESOLVED_STATUSES = new Set(['Resolved', 'Closed']);
+const isActiveStatus = (status: string) => !RESOLVED_STATUSES.has(status);
+
+const statusVariant = (status: string): 'safe' | 'warning' | 'danger' => {
+  if (RESOLVED_STATUSES.has(status)) return 'safe';
+  if (status === 'Verified' || status === 'Assigned' || status === 'In Progress') return 'warning';
+  return 'danger';
+};
 
 export function RecentReports() {
   const navigate = useNavigate();
   const { reports } = useReportsStore();
-
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'resolved': return 'text-green-600 bg-green-100';
-      case 'verified': return 'text-blue-600 bg-blue-100';
-      default: return 'text-orange-600 bg-orange-100';
-    }
-  };
 
   return (
     <div className="bg-card border rounded-2xl overflow-hidden shadow-sm">
@@ -53,14 +72,18 @@ export function RecentReports() {
                     {report.location.address}
                   </td>
                   <td className="px-6 py-4">
-                    <Badge variant="outline" className="text-[10px] font-black uppercase tracking-widest border-red-200 text-red-700 bg-red-50/50">
+                    <span className={`beacon-badge beacon-badge--${severityVariant(report.severity)}`}>
                       {report.severity}
-                    </Badge>
+                    </span>
                   </td>
                   <td className="px-6 py-4">
-                    <Badge variant="outline" className={`text-[10px] font-black uppercase tracking-widest border-none ${getStatusColor(report.status)}`}>
+                    <span className={`beacon-badge beacon-badge--${statusVariant(report.status)}`}>
+                      <span
+                        className={`beacon-dot ${isActiveStatus(report.status) ? 'beacon-dot--active' : ''}`}
+                        aria-hidden="true"
+                      />
                       {report.status}
-                    </Badge>
+                    </span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <Button 
@@ -86,4 +109,5 @@ export function RecentReports() {
       </div>
     </div>
   );
+}
 }
