@@ -55,13 +55,19 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
   onEdit,
   onWithdraw
 }) => {
-  const getSeverityColor = (severity: string) => {
-    switch (severity.toLowerCase()) {
-      case 'critical': return 'bg-destructive text-white';
-      case 'high': return 'bg-orange-500 text-white';
-      case 'medium': return 'bg-amber-500 text-white';
-      case 'low': return 'bg-primary text-white';
-      default: return 'bg-muted text-muted-foreground';
+  // Same severity → beacon-badge mapping used in the reports table, map
+  // popup, and tracking page. "Low" used to render in brand navy
+  // (bg-primary) here, reading like a featured tag rather than low risk.
+  const severityVariant = (severity: string): 'safe' | 'warning' | 'danger' => {
+    switch (severity) {
+      case 'Low':
+        return 'safe';
+      case 'Medium':
+        return 'warning';
+      case 'High':
+      case 'Critical':
+      default:
+        return 'danger';
     }
   };
 
@@ -73,7 +79,7 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
           <div className="flex items-center gap-2 flex-wrap">
             <Badge variant="outline" className="font-mono">{report.reference_number}</Badge>
             <VerificationBadge status={report.status} />
-            <Badge className={getSeverityColor(report.severity)}>{report.severity} Severity</Badge>
+            <span className={`beacon-badge beacon-badge--${severityVariant(report.severity)}`}>{report.severity} Severity</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{report.title}</h1>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
