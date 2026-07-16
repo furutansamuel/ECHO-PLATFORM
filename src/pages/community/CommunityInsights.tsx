@@ -121,24 +121,20 @@ const CommunityInsights: React.FC = () => {
                       </CardContent>
                       <CardFooter className="pt-0">
                         {status !== 'completed' ? (
-                          {user ? (
-<Button
-  size="sm"
-  className="w-full rounded-full gap-2"
-  variant={joinedCampaigns.includes(campaign.id) ? "outline" : "default"}
-  onClick={() => toggleJoinCampaign(campaign.id)}
->
-  {joinedCampaigns.includes(campaign.id)
-    ? "✓ Joined"
-    : "Join Campaign"}
-</Button>
-) : (
-<Button asChild className="w-full rounded-full">
-  <Link to="/login">Sign in to Join</Link>
-</Button>
-)}
-                            {joinedCampaigns.includes(campaign.id) ? '✓ Joined' : 'Join Campaign'}
-                          </Button>
+                          user ? (
+                            <Button
+                              size="sm"
+                              className="w-full rounded-full gap-2"
+                              variant={joinedCampaigns.includes(campaign.id) ? "outline" : "default"}
+                              onClick={() => toggleJoinCampaign(campaign.id)}
+                            >
+                              {joinedCampaigns.includes(campaign.id) ? '✓ Joined' : 'Join Campaign'}
+                            </Button>
+                          ) : (
+                            <Button asChild className="w-full rounded-full">
+                              <Link to="/login">Sign in to Join</Link>
+                            </Button>
+                          )
                         ) : (
                           <Badge className="w-full justify-center bg-gray-100 text-gray-600 border-none">Completed</Badge>
                         )}
@@ -175,23 +171,19 @@ const CommunityInsights: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-2 pt-1">
                         {user ? (
-<Button
-  size="sm"
-  className="w-full rounded-full gap-2"
-  variant={joinedCampaigns.includes(campaign.id) ? "outline" : "default"}
-  onClick={() => toggleJoinCampaign(campaign.id)}
->
-  {joinedCampaigns.includes(campaign.id)
-    ? "✓ Joined"
-    : "Join Campaign"}
-</Button>
-) : (
-<Button asChild className="w-full rounded-full">
-  <Link to="/login">Sign in to Join</Link>
-</Button>
-)}
-                          {registeredEvents.includes(activity.id) ? '✓ Registered' : 'Register'}
-                        </Button>
+                          <Button
+                            size="sm"
+                            className="rounded-full gap-2"
+                            variant={registeredEvents.includes(activity.id) ? "outline" : "default"}
+                            onClick={() => toggleRegister(activity.id)}
+                          >
+                            {registeredEvents.includes(activity.id) ? '✓ Registered' : 'Register'}
+                          </Button>
+                        ) : (
+                          <Button asChild className="rounded-full">
+                            <Link to="/login">Sign in to Register</Link>
+                          </Button>
+                        )}
                         <Button size="sm" variant="outline" className="rounded-full gap-1 text-xs">
                           <Calendar className="h-3 w-3" /> Add to Calendar
                         </Button>
@@ -231,23 +223,19 @@ const CommunityInsights: React.FC = () => {
                     <Progress value={(challenge.progress / challenge.goal) * 100} className="h-2" />
                   </div>
                   {user ? (
-<Button
-  size="sm"
-  className="w-full rounded-full gap-2"
-  variant={joinedCampaigns.includes(campaign.id) ? "outline" : "default"}
-  onClick={() => toggleJoinCampaign(campaign.id)}
->
-  {joinedCampaigns.includes(campaign.id)
-    ? "✓ Joined"
-    : "Join Campaign"}
-</Button>
-) : (
-<Button asChild className="w-full rounded-full">
-  <Link to="/login">Sign in to Join</Link>
-</Button>
-)}
-                    {joinedChallenges.includes(challenge.id) ? '✓ Joined Challenge' : 'Join Challenge'}
-                  </Button>
+                    <Button
+                      size="sm"
+                      className="w-full rounded-full gap-2"
+                      variant={joinedChallenges.includes(challenge.id) ? "outline" : "default"}
+                      onClick={() => toggleJoinChallenge(challenge.id)}
+                    >
+                      {joinedChallenges.includes(challenge.id) ? '✓ Joined Challenge' : 'Join Challenge'}
+                    </Button>
+                  ) : (
+                    <Button asChild className="w-full rounded-full">
+                      <Link to="/login">Sign in to Join</Link>
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -320,20 +308,20 @@ const CommunityInsights: React.FC = () => {
         <TabsContent value="feed" className="m-0 space-y-6">
           <PostFeed />
 
-{user ? (
-  <CreatePost />
-) : (
-  <Card>
-    <CardContent className="py-8 text-center">
-      <p className="mb-4 text-muted-foreground">
-        Sign in to share environmental reports and community updates.
-      </p>
-      <Button asChild>
-        <Link to="/login">Sign In</Link>
-      </Button>
-    </CardContent>
-  </Card>
-)}
+          {user ? (
+            <CreatePost />
+          ) : (
+            <Card>
+              <CardContent className="py-8 text-center">
+                <p className="mb-4 text-muted-foreground">
+                  Sign in to share environmental reports and community updates.
+                </p>
+                <Button asChild>
+                  <Link to="/login">Sign In</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         {/* EVENTS TAB */}
@@ -355,23 +343,19 @@ const CommunityInsights: React.FC = () => {
                         <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{event.location}</span>
                       </div>
                       {user ? (
-<Button
-size="sm"
-className="w-full rounded-full"
-variant={registeredEvents.includes(event.id) ? "outline" : "default"}
-onClick={() => toggleRegister(event.id)}
->
-{registeredEvents.includes(event.id)
-? "✓ Registered"
-: "Register"}
-</Button>
-) : (
-<Button asChild className="w-full rounded-full">
-<Link to="/login">Sign in to Register</Link>
-</Button>
-)}
-                        {registeredEvents.includes(event.id) ? '✓ Registered' : 'Register'}
-                      </Button>
+                        <Button
+                          size="sm"
+                          className="w-full rounded-full"
+                          variant={registeredEvents.includes(event.id) ? "outline" : "default"}
+                          onClick={() => toggleRegister(event.id)}
+                        >
+                          {registeredEvents.includes(event.id) ? '✓ Registered' : 'Register'}
+                        </Button>
+                      ) : (
+                        <Button asChild className="w-full rounded-full">
+                          <Link to="/login">Sign in to Register</Link>
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
@@ -390,25 +374,20 @@ onClick={() => toggleRegister(event.id)}
                         <h4 className="font-bold text-sm">{event.title}</h4>
                         <p className="text-[10px] text-muted-foreground">{event.date} • {event.location}</p>
                       </div>
-
                       {user ? (
-<Button
-size="sm"
-className="w-full rounded-full"
-variant={registeredEvents.includes(event.id) ? "outline" : "default"}
-onClick={() => toggleRegister(event.id)}
->
-{registeredEvents.includes(event.id)
-? "✓ Registered"
-: "Register"}
-</Button>
-) : (
-<Button asChild className="w-full rounded-full">
-<Link to="/login">Sign in to Register</Link>
-</Button>
-)}
-                        {registeredEvents.includes(event.id) ? '✓' : 'Join'}
-                      </Button>
+                        <Button
+                          size="sm"
+                          variant={registeredEvents.includes(event.id) ? "outline" : "default"}
+                          className="rounded-full"
+                          onClick={() => toggleRegister(event.id)}
+                        >
+                          {registeredEvents.includes(event.id) ? '✓' : 'Join'}
+                        </Button>
+                      ) : (
+                        <Button asChild size="sm" className="rounded-full">
+                          <Link to="/login">Sign in</Link>
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
