@@ -1,11 +1,12 @@
 import React from 'react';
 
+// Kept in sync with getHazardIcon in EnvironmentalMap.tsx — if this
+// changes, update that too.
 const legendItems = [
-    { color: '#2563EB', label: 'Water-related' },
     { color: '#1B5E20', label: 'Low Severity' },
-    { color: '#43A047', label: 'Medium Severity' },
-    { color: '#F9A825', label: 'High Severity' },
-    { color: '#C62828', label: 'Critical Severity' },
+    { color: '#F59E0B', label: 'Medium Severity' },
+    { color: '#EA580C', label: 'High Severity' },
+    { color: '#DC2626', label: 'Critical Severity' },
 ];
 
 const MapLegend = () => {
