@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useAuth } from "@/hooks/use-auth";
+import { Link } from "react-router-dom";
 import CreatePost from '@/components/community/CreatePost';
 import PostFeed from '@/components/community/PostFeed';
 import { Users, MapPin, Calendar, Bookmark, Share2, Heart, TrendingUp, Award, Clock, Star } from 'lucide-react';
@@ -11,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS, MOCK_LEADERBOARD, MOCK_COMMUNITY_LEADERS, MOCK_CHALLENGES, MOCK_RECOGNITION, MOCK_FEED, MOCK_EVENTS } from '@/lib/community-data';
 
 const CommunityInsights: React.FC = () => {
+  const { user } = useAuth();
   const [joinedCampaigns, setJoinedCampaigns] = useState<string[]>([]);
   const [registeredEvents, setRegisteredEvents] = useState<string[]>([]);
   const [joinedChallenges, setJoinedChallenges] = useState<string[]>([]);
@@ -118,7 +121,22 @@ const CommunityInsights: React.FC = () => {
                       </CardContent>
                       <CardFooter className="pt-0">
                         {status !== 'completed' ? (
-                          <Button size="sm" className="w-full rounded-full gap-2" variant={joinedCampaigns.includes(campaign.id) ? 'outline' : 'default'} onClick={() => toggleJoinCampaign(campaign.id)}>
+                          {user ? (
+<Button
+  size="sm"
+  className="w-full rounded-full gap-2"
+  variant={joinedCampaigns.includes(campaign.id) ? "outline" : "default"}
+  onClick={() => toggleJoinCampaign(campaign.id)}
+>
+  {joinedCampaigns.includes(campaign.id)
+    ? "✓ Joined"
+    : "Join Campaign"}
+</Button>
+) : (
+<Button asChild className="w-full rounded-full">
+  <Link to="/login">Sign in to Join</Link>
+</Button>
+)}
                             {joinedCampaigns.includes(campaign.id) ? '✓ Joined' : 'Join Campaign'}
                           </Button>
                         ) : (
@@ -156,7 +174,22 @@ const CommunityInsights: React.FC = () => {
                         <span className="flex items-center gap-1"><Users className="h-3 w-3" />{activity.participants}/{activity.maxParticipants}</span>
                       </div>
                       <div className="flex items-center gap-2 pt-1">
-                        <Button size="sm" className="rounded-full gap-1 text-xs" variant={registeredEvents.includes(activity.id) ? 'outline' : 'default'} onClick={() => toggleRegister(activity.id)}>
+                        {user ? (
+<Button
+  size="sm"
+  className="w-full rounded-full gap-2"
+  variant={joinedCampaigns.includes(campaign.id) ? "outline" : "default"}
+  onClick={() => toggleJoinCampaign(campaign.id)}
+>
+  {joinedCampaigns.includes(campaign.id)
+    ? "✓ Joined"
+    : "Join Campaign"}
+</Button>
+) : (
+<Button asChild className="w-full rounded-full">
+  <Link to="/login">Sign in to Join</Link>
+</Button>
+)}
                           {registeredEvents.includes(activity.id) ? '✓ Registered' : 'Register'}
                         </Button>
                         <Button size="sm" variant="outline" className="rounded-full gap-1 text-xs">
@@ -197,7 +230,22 @@ const CommunityInsights: React.FC = () => {
                     </div>
                     <Progress value={(challenge.progress / challenge.goal) * 100} className="h-2" />
                   </div>
-                  <Button size="sm" className="w-full rounded-full gap-2" variant={joinedChallenges.includes(challenge.id) ? 'outline' : 'default'} onClick={() => toggleJoinChallenge(challenge.id)}>
+                  {user ? (
+<Button
+  size="sm"
+  className="w-full rounded-full gap-2"
+  variant={joinedCampaigns.includes(campaign.id) ? "outline" : "default"}
+  onClick={() => toggleJoinCampaign(campaign.id)}
+>
+  {joinedCampaigns.includes(campaign.id)
+    ? "✓ Joined"
+    : "Join Campaign"}
+</Button>
+) : (
+<Button asChild className="w-full rounded-full">
+  <Link to="/login">Sign in to Join</Link>
+</Button>
+)}
                     {joinedChallenges.includes(challenge.id) ? '✓ Joined Challenge' : 'Join Challenge'}
                   </Button>
                 </CardContent>
@@ -292,7 +340,22 @@ const CommunityInsights: React.FC = () => {
                         <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{event.date}</span>
                         <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{event.location}</span>
                       </div>
-                      <Button size="sm" className="w-full rounded-full" variant={registeredEvents.includes(event.id) ? 'outline' : 'default'} onClick={() => toggleRegister(event.id)}>
+                      {user ? (
+<Button
+size="sm"
+className="w-full rounded-full"
+variant={registeredEvents.includes(event.id) ? "outline" : "default"}
+onClick={() => toggleRegister(event.id)}
+>
+{registeredEvents.includes(event.id)
+? "✓ Registered"
+: "Register"}
+</Button>
+) : (
+<Button asChild className="w-full rounded-full">
+<Link to="/login">Sign in to Register</Link>
+</Button>
+)}
                         {registeredEvents.includes(event.id) ? '✓ Registered' : 'Register'}
                       </Button>
                     </CardContent>
@@ -313,7 +376,23 @@ const CommunityInsights: React.FC = () => {
                         <h4 className="font-bold text-sm">{event.title}</h4>
                         <p className="text-[10px] text-muted-foreground">{event.date} • {event.location}</p>
                       </div>
-                      <Button size="sm" variant="outline" className="rounded-full text-xs" onClick={() => toggleRegister(event.id)}>
+
+                      {user ? (
+<Button
+size="sm"
+className="w-full rounded-full"
+variant={registeredEvents.includes(event.id) ? "outline" : "default"}
+onClick={() => toggleRegister(event.id)}
+>
+{registeredEvents.includes(event.id)
+? "✓ Registered"
+: "Register"}
+</Button>
+) : (
+<Button asChild className="w-full rounded-full">
+<Link to="/login">Sign in to Register</Link>
+</Button>
+)}
                         {registeredEvents.includes(event.id) ? '✓' : 'Join'}
                       </Button>
                     </CardContent>
