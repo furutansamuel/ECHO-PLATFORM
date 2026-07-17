@@ -14,7 +14,20 @@ import {
 } from 'lucide-react';
 
 export default function InteractiveMapPage() {
-  const { hazardReports, aiAnalysis, loading } = useIntelligenceData();
+  const { hazardReports, aiAnalysis, alerts, loading } = useIntelligenceData();
+
+  // environmental_alerts rows aren't strongly typed (analyticsData/alerts
+  // are `any[]` in the hook), so this falls back gracefully across a few
+  // likely field names rather than assuming an exact schema.
+  const formatTimeAgo = (dateStr?: string) => {
+    if (!dateStr) return null;
+    const diffMs = Date.now() - new Date(dateStr).getTime();
+    const hours = Math.round(diffMs / (1000 * 60 * 60));
+    if (hours < 1) return 'Just now';
+    if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+    const days = Math.round(hours / 24);
+    return `${days} day${days === 1 ? '' : 's'} ago`;
+  };
 
   return (
     <div className="h-[calc(100vh-5rem)] w-full flex flex-col lg:flex-row overflow-hidden">
@@ -65,17 +78,28 @@ export default function InteractiveMapPage() {
           {/* Recent Alerts */}
           <div className="space-y-4">
             <h4 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Nearby Alerts</h4>
-            {[1, 2].map(i => (
-              <div key={i} className="flex gap-4 p-3 rounded-xl hover:bg-muted transition-colors cursor-pointer group border border-border/50">
-                <div className="shrink-0 pt-1">
-                  <ShieldAlert className="h-4 w-4 text-status-danger" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs font-bold leading-tight line-clamp-1 group-hover:text-primary transition-colors">Rising water levels in Ward B</p>
-                  <p className="text-[10px] text-muted-foreground italic">2 hours ago • Critical</p>
-                </div>
-              </div>
-            ))}
+            {alerts && alerts.length > 0 ? (
+              alerts.slice(0, 3).map((alert: any, i: number) => {
+                const label = alert.title || alert.message || alert.description || alert.category || 'Environmental Alert';
+                const severity = alert.severity || alert.priority;
+                const timeAgo = formatTimeAgo(alert.created_at);
+                return (
+                  <div key={alert.id ?? i} className="flex gap-4 p-3 rounded-xl hover:bg-muted transition-colors cursor-pointer group border border-border/50">
+                    <div className="shrink-0 pt-1">
+                      <ShieldAlert className="h-4 w-4 text-status-danger" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-bold leading-tight line-clamp-1 group-hover:text-primary transition-colors">{label}</p>
+                      <p className="text-[10px] text-muted-foreground italic">
+                        {[timeAgo, severity].filter(Boolean).join(' • ')}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-xs text-muted-foreground italic py-2">No active alerts nearby right now.</p>
+            )}
           </div>
         </div>
 

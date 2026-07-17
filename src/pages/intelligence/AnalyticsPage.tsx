@@ -106,9 +106,9 @@ const SEVERITY_COLORS = {
                 <Layers className="h-5 w-5 text-primary" />
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-1 text-[10px] text-green-600 font-bold">
-              <TrendingUp className="h-3 w-3" />
-              <span>12% INCREASE FROM LAST MONTH</span>
+            <div className="mt-4 flex items-center gap-1 text-[10px] text-muted-foreground font-bold">
+              <Layers className="h-3 w-3" />
+              <span>ACROSS ALL ACTIVE CATEGORIES</span>
             </div>
           </CardContent>
         </Card>
