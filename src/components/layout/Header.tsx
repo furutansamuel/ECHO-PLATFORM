@@ -50,7 +50,7 @@ export function Header() {
 asChild
 className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
 >
-      <Link to="/dashboard">Go to Dashboard</Link>
+      <Link to="/dashboard">Open Dashboard</Link>
     </Button>
   );
 
@@ -139,7 +139,7 @@ className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all dura
   className="w-full rounded-full shadow-lg"
   onClick={() => setIsMenuOpen(false)}
 >
-                        <Link to="/dashboard">Go to Dashboard</Link>
+                        <Link to="/dashboard">Open Dashboard</Link>
                     </Button>
                 ) : (
                   <div className='grid grid-cols-2 gap-2'>
