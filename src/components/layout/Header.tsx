@@ -16,7 +16,7 @@ const navLinks = [
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -45,14 +45,24 @@ export function Header() {
     </>
   );
 
-  const authenticatedLinks = (
+      const authenticatedLinks = (
+  <div className="flex items-center gap-2">
     <Button
-asChild
-className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
->
+      asChild
+      className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
+    >
       <Link to="/dashboard">Open Dashboard</Link>
     </Button>
-  );
+
+    <Button
+      variant="outline"
+      className="rounded-full border-destructive/20 text-destructive hover:bg-destructive hover:text-white"
+      onClick={logout}
+    >
+      Logout
+    </Button>
+  </div>
+);
 
   return (
     <header
@@ -69,14 +79,14 @@ className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all dura
   <Icons.logo className="h-8 w-8 text-primary" />
 
   <div className="flex flex-col leading-none">
-    <span className="text-2xl font-black tracking-wide text-primary">
-      ECHO
-    </span>
+  <span className="text-2xl font-black tracking-wide text-primary">
+    ECHO
+  </span>
 
-    <span className="hidden sm:block text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-    Environmental Intelligence
-</span>
-  </div>
+  <span className="hidden sm:block text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+    Environmental Community Health Observatory
+  </span>
+</div>
 </Link>
 
         {/* Desktop Nav */}
@@ -134,13 +144,26 @@ className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all dura
             <div className="border-t pt-4">
               <div className="flex flex-col gap-2">
                 {isAuthenticated ? (
-                    <Button
-  asChild
-  className="w-full rounded-full shadow-lg"
-  onClick={() => setIsMenuOpen(false)}
->
-                        <Link to="/dashboard">Open Dashboard</Link>
-                    </Button>
+                    <div className="space-y-2">
+  <Button
+    asChild
+    className="w-full rounded-full shadow-lg"
+    onClick={() => setIsMenuOpen(false)}
+  >
+    <Link to="/dashboard">Open Dashboard</Link>
+  </Button>
+
+  <Button
+    variant="outline"
+    className="w-full rounded-full border-destructive/20 text-destructive"
+    onClick={() => {
+      logout();
+      setIsMenuOpen(false);
+    }}
+  >
+    Logout
+  </Button>
+</div>
                 ) : (
                   <div className='grid grid-cols-2 gap-2'>
                       <Button
