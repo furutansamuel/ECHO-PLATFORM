@@ -27,22 +27,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const DEMO_USER: User = {
-  id: "demo-user-id",
-  email: "demo@echo.eco",
-  user_metadata: { full_name: "Demo Showcase User" },
-  aud: "authenticated",
-  role: "authenticated",
-  app_metadata: {},
-  created_at: new Date().toISOString(),
-} as User;
 
-const DEMO_PROFILE: UserProfile = {
-  id: "demo-user-id",
-  role: "citizen",
-  full_name: "Demo Showcase User",
-  avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Demo",
-};
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -54,23 +39,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let alive = true;
 
     // If Supabase isn't configured, resolve immediately so the UI still renders.
-    if (!isSupabaseConfigured) {
-  const demoMode =
-    sessionStorage.getItem("echo_demo_mode") === "true";
-
-  if (demoMode) {
-  setUser(DEMO_USER);
-  setProfile(DEMO_PROFILE);
-  setUserStats(null);
-}
-
+  if (!isSupabaseConfigured) {
   setLoading(false);
 
   return () => {
     alive = false;
   };
 }
-
     const fetchProfile = async (userId: string) => {
       if (lastFetchedProfileFor.current === userId) {
   return;
@@ -168,13 +143,7 @@ if (alive) {
       
      if (nextUser) {
        setUser(nextUser);
-  sessionStorage.removeItem("echo_demo_mode");
   sessionStorage.removeItem("echo_presentation_mode");
-  sessionStorage.removeItem("echo_reports");
-  sessionStorage.removeItem("echo_drafts");
-  sessionStorage.removeItem("echo_stats");
-  sessionStorage.removeItem("echo_notifications");
-  sessionStorage.removeItem("echo_dismissed_hints");
 
   void fetchProfile(nextUser.id);
        
@@ -231,23 +200,16 @@ if (alive) {
 };
   
   const logout = async () => {
-  const isDemo =
-    import.meta.env.DEV &&
-    sessionStorage.getItem("echo_demo_mode") === "true";
+  
 
   // Clear demo data
   sessionStorage.removeItem("echo_demo_mode");
-  sessionStorage.removeItem("echo_presentation_mode");
-  sessionStorage.removeItem("echo_reports");
-  sessionStorage.removeItem("echo_drafts");
-  sessionStorage.removeItem("echo_stats");
-  sessionStorage.removeItem("echo_notifications");
-  sessionStorage.removeItem("echo_dismissed_hints");
-
-  if (isDemo) {
-    window.location.href = "/";
-    return;
-  }
+sessionStorage.removeItem("echo_presentation_mode");
+sessionStorage.removeItem("echo_reports");
+sessionStorage.removeItem("echo_drafts");
+sessionStorage.removeItem("echo_stats");
+sessionStorage.removeItem("echo_notifications");
+sessionStorage.removeItem("echo_dismissed_hints");
 
   try {
     const { error } = await supabase.auth.signOut();
