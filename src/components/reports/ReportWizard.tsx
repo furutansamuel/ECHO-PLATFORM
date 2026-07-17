@@ -86,12 +86,8 @@ export default function ReportWizard() {
   const onSubmit = async (data: any) => {
     setIsSubmitting(true);
     try {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
       const ref = `ECHO-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-      setReferenceNumber(ref);
-      
+
       const report: Report = {
         ...(data as ReportFormData),
         id: Math.random().toString(36).substring(2, 9),
@@ -99,9 +95,14 @@ export default function ReportWizard() {
         createdAt: new Date().toISOString(),
         referenceNumber: ref,
       } as Report;
-      
-      saveReport(report);
-      setCurrentStep(STEPS.length - 1); // Move to Success Step
+
+      const success = await saveReport(report);
+      if (success) {
+        setReferenceNumber(ref);
+        setCurrentStep(STEPS.length - 1); // Move to Success Step
+      }
+      // On failure, saveReport already shows an error toast — stay on
+      // the current step so the person doesn't lose their filled-in data.
     } catch {
       toast.error('Failed to submit report. Please try again.');
     } finally {
