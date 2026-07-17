@@ -11,7 +11,6 @@ const navLinks = [
   { name: 'Intelligence', href: '/ai-intelligence' },
   { name: 'Community', href: '/community-insights' },
   { name: 'Knowledge', href: '/knowledge' },
-  { name: 'Demo', href: '/auth/login' },
 ];
 
 export function Header() {
@@ -66,20 +65,19 @@ className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-3
       style={{ paddingTop: 'max(env(safe-area-inset-top), 0px)' }}
     >
       <div className="container flex h-20 max-w-screen-xl items-center justify-between px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2">
-          <Icons.logo className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-black tracking-wide text-primary">
-          <div className="flex flex-col leading-none">
+        <Link to="/" className="flex items-center gap-3">
+  <Icons.logo className="h-8 w-8 text-primary" />
+
+  <div className="flex flex-col leading-none">
     <span className="text-2xl font-black tracking-wide text-primary">
-        ECHO
+      ECHO
     </span>
 
     <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-        Environmental Intelligence
+      Environmental Intelligence
     </span>
-</div>
-          </span>
-        </Link>
+  </div>
+</Link>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-2 text-base font-medium">
@@ -88,10 +86,9 @@ className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-3
               key={item.href}
               to={item.href}
               className={cn(
-"rounded-full px-5 py-2 transition-all duration-300",
-location.pathname === item.href
-? "bg-primary text-white shadow-lg"
-: "text-muted-foreground hover:bg-primary/10 hover:text-primary"
+  location.pathname === item.href
+    ? "bg-primary text-white rounded-xl px-4 py-3 shadow-md"
+    : "rounded-xl px-4 py-3 text-muted-foreground hover:bg-primary/10 transition-colors"
 )}
             >
               {item.name}
@@ -116,7 +113,7 @@ location.pathname === item.href
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-background border-t shadow-xl animate-in fade-in-20 slide-in-from-top-2">
+        <div className="md:hidden bg-background border-t shadow-xl animate-in fade-in zoom-in-95 duration-300">
           <div className="container py-4 space-y-4">
             <nav className="flex flex-col gap-4">
               {navLinks.map((item) => (
@@ -141,20 +138,24 @@ location.pathname === item.href
                     <Button
   asChild
   className="w-full rounded-full shadow-lg"
+  onClick={() => setIsMenuOpen(false)}
 >
                         <Link to="/dashboard">Go to Dashboard</Link>
                     </Button>
                 ) : (
                   <div className='grid grid-cols-2 gap-2'>
                       <Button
-variant="outline"
-className="rounded-full border-primary/20 hover:border-primary"
+  variant="outline"
+  asChild
+  className="rounded-full border-primary/20 hover:border-primary"
+  onClick={() => setIsMenuOpen(false)}
 >
                           <Link to="/auth/login">Login</Link>
                       </Button>
                       <Button
-asChild
-className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-300"
+  asChild
+  className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-500 ease-out"
+  onClick={() => setIsMenuOpen(false)}
 >
                           <Link to="/auth/register">Get Started</Link>
                       </Button>
