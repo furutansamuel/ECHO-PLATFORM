@@ -30,10 +30,17 @@ export function Header() {
 
   const authLinks = (
     <>
-      <Button variant="ghost" asChild>
+      <Button
+  variant="outline"
+  className="rounded-full border-primary/20 hover:border-primary"
+  asChild
+>
         <Link to="/auth/login">Login</Link>
       </Button>
-      <Button asChild>
+      <Button
+  asChild
+  className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-300"
+>
         <Link to="/auth/register">Get Started</Link>
       </Button>
     </>
@@ -61,11 +68,21 @@ className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-3
       <div className="container flex h-20 max-w-screen-xl items-center justify-between px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
           <Icons.logo className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-black tracking-wide text-primary">ECHO</span>
+          <span className="text-2xl font-black tracking-wide text-primary">
+          <div className="flex flex-col leading-none">
+    <span className="text-2xl font-black tracking-wide text-primary">
+        ECHO
+    </span>
+
+    <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+        Environmental Intelligence
+    </span>
+</div>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8 text-base font-medium">
+        <nav className="hidden md:flex items-center gap-2 text-base font-medium">
           {navLinks.map((item) => (
             <Link
               key={item.href}
@@ -88,7 +105,10 @@ location.pathname === item.href
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <Button
+    variant="ghost"
+    size="icon"
+    className="rounded-full hover:bg-primary/10" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
@@ -96,7 +116,7 @@ location.pathname === item.href
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur-lg border-t animate-in fade-in-20 slide-in-from-top-2">
+        <div className="md:hidden bg-background border-t shadow-xl animate-in fade-in-20 slide-in-from-top-2">
           <div className="container py-4 space-y-4">
             <nav className="flex flex-col gap-4">
               {navLinks.map((item) => (
@@ -104,8 +124,10 @@ location.pathname === item.href
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    'text-lg font-medium',
-                    location.pathname === item.href ? 'text-primary font-semibold' : 'text-muted-foreground'
+                    "rounded-xl px-4 py-3 text-base font-semibold transition-colors hover:bg-primary/10"
+                    location.pathname === item.href
+  ? "bg-primary text-white rounded-xl px-4 py-3 shadow-md"
+  : "rounded-xl px-4 py-3 text-muted-foreground hover:bg-primary/10"
                   )}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -116,7 +138,10 @@ location.pathname === item.href
             <div className="border-t pt-4">
               <div className="flex flex-col gap-2">
                 {isAuthenticated ? (
-                    <Button asChild className="w-full" onClick={() => setIsMenuOpen(false)}>
+                    <Button
+  asChild
+  className="w-full rounded-full shadow-lg"
+>
                         <Link to="/dashboard">Go to Dashboard</Link>
                     </Button>
                 ) : (
