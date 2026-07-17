@@ -102,13 +102,16 @@ export const useIntelligenceData = () => {
       if (campaignsResult.data) setCampaigns(campaignsResult.data);
       if (alertsResult.data) setAlerts(alertsResult.data);
 
-      // Mock AI insights data
+      // Illustrative placeholder data — kept intentionally (not demo-mode
+      // gated, shown to every account). Replace with a real AI insights
+      // pipeline when that's ready; until then this is static, not live.
       setAiInsights([
         { title: 'Flood Risk Alert', summary: 'Heavy rainfall expected in northern regions', trend: 'up', confidence: 0.85, action: 'Prepare emergency response' },
         { title: 'Air Quality Improvement', summary: 'Pollution levels decreasing in urban areas', trend: 'down', confidence: 0.78, action: 'Continue monitoring' },
       ]);
 
-      // Mock community health score
+      // Illustrative placeholder — same as above, static until a real
+      // scoring pipeline exists.
       setCommunityHealthScore({
         score: 72,
         trend: 'stable',
@@ -124,22 +127,18 @@ export const useIntelligenceData = () => {
 
   useEffect(() => {
     let cancelled = false;
-    const isDemo = localStorage.getItem('echo_demo_mode') === 'true';
 
     // Always seed knowledge articles with the fallback set so the Knowledge
-    // Centre is never empty in demo mode or when the DB has no rows yet.
+    // Centre is never empty when the DB has no rows yet.
     import('@/lib/fallback-articles').then((m) => {
       if (!cancelled) setArticles((prev) => (prev.length > 0 ? prev : m.FALLBACK_ARTICLES));
     });
 
-    if (!isDemo && supabase) {
+    if (supabase) {
       fetchData();
-    } else if (isDemo) {
-      setLoading(false);
     }
 
-    // Only subscribe to realtime when not in demo mode
-    if (isDemo || !supabase) return;
+    if (!supabase) return;
 
     // Unique channel name per mount avoids
     // "cannot add postgres_changes callbacks after subscribe()" and duplicate-
