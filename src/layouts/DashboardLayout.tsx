@@ -20,12 +20,9 @@ import {
   BarChart3,
   BrainCircuit,
   CheckCircle,
-  Users,
-  Presentation,
-  Sparkles
+  Users
 } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
-import { useDemo } from '@/hooks/use-demo';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -33,7 +30,6 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
-import { DemoHints } from '@/components/dashboard/DemoHints';
 import { PremiumBottomNav } from '@/components/layout/PremiumBottomNav';
 
 const navItems = [
@@ -67,7 +63,6 @@ const footerItems = [
 export function DashboardLayout() {
   const { profile, logout } = useAuth();
   const location = useLocation();
-  const { isDemoMode, isPresentationMode, setPresentationMode } = useDemo();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [, setIsMobileMenuOpen] = useState(false);
@@ -115,10 +110,7 @@ export function DashboardLayout() {
   };
 
   return (
-    <div className={cn(
-      "flex min-h-screen w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary",
-      isPresentationMode && "presentation-mode"
-    )}>
+    <div className="flex min-h-screen w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary">
       <aside
         className={cn(
           'hidden md:flex flex-col border-r border-border/40 bg-sidebar/50 backdrop-blur-xl transition-all duration-300 ease-in-out z-30',
@@ -282,14 +274,6 @@ export function DashboardLayout() {
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
-            {isDemoMode && !isPresentationMode && (
-              <div className="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 backdrop-blur-sm">
-                <Sparkles className="h-3.5 w-3.5 text-primary" />
-                <Button variant="ghost" size="sm" onClick={() => setPresentationMode(true)} className="h-6 px-2 text-[10px] font-bold uppercase gap-1">
-                  <Presentation className="h-3 w-3" /> Present
-                </Button>
-              </div>
-            )}
             <form onSubmit={handleSearch} className="relative hidden sm:block">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <input
@@ -316,7 +300,6 @@ export function DashboardLayout() {
           className="flex-1 overflow-y-auto p-4 pb-28 md:p-8 md:pb-12"
           style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 7rem)' }}
         >
-          <DemoHints />
           <Outlet />
         </main>
 
@@ -325,4 +308,3 @@ export function DashboardLayout() {
     </div>
   );
 }
-
