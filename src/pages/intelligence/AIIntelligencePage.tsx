@@ -130,30 +130,87 @@ const AIIntelligencePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Intelligence Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Indicators */}
-        <Card className="premium-shadow border-primary/5 hover:border-primary/20 transition-all group">
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-start">
-              <div className="p-2 rounded-lg bg-blue-50">
-                <Droplets className="h-5 w-5 text-blue-600" />
-              </div>
-              <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-tighter">Live</Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-2">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase">Flood Risk</h3>
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black">{aiAnalysis?.flood_risk}%</span>
-              <span className="text-xs text-muted-foreground">Probability</span>
-            </div>
-            <div className="mt-3 flex items-center gap-2 text-xs text-blue-600">
-              <Info className="h-3 w-3" />
-              <span>Based on terrain & reports</span>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Environmental Indicators */}
+<Card className="premium-shadow border-primary/10 shadow-xl">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2">
+      <Activity className="h-5 w-5 text-primary" />
+      Environmental Indicators
+    </CardTitle>
+
+    <CardDescription>
+      Live AI analysis of key environmental conditions
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent className="space-y-6">
+
+    {/* Flood */}
+    <div>
+      <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <Droplets className="h-4 w-4 text-blue-600" />
+          <span className="font-semibold">Flood Risk</span>
+        </div>
+
+        <span className="font-bold">
+          {aiAnalysis?.flood_risk ?? 0}%
+        </span>
+      </div>
+
+      <Progress value={aiAnalysis?.flood_risk ?? 0} />
+    </div>
+
+    {/* Waste */}
+    <div>
+      <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <Trash2 className="h-4 w-4 text-emerald-600" />
+          <span className="font-semibold">Waste Accumulation</span>
+        </div>
+
+        <span className="font-bold">
+          {aiAnalysis?.waste_accumulation ?? 0}%
+        </span>
+      </div>
+
+      <Progress value={aiAnalysis?.waste_accumulation ?? 0} />
+    </div>
+
+    {/* Air */}
+    <div>
+      <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <Wind className="h-4 w-4 text-orange-600" />
+          <span className="font-semibold">Air Pollution</span>
+        </div>
+
+        <span className="font-bold">
+          {aiAnalysis?.pollution_level ?? 0}%
+        </span>
+      </div>
+
+      <Progress value={aiAnalysis?.pollution_level ?? 0} />
+    </div>
+
+    {/* Water */}
+    <div>
+      <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <Droplets className="h-4 w-4 text-cyan-600" />
+          <span className="font-semibold">Water Quality</span>
+        </div>
+
+        <span className="font-bold">
+          {aiAnalysis?.water_quality ?? 0}%
+        </span>
+      </div>
+
+      <Progress value={aiAnalysis?.water_quality ?? 0} />
+    </div>
+
+  </CardContent>
+</Card>
 
         <Card className="premium-shadow border-primary/5 hover:border-primary/20 transition-all group">
           <CardHeader className="pb-2">
@@ -221,6 +278,115 @@ const AIIntelligencePage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+    {/* Environmental Trends */}
+<Card className="premium-shadow border-primary/10 shadow-xl">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2">
+      <TrendingUp className="h-5 w-5 text-primary" />
+      Environmental Trends
+    </CardTitle>
+
+    <CardDescription>
+      AI comparison with recent environmental activity
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent className="space-y-5">
+
+    <div className="flex justify-between items-center">
+      <span>🌊 Flood Risk</span>
+
+      <Badge className="bg-red-100 text-red-700">
+        ↑ Increasing
+      </Badge>
+    </div>
+
+    <Progress value={72} />
+
+    <div className="flex justify-between items-center">
+      <span>🗑 Waste Pollution</span>
+
+      <Badge className="bg-yellow-100 text-yellow-700">
+        → Stable
+      </Badge>
+    </div>
+
+    <Progress value={56} />
+
+    <div className="flex justify-between items-center">
+      <span>🌬 Air Quality</span>
+
+      <Badge className="bg-green-100 text-green-700">
+        ↓ Improving
+      </Badge>
+    </div>
+
+    <Progress value={38} />
+
+    <div className="flex justify-between items-center">
+      <span>💧 Water Quality</span>
+
+      <Badge className="bg-green-100 text-green-700">
+        ↑ Better
+      </Badge>
+    </div>
+
+    <Progress value={81} />
+
+  </CardContent>
+</Card>
+
+  <Card className="premium-shadow border-primary/10 shadow-xl">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2">
+      <BrainCircuit className="h-5 w-5 text-primary" />
+      AI Confidence
+    </CardTitle>
+
+    <CardDescription>
+      Reliability of the current environmental analysis
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent className="space-y-5">
+
+    <div>
+      <div className="flex justify-between mb-2">
+        <span>Prediction Confidence</span>
+        <span className="font-bold">
+          {aiAnalysis?.confidence_score ?? 0}%
+        </span>
+      </div>
+
+      <Progress value={aiAnalysis?.confidence_score ?? 0} />
+    </div>
+
+    <div className="grid grid-cols-2 gap-4">
+
+      <div className="rounded-xl border p-4">
+        <p className="text-xs text-muted-foreground">
+          Reports Analysed
+        </p>
+
+        <h2 className="text-2xl font-black">
+          {intelligenceSummary?.total_reports ?? 0}
+        </h2>
+      </div>
+
+      <div className="rounded-xl border p-4">
+        <p className="text-xs text-muted-foreground">
+          Last AI Update
+        </p>
+
+        <h2 className="text-lg font-bold">
+          12 hrs
+        </h2>
+      </div>
+
+    </div>
+
+  </CardContent>
+</Card>
 
       {/* Recommendations & Action Plan */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -254,35 +420,91 @@ const AIIntelligencePage: React.FC = () => {
             ))}
           </CardContent>
         </Card>
+<Card className="shadow-xl border-primary/10">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2">
+      <AlertCircle className="h-5 w-5 text-primary" />
+      Top Environmental Hotspots
+    </CardTitle>
 
-        <Card className="shadow-xl border-none bg-primary text-primary-foreground relative overflow-hidden">
-          <div className="absolute -bottom-12 -right-12 opacity-10">
-            <BrainCircuit className="h-64 w-64" />
-          </div>
-          <CardHeader>
-            <CardTitle className="text-lg font-bold">Preventive Measures</CardTitle>
-            <CardDescription className="text-primary-foreground/70">Expert-verified environmental safeguards</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 relative z-10">
-            {[
-              "Clear perimeter drainages before expected rainfall cycles.",
-              "Report persistent illegal burning to local LGA immediately.",
-              "Organize community waste sorting at primary collection points.",
-              "Monitor stagnant water areas for malaria vector control."
-            ].map((measure, idx) => (
-              <div key={idx} className="flex items-start gap-3 bg-white/10 p-3 rounded-lg backdrop-blur-sm">
-                <div className="mt-1 h-5 w-5 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">
-                  {idx + 1}
-                </div>
-                <p className="text-sm">{measure}</p>
-              </div>
-            ))}
-            <Button variant="secondary" className="w-full mt-4 group">
-              View Detailed Action Plan
-              <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </CardContent>
-        </Card>
+    <CardDescription>
+      Areas requiring immediate attention
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent className="space-y-4">
+
+    {[
+      {
+        location: "Ombi II",
+        issue: "Blocked Drainage",
+        level: "Critical"
+      },
+      {
+        location: "Lafia Central",
+        issue: "Illegal Dumping",
+        level: "High"
+      },
+      {
+        location: "Shabu",
+        issue: "Flood Risk",
+        level: "Medium"
+      },
+      {
+        location: "Tudun Gwandara",
+        issue: "Water Pollution",
+        level: "Medium"
+      }
+    ].map((spot, index) => (
+
+      <div
+        key={index}
+        className="flex justify-between items-center rounded-xl border p-4 hover:bg-muted/40 transition"
+      >
+
+        <div>
+
+          <h4 className="font-semibold">
+            📍 {spot.location}
+          </h4>
+
+          <p className="text-sm text-muted-foreground">
+            {spot.issue}
+          </p>
+
+        </div>
+
+        <Badge
+          className={
+            spot.level === "Critical"
+              ? "bg-red-100 text-red-700"
+              : spot.level === "High"
+              ? "bg-orange-100 text-orange-700"
+              : "bg-yellow-100 text-yellow-700"
+          }
+        >
+          {spot.level}
+        </Badge>
+
+      </div>
+
+    ))}
+
+  </CardContent>
+
+  <CardFooter>
+
+    <Button variant="outline" className="w-full">
+
+      View Full Risk Map
+
+      <ChevronRight className="ml-2 h-4 w-4"/>
+
+    </Button>
+
+  </CardFooter>
+
+</Card>
       </div>
 
       <div className="text-center pb-8">
@@ -292,6 +514,123 @@ const AIIntelligencePage: React.FC = () => {
         </p>
       </div>
     </div>
+  {/* AI Environmental Forecast */}
+
+<Card className="shadow-xl border-primary/10 bg-gradient-to-br from-primary/5 via-background to-primary/10">
+
+  <CardHeader>
+
+    <CardTitle className="flex items-center gap-2">
+
+      <BrainCircuit className="h-5 w-5 text-primary" />
+
+      AI Environmental Forecast
+
+    </CardTitle>
+
+    <CardDescription>
+
+      Predicted environmental outlook for the next 7 days
+
+    </CardDescription>
+
+  </CardHeader>
+
+  <CardContent className="space-y-6">
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+      <div className="rounded-xl border p-4 text-center">
+
+        <Droplets className="mx-auto h-8 w-8 text-blue-500 mb-2"/>
+
+        <h4 className="font-bold">Flood Risk</h4>
+
+        <Badge className="mt-2 bg-red-100 text-red-700">
+
+          High ↑
+
+        </Badge>
+
+      </div>
+
+      <div className="rounded-xl border p-4 text-center">
+
+        <Trash2 className="mx-auto h-8 w-8 text-emerald-600 mb-2"/>
+
+        <h4 className="font-bold">Waste</h4>
+
+        <Badge className="mt-2 bg-yellow-100 text-yellow-700">
+
+          Stable →
+
+        </Badge>
+
+      </div>
+
+      <div className="rounded-xl border p-4 text-center">
+
+        <Wind className="mx-auto h-8 w-8 text-orange-500 mb-2"/>
+
+        <h4 className="font-bold">Air Quality</h4>
+
+        <Badge className="mt-2 bg-green-100 text-green-700">
+
+          Improving ↓
+
+        </Badge>
+
+      </div>
+
+      <div className="rounded-xl border p-4 text-center">
+
+        <Droplets className="mx-auto h-8 w-8 text-cyan-500 mb-2"/>
+
+        <h4 className="font-bold">Water</h4>
+
+        <Badge className="mt-2 bg-green-100 text-green-700">
+
+          Better ↑
+
+        </Badge>
+
+      </div>
+
+    </div>
+
+    <div className="rounded-2xl bg-primary/5 border border-primary/10 p-6">
+
+      <h3 className="font-bold text-lg mb-2">
+
+        AI Summary
+
+      </h3>
+
+      <p className="text-muted-foreground leading-relaxed">
+
+        Based on recent environmental reports,
+
+        rainfall patterns,
+
+        waste density,
+
+        and community activity,
+
+        the AI predicts stable environmental conditions
+
+        with localized flooding likely in low-lying areas.
+
+        Waste accumulation remains moderate while
+
+        air quality is expected to improve over the coming week.
+
+      </p>
+
+    </div>
+
+  </CardContent>
+
+</Card>
   );
 };
 
