@@ -36,7 +36,7 @@ export function CommunityHealth() {
             <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-5xl lg:text-6xl font-bold text-primary">85</span>
                 <span className="text-lg font-semibold text-muted-foreground">Good</span>
-                <div className="flex items-center text-sm text-green-600 mt-1">
+                <div className="flex items-center text-sm text-status-safe mt-1">
                     <TrendingUp className="h-4 w-4 mr-1"/>
                     <span>+5% this month</span>
                 </div>
