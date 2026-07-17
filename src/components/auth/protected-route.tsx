@@ -9,9 +9,6 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
   const { profile, isAuthenticated, loading } = useAuth();
   const location = useLocation();
-  const isDemoMode =
-    typeof window !== "undefined" &&
-    sessionStorage.getItem("echo_demo_mode") === "true";
 
   if (loading) {
     return (
@@ -21,7 +18,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     );
   }
 
-  if (!isAuthenticated && !isDemoMode) {
+  if (!isAuthenticated) {
     return <Navigate to="/auth/login" state={{ from: location }} replace />;
   }
 
