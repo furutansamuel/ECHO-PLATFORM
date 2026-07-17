@@ -102,10 +102,10 @@ export function Hero() {
             initial={rise(12)}
             animate={settle}
             transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-green-800 backdrop-blur-md"
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-semibold text-foreground backdrop-blur-md"
             >
-            <Sparkles className="h-3.5 w-3.5" />
-            Environmental Intelligence for Safer Communities
+            <span className="beacon-dot beacon-dot--active text-accent" aria-hidden="true" />
+            Live — Environmental Signal Network
           </motion.div>
 
           <motion.h1
@@ -113,10 +113,10 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.05 }}
-  className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+  className="text-4xl leading-[1.05] text-foreground md:text-6xl lg:text-7xl"
           >
   Environmental Community Health Observatory (
-  <span className="bg-gradient-to-br from-primary via-accent to-emerald-500 bg-clip-text text-transparent">ECHO</span>
+  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">ECHO</span>
   )
 </motion.h1>
 
@@ -124,7 +124,7 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.15 }}
-  className="mx-auto mt-6 max-w-2xl text-lg text-gray-900 md:text-xl"
+  className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
    >        
   Empowering communities to report, monitor, and respond to environmental hazards through AI-driven environmental intelligence.
 </motion.p>
@@ -158,7 +158,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="mt-6 text-sm text-gray-800"
+            className="mt-6 text-sm text-muted-foreground"
           >
             Free for citizens • Built for Nigeria • Trusted by community leaders
           </motion.p>
@@ -203,4 +203,3 @@ export function Hero() {
     </section>
   );
 }
-
