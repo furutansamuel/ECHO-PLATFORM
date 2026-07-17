@@ -60,8 +60,9 @@ export function Hero() {
 
   return (
   <section
-    className="relative overflow-hidden"
-  >
+  className="relative min-h-[90vh] overflow-hidden"
+  aria-labelledby="hero-heading"
+>
       {/* Carousel background */}
       <div className="absolute inset-0">
         {/* Fallback gradient sits BEHIND images */}
@@ -81,6 +82,7 @@ export function Hero() {
               'absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out',
               i === index && !failed[i] ? 'opacity-100' : 'opacity-0'
             )}
+            sizes="100vw"
           />
         ))}
         {/* Dark overlay for readability sits ABOVE images */}
@@ -105,7 +107,7 @@ export function Hero() {
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-semibold text-foreground backdrop-blur-md"
             >
             <span className="beacon-dot beacon-dot--active text-accent" aria-hidden="true" />
-            Live — Environmental Signal Network
+            Real-Time Environmental Intelligence
           </motion.div>
 
           <motion.h1
@@ -129,7 +131,7 @@ export function Hero() {
   transition={{ duration: 0.6, delay: 0.15 }}
   className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
    >        
-  Monitor floods, pollution, waste, erosion, drainage blockages, and other environmental hazards using AI-powered environmental intelligence. Report incidents, track community health, and support faster response across Nigeria.
+  Monitor floods, pollution, illegal dumping, blocked drainage, erosion, and other environmental hazards using AI-powered environmental intelligence. Report incidents, monitor community health, and enable faster environmental response across Nigeria.
 </motion.p>
 
           <motion.div
@@ -141,7 +143,7 @@ export function Hero() {
             <Button size="lg" className="btn-glow h-12 px-8 text-base shadow-premium" asChild>
               <Link to="/report">
                 <ShieldAlert className="mr-2 h-5 w-5" />
-                Report Hazard
+                Report Environmental Hazard
               </Link>
             </Button>
             <Button
@@ -152,7 +154,7 @@ export function Hero() {
             >
               <Link to="/reports">
                 <LineChart className="mr-2 h-5 w-5" />
-                Track My Reports
+                View Hazard Reports
               </Link>
             </Button>
           </motion.div>
@@ -163,7 +165,7 @@ export function Hero() {
             transition={{ delay: 0.4 }}
             className="mt-6 text-sm text-muted-foreground"
           >
-            Free for citizens • Built for Nigeria • Trusted by community leaders
+            AI Powered • Community Driven • Built for Nigeria
           </motion.p>
         </div>
 
