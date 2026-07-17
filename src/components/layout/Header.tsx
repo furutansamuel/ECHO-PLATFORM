@@ -27,7 +27,7 @@ export function Header() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
 const profileRef = useRef<HTMLDivElement>(null);
-  const { isAuthenticated, logout, user } = useAuth();
+  const { isAuthenticated, logout, user, profile } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -82,9 +82,9 @@ useEffect(() => {
         className="flex items-center gap-2 rounded-full px-2 py-2"
       >
         <div className="h-10 w-10 overflow-hidden rounded-full bg-primary flex items-center justify-center text-white font-semibold">
-  {user?.user_metadata?.avatar_url ? (
+  {profile?.avatar_url ? (
     <img
-      src={user.user_metadata.avatar_url}
+      src={profile.avatar_url}
       alt="Profile"
       className="h-full w-full object-cover"
     />
@@ -106,7 +106,9 @@ useEffect(() => {
 
           <div className="border-b p-4">
             <p className="font-semibold">
-  {user?.user_metadata?.full_name || user?.email?.split("@")[0]}
+  {profile?.full_name ||
+   user?.email?.split("@")[0] ||
+   "User"}
 </p>
             <p className="text-sm text-muted-foreground">
               Welcome back
