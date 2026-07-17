@@ -60,7 +60,7 @@ export function Hero() {
 
   return (
   <section
-  className="relative min-h-[90vh] overflow-hidden"
+  className="relative min-h-[75vh] md:min-h-[90vh] overflow-hidden"
   aria-labelledby="hero-heading"
 >
       {/* Carousel background */}
@@ -98,7 +98,7 @@ export function Hero() {
       </div>
 
 
-      <div className="container relative mx-auto px-4 py-20 md:py-28 lg:py-36">
+      <div className="container relative mx-auto px-4 py-10 md:py-28 lg:py-36">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={rise(12)}
@@ -115,7 +115,7 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.05 }}
-  className="text-4xl leading-[1.05] font-extrabold tracking-tight md:text-6xl lg:text-7xl"
+  className="text-3xl leading-[1.05] font-extrabold tracking-tight md:text-6xl lg:text-7xl"
 >
   <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
     ECHO
@@ -130,8 +130,22 @@ export function Hero() {
   animate={settle}
   transition={{ duration: 0.6, delay: 0.15 }}
   className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
-   >        
-  Monitor floods, pollution, illegal dumping, blocked drainage, erosion, and other environmental hazards using AI-powered environmental intelligence. Report incidents, monitor community health, and enable faster environmental response across Nigeria.
+>
+
+  {/* Mobile text */}
+  <span className="block md:hidden">
+    Monitor hazards, report incidents, and improve community health
+    with AI-powered environmental intelligence.
+  </span>
+
+  {/* Desktop text */}
+  <span className="hidden md:block">
+    Monitor floods, pollution, illegal dumping, blocked drainage,
+    erosion, and other environmental hazards using AI-powered
+    environmental intelligence. Report incidents, monitor community
+    health, and enable faster environmental response across Nigeria.
+  </span>
+
 </motion.p>
 
           <motion.div
