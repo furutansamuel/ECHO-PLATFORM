@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, X } from 'lucide-react';
+import {
+  Menu,
+  X,
+  User,
+  Settings,
+  LayoutDashboard,
+  LogOut,
+  ChevronDown,
+} from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { Icons } from '@/components/icons';
 
@@ -16,7 +24,10 @@ const navLinks = [
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+const profileRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated, logout, user } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -27,6 +38,22 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      profileRef.current &&
+      !profileRef.current.contains(event.target as Node)
+    ) {
+      setIsProfileOpen(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () =>
+    document.removeEventListener("mousedown", handleClickOutside);
+}, []);
+  
   const authLinks = (
     <>
       <Button
@@ -45,8 +72,8 @@ export function Header() {
     </>
   );
 
-      const authenticatedLinks = (
-  <div className="flex items-center gap-2">
+     const authenticatedLinks = (
+  <div className="flex items-center gap-3">
     <Button
       asChild
       className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
@@ -54,13 +81,73 @@ export function Header() {
       <Link to="/dashboard">Open Dashboard</Link>
     </Button>
 
-    <Button
-      variant="outline"
-      className="rounded-full border-destructive/20 text-destructive hover:bg-destructive hover:text-white"
-      onClick={logout}
-    >
-      Logout
-    </Button>
+    <div className="relative" ref={profileRef}>
+      <Button
+        variant="ghost"
+        onClick={() => setIsProfileOpen(!isProfileOpen)}
+        className="flex items-center gap-2 rounded-full px-2 py-2"
+      >
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white font-semibold">
+          {user?.email?.charAt(0).toUpperCase()}
+        </div>
+
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 transition-transform",
+            isProfileOpen && "rotate-180"
+          )}
+        />
+      </Button>
+
+      {isProfileOpen && (
+        <div className="absolute right-0 mt-3 w-64 rounded-2xl border bg-background shadow-xl">
+
+          <div className="border-b p-4">
+            <p className="font-semibold">
+  {user?.user_metadata?.full_name || user?.email?.split("@")[0]}
+</p>
+            <p className="text-sm text-muted-foreground">
+              Welcome back
+            </p>
+          </div>
+
+          <Link
+            to="/profile"
+            className="flex gap-3 px-4 py-3 hover:bg-muted"
+          >
+            <User className="h-4 w-4" />
+            My Profile
+          </Link>
+
+          <Link
+            to="/dashboard"
+            className="flex gap-3 px-4 py-3 hover:bg-muted"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Link>
+
+          <Link
+            to="/settings"
+            className="flex gap-3 px-4 py-3 hover:bg-muted"
+          >
+            <Settings className="h-4 w-4" />
+            Settings
+          </Link>
+
+          <div className="border-t" />
+
+          <button
+            onClick={logout}
+            className="flex w-full gap-3 px-4 py-3 text-red-600 hover:bg-red-50"
+          >
+            <LogOut className="h-4 w-4" />
+            Logout
+          </button>
+
+        </div>
+      )}
+    </div>
   </div>
 );
 
