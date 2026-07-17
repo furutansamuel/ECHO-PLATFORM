@@ -233,51 +233,7 @@ const AIIntelligencePage: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-
-        <Card className="premium-shadow border-primary/5 hover:border-primary/20 transition-all group">
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-start">
-              <div className="p-2 rounded-lg bg-orange-50">
-                <Wind className="h-5 w-5 text-orange-600" />
-              </div>
-              <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-tighter">Live</Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-2">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase">Air Pollution</h3>
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black">{aiAnalysis?.pollution_level}%</span>
-              <span className="text-xs text-muted-foreground">AQI Est.</span>
-            </div>
-            <div className="mt-3 flex items-center gap-2 text-xs text-orange-600">
-              <Info className="h-3 w-3" />
-              <span>Smoke & illegal burning</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="premium-shadow border-primary/5 hover:border-primary/20 transition-all group">
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-start">
-              <div className="p-2 rounded-lg bg-cyan-50">
-                <Activity className="h-5 w-5 text-cyan-600" />
-              </div>
-              <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-tighter">Live</Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-2">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase">Water Quality</h3>
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black">{aiAnalysis?.water_quality}%</span>
-              <span className="text-xs text-muted-foreground">Purity Index</span>
-            </div>
-            <div className="mt-3 flex items-center gap-2 text-xs text-cyan-600">
-              <Info className="h-3 w-3" />
-              <span>Source contamination risk</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+  
     {/* Environmental Trends */}
 <Card className="premium-shadow border-primary/10 shadow-xl">
   <CardHeader>
@@ -506,15 +462,7 @@ const AIIntelligencePage: React.FC = () => {
 
 </Card>
       </div>
-
-      <div className="text-center pb-8">
-        <p className="text-xs text-muted-foreground">
-          Last updated: {aiAnalysis?.generated_at ? new Date(aiAnalysis.generated_at).toLocaleString() : 'N/A'} • 
-          Data source: {intelligenceSummary?.total_reports || 0} user reports & satellite indices
-        </p>
-      </div>
-    </div>
-  {/* AI Environmental Forecast */}
+        {/* AI Environmental Forecast */}
 
 <Card className="shadow-xl border-primary/10 bg-gradient-to-br from-primary/5 via-background to-primary/10">
 
@@ -631,6 +579,14 @@ const AIIntelligencePage: React.FC = () => {
   </CardContent>
 
 </Card>
+
+      <div className="text-center pb-8">
+        <p className="text-xs text-muted-foreground">
+          Last updated: {aiAnalysis?.generated_at ? new Date(aiAnalysis.generated_at).toLocaleString() : 'N/A'} • 
+          Data source: {intelligenceSummary?.total_reports || 0} user reports & satellite indices
+        </p>
+      </div>
+    </div>
   );
 };
 
