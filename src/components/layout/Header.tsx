@@ -40,7 +40,10 @@ export function Header() {
   );
 
   const authenticatedLinks = (
-    <Button asChild>
+    <Button
+asChild
+className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-300"
+>
       <Link to="/dashboard">Go to Dashboard</Link>
     </Button>
   );
@@ -50,15 +53,15 @@ export function Header() {
       className={cn(
         'sticky top-0 z-50 w-full transition-all duration-300',
         isScrolled
-          ? 'border-b border-border/40 bg-background/80 backdrop-blur-xl'
-          : 'bg-transparent'
+  ? 'border-b border-border/20 bg-background/95 shadow-lg'
+  : 'bg-transparent'
       )}
       style={{ paddingTop: 'max(env(safe-area-inset-top), 0px)' }}
     >
-      <div className="container flex h-20 max-w-screen-2xl items-center justify-between">
+      <div className="container flex h-20 max-w-screen-xl items-center justify-between px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
           <Icons.logo className="h-8 w-8 text-primary" />
-          <span className="font-bold text-xl tracking-tight text-primary">ECHO</span>
+          <span className="text-2xl font-black tracking-wide text-primary">ECHO</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -68,9 +71,11 @@ export function Header() {
               key={item.href}
               to={item.href}
               className={cn(
-                'relative transition-colors hover:text-primary after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-center after:scale-x-0 after:bg-primary after:transition-transform after:duration-300',
-                location.pathname === item.href ? 'text-primary after:scale-x-100' : 'text-muted-foreground'
-              )}
+"rounded-full px-5 py-2 transition-all duration-300",
+location.pathname === item.href
+? "bg-primary text-white shadow-lg"
+: "text-muted-foreground hover:bg-primary/10 hover:text-primary"
+)}
             >
               {item.name}
             </Link>
@@ -116,10 +121,16 @@ export function Header() {
                     </Button>
                 ) : (
                   <div className='grid grid-cols-2 gap-2'>
-                      <Button variant="ghost" asChild className="w-full" onClick={() => setIsMenuOpen(false)}>
+                      <Button
+variant="outline"
+className="rounded-full border-primary/20 hover:border-primary"
+>
                           <Link to="/auth/login">Login</Link>
                       </Button>
-                      <Button asChild className="w-full" onClick={() => setIsMenuOpen(false)}>
+                      <Button
+asChild
+className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-300"
+>
                           <Link to="/auth/register">Get Started</Link>
                       </Button>
                   </div>
