@@ -77,11 +77,15 @@ useEffect(() => {
     
     <div className="relative" ref={profileRef}>
       <Button
-        variant="ghost"
-        onClick={() => setIsProfileOpen(!isProfileOpen)}
-        className="flex items-center gap-2 rounded-full px-2 py-2"
-      >
-        <div className="h-10 w-10 overflow-hidden rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+  variant="ghost"
+  onClick={() => setIsProfileOpen(!isProfileOpen)}
+  className="
+    flex items-center gap-2 rounded-full px-2 py-2
+    hover:bg-primary/10
+    focus-visible:ring-2
+    focus-visible:ring-primary
+    focus-visible:ring-offset-0">
+        <div className="h-10 w-10 overflow-hidden rounded-full bg-primary flex items-center justify-center text-white font-semibold ring-0">
   {profile?.avatar_url ? (
     <img
       src={profile.avatar_url}
