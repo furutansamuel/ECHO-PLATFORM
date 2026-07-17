@@ -19,9 +19,6 @@ import {
   Heart
 } from 'lucide-react';
 import { 
-  MOCK_IMPACT_POINTS, 
-  MOCK_IMPACT_STATS, 
-  MOCK_POINT_HISTORY,
   ACHIEVEMENT_BADGES,
   calculateProgressToNextLevel 
 } from '@/lib/impact-constants';
@@ -29,20 +26,29 @@ import {
 export default function RewardsPage() {
   const { userStats } = useAuth();
 
-  const isDemo =
-    sessionStorage.getItem("echo_demo_mode") === "true";
+  const impactPoints = userStats?.eco_points ?? 0;
 
-  const impactPoints =
-  userStats?.eco_points ?? MOCK_IMPACT_POINTS;
+const impactStats = userStats ?? {
+  reportsSubmitted: 0,
+  verifiedReports: 0,
+  cleanupEventsJoined: 0,
+  environmentalScore: 0,
+  communitiesHelped: 0,
+  volunteerHours: 0,
+};
 
-const impactStats =
-  userStats ?? MOCK_IMPACT_STATS;
+const pointHistory = userStats?.point_history ?? [];
 
-const pointHistory =
-  userStats?.point_history ?? MOCK_POINT_HISTORY;
-
-const badges =
-  userStats?.badges ?? ACHIEVEMENT_BADGES;
+// ACHIEVEMENT_BADGES is the real catalog of badge names/descriptions/
+// point thresholds, kept as legitimate reference data. But it also ships
+// hardcoded earned:true/false + earnedDate per badge, which would show
+// as real accomplishments for any account — so earned status here is
+// recomputed from the account's actual earned-badge list instead.
+const earnedBadgeIds = new Set((userStats?.badges ?? []).map((b: any) => b.id));
+const badges = ACHIEVEMENT_BADGES.map((b) => ({
+  ...b,
+  earned: earnedBadgeIds.has(b.id),
+}));
   const { currentLevel, nextLevel, progress, pointsToNext } =
     calculateProgressToNextLevel(impactPoints);
 
@@ -55,11 +61,6 @@ const badges =
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-4xl font-black tracking-tighter uppercase">Impact Center</h1>
-          {isDemo && (
-  <Badge variant="secondary">
-    Demo Mode
-  </Badge>
-)}
           <p className="text-muted-foreground italic text-lg">Your contribution to a safer, cleaner environment</p>
         </div>
         <div className="bg-primary/10 border-2 border-primary/20 p-4 rounded-2xl flex items-center gap-4 shadow-sm">
