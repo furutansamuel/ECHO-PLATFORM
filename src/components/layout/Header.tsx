@@ -31,14 +31,14 @@ export function Header() {
     <>
       <Button
   variant="outline"
-  className="rounded-full border-primary/20 hover:border-primary"
+  className="rounded-full border-primary/20 hover:border-primary hover:bg-primary/5"
   asChild
 >
         <Link to="/auth/login">Login</Link>
       </Button>
       <Button
   asChild
-  className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-300"
+  className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
 >
         <Link to="/auth/register">Get Started</Link>
       </Button>
@@ -48,7 +48,7 @@ export function Header() {
   const authenticatedLinks = (
     <Button
 asChild
-className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-300"
+className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
 >
       <Link to="/dashboard">Go to Dashboard</Link>
     </Button>
@@ -57,7 +57,7 @@ className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-3
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-300',
+        'sticky top-0 z-50 w-full transition-all duration-500 ease-out'
         isScrolled
   ? 'border-b border-border/20 bg-background/95 shadow-lg'
   : 'bg-transparent'
@@ -73,9 +73,9 @@ className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-3
       ECHO
     </span>
 
-    <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-      Environmental Intelligence
-    </span>
+    <span className="hidden sm:block text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+    Environmental Intelligence
+</span>
   </div>
 </Link>
 
@@ -88,7 +88,7 @@ className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-3
               className={cn(
   location.pathname === item.href
     ? "bg-primary text-white rounded-xl px-4 py-3 shadow-md"
-    : "rounded-xl px-4 py-3 text-muted-foreground hover:bg-primary/10 transition-colors"
+    : "rounded-xl px-4 py-3 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:-translate-y-0.5 transition-all duration-300"
 )}
             >
               {item.name}
@@ -114,18 +114,17 @@ className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-3
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-background border-t shadow-xl animate-in fade-in zoom-in-95 duration-300">
-          <div className="container py-4 space-y-4">
+          <div className="container max-w-md py-4 space-y-4">
             <nav className="flex flex-col gap-4">
               {navLinks.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    "rounded-xl px-4 py-3 text-base font-semibold transition-colors hover:bg-primary/10"
-                    location.pathname === item.href
-  ? "bg-primary text-white rounded-xl px-4 py-3 shadow-md"
-  : "rounded-xl px-4 py-3 text-muted-foreground hover:bg-primary/10"
-                  )}
+  location.pathname === item.href
+    ? "bg-primary text-white rounded-xl px-4 py-3 shadow-md"
+    : "rounded-xl px-4 py-3 text-muted-foreground hover:bg-primary/10 transition-colors"
+)}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
