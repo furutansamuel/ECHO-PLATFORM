@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useReportsStore } from '@/hooks/use-reports-store';
+import { useIntelligenceData } from '@/hooks/use-intelligence-data';
+import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 
@@ -35,7 +36,9 @@ const statusVariant = (status: string): 'safe' | 'warning' | 'danger' => {
 
 export function RecentReports() {
   const navigate = useNavigate();
-  const { reports } = useReportsStore();
+  const { user } = useAuth();
+  const { hazardReports } = useIntelligenceData();
+  const reports = hazardReports.filter((r) => r.reporter_id === user?.id);
 
   return (
     <div className="bg-card border rounded-2xl overflow-hidden shadow-sm">
@@ -69,7 +72,7 @@ export function RecentReports() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-xs text-muted-foreground font-medium italic">
-                    {report.location.address}
+                    {report.address}
                   </td>
                   <td className="px-6 py-4">
                     <span className={`beacon-badge beacon-badge--${severityVariant(report.severity)}`}>
