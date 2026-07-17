@@ -113,11 +113,14 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.05 }}
-  className="text-4xl leading-[1.05] text-foreground md:text-6xl lg:text-7xl"
-          >
-  Environmental Community Health Observatory (
-  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">ECHO</span>
-  )
+  className="text-4xl leading-[1.05] font-extrabold tracking-tight md:text-6xl lg:text-7xl"
+>
+  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+    ECHO
+  </span>
+  <span className="block mt-2 text-foreground">
+    AI Environmental Community Health Observatory
+  </span>
 </motion.h1>
 
           <motion.p
@@ -126,7 +129,7 @@ export function Hero() {
   transition={{ duration: 0.6, delay: 0.15 }}
   className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
    >        
-  Empowering communities to report, monitor, and respond to environmental hazards through AI-driven environmental intelligence.
+  Monitor floods, pollution, waste, erosion, drainage blockages, and other environmental hazards using AI-powered environmental intelligence. Report incidents, track community health, and support faster response across Nigeria.
 </motion.p>
 
           <motion.div
