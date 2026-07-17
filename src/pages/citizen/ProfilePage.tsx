@@ -11,48 +11,29 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
-import { 
-  MOCK_IMPACT_POINTS, 
-  MOCK_IMPACT_STATS, 
-  MOCK_POINT_HISTORY,
-  ACHIEVEMENT_BADGES,
-  calculateProgressToNextLevel 
-} from '@/lib/impact-constants';
+import { calculateProgressToNextLevel } from '@/lib/impact-constants';
 
 const ProfilePage: React.FC = () => {
   const { user, profile, logout, userStats, loading, refreshProfile } = useAuth();
   const [editOpen, setEditOpen] = useState(false);
-  const isDemo =
-  sessionStorage.getItem('echo_demo_mode') === 'true';
 
-const impactPoints =
-  isDemo
-    ? MOCK_IMPACT_POINTS
-    : userStats?.eco_points ?? 0;
+const impactPoints = userStats?.eco_points ?? 0;
 
 const impactStats =
-  isDemo
-    ? MOCK_IMPACT_STATS
-    : userStats ?? {
-        reportsSubmitted: 0,
-        verifiedReports: 0,
-        cleanupEventsJoined: 0,
-        environmentalScore: 0,
-        communitiesHelped: 0,
-        volunteerHours: 0,
-      };
+  userStats ?? {
+    reportsSubmitted: 0,
+    verifiedReports: 0,
+    cleanupEventsJoined: 0,
+    environmentalScore: 0,
+    communitiesHelped: 0,
+    volunteerHours: 0,
+  };
 
-const badges =
-  isDemo
-    ? ACHIEVEMENT_BADGES
-    : userStats?.badges ?? [];
+const badges = userStats?.badges ?? [];
 
-const pointHistory =
-  isDemo
-    ? MOCK_POINT_HISTORY
-    : userStats?.point_history ?? [];
+const pointHistory = userStats?.point_history ?? [];
 
-  if (user && !isDemo && loading) {
+  if (user && loading) {
   return <ProfileSkeleton />;
 }
 const {
