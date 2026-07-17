@@ -44,7 +44,7 @@ export function Cta() {
                 asChild
               >
                 <Link to="/auth/login">
-                  Try Demo <ArrowRight className="ml-1 h-4 w-4" />
+                  Sign In <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
             </div>
