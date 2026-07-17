@@ -1,7 +1,7 @@
-import { useDemo } from '@/hooks/use-demo';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from "@/hooks/use-auth";
+import { supabase } from '@/integrations/supabase/client';
 
 export type HazardCategory = 
   | 'Plastic Waste'
@@ -73,27 +73,12 @@ export interface EchoNotification {
   read: boolean;
 }
 
-const STORAGE_KEY_REPORTS = 'echo_reports';
 const STORAGE_KEY_DRAFTS = 'echo_drafts';
-const STORAGE_KEY_STATS = 'echo_stats';
 const STORAGE_KEY_NOTIFICATIONS = 'echo_notifications';
 
 export const useReportsStore = () => {
-  const { isDemoMode } = useDemo();
   const { user, userStats } = useAuth();
-  const [reports, setReports] = useState<Report[]>([]);
   const [draft, setDraft] = useState<Partial<Report> | null>(null);
-  const DEMO_STATS: ReportStats = {
-  totalReports: 124,
-  verifiedReports: 89,
-  pendingReports: 35,
-  resolvedReports: 56,
-  ecoPoints: 2450,
-  cleanupEvents: 12,
-  volunteerHours: 48,
-  hazardsReported: 124,
-  reportsVerified: 89,
-};
   const EMPTY_STATS: ReportStats = {
   totalReports: 0,
   verifiedReports: 0,
@@ -110,62 +95,87 @@ export const useReportsStore = () => {
   const [notifications, setNotifications] = useState<EchoNotification[]>([]);
 
   useEffect(() => {
-    if (isDemoMode) {
-      const storedReports = sessionStorage.getItem(STORAGE_KEY_REPORTS);
-    
-      if (storedReports) {
-        setReports(JSON.parse(storedReports));
-      }
-    }
-
     const storedDraft = localStorage.getItem(STORAGE_KEY_DRAFTS);
     if (storedDraft) setDraft(JSON.parse(storedDraft));
 
-   if (!user && isDemoMode) {
-  const storedStats = sessionStorage.getItem(STORAGE_KEY_STATS);
+    if (user && userStats) {
+      setStats({
+        totalReports: userStats.reportsSubmitted ?? 0,
+        verifiedReports: userStats.verifiedReports ?? 0,
+        pendingReports: userStats.pendingReports ?? 0,
+        resolvedReports: userStats.resolvedReports ?? 0,
+        ecoPoints: userStats.eco_points ?? 0,
+        cleanupEvents: userStats.cleanupEventsJoined ?? 0,
+        volunteerHours: userStats.volunteerHours ?? 0,
+        hazardsReported: userStats.hazardsReported ?? 0,
+        reportsVerified: userStats.verifiedReports ?? 0,
+      });
+    } else {
+      setStats(EMPTY_STATS);
+    }
 
-  if (storedStats) {
-    setStats(JSON.parse(storedStats));
-  } else {
-    setStats(DEMO_STATS);
-  }
-}
-
-if (user && userStats) {
-  setStats({
-    totalReports: userStats.reportsSubmitted ?? 0,
-    verifiedReports: userStats.verifiedReports ?? 0,
-    pendingReports: userStats.pendingReports ?? 0,
-    resolvedReports: userStats.resolvedReports ?? 0,
-    ecoPoints: userStats.eco_points ?? 0,
-    cleanupEvents: userStats.cleanupEventsJoined ?? 0,
-    volunteerHours: userStats.volunteerHours ?? 0,
-    hazardsReported: userStats.hazardsReported ?? 0,
-    reportsVerified: userStats.verifiedReports ?? 0,
-  });
-}
-    
-    if (isDemoMode) {
-      const storedNotifications = sessionStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
-      
+    const storedNotifications = sessionStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
     if (storedNotifications) {
       setNotifications(JSON.parse(storedNotifications));
     }
-  }
-  }, [isDemoMode, user, userStats]);
+  }, [user, userStats]);
 
-  const saveReport = (report: Report) => {
-    const updatedReports = [report, ...reports];
-    setReports(updatedReports);
-    
-    if (isDemoMode) {
-      sessionStorage.setItem(
-        STORAGE_KEY_REPORTS,
-        JSON.stringify(updatedReports)
-      );
+  // Writes the submitted report to Supabase's hazard_reports table. This
+  // previously never happened at all — reports only lived in local React
+  // state / sessionStorage and vanished on reload, "demo mode" or not.
+  // Column names are mapped from the HazardReport type (types/reports.ts),
+  // which is already the confirmed real schema used by the map, analytics,
+  // and tracking pages elsewhere in the app. estimatedSize/affectedArea/
+  // dateObserved/timeObserved/immediateRisk/environmentalImpact/
+  // requiredAction don't have dedicated columns in that type, so they're
+  // folded into the description rather than silently discarded — worth
+  // double-checking against your actual Supabase schema in case dedicated
+  // columns exist for them.
+  const saveReport = async (report: Report): Promise<boolean> => {
+    if (!supabase) {
+      toast.error('Unable to submit report: backend not configured.');
+      return false;
     }
 
-    // Update stats
+    const fullDescription = [
+      report.description,
+      '',
+      `Estimated size: ${report.estimatedSize}`,
+      `Affected area: ${report.affectedArea}`,
+      `Date observed: ${report.dateObserved} ${report.timeObserved}`,
+      `Immediate risk: ${report.immediateRisk}`,
+      `Environmental impact: ${report.environmentalImpact}`,
+      `Required action: ${report.requiredAction}`,
+    ].join('\n');
+
+    const { error } = await supabase.from('hazard_reports').insert({
+      reference_number: report.referenceNumber,
+      title: report.title,
+      description: fullDescription,
+      category: report.category,
+      severity: report.severity,
+      status: 'Submitted',
+      latitude: report.location.lat,
+      longitude: report.location.lng,
+      address: report.location.address,
+      ward: report.location.ward,
+      lga: report.location.lga,
+      state: report.location.state,
+      landmark: report.location.landmark || null,
+      images: report.images,
+      video: report.video || null,
+      is_anonymous: report.isAnonymous,
+      reporter_id: report.isAnonymous ? null : user?.id ?? null,
+    });
+
+    if (error) {
+      console.error('Error saving report:', error);
+      toast.error('Failed to submit report: ' + error.message);
+      return false;
+    }
+
+    // Update local stats optimistically; the real numbers will refresh
+    // from userStats once the DB trigger/RPC (if any) recalculates them.
     const updatedStats = {
       ...stats,
       totalReports: stats.totalReports + 1,
@@ -173,13 +183,6 @@ if (user && userStats) {
       ecoPoints: stats.ecoPoints + 50, // Award 50 points for reporting
     };
     setStats(updatedStats);
-    
-    if (!user && isDemoMode) {
-  sessionStorage.setItem(
-  STORAGE_KEY_STATS,
-  JSON.stringify(updatedStats)
-);
-    }
 
     // Add notification
     const newNotification: EchoNotification = {
@@ -199,6 +202,7 @@ if (user && userStats) {
     sessionStorage.removeItem(STORAGE_KEY_DRAFTS);
 
     toast.success('Hazard report submitted successfully!');
+    return true;
   };
 
   const saveDraft = (partialReport: Partial<Report>) => {
@@ -218,7 +222,6 @@ if (user && userStats) {
   };
 
   return {
-    reports,
     draft,
     stats,
     notifications,
