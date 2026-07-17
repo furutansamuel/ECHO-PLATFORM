@@ -30,9 +30,6 @@ export default function LoginPage() {
       if (error) {
         toast.error(error.message);
       } else {
-       // Optional: clear presentation mode if it exists
-sessionStorage.removeItem('echo_presentation_mode');
-        
         toast.success('Logged in successfully');
         navigate('/dashboard');
       }
