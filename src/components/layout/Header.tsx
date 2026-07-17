@@ -57,7 +57,7 @@ className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all dura
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-500 ease-out'
+        'sticky top-0 z-50 w-full transition-all duration-500 ease-out', 
         isScrolled
   ? 'border-b border-border/20 bg-background/95 shadow-lg'
   : 'bg-transparent'
