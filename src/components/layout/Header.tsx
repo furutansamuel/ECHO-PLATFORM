@@ -74,22 +74,24 @@ useEffect(() => {
 
      const authenticatedLinks = (
   <div className="flex items-center gap-3">
-    <Button
-      asChild
-      className="rounded-full px-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
-    >
-      <Link to="/dashboard">Open Dashboard</Link>
-    </Button>
-
+    
     <div className="relative" ref={profileRef}>
       <Button
         variant="ghost"
         onClick={() => setIsProfileOpen(!isProfileOpen)}
         className="flex items-center gap-2 rounded-full px-2 py-2"
       >
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white font-semibold">
-          {user?.email?.charAt(0).toUpperCase()}
-        </div>
+        <div className="h-10 w-10 overflow-hidden rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+  {user?.user_metadata?.avatar_url ? (
+    <img
+      src={user.user_metadata.avatar_url}
+      alt="Profile"
+      className="h-full w-full object-cover"
+    />
+  ) : (
+    user?.email?.charAt(0).toUpperCase() || "U"
+  )}
+</div>
 
         <ChevronDown
           className={cn(
@@ -124,7 +126,7 @@ useEffect(() => {
             className="flex gap-3 px-4 py-3 hover:bg-muted"
           >
             <LayoutDashboard className="h-4 w-4" />
-            Dashboard
+            My Dashboard
           </Link>
 
           <Link
