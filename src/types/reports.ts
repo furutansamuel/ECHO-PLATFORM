@@ -67,6 +67,25 @@ export interface HazardReport {
   ai_generated_at?: string;
 }
 
+// Matches supabase/migrations/20260718093000_create_events.sql
+export interface EventRecord {
+  id: string;
+  title: string;
+  description: string;
+  image_url?: string;
+  category: 'Cleanup' | 'Tree Planting' | 'Workshop' | 'Awareness Campaign' | 'Other';
+  event_date: string;
+  start_time: string;
+  end_time?: string;
+  location_name: string;
+  location_address?: string;
+  max_volunteers?: number;
+  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface ReportActivity {
   id: string;
   report_id: string;
