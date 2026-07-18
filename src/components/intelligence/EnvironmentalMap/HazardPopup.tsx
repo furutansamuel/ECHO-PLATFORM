@@ -20,7 +20,7 @@ const severityVariant = (severity: string): 'safe' | 'warning' | 'danger' => {
   }
 };
 
-const RESOLVED_STATUSES = new Set(['Resolved', 'Closed']);
+const RESOLVED_STATUSES = new Set(['Resolved', 'Closed', 'Rejected']);
 
 interface HazardPopupProps {
   hazard: HazardReport;
@@ -53,7 +53,7 @@ export function HazardPopup({ hazard }: HazardPopupProps) {
 
       <p className="text-[11px] text-muted-foreground italic mb-3 flex items-center gap-1">
         <Icons.mapPin className="h-3 w-3" />
-        {hazard.address}
+        {hazard.location.address}
       </p>
 
       <div className="bg-muted/30 rounded-lg p-2 mb-3">
@@ -72,7 +72,7 @@ export function HazardPopup({ hazard }: HazardPopupProps) {
         <Button 
             size="sm" 
             className="w-full h-8 text-[10px] uppercase font-black tracking-widest gap-2"
-            onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${hazard.latitude},${hazard.longitude}`, '_blank')}
+            onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${hazard.location.lat},${hazard.location.lng}`, '_blank')}
         >
             <Navigation className="h-3 w-3" />
             Route to Hazard
