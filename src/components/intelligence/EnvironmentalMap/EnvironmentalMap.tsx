@@ -114,7 +114,7 @@ const EnvironmentalMap: React.FC<EnvironmentalMapProps> = ({ reports = [] }) => 
                     {filteredReports.map(report => (
                         <Marker 
                             key={report.id} 
-                            position={[report.latitude, report.longitude]}
+                            position={[report.location.lat, report.location.lng]}
                             icon={getHazardIcon(report.category, report.severity)}
                         >
                             <Popup minWidth={240}>
@@ -152,3 +152,4 @@ const EnvironmentalMap: React.FC<EnvironmentalMapProps> = ({ reports = [] }) => 
 };
 
 export default EnvironmentalMap;
+
