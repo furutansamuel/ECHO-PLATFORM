@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useReportsStore } from '@/hooks/use-reports-store';
+import { useIntelligenceData } from '@/hooks/use-intelligence-data';
+import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 
@@ -24,7 +25,7 @@ const severityVariant = (severity: string): 'safe' | 'warning' | 'danger' => {
 
 // The dot only pulses while a report is still active. Resolved/Closed
 // reports get a static dot — the animation itself carries status meaning.
-const RESOLVED_STATUSES = new Set(['Resolved', 'Closed']);
+const RESOLVED_STATUSES = new Set(['Resolved', 'Closed', 'Rejected']);
 const isActiveStatus = (status: string) => !RESOLVED_STATUSES.has(status);
 
 const statusVariant = (status: string): 'safe' | 'warning' | 'danger' => {
@@ -35,7 +36,9 @@ const statusVariant = (status: string): 'safe' | 'warning' | 'danger' => {
 
 export function RecentReports() {
   const navigate = useNavigate();
-  const { reports } = useReportsStore();
+  const { user } = useAuth();
+  const { hazardReports } = useIntelligenceData();
+  const reports = hazardReports.filter((r) => r.user_id === user?.id);
 
   return (
     <div className="bg-card border rounded-2xl overflow-hidden shadow-sm">
