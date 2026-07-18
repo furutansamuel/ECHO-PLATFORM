@@ -124,12 +124,26 @@ const ArticleDetailsPage: React.FC = () => {
       <div className="prose prose-lg max-w-none prose-p:text-muted-foreground prose-p:italic prose-headings:font-black prose-headings:tracking-tight prose-headings:uppercase prose-a:text-primary">
         <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-2xl mb-10 italic text-lg leading-relaxed text-foreground/80">
           "{article.excerpt}"
+        </div>
 
         <div className="space-y-6 text-foreground/90 leading-relaxed font-medium">
-          {article.content.split('\n\n').map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
+          {article.content.split('\n\n').map((para, i) => {
+            // Content written in the admin editor can embed an image as
+            // ![alt](url) — the one lightweight "rich content" affordance
+            // supported before Phase 2's real rich text editor arrives.
+            const imageMatch = para.match(/^!\[(.*)\]\((.*)\)$/);
+            if (imageMatch) {
+              return (
+                <img
+                  key={i}
+                  src={imageMatch[2]}
+                  alt={imageMatch[1]}
+                  className="w-full rounded-2xl not-italic"
+                />
+              );
+            }
+            return para.trim() ? <p key={i}>{para}</p> : null;
+          })}
         </div>
 
         {/* Placeholder for more complex content components */}
@@ -208,3 +222,4 @@ const ArticleDetailsPage: React.FC = () => {
 };
 
 export default ArticleDetailsPage;
+

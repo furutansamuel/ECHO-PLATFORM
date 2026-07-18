@@ -36,6 +36,15 @@ const ArticleDetailsPage = lazy(() => import("@/pages/community/ArticleDetailsPa
 const CommunityInsights = lazy(() => import("@/pages/community/CommunityInsights"));
 const GlobalSearchPage = lazy(() => import("@/pages/intelligence/GlobalSearchPage"));
 
+// Admin
+const AdminOverviewPage = lazy(() => import("@/pages/admin/AdminOverviewPage"));
+const AdminReportsPage = lazy(() => import("@/pages/admin/AdminReportsPage"));
+const AdminKnowledgePage = lazy(() => import("@/pages/admin/AdminKnowledgePage"));
+const AdminKnowledgeEditorPage = lazy(() => import("@/pages/admin/AdminKnowledgeEditorPage"));
+const AdminEventsPage = lazy(() => import("@/pages/admin/AdminEventsPage"));
+const AdminEventEditorPage = lazy(() => import("@/pages/admin/AdminEventEditorPage"));
+const AdminComingSoon = lazy(() => import("@/pages/admin/AdminComingSoon"));
+
 function LoadingFallback() {
   return <div className="flex items-center justify-center min-h-[100dvh]"><p>Loading...</p></div>;
 }
@@ -92,6 +101,25 @@ function App() {
                 <Route path="/analytics" element={<AnalyticsPage />} />
                 <Route path="/ai-intelligence" element={<AIIntelligencePage />} />
                 <Route path="/search" element={<GlobalSearchPage />} />
+              </Route>
+
+              {/* Admin Routes — same DashboardLayout shell, gated to
+                  the administrator role. Nav links for these already
+                  existed in the sidebar before any of these pages did. */}
+              <Route element={<ProtectedRoute allowedRoles={['administrator']}><DashboardLayout /></ProtectedRoute>}>
+                <Route path="/admin" element={<AdminOverviewPage />} />
+                <Route path="/admin/reports" element={<AdminReportsPage />} />
+                <Route path="/admin/verify" element={<AdminReportsPage />} />
+                <Route path="/admin/knowledge" element={<AdminKnowledgePage />} />
+                <Route path="/admin/knowledge/new" element={<AdminKnowledgeEditorPage />} />
+                <Route path="/admin/knowledge/:id/edit" element={<AdminKnowledgeEditorPage />} />
+                <Route path="/admin/events" element={<AdminEventsPage />} />
+                <Route path="/admin/events/new" element={<AdminEventEditorPage />} />
+                <Route path="/admin/events/:id/edit" element={<AdminEventEditorPage />} />
+                <Route path="/admin/users" element={<AdminComingSoon title="User Management" />} />
+                <Route path="/admin/analytics" element={<AdminComingSoon title="Environmental Analytics" />} />
+                <Route path="/admin/monitoring" element={<AdminComingSoon title="Environmental Monitoring" />} />
+                <Route path="/admin/settings" element={<AdminComingSoon title="System Settings" />} />
               </Route>
 
               {/* Redirects */}

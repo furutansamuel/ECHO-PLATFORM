@@ -3,28 +3,40 @@ import { useAuth } from "@/hooks/use-auth";
 import { Link } from "react-router-dom";
 import CreatePost from '@/components/community/CreatePost';
 import PostFeed from '@/components/community/PostFeed';
-import { Users, MapPin, Calendar, Bookmark, Share2, Heart, TrendingUp, Award, Clock, Star } from 'lucide-react';
+import { Users, MapPin, Calendar, Bookmark, Share2, Heart, TrendingUp, Award, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS, MOCK_LEADERBOARD, MOCK_COMMUNITY_LEADERS, MOCK_CHALLENGES, MOCK_RECOGNITION, MOCK_FEED, MOCK_EVENTS } from '@/lib/community-data';
+import { MOCK_CAMPAIGNS, MOCK_VOLUNTEERS, MOCK_LEADERBOARD, MOCK_COMMUNITY_LEADERS, MOCK_CHALLENGES, MOCK_RECOGNITION, MOCK_FEED } from '@/lib/community-data';
+import { useUpcomingEvents } from '@/hooks/use-events';
+import { useEventRegistrations } from '@/hooks/use-event-registrations';
+import { Loader2 } from 'lucide-react';
 
 const CommunityInsights: React.FC = () => {
   const { user } = useAuth();
   const [joinedCampaigns, setJoinedCampaigns] = useState<string[]>([]);
-  const [registeredEvents, setRegisteredEvents] = useState<string[]>([]);
+  // Volunteers tab still renders MOCK_VOLUNTEERS activities — a
+  // different, still-fully-mock dataset unrelated to the real `events`
+  // table. Kept as local-only state (unchanged behavior) rather than
+  // wired to useEventRegistrations, since these mock ids don't exist in
+  // the real events table and would violate its foreign key constraint.
+  const [joinedActivities, setJoinedActivities] = useState<string[]>([]);
   const [joinedChallenges, setJoinedChallenges] = useState<string[]>([]);
   const [likedPosts, setLikedPosts] = useState<string[]>([]);
   const [bookmarkedCampaigns, setBookmarkedCampaigns] = useState<string[]>([]);
 
+  const { events: upcomingEvents, loading: upcomingLoading } = useUpcomingEvents();
+  const { events: completedEvents, loading: completedLoading } = useUpcomingEvents(undefined, ['completed']);
+  const { registeredIds, register, unregister, pendingId } = useEventRegistrations();
+
   const toggleJoinCampaign = (id: string) => {
     setJoinedCampaigns(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   };
-  const toggleRegister = (id: string) => {
-    setRegisteredEvents(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  const toggleJoinActivity = (id: string) => {
+    setJoinedActivities(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   };
   const toggleJoinChallenge = (id: string) => {
     setJoinedChallenges(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -39,9 +51,6 @@ const CommunityInsights: React.FC = () => {
   const activeCampaigns = MOCK_CAMPAIGNS.filter(c => c.status === 'active');
   const upcomingCampaigns = MOCK_CAMPAIGNS.filter(c => c.status === 'upcoming');
   const completedCampaigns = MOCK_CAMPAIGNS.filter(c => c.status === 'completed');
-  const upcomingEvents = MOCK_EVENTS.filter(e => !e.completed);
-  const completedEvents = MOCK_EVENTS.filter(e => e.completed);
-  const featuredEvents = MOCK_EVENTS.filter(e => e.featured);
 
   return (
     <div className="p-4 md:p-6 space-y-8 max-w-7xl mx-auto pb-20">
@@ -174,10 +183,10 @@ const CommunityInsights: React.FC = () => {
                           <Button
                             size="sm"
                             className="rounded-full gap-2"
-                            variant={registeredEvents.includes(activity.id) ? "outline" : "default"}
-                            onClick={() => toggleRegister(activity.id)}
+                            variant={joinedActivities.includes(activity.id) ? "outline" : "default"}
+                            onClick={() => toggleJoinActivity(activity.id)}
                           >
-                            {registeredEvents.includes(activity.id) ? '✓ Registered' : 'Register'}
+                            {joinedActivities.includes(activity.id) ? '✓ Registered' : 'Register'}
                           </Button>
                         ) : (
                           <Button asChild className="rounded-full">
@@ -326,89 +335,78 @@ const CommunityInsights: React.FC = () => {
 
         {/* EVENTS TAB */}
         <TabsContent value="events" className="m-0 space-y-8">
-          {featuredEvents.length > 0 && (
-            <div>
-              <h3 className="text-lg font-bold uppercase tracking-tight mb-4 flex items-center gap-2">
-                <Star className="h-5 w-5 text-yellow-500" /> Featured Events
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {featuredEvents.map(event => (
-                  <Card key={event.id} className="border-none shadow-lg overflow-hidden bg-gradient-to-br from-primary/5 to-card">
-                    <CardContent className="p-6 space-y-3">
-                      <span className="text-3xl">{event.emoji}</span>
-                      <h4 className="font-bold">{event.title}</h4>
-                      <p className="text-xs text-muted-foreground">{event.description}</p>
-                      <div className="flex flex-wrap gap-2 text-[10px] text-muted-foreground">
-                        <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{event.date}</span>
-                        <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{event.location}</span>
-                      </div>
-                      {user ? (
-                        <Button
-                          size="sm"
-                          className="w-full rounded-full"
-                          variant={registeredEvents.includes(event.id) ? "outline" : "default"}
-                          onClick={() => toggleRegister(event.id)}
-                        >
-                          {registeredEvents.includes(event.id) ? '✓ Registered' : 'Register'}
-                        </Button>
-                      ) : (
-                        <Button asChild className="w-full rounded-full">
-                          <Link to="/login">Sign in to Register</Link>
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-bold uppercase tracking-tight mb-4">Upcoming Events</h3>
-              <div className="space-y-3">
-                {upcomingEvents.map(event => (
-                  <Card key={event.id} className="border-none shadow-sm hover:shadow-md transition-all">
-                    <CardContent className="p-4 flex items-center gap-4">
-                      <span className="text-2xl">{event.emoji}</span>
-                      <div className="flex-grow">
-                        <h4 className="font-bold text-sm">{event.title}</h4>
-                        <p className="text-[10px] text-muted-foreground">{event.date} • {event.location}</p>
-                      </div>
-                      {user ? (
-                        <Button
-                          size="sm"
-                          variant={registeredEvents.includes(event.id) ? "outline" : "default"}
-                          className="rounded-full"
-                          onClick={() => toggleRegister(event.id)}
-                        >
-                          {registeredEvents.includes(event.id) ? '✓' : 'Join'}
-                        </Button>
-                      ) : (
-                        <Button asChild size="sm" className="rounded-full">
-                          <Link to="/login">Sign in</Link>
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              {upcomingLoading ? (
+                <div className="flex justify-center py-8"><Loader2 className="h-5 w-5 animate-spin text-primary" /></div>
+              ) : upcomingEvents.length === 0 ? (
+                <p className="text-sm text-muted-foreground py-8 text-center">No upcoming events right now.</p>
+              ) : (
+                <div className="space-y-3">
+                  {upcomingEvents.map(event => (
+                    <Card key={event.id} className="border-none shadow-sm hover:shadow-md transition-all">
+                      <CardContent className="p-4 flex items-center gap-4">
+                        {event.image_url ? (
+                          <img src={event.image_url} alt={event.title} className="h-10 w-10 rounded-lg object-cover shrink-0" />
+                        ) : (
+                          <Calendar className="h-6 w-6 text-primary shrink-0" />
+                        )}
+                        <div className="flex-grow">
+                          <h4 className="font-bold text-sm">{event.title}</h4>
+                          <p className="text-[10px] text-muted-foreground">
+                            {new Date(event.event_date).toLocaleDateString()} • {event.location_name}
+                          </p>
+                        </div>
+                        {user ? (
+                          <Button
+                            size="sm"
+                            variant={registeredIds.has(event.id) ? "outline" : "default"}
+                            className="rounded-full shrink-0"
+                            disabled={pendingId === event.id}
+                            onClick={() => (registeredIds.has(event.id) ? unregister(event.id) : register(event.id))}
+                          >
+                            {pendingId === event.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : registeredIds.has(event.id) ? '✓' : 'Join'}
+                          </Button>
+                        ) : (
+                          <Button asChild size="sm" className="rounded-full shrink-0">
+                            <Link to="/auth/login">Sign in</Link>
+                          </Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </div>
             <div>
               <h3 className="text-lg font-bold uppercase tracking-tight mb-4">Completed Events</h3>
-              <div className="space-y-3">
-                {completedEvents.map(event => (
-                  <Card key={event.id} className="border-none shadow-sm opacity-75">
-                    <CardContent className="p-4 flex items-center gap-4">
-                      <span className="text-2xl">{event.emoji}</span>
-                      <div className="flex-grow">
-                        <h4 className="font-bold text-sm">{event.title}</h4>
-                        <p className="text-[10px] text-muted-foreground">{event.date} • {event.participants} participants</p>
-                      </div>
-                      <Badge className="bg-gray-100 text-gray-600 border-none text-[9px]">Done</Badge>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              {completedLoading ? (
+                <div className="flex justify-center py-8"><Loader2 className="h-5 w-5 animate-spin text-primary" /></div>
+              ) : completedEvents.length === 0 ? (
+                <p className="text-sm text-muted-foreground py-8 text-center">No completed events yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {completedEvents.map(event => (
+                    <Card key={event.id} className="border-none shadow-sm opacity-75">
+                      <CardContent className="p-4 flex items-center gap-4">
+                        {event.image_url ? (
+                          <img src={event.image_url} alt={event.title} className="h-10 w-10 rounded-lg object-cover shrink-0" />
+                        ) : (
+                          <Calendar className="h-6 w-6 text-muted-foreground shrink-0" />
+                        )}
+                        <div className="flex-grow">
+                          <h4 className="font-bold text-sm">{event.title}</h4>
+                          <p className="text-[10px] text-muted-foreground">
+                            {new Date(event.event_date).toLocaleDateString()} • {event.registered_count} participants
+                          </p>
+                        </div>
+                        <Badge className="bg-gray-100 text-gray-600 border-none text-[9px]">Done</Badge>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </TabsContent>
