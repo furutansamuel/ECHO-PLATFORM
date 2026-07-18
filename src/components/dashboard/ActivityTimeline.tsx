@@ -9,8 +9,12 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, useReducedMotion } from 'framer-motion';
-import { useReportsStore } from '@/hooks/use-reports-store';
+import { useIntelligenceData } from '@/hooks/use-intelligence-data';
+import { useAuth } from '@/hooks/use-auth';
 
+// Illustrative placeholder activity feed — kept intentionally to fill
+// out the timeline visually. Not demo-mode gated; shows for every
+// account alongside real submitted reports below.
 const mockActivities = [
   {
     type: 'Hazard Submitted',
@@ -60,7 +64,9 @@ const mockActivities = [
 ];
 
 const ActivityTimeline = () => {
-  const { reports: storeReports } = useReportsStore();
+  const { user } = useAuth();
+  const { hazardReports } = useIntelligenceData();
+  const storeReports = hazardReports.filter((r) => r.user_id === user?.id);
   const prefersReducedMotion = useReducedMotion();
 
   // Memoized so a stable list is only recomputed when the underlying
@@ -75,7 +81,7 @@ const ActivityTimeline = () => {
         id: `report-${report.id}`,
         type: 'Hazard Submitted',
         title: `New report: ${report.title}`,
-        description: `Reported at ${report.location.address || 'Unknown Location'}.`,
+        description: `Reported at ${report.location?.address || 'Unknown Location'}.`,
         time: 'Just now',
         icon: FileText,
         color: 'text-orange-500',
@@ -127,3 +133,4 @@ const ActivityTimeline = () => {
 };
 
 export default React.memo(ActivityTimeline);
+
