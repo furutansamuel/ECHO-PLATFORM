@@ -30,15 +30,6 @@ export default function LoginPage() {
       if (error) {
         toast.error(error.message);
       } else {
-        // Clear all demo data after successful real login
-sessionStorage.removeItem('echo_demo_mode');
-sessionStorage.removeItem('echo_presentation_mode');
-sessionStorage.removeItem('echo_reports');
-sessionStorage.removeItem('echo_drafts');
-sessionStorage.removeItem('echo_stats');
-sessionStorage.removeItem('echo_notifications');
-sessionStorage.removeItem('echo_dismissed_hints');
-        
         toast.success('Logged in successfully');
         navigate('/dashboard');
       }
@@ -47,17 +38,6 @@ sessionStorage.removeItem('echo_dismissed_hints');
     } finally {
       setLoading(false);
     }
-  };
-
-  // For Demo Mode, we can use a guest account or mock it if needed
-  const handleDemoMode = async (role: 'citizen' | 'administrator') => {
-    // Enable demo mode in localStorage so AuthProvider picks it up
-    sessionStorage.setItem('echo_demo_mode', 'true');
-    toast.success(`Entering Demo Mode as ${role}...`);
-    // Small delay to let state propagate, then navigate
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 300);
   };
 
   return (
@@ -102,11 +82,7 @@ sessionStorage.removeItem('echo_dismissed_hints');
           <div className="text-center text-sm text-muted-foreground w-full">
             Don't have an account? <Button variant="link" className="px-0" onClick={() => navigate('/register')}>Register</Button>
           </div>
-          <div className="grid grid-cols-2 gap-2 w-full">
-            <Button variant="outline" onClick={() => handleDemoMode('citizen')} className="text-xs">Citizen Demo</Button>
-            <Button variant="outline" onClick={() => handleDemoMode('administrator')} className="text-xs">Admin Demo</Button>
-          </div>
-        </CardFooter>
+                  </CardFooter>
       </Card>
     </div>
   );

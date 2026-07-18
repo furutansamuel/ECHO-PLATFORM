@@ -66,7 +66,7 @@ const mockActivities = [
 const ActivityTimeline = () => {
   const { user } = useAuth();
   const { hazardReports } = useIntelligenceData();
-  const storeReports = hazardReports.filter((r) => r.user_id === user?.id);
+  const storeReports = hazardReports.filter((r) => r.reporter_id === user?.id);
   const prefersReducedMotion = useReducedMotion();
 
   // Memoized so a stable list is only recomputed when the underlying
@@ -81,7 +81,7 @@ const ActivityTimeline = () => {
         id: `report-${report.id}`,
         type: 'Hazard Submitted',
         title: `New report: ${report.title}`,
-        description: `Reported at ${report.location?.address || 'Unknown Location'}.`,
+        description: `Reported at ${report.address || 'Unknown Location'}.`,
         time: 'Just now',
         icon: FileText,
         color: 'text-orange-500',

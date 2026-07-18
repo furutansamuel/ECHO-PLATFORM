@@ -60,8 +60,9 @@ export function Hero() {
 
   return (
   <section
-    className="relative overflow-hidden"
-  >
+  className="relative min-h-[75vh] md:min-h-[90vh] overflow-hidden"
+  aria-labelledby="hero-heading"
+>
       {/* Carousel background */}
       <div className="absolute inset-0">
         {/* Fallback gradient sits BEHIND images */}
@@ -81,6 +82,7 @@ export function Hero() {
               'absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out',
               i === index && !failed[i] ? 'opacity-100' : 'opacity-0'
             )}
+            sizes="100vw"
           />
         ))}
         {/* Dark overlay for readability sits ABOVE images */}
@@ -96,16 +98,16 @@ export function Hero() {
       </div>
 
 
-      <div className="container relative mx-auto px-4 py-20 md:py-28 lg:py-36">
+      <div className="container relative mx-auto px-4 py-10 md:py-28 lg:py-36">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={rise(12)}
             animate={settle}
             transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-200 bg-white/80 px-4 py-1.5 text-xs font-semibold text-green-800 backdrop-blur-md"
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-semibold text-foreground backdrop-blur-md"
             >
-            <Sparkles className="h-3.5 w-3.5" />
-            Environmental Intelligence for Safer Communities
+            <span className="beacon-dot beacon-dot--active text-accent" aria-hidden="true" />
+            Real-Time Environmental Intelligence
           </motion.div>
 
           <motion.h1
@@ -113,20 +115,37 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.05 }}
-  className="text-4xl font-black leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl"
-          >
-  Environmental Community Health Observatory (
-  <span className="bg-gradient-to-br from-primary via-accent to-emerald-500 bg-clip-text text-transparent">ECHO</span>
-  )
+  className="text-3xl leading-[1.05] font-extrabold tracking-tight md:text-6xl lg:text-7xl"
+>
+  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+    ECHO
+  </span>
+  <span className="block mt-2 text-foreground">
+    AI Environmental Community Health Observatory
+  </span>
 </motion.h1>
 
           <motion.p
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.15 }}
-  className="mx-auto mt-6 max-w-2xl text-lg text-gray-900 md:text-xl"
-   >        
-  Empowering communities to report, monitor, and respond to environmental hazards through AI-driven environmental intelligence.
+  className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
+>
+
+  {/* Mobile text */}
+  <span className="block md:hidden">
+    Monitor hazards, report incidents, and improve community health
+    with AI-powered environmental intelligence.
+  </span>
+
+  {/* Desktop text */}
+  <span className="hidden md:block">
+    Monitor floods, pollution, illegal dumping, blocked drainage,
+    erosion, and other environmental hazards using AI-powered
+    environmental intelligence. Report incidents, monitor community
+    health, and enable faster environmental response across Nigeria.
+  </span>
+
 </motion.p>
 
           <motion.div
@@ -138,7 +157,7 @@ export function Hero() {
             <Button size="lg" className="btn-glow h-12 px-8 text-base shadow-premium" asChild>
               <Link to="/report">
                 <ShieldAlert className="mr-2 h-5 w-5" />
-                Report Hazard
+                Report Environmental Hazard
               </Link>
             </Button>
             <Button
@@ -149,7 +168,7 @@ export function Hero() {
             >
               <Link to="/reports">
                 <LineChart className="mr-2 h-5 w-5" />
-                Track My Reports
+                View Hazard Reports
               </Link>
             </Button>
           </motion.div>
@@ -158,9 +177,9 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="mt-6 text-sm text-gray-800"
+            className="mt-6 text-sm text-muted-foreground"
           >
-            Free for citizens • Built for Nigeria • Trusted by community leaders
+            AI Powered • Community Driven • Built for Nigeria
           </motion.p>
         </div>
 
@@ -203,4 +222,3 @@ export function Hero() {
     </section>
   );
 }
-

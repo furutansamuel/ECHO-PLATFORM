@@ -136,60 +136,43 @@ export const useReportsStore = () => {
       toast.error('Unable to submit report: backend not configured.');
       return false;
     }
-    if (!user) {
-      toast.error('You must be signed in to submit a report.');
-      return false;
-    }
 
-    // Column names verified against
-    // supabase/migrations/20260115120000_create_hazard_reports.sql —
-    // location is a single JSONB column (not flat lat/lng/address
-    // columns), the owner column is user_id (not reporter_id), and
-    // status must be 'Pending' on insert since the RLS policies that
-    // let a citizen edit/delete their own report specifically check
-    // status = 'Pending'. reference_number is left out entirely so the
-    // auto_generate_reference_number() trigger assigns the real
-    // ECHO-YY-NNNNN number — the client-generated placeholder is
-    // overwritten by reading it back below.
-    const { data, error } = await supabase
-      .from('hazard_reports')
-      .insert({
-        title: report.title,
-        description: report.description,
-        category: report.category,
-        estimated_size: report.estimatedSize,
-        affected_area: report.affectedArea,
-        date_observed: report.dateObserved,
-        time_observed: report.timeObserved,
-        immediate_risk: report.immediateRisk,
-        environmental_impact: report.environmentalImpact,
-        required_action: report.requiredAction,
-        severity: report.severity,
-        status: 'Pending',
-        location: report.location,
-        images: report.images,
-        video: report.video || null,
-        is_anonymous: report.isAnonymous,
-        notify_volunteers: report.notifyVolunteers,
-        share_with_community: report.shareWithCommunity,
-        receive_updates: report.receiveUpdates,
-        user_id: user.id,
-      })
-      .select('reference_number')
-      .single();
+    const fullDescription = [
+      report.description,
+      '',
+      `Estimated size: ${report.estimatedSize}`,
+      `Affected area: ${report.affectedArea}`,
+      `Date observed: ${report.dateObserved} ${report.timeObserved}`,
+      `Immediate risk: ${report.immediateRisk}`,
+      `Environmental impact: ${report.environmentalImpact}`,
+      `Required action: ${report.requiredAction}`,
+    ].join('\n');
+
+    const { error } = await supabase.from('hazard_reports').insert({
+      reference_number: report.referenceNumber,
+      title: report.title,
+      description: fullDescription,
+      category: report.category,
+      severity: report.severity,
+      status: 'Submitted',
+      latitude: report.location.lat,
+      longitude: report.location.lng,
+      address: report.location.address,
+      ward: report.location.ward,
+      lga: report.location.lga,
+      state: report.location.state,
+      landmark: report.location.landmark || null,
+      images: report.images,
+      video: report.video || null,
+      is_anonymous: report.isAnonymous,
+      reporter_id: report.isAnonymous ? null : user?.id ?? null,
+    });
 
     if (error) {
       console.error('Error saving report:', error);
       toast.error('Failed to submit report: ' + error.message);
       return false;
     }
-
-    // The DB trigger (handle_new_report) already awards eco points,
-    // creates the "Report Submitted" notification, and clears the
-    // saved draft server-side — so this function no longer duplicates
-    // that locally. It just reflects the real generated reference
-    // number back to the caller and refreshes local stats optimistically.
-    report.referenceNumber = data.reference_number;
 
     // Update local stats optimistically; the real numbers will refresh
     // from userStats once the DB trigger/RPC (if any) recalculates them.

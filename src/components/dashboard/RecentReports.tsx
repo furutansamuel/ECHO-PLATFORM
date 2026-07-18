@@ -38,7 +38,7 @@ export function RecentReports() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { hazardReports } = useIntelligenceData();
-  const reports = hazardReports.filter((r) => r.user_id === user?.id);
+  const reports = hazardReports.filter((r) => r.reporter_id === user?.id);
 
   return (
     <div className="bg-card border rounded-2xl overflow-hidden shadow-sm">
@@ -72,7 +72,7 @@ export function RecentReports() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-xs text-muted-foreground font-medium italic">
-                    {report.location.address}
+                    {report.address}
                   </td>
                   <td className="px-6 py-4">
                     <span className={`beacon-badge beacon-badge--${severityVariant(report.severity)}`}>

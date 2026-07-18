@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/use-auth";
-import { DemoProvider } from "@/hooks/use-demo";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { MainLayout } from "@/layouts/MainLayout";
@@ -43,12 +42,11 @@ function LoadingFallback() {
 
 function App() {
   return (
-    <DemoProvider>
-      <AuthProvider>
-        <Router>
-          <ScrollToTop />
-          <Suspense fallback={<LoadingFallback />}>
-            <Routes>
+    <AuthProvider>
+      <Router>
+        <ScrollToTop />
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
               {/* Public Routes */}
               <Route path="/" element={<LandingPage />} />
 
@@ -102,8 +100,7 @@ function App() {
           </Suspense>
         </Router>
         <Toaster position="top-right" richColors closeButton />
-      </AuthProvider>
-    </DemoProvider>
+    </AuthProvider>
   );
 }
 
