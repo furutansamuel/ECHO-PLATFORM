@@ -10,7 +10,7 @@ export interface UpcomingEvent extends EventRecord {
  * first), joined with the public-safe registration-count view. Used by
  * both the public landing page and the dashboard widget — previously
  * each rendered its own hardcoded static array with no DB backing. */
-export function useUpcomingEvents(limit?: number) {
+export function useUpcomingEvents(limit?: number, statuses: string[] = ['upcoming', 'ongoing']) {
   const [events, setEvents] = useState<UpcomingEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,12 +23,10 @@ export function useUpcomingEvents(limit?: number) {
 
     (async () => {
       const today = new Date().toISOString().split('T')[0];
-      const query = supabase
-        .from('events')
-        .select('*')
-        .in('status', ['upcoming', 'ongoing'])
-        .gte('event_date', today)
-        .order('event_date', { ascending: true });
+      let query = supabase.from('events').select('*').in('status', statuses);
+      query = statuses.includes('completed')
+        ? query.order('event_date', { ascending: false })
+        : query.gte('event_date', today).order('event_date', { ascending: true });
 
       const { data: eventsData, error } = limit ? await query.limit(limit) : await query;
 
@@ -51,7 +49,7 @@ export function useUpcomingEvents(limit?: number) {
     })();
 
     return () => { cancelled = true; };
-  }, [limit]);
+  }, [limit, statuses.join(',')]);
 
   return { events, loading };
 }
