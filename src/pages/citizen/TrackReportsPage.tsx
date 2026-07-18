@@ -191,7 +191,7 @@ const TrackReportsPage: React.FC = () => {
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <MapPin className="w-3.5 h-3.5 text-primary" />
-                          {report.address}
+                          {report.location.address}
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5" />
