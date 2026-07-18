@@ -7,41 +7,64 @@ export type ReportStatus =
   | 'Assigned'
   | 'In Progress'
   | 'Resolved'
-  | 'Closed';
+  | 'Closed'
+  // Original narrower set, still valid per the DB CHECK constraint and
+  // what the report wizard / RLS edit-permission policy actually use.
+  | 'Pending'
+  | 'Rejected';
 
-export interface HazardReport {
-  id: string;
-  reference_number: string;
-  title: string;
-  description: string;
-  category: string;
-  severity: 'Low' | 'Medium' | 'High' | 'Critical';
-  status: ReportStatus;
-  latitude: number;
-  longitude: number;
+export interface ReportLocation {
+  lat: number;
+  lng: number;
   address: string;
   ward: string;
   lga: string;
   state: string;
   landmark?: string;
+}
+
+// Matches supabase/migrations/20260115120000_create_hazard_reports.sql
+// (+ 20260115120500_extend_hazard_reports_verification_ai.sql for the
+// verification/AI columns). location is a single JSONB column, not flat
+// latitude/longitude/address columns — several components previously
+// assumed the flat shape and were silently broken for any real
+// (non-mock) report.
+export interface HazardReport {
+  id: string;
+  user_id: string;
+  reference_number: string;
+  title: string;
+  description: string;
+  category: string;
+  estimated_size: string;
+  affected_area: string;
+  date_observed: string;
+  time_observed: string;
+  immediate_risk: string;
+  environmental_impact: string;
+  required_action: string;
+  severity: 'Low' | 'Medium' | 'High' | 'Critical';
+  status: ReportStatus;
+  location: ReportLocation;
   images: string[];
   video?: string;
   is_anonymous: boolean;
-  reporter_id?: string;
-  reporter_name?: string;
+  notify_volunteers: boolean;
+  share_with_community: boolean;
+  receive_updates: boolean;
   created_at: string;
   updated_at: string;
   verification_status?: string;
-  assigned_verifier?: string;
+  verifier_id?: string;
   verification_notes?: string;
   verification_date?: string;
   verification_confidence?: number;
+  duplicate_id?: string;
   ai_risk_score?: number;
   ai_priority?: string;
-  ai_impact_summary?: string;
-  ai_risk_level?: string;
-  ai_suggested_priority?: string;
-  estimated_impact?: string;
+  ai_impact?: string;
+  ai_summary?: string;
+  ai_generated_at?: string;
 }
 
 export interface ReportActivity {
