@@ -25,7 +25,7 @@ const severityVariant = (severity: string): 'safe' | 'warning' | 'danger' => {
 
 // The dot only pulses while a report is still active. Resolved/Closed
 // reports get a static dot — the animation itself carries status meaning.
-const RESOLVED_STATUSES = new Set(['Resolved', 'Closed']);
+const RESOLVED_STATUSES = new Set(['Resolved', 'Closed', 'Rejected']);
 const isActiveStatus = (status: string) => !RESOLVED_STATUSES.has(status);
 
 const statusVariant = (status: string): 'safe' | 'warning' | 'danger' => {
