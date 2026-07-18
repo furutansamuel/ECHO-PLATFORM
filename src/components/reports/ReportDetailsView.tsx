@@ -163,7 +163,7 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
                   <div className="space-y-2">
                     <div className="flex items-start gap-2 text-sm">
                       <MapPin className="w-4 h-4 text-primary mt-0.5" />
-                      <span>{report.address}</span>
+                      <span>{report.location.address}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Navigation className="w-4 h-4 text-primary" />
@@ -234,7 +234,7 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
             <CardContent className="p-0">
               <div className="h-[200px] w-full bg-muted relative">
                 <MapContainer 
-                  center={[report.latitude, report.longitude]} 
+                  center={[report.location.lat, report.location.lng]} 
                   zoom={15} 
                   scrollWheelZoom={false}
                   style={{ height: '100%', width: '100%' }}
@@ -243,14 +243,14 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   />
-                  <Marker position={[report.latitude, report.longitude]}>
+                  <Marker position={[report.location.lat, report.location.lng]}>
                     <Popup>{report.title}</Popup>
                   </Marker>
                 </MapContainer>
               </div>
               <div className="p-3 flex items-center justify-between bg-muted/50">
                 <div className="text-[10px] text-muted-foreground">
-                  {report.latitude.toFixed(4)}, {report.longitude.toFixed(4)}
+                  {report.location.lat.toFixed(4)}, {report.location.lng.toFixed(4)}
                 </div>
                 <Button variant="ghost" size="sm" className="h-7 text-[10px] gap-1">
                   View Full Map
