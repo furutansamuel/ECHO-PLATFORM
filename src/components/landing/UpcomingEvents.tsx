@@ -2,14 +2,18 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Users, CalendarX } from 'lucide-react';
+import { Calendar, MapPin, Users, CalendarX, Loader2 } from 'lucide-react';
 import { useUpcomingEvents } from '@/hooks/use-events';
+import { useEventRegistrations } from '@/hooks/use-event-registrations';
+import { useAuth } from '@/hooks/use-auth';
 
 const formatDate = (dateStr: string) =>
   new Date(dateStr).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
 export function UpcomingEvents() {
   const { events, loading } = useUpcomingEvents(3);
+  const { user } = useAuth();
+  const { registeredIds, register, unregister, pendingId } = useEventRegistrations();
 
   return (
     <section className="py-12 lg:py-24 section-bg-soft">
@@ -61,8 +65,21 @@ export function UpcomingEvents() {
                       </span>
                     </div>
                   </div>
-                  <Button asChild className="w-full">
-                    <Link to="/community-insights">Join Event</Link>
+                  <Button asChild={!user} className="w-full" disabled={pendingId === event.id}
+                    variant={user && registeredIds.has(event.id) ? 'outline' : 'default'}
+                    onClick={user ? () => (registeredIds.has(event.id) ? unregister(event.id) : register(event.id)) : undefined}
+                  >
+                    {user ? (
+                      pendingId === event.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : registeredIds.has(event.id) ? (
+                        '✓ Registered — Cancel'
+                      ) : (
+                        'Join Event'
+                      )
+                    ) : (
+                      <Link to="/auth/login">Sign In to Join</Link>
+                    )}
                   </Button>
                 </CardContent>
               </Card>
