@@ -3,13 +3,16 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Icons } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Loader2 } from "lucide-react";
 import { useUpcomingEvents } from "@/hooks/use-events";
+import { useEventRegistrations } from "@/hooks/use-event-registrations";
 
 const formatDate = (dateStr: string) =>
   new Date(dateStr).toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
 
 export function CleanupEventsWidget() {
   const { events, loading } = useUpcomingEvents(3);
+  const { registeredIds, register, unregister, pendingId } = useEventRegistrations();
 
   return (
     <Card className="bg-background/60 backdrop-blur-sm premium-shadow">
@@ -63,6 +66,21 @@ export function CleanupEventsWidget() {
                       {event.registered_count} volunteer{event.registered_count === 1 ? '' : 's'} signed up
                     </p>
                   )}
+                  <Button
+                    size="sm"
+                    variant={registeredIds.has(event.id) ? 'outline' : 'default'}
+                    className="w-full mt-1"
+                    disabled={pendingId === event.id}
+                    onClick={() => (registeredIds.has(event.id) ? unregister(event.id) : register(event.id))}
+                  >
+                    {pendingId === event.id ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : registeredIds.has(event.id) ? (
+                      '✓ Registered'
+                    ) : (
+                      'Join'
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>
