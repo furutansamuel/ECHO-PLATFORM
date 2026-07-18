@@ -19,7 +19,6 @@ import {
   Search,
   BarChart3,
   BrainCircuit,
-  CheckCircle,
   Users
 } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
@@ -45,8 +44,9 @@ const navItems = [
 ];
 
 const adminItems = [
-  { name: 'Verify Reports', href: '/admin/verify', icon: CheckCircle, roles: ['administrator'] },
-  { name: 'Manage Reports', href: '/admin/reports', icon: ClipboardList, roles: ['administrator'] },
+  { name: 'Reports', href: '/admin/reports', icon: ClipboardList, roles: ['administrator'] },
+  { name: 'Knowledge Centre', href: '/admin/knowledge', icon: BookOpen, roles: ['administrator'] },
+  { name: 'Events', href: '/admin/events', icon: Calendar, roles: ['administrator'] },
   { name: 'User Management', href: '/admin/users', icon: Users, roles: ['administrator'] },
   { name: 'Environmental Analytics', href: '/admin/analytics', icon: BarChart3, roles: ['administrator'] },
   { name: 'Environmental Monitoring', href: '/admin/monitoring', icon: MapIcon, roles: ['administrator'] },
