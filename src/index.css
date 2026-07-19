@@ -22,113 +22,127 @@
 @custom-variant group-hover (:where(.group):hover:not(:where(html.is-touch) *) &);
 
 :root {
-  /* Beacon brand — deep civic navy identity, amber reserved for CTAs
-     and active alerts only (never decorative), and a resolved/warning/
-     danger status trio that's distinct from the brand colors so hazard
-     state is never ambiguous with "just branding". */
-  --background: #F7F9FB;
-  --foreground: #0B1420;
+  /* ECHO Design System v2 */
+  --background: #F8FAF8;
+  --foreground: #16301F;
   --card: #FFFFFF;
-  --card-foreground: #0B1420;
+  --card-foreground: #16301F;
   --popover: #FFFFFF;
-  --popover-foreground: #0B1420;
-  --primary: #0B2545;
+  --popover-foreground: #16301F;
+
+  --primary: #166534;
   --primary-foreground: #FFFFFF;
-  --primary-rgb: 11, 37, 69;
-  --secondary: #16324F;
-  --secondary-foreground: #FFFFFF;
-  --muted: #EEF2F6;
-  --muted-foreground: #55677D;
-  --accent: #FFB703;
-  --accent-foreground: #0B1420;
+  --primary-rgb: 22,101,52;
+
+  --secondary: #DCFCE7;
+  --secondary-foreground: #166534;
+
+  --muted: #F1F5F3;
+  --muted-foreground: #5F6F64;
+
+  --accent: #84CC16;
+  --accent-foreground: #16301F;
+
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
-  --border: #DCE3EA;
-  --input: #DCE3EA;
-  --ring: #0B2545;
-  --status-safe: #1B5E20;
-  --status-warning: #F59E0B;
-  --status-danger: #DC2626;
-  --chart-1: oklch(0.81 0.1 252);
-  --chart-2: oklch(0.62 0.19 260);
-  --chart-3: oklch(0.55 0.22 263);
-  --chart-4: oklch(0.49 0.22 264);
-  --chart-5: oklch(0.42 0.18 266);
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #0B1420;
-  --sidebar-primary: #0B2545;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #EEF2F6;
-  --sidebar-accent-foreground: #0B2545;
-  --sidebar-border: #DCE3EA;
-  --sidebar-ring: #0B2545;
-  --highlight-gold: #FFB703;
+
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #166534;
+
+  --status-safe:#16A34A;
+  --status-warning:#F59E0B;
+  --status-danger:#DC2626;
+
+  --chart-1: oklch(0.81 0.1 145);
+  --chart-2: oklch(0.72 0.16 145);
+  --chart-3: oklch(0.63 0.18 145);
+  --chart-4: oklch(0.56 0.16 145);
+  --chart-5: oklch(0.48 0.14 145);
+
+  --sidebar:#113A22;
+  --sidebar-foreground:#FFFFFF;
+  --sidebar-primary:#22C55E;
+  --sidebar-primary-foreground:#FFFFFF;
+  --sidebar-accent:#1B4D2E;
+  --sidebar-accent-foreground:#FFFFFF;
+  --sidebar-border:#285C3D;
+  --sidebar-ring:#22C55E;
+
+  --highlight-gold:#FACC15;
+
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-display: "Barlow Semi Condensed", "Segoe UI", Arial, sans-serif;
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
-  --radius: 0.625rem;
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow-md:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 25px 50px -12px hsl(0 0% 0% / 0.25);
-  --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
+  --font-display:"Barlow Semi Condensed","Segoe UI",Arial,sans-serif;
+  --font-serif:ui-serif,Georgia,Cambria,"Times New Roman",Times,serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  --radius:1rem;
+
+  --shadow-2xs:0 1px 3px rgb(0 0 0 / .04);
+  --shadow-xs:0 1px 3px rgb(0 0 0 / .05);
+  --shadow-sm:0 2px 8px rgb(0 0 0 / .05);
+  --shadow:0 4px 12px rgb(0 0 0 / .06);
+  --shadow-md:0 8px 20px rgb(0 0 0 / .07);
+  --shadow-lg:0 14px 34px rgb(22 101 52 / .08);
+  --shadow-xl:0 20px 48px rgb(22 101 52 / .10);
+  --shadow-2xl:0 30px 60px rgb(22 101 52 / .12);
+  --shadow-premium:0 18px 45px rgb(22 101 52 / .10);
+
+  --tracking-normal:0em;
+  --spacing:.25rem;
 }
 
 .dark {
-  /* Beacon at night: amber is the literal signal color glowing against
-     deep navy, instead of a repainted-gray shadcn default. */
-  --background: #070E17;
-  --foreground: #E9EEF3;
-  --card: #0F1D30;
-  --card-foreground: #E9EEF3;
-  --popover: #0F1D30;
-  --popover-foreground: #E9EEF3;
-  --primary: #3D7FD9;
-  --primary-foreground: #06101C;
-  --primary-rgb: 61, 127, 217;
-  --secondary: #16324F;
-  --secondary-foreground: #E9EEF3;
-  --muted: #142338;
-  --muted-foreground: #8CA0B6;
-  --accent: #FFB703;
-  --accent-foreground: #06101C;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --border: #1E3348;
-  --input: #1E3348;
-  --ring: #3D7FD9;
-  --status-safe: #22C55E;
-  --status-warning: #F59E0B;
-  --status-danger: #EF4444;
-  --chart-1: oklch(0.81 0.1 252);
-  --chart-2: oklch(0.62 0.19 260);
-  --chart-3: oklch(0.55 0.22 263);
-  --chart-4: oklch(0.49 0.22 264);
-  --chart-5: oklch(0.42 0.18 266);
-  --sidebar: #0F1D30;
-  --sidebar-foreground: #E9EEF3;
-  --sidebar-primary: #3D7FD9;
-  --sidebar-primary-foreground: #06101C;
-  --sidebar-accent: #142338;
-  --sidebar-accent-foreground: #E9EEF3;
-  --sidebar-border: #1E3348;
-  --sidebar-ring: #3D7FD9;
+  --background:#08130C;
+  --foreground:#EEF8F1;
+
+  --card:#102016;
+  --card-foreground:#EEF8F1;
+
+  --popover:#102016;
+  --popover-foreground:#EEF8F1;
+
+  --primary:#22C55E;
+  --primary-foreground:#08130C;
+  --primary-rgb:34,197,94;
+
+  --secondary:#183322;
+  --secondary-foreground:#EEF8F1;
+
+  --muted:#16301F;
+  --muted-foreground:#9CB5A4;
+
+  --accent:#84CC16;
+  --accent-foreground:#08130C;
+
+  --destructive:#EF4444;
+  --destructive-foreground:#FFFFFF;
+
+  --border:#264332;
+  --input:#264332;
+  --ring:#22C55E;
+
+  --status-safe:#22C55E;
+  --status-warning:#F59E0B;
+  --status-danger:#EF4444;
+
+  --chart-1: oklch(0.81 0.1 145);
+  --chart-2: oklch(0.72 0.16 145);
+  --chart-3: oklch(0.63 0.18 145);
+  --chart-4: oklch(0.56 0.16 145);
+  --chart-5: oklch(0.48 0.14 145);
+
+  --sidebar:#0B1A11;
+  --sidebar-foreground:#EEF8F1;
+  --sidebar-primary:#22C55E;
+  --sidebar-primary-foreground:#08130C;
+  --sidebar-accent:#183322;
+  --sidebar-accent-foreground:#EEF8F1;
+  --sidebar-border:#264332;
+  --sidebar-ring:#22C55E;
 }
 
 @theme inline {
@@ -248,7 +262,7 @@
     @apply bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5;
   }
 
-  /* --- Beacon gradient system (section 3) ---
+  /* --- ECHO gradient system (section 3) ---
      Named, purpose-specific gradients so components reach for one
      class instead of hand-rolling `from-x via-y to-z` combinations
      with slightly different stops every time. Brand gradients stay in
@@ -355,25 +369,25 @@
    The dot pulses only while a hazard report is unresolved/active; once
    marked resolved it goes static, so the animation itself carries real
    status meaning instead of decorating an otherwise static pill.
-   Usage: <span class="beacon-badge beacon-badge--danger">
-            <span class="beacon-dot beacon-dot--active" /> Unresolved
+   Usage: <span class="echo-badge echo-badge--danger">
+            <span class="echo-dot echo-dot--active" /> Unresolved
           </span> */
-.beacon-badge {
+.echo-badge {
   @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold;
 }
-.beacon-badge--safe {
+.echo-badge--safe {
   @apply border-status-safe/30 bg-status-safe/10 text-status-safe;
 }
-.beacon-badge--warning {
+.echo-badge--warning {
   @apply border-status-warning/30 bg-status-warning/10 text-status-warning;
 }
-.beacon-badge--danger {
+.echo-badge--danger {
   @apply border-status-danger/30 bg-status-danger/10 text-status-danger;
 }
-.beacon-dot {
+.echo-dot {
   @apply h-2 w-2 rounded-full bg-current;
 }
-.beacon-dot--active {
+.echo-dot--active {
   animation: beacon-pulse 1.6s ease-in-out infinite;
 }
 @keyframes beacon-pulse {
@@ -381,7 +395,7 @@
   50% { opacity: 0.6; box-shadow: 0 0 0 4px transparent; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .beacon-dot--active {
+  .echo-dot--active {
     animation: none;
   }
 }
