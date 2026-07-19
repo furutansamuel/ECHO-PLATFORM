@@ -59,12 +59,18 @@ export function Hero() {
   const settle = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
 
   return (
-  <section
-  className="relative min-h-[75vh] md:min-h-[90vh] overflow-hidden"
+  <section className="relative
+    h-[85vh]
+    min-h-[620px]
+    max-h-[900px]
+    overflow-hidden
+    flex
+    items-center
+  "
   aria-labelledby="hero-heading"
 >
       {/* Carousel background */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         {/* Fallback gradient sits BEHIND images */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-background to-accent/30" />
         {slides.map((s, i) => (
@@ -98,7 +104,7 @@ export function Hero() {
       </div>
 
 
-      <div className="container relative mx-auto px-4 py-10 md:py-28 lg:py-36">
+      <div className="container relative z-10 mx-auto flex h-full items-center px-4">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={rise(12)}
