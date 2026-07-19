@@ -1,6 +1,6 @@
 # 🌍 ECHO – Environmental Community Health Observatory
 
-![ECHO Banner](public/og-image.png)
+![ECHO Banner](public/echo-logo-primary.svg)
 
 > **Empowering communities through environmental intelligence, citizen participation, artificial intelligence, and real-time data.**
 
