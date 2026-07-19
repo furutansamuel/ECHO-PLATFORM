@@ -29,8 +29,11 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Badge } from '@/components/ui/badge';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import { PremiumBottomNav } from '@/components/layout/PremiumBottomNav';
+import { useNotifications } from '@/hooks/use-notifications';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['citizen', 'volunteer', 'administrator'] },
@@ -49,6 +52,7 @@ const adminItems = [
   { name: 'Knowledge Centre', href: '/admin/knowledge', icon: BookOpen, roles: ['administrator'] },
   { name: 'Events', href: '/admin/events', icon: Calendar, roles: ['administrator'] },
   { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle, roles: ['administrator'] },
+  { name: 'Notifications', href: '/admin/notifications', icon: Bell, roles: ['administrator'] },
   { name: 'User Management', href: '/admin/users', icon: Users, roles: ['administrator'] },
   { name: 'Environmental Analytics', href: '/admin/analytics', icon: BarChart3, roles: ['administrator'] },
   { name: 'Environmental Monitoring', href: '/admin/monitoring', icon: MapIcon, roles: ['administrator'] },
@@ -64,6 +68,7 @@ const footerItems = [
 
 export function DashboardLayout() {
   const { profile, logout } = useAuth();
+  const { notifications, unreadCount, markAsRead } = useNotifications();
   const location = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
@@ -286,13 +291,53 @@ export function DashboardLayout() {
                 className="h-10 w-64 rounded-full bg-muted/40 border border-border/20 pl-9 pr-4 text-sm transition-all focus:outline-none focus:ring-4 focus:ring-primary/5 focus:bg-background focus:border-primary/30"
               />
             </form>
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive" />
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="h-5 w-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[9px] font-bold text-white">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-80 p-0">
+                <div className="p-3 border-b flex items-center justify-between">
+                  <p className="text-sm font-semibold">Notifications</p>
+                  {unreadCount > 0 && <Badge variant="secondary" className="text-[10px]">{unreadCount} new</Badge>}
+                </div>
+                <div className="max-h-80 overflow-y-auto divide-y">
+                  {notifications.length === 0 ? (
+                    <p className="p-6 text-center text-xs text-muted-foreground">No notifications yet.</p>
+                  ) : (
+                    notifications.slice(0, 6).map((n) => (
+                      <button
+                        key={n.id}
+                        onClick={() => { markAsRead(n.id); navigate('/notifications'); }}
+                        className={cn(
+                          'w-full text-left p-3 hover:bg-muted/50 transition-colors',
+                          !n.is_read && 'bg-primary/5'
+                        )}
+                      >
+                        <p className="text-xs font-semibold truncate">{n.title}</p>
+                        <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">{n.message}</p>
+                      </button>
+                    ))
+                  )}
+                </div>
+                <div className="p-2 border-t">
+                  <Button variant="ghost" size="sm" className="w-full text-xs" onClick={() => navigate('/notifications')}>
+                    View all notifications
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
             <Avatar className="h-9 w-9 cursor-pointer ring-2 ring-primary/10 hover:ring-primary/30 transition-all duration-300" onClick={() => navigate('/profile')}>
               <AvatarImage src={profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.full_name}`} />
-              <AvatarFallback className="bg-primary/10 font-bold text-primary">JD</AvatarFallback>
+              <AvatarFallback className="bg-primary/10 font-bold text-primary">
+                {(profile?.full_name || '?').split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()}
+              </AvatarFallback>
             </Avatar>
           </div>
         </header>
@@ -310,3 +355,4 @@ export function DashboardLayout() {
     </div>
   );
 }
+
