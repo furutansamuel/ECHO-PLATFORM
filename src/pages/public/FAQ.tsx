@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -6,8 +6,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { useDocumentTitle } from '@/hooks/use-document-title';
+import { supabase } from '@/integrations/supabase/client';
+import { Loader2 } from 'lucide-react';
+import type { FAQItem } from '@/types/reports';
 
-const faqItems = [
+// Shown only if the faqs table has no visible rows yet, so the page
+// isn't blank before an admin adds real content — same fallback
+// pattern used for Knowledge Centre articles.
+const FALLBACK_FAQS = [
   {
     question: "What is ECHO?",
     answer: "ECHO stands for Environmental Community Health Observatory. It's a civic technology platform that empowers Nigerian citizens to report environmental hazards, monitor their local environment, and contribute to community-led action for a cleaner and safer Nigeria.",
@@ -32,7 +38,7 @@ const faqItems = [
     question: "How can I get involved beyond reporting?",
     answer: "We'd love for you to get more involved! You can join our volunteer network, participate in cleanup events listed on the platform, and help us spread the word. Check the \"Events\" and \"Community\" sections for more information.",
   },
-    {
+  {
     question: "Is the platform free to use?",
     answer: "Yes, ECHO is completely free for all citizens and volunteers. Our mission is to make environmental monitoring accessible to everyone.",
   },
@@ -43,6 +49,28 @@ export default function FAQPage() {
     'Frequently Asked Questions',
     'Answers to common questions about how ECHO works, hazard reporting, privacy, and rewards.'
   );
+
+  const [faqItems, setFaqItems] = useState<{ question: string; answer: string }[]>(FALLBACK_FAQS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+    (async () => {
+      const { data, error } = await supabase
+        .from('faqs')
+        .select('*')
+        .eq('is_visible', true)
+        .order('display_order', { ascending: true });
+      setLoading(false);
+      if (!error && data && data.length > 0) {
+        setFaqItems((data as FAQItem[]).map((f) => ({ question: f.question, answer: f.answer })));
+      }
+    })();
+  }, []);
+
   return (
     <div className="bg-background">
       <section className="py-20 bg-primary/5">
@@ -56,6 +84,9 @@ export default function FAQPage() {
 
       <section className="py-16">
         <div className="container mx-auto px-4 max-w-4xl">
+          {loading ? (
+            <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+          ) : (
             <Accordion type="single" collapsible className="w-full space-y-4">
                 {faqItems.map((item, index) => (
                     <AccordionItem key={item.question} value={`item-${index}`} className="border-b-0 rounded-lg bg-white premium-shadow">
@@ -68,6 +99,7 @@ export default function FAQPage() {
                     </AccordionItem>
                 ))}
             </Accordion>
+          )}
         </div>
       </section>
     </div>
