@@ -42,6 +42,7 @@ const AdminReportsPage = lazy(() => import("@/pages/admin/AdminReportsPage"));
 const AdminKnowledgePage = lazy(() => import("@/pages/admin/AdminKnowledgePage"));
 const AdminKnowledgeEditorPage = lazy(() => import("@/pages/admin/AdminKnowledgeEditorPage"));
 const AdminEventsPage = lazy(() => import("@/pages/admin/AdminEventsPage"));
+const AdminFAQPage = lazy(() => import("@/pages/admin/AdminFAQPage"));
 const AdminEventEditorPage = lazy(() => import("@/pages/admin/AdminEventEditorPage"));
 const AdminComingSoon = lazy(() => import("@/pages/admin/AdminComingSoon"));
 
@@ -116,6 +117,7 @@ function App() {
                 <Route path="/admin/events" element={<AdminEventsPage />} />
                 <Route path="/admin/events/new" element={<AdminEventEditorPage />} />
                 <Route path="/admin/events/:id/edit" element={<AdminEventEditorPage />} />
+                <Route path="/admin/faqs" element={<AdminFAQPage />} />
                 <Route path="/admin/users" element={<AdminComingSoon title="User Management" />} />
                 <Route path="/admin/analytics" element={<AdminComingSoon title="Environmental Analytics" />} />
                 <Route path="/admin/monitoring" element={<AdminComingSoon title="Environmental Monitoring" />} />
