@@ -372,22 +372,22 @@
    Usage: <span class="echo-badge echo-badge--danger">
             <span class="echo-dot echo-dot--active" /> Unresolved
           </span> */
-.echo-badge {
+.beacon-badge {
   @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold;
 }
-.echo-badge--safe {
+.beacon-badge--safe {
   @apply border-status-safe/30 bg-status-safe/10 text-status-safe;
 }
-.echo-badge--warning {
+.beacon-badge--warning {
   @apply border-status-warning/30 bg-status-warning/10 text-status-warning;
 }
-.echo-badge--danger {
+.beacon-badge--danger {
   @apply border-status-danger/30 bg-status-danger/10 text-status-danger;
 }
-.echo-dot {
+.beacon-dot {
   @apply h-2 w-2 rounded-full bg-current;
 }
-.echo-dot--active {
+.beacon-dot--active {
   animation: beacon-pulse 1.6s ease-in-out infinite;
 }
 @keyframes beacon-pulse {
@@ -395,7 +395,7 @@
   50% { opacity: 0.6; box-shadow: 0 0 0 4px transparent; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .echo-dot--active {
+  .beacon-dot--active {
     animation: none;
   }
 }
