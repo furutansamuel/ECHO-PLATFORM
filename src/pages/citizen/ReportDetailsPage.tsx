@@ -1,77 +1,76 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ReportDetailsView } from '@/components/reports/ReportDetailsView';
 import { HazardReport, ReportActivity } from '@/types/reports';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-
-// Mock data generator for the demo
-const getMockReport = (id: string): HazardReport => ({
-  id,
-  reference_number: `ECHO-${Math.floor(100000 + Math.random() * 900000)}`,
-  title: 'Illegal Plastic Dumping in Riverbed',
-  description: 'Large quantities of industrial plastic waste have been dumped along the river bank, obstructing water flow and posing a threat to local aquatic life. The waste appears to be non-biodegradable packing material.',
-  category: 'Waste Management',
-  severity: 'High',
-  status: 'In Progress',
-  latitude: 6.5244,
-  longitude: 3.3792,
-  address: '32 Riverview Avenue, near the Old Bridge',
-  ward: 'Ward 4',
-  lga: 'Ikeja',
-  state: 'Lagos',
-  landmark: 'Old Bridge',
-  images: [
-    'https://storage.googleapis.com/dala-prod-public-storage/generated-images/060df7fc-fb5a-4109-890a-cb6e43e9b598/river-pollution-8d70d1de-1782913517088.webp',
-    'https://storage.googleapis.com/dala-prod-public-storage/generated-images/060df7fc-fb5a-4109-890a-cb6e43e9b598/illegal-dumping-7eaf3a8b-1782913517236.webp'
-  ],
-  is_anonymous: false,
-  reporter_name: 'John Doe',
-  created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-  updated_at: new Date().toISOString(),
-  verification_status: 'Verified',
-  assigned_verifier: 'Officer Sarah Johnson',
-  verification_notes: 'Confirmed hazard presence. Significant industrial waste detected. Immediate action required to prevent downstream contamination.',
-  verification_date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-  verification_confidence: 98,
-  ai_risk_score: 82,
-  ai_priority: 'Urgent',
-  ai_risk_level: 'High',
-  ai_impact_summary: 'Hazard poses a significant threat to local biodiversity and water quality. Potential for flooding if not cleared before the rainy season.',
-  ai_suggested_priority: 'Deploy Waste Management Task Force within 48 hours.',
-  estimated_impact: 'Medium-term ecological damage to the riparian zone. High risk of microplastic contamination in the local water supply.'
-});
-
-const getMockActivities = (reportId: string): ReportActivity[] => [
-  { id: '1', report_id: reportId, status: 'Submitted', description: 'Report successfully submitted by citizen.', created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() },
-  { id: '2', report_id: reportId, status: 'Under Review', description: 'Preliminary review completed by AI.', created_at: new Date(Date.now() - 6.5 * 24 * 60 * 60 * 1000).toISOString() },
-  { id: '3', report_id: reportId, status: 'Pending Verification', description: 'Assigned to field officer Sarah Johnson.', created_at: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString() },
-  { id: '4', report_id: reportId, status: 'Verified', description: 'Field verification complete. Hazard confirmed.', created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
-  { id: '5', report_id: reportId, status: 'Assigned', description: 'Cleanup crew dispatched from Ikeja Depot.', created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() },
-  { id: '6', report_id: reportId, status: 'In Progress', description: 'Manual clearance of large debris underway.', created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString() }
-];
+import { supabase } from '@/integrations/supabase/client';
+import { ShieldAlert } from 'lucide-react';
 
 const ReportDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [loading] = useState(false);
-  
-  // In a real app, we would fetch data from Supabase here
-  const report = getMockReport(id || 'default');
-  const activities = getMockActivities(id || 'default');
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+  const [report, setReport] = useState<HazardReport | null>(null);
+  const [activities, setActivities] = useState<ReportActivity[]>([]);
 
-  const handleWithdraw = () => {
-    toast.promise(
-      new Promise((resolve) => setTimeout(resolve, 2000)),
-      {
-        loading: 'Withdrawing report...',
-        success: () => {
-          navigate('/reports');
-          return 'Report withdrawn successfully.';
-        },
-        error: 'Failed to withdraw report.'
-      }
-    );
+  const fetchReport = async () => {
+    if (!supabase || !id) {
+      setLoading(false);
+      setNotFound(true);
+      return;
+    }
+    setLoading(true);
+
+    const { data: reportData, error: reportError } = await supabase
+      .from('hazard_reports')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (reportError || !reportData) {
+      // Either the report doesn't exist, or RLS silently excluded it
+      // (not the owner, not shared, not an admin) — both look the same
+      // from here, so a generic "not found" is shown either way rather
+      // than leaking which case it is.
+      setLoading(false);
+      setNotFound(true);
+      return;
+    }
+
+    setReport(reportData as HazardReport);
+
+    const { data: activityData } = await supabase
+      .from('report_activities')
+      .select('*')
+      .eq('report_id', id)
+      .order('created_at', { ascending: true });
+
+    setActivities((activityData as ReportActivity[]) || []);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchReport();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const handleWithdraw = async () => {
+    if (!supabase || !report) return;
+    if (!confirm('Withdraw this report? This cannot be undone.')) return;
+
+    // RLS only permits deleting a report while it's still Pending — if
+    // it's moved past that (e.g. already Verified), this will fail with
+    // a clear error rather than silently pretending to succeed.
+    const { error } = await supabase.from('hazard_reports').delete().eq('id', report.id);
+    if (error) {
+      toast.error('Could not withdraw this report: ' + error.message);
+      return;
+    }
+    toast.success('Report withdrawn successfully.');
+    navigate('/reports');
   };
 
   if (loading) {
@@ -89,6 +88,21 @@ const ReportDetailsPage: React.FC = () => {
             <Skeleton className="h-[300px] w-full rounded-xl" />
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (notFound || !report) {
+    return (
+      <div className="container mx-auto p-6 flex flex-col items-center justify-center gap-4 py-24 text-center">
+        <ShieldAlert className="h-10 w-10 text-muted-foreground" />
+        <div>
+          <h1 className="text-xl font-bold">Report not found</h1>
+          <p className="text-sm text-muted-foreground mt-1 max-w-sm">
+            This report doesn't exist, or you don't have permission to view it.
+          </p>
+        </div>
+        <Button onClick={() => navigate('/reports')}>Back to My Reports</Button>
       </div>
     );
   }

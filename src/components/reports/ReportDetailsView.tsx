@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { HazardReport, ReportActivity } from '@/types/reports';
+import { HazardReport, ReportActivity, ReportStatus } from '@/types/reports';
 import { StatusTimeline } from './StatusTimeline';
 import { ActionButtons } from './ActionButtons';
 import { AIRiskCard } from '@/components/ai/AIRiskCard';
@@ -96,6 +96,9 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
         <ActionButtons 
           status={report.status} 
           referenceNumber={report.reference_number}
+          reportId={report.id}
+          title={report.title}
+          category={report.category}
           onEdit={onEdit}
           onWithdraw={onWithdraw}
         />
@@ -215,12 +218,15 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
         <div className="space-y-6">
           {/* AI Insights Card */}
           <AIRiskCard 
-            score={report.ai_risk_score || 0}
+            score={(report.ai_risk_score || 0) * 100}
             priority={report.ai_priority || 'Standard'}
-            level={report.ai_risk_level || 'Low'}
-            summary={report.ai_impact_summary || 'No AI summary available yet.'}
-            suggestedAction={report.ai_suggested_priority || 'Awaiting further review.'}
-            confidence={report.verification_confidence || 85}
+            category={report.category}
+            severity={report.severity}
+            impact={report.ai_impact || 'No AI summary available yet.'}
+            affectedArea={report.affected_area}
+            duplicateId={report.duplicate_id}
+            verificationStatus={report.verification_status}
+            verificationConfidence={report.verification_confidence}
           />
 
           {/* Interactive Map Preview */}
@@ -272,11 +278,13 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
               <ScrollArea className="h-[400px] pr-4">
                 <StatusTimeline 
                   currentStatus={report.status} 
-                  activities={activities.map(a => ({
-                    status: a.status,
-                    timestamp: a.created_at,
-                    description: a.description
-                  }))} 
+                  activities={activities
+                    .filter(a => a.action_type === 'created' || a.action_type === 'status_changed')
+                    .map(a => ({
+                      status: a.action_type === 'created' ? 'Pending' : (a.metadata?.new_status as ReportStatus) || report.status,
+                      timestamp: a.created_at,
+                      description: a.description
+                    }))} 
                 />
               </ScrollArea>
             </CardContent>
@@ -320,3 +328,4 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
     </div>
   );
 };
+m

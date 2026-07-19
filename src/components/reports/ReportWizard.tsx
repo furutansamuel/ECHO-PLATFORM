@@ -40,6 +40,7 @@ export default function ReportWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState('');
+  const [submittedReportId, setSubmittedReportId] = useState('');
   const { saveReport, saveDraft, draft } = useReportsStore();
 
   const methods = useForm<ReportFormData>({
@@ -98,7 +99,8 @@ export default function ReportWizard() {
 
       const success = await saveReport(report);
       if (success) {
-        setReferenceNumber(ref);
+        setReferenceNumber(report.referenceNumber);
+        setSubmittedReportId(report.id);
         setCurrentStep(STEPS.length - 1); // Move to Success Step
       }
       // On failure, saveReport already shows an error toast — stay on
@@ -119,7 +121,7 @@ export default function ReportWizard() {
       case 4: return <SeverityStep />;
       case 5: return <AdditionalOptionsStep />;
       case 6: return <PreviewStep onEdit={(step) => setCurrentStep(step)} />;
-      case 7: return <SuccessStep referenceNumber={referenceNumber} />;
+      case 7: return <SuccessStep referenceNumber={referenceNumber} reportId={submittedReportId} title={methods.getValues('title')} category={methods.getValues('category')} />;
       default: return null;
     }
   };
@@ -127,7 +129,7 @@ export default function ReportWizard() {
   const progress = ((currentStep) / (STEPS.length - 1)) * 100;
 
   if (currentStep === STEPS.length - 1) {
-    return <SuccessStep referenceNumber={referenceNumber} />;
+    return <SuccessStep referenceNumber={referenceNumber} reportId={submittedReportId} title={methods.getValues('title')} category={methods.getValues('category')} />;
   }
 
   return (
@@ -247,3 +249,4 @@ export default function ReportWizard() {
     </div>
   );
 }
+

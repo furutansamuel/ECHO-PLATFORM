@@ -86,11 +86,32 @@ export interface EventRecord {
   updated_at: string;
 }
 
+// Matches supabase/migrations/20260719080000_create_faqs.sql
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+  display_order: number;
+  is_visible: boolean;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type ReportActivityType =
+  | 'created' | 'draft_saved' | 'submitted' | 'status_changed'
+  | 'verification_started' | 'verification_completed' | 'verification_rejected'
+  | 'assigned' | 'evidence_uploaded' | 'location_updated' | 'ai_analysis_generated'
+  | 'eco_points_awarded' | 'duplicate_detected' | 'resolved' | 'closed' | 'withdrawn';
+
+// Matches supabase/migrations/20260115120600_create_report_activities.sql
 export interface ReportActivity {
   id: string;
   report_id: string;
-  status: ReportStatus;
+  user_id?: string;
+  action_type: ReportActivityType;
   description: string;
+  metadata?: Record<string, unknown>;
   created_at: string;
 }
 
