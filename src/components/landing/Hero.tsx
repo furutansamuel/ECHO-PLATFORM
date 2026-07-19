@@ -59,13 +59,13 @@ export function Hero() {
   const settle = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
 
   return (
-  <section className="relative
+  <section
+  className="
+    relative
     h-[85vh]
     min-h-[620px]
     max-h-[900px]
     overflow-hidden
-    flex
-    items-center
   "
   aria-labelledby="hero-heading"
 >
@@ -104,7 +104,7 @@ export function Hero() {
       </div>
 
 
-      <div className="container relative z-10 mx-auto flex h-full items-center px-4">
+      <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={rise(12)}
@@ -190,7 +190,7 @@ export function Hero() {
         </div>
 
         {/* Carousel controls */}
-        <div className="mt-12 flex items-center justify-center gap-4">
+        <div className="mt-8 flex items-center justify-center gap-4">
           <button
             type="button"
             onClick={() => go(index - 1)}
