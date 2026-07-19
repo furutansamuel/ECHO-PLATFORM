@@ -2,20 +2,47 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   CheckCircle2, 
-  Share2, 
   Download,
   LayoutDashboard,
   PlusCircle,
-  Award
+  Award,
+  Eye
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
+import { ShareMenu } from '@/components/reports/ShareMenu';
+import { downloadTextReceipt } from '@/lib/share-utils';
 
 interface SuccessStepProps {
   referenceNumber: string;
+  reportId?: string;
+  title?: string;
+  category?: string;
 }
 
-export default function SuccessStep({ referenceNumber }: SuccessStepProps) {
+export default function SuccessStep({ referenceNumber, reportId, title, category }: SuccessStepProps) {
+  const shareUrl = reportId ? `${window.location.origin}/reports/${reportId}` : window.location.origin;
+  const shareData = {
+    title: `ECHO Hazard Report${title ? `: ${title}` : ''}`,
+    text: `I just reported${category ? ` a ${category}` : ''} hazard on ECHO (Ref: ${referenceNumber}).`,
+    url: shareUrl,
+  };
+
+  const handleDownload = () => {
+    downloadTextReceipt(`echo-report-${referenceNumber}.txt`, [
+      'ECHO — Environmental Community Health Observatory',
+      'Hazard Report Receipt',
+      '',
+      `Reference Number: ${referenceNumber}`,
+      title ? `Title: ${title}` : '',
+      category ? `Category: ${category}` : '',
+      `Submitted: ${new Date().toLocaleString()}`,
+      `Status: Pending Review`,
+    ].filter(Boolean));
+    toast.success('Report summary downloaded');
+  };
+
   return (
     <div className="max-w-2xl mx-auto py-12 px-4 text-center">
       <motion.div
@@ -73,12 +100,21 @@ export default function SuccessStep({ referenceNumber }: SuccessStepProps) {
           </Button>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8 border-t mt-12">
-          <button className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors">
-            <Share2 className="h-4 w-4" />
-            Share this report
-          </button>
-          <button className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors">
+        {reportId && (
+          <Button asChild variant="ghost" className="h-11 gap-2 text-sm mt-2">
+            <Link to={`/reports/${reportId}`}>
+              <Eye className="h-4 w-4" />
+              View This Report
+            </Link>
+          </Button>
+        )}
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 border-t mt-12">
+          <ShareMenu data={shareData} label="Share this report" variant="ghost" />
+          <button
+            onClick={handleDownload}
+            className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors"
+          >
             <Download className="h-4 w-4" />
             Download Receipt
           </button>
