@@ -268,8 +268,8 @@
      with slightly different stops every time. Brand gradients stay in
      the navy family; category gradients (analytics/community/ai) keep
      distinct hues since they mark different content types, not brand. */
-  .gradient-primary   { @apply bg-gradient-to-br from-[#0B2545] via-primary to-[#16324F]; }
-  .gradient-secondary { @apply bg-gradient-to-br from-[#16324F] via-secondary to-[#0B2545]; }
+  .gradient-primary   { @apply bg-gradient-to-br from-primary via-primary to-secondary; }
+  .gradient-secondary { @apply bg-gradient-to-br from-secondary via-secondary to-primary; }
   .gradient-analytics { @apply bg-gradient-to-br from-sky-700 to-sky-500; }
   .gradient-community { @apply bg-gradient-to-br from-amber-500 to-accent; }
   .gradient-ai         { @apply bg-gradient-to-br from-indigo-600 to-violet-500; }
@@ -418,3 +418,4 @@
 .presentation-mode .md\:pb-6 {
   padding-bottom: 0 !important;
 }
+
