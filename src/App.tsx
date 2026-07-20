@@ -44,11 +44,17 @@ const AdminKnowledgeEditorPage = lazy(() => import("@/pages/admin/AdminKnowledge
 const AdminEventsPage = lazy(() => import("@/pages/admin/AdminEventsPage"));
 const AdminFAQPage = lazy(() => import("@/pages/admin/AdminFAQPage"));
 const AdminNotificationsPage = lazy(() => import("@/pages/admin/AdminNotificationsPage"));
+const NotFound = lazy(() => import("@/pages/public/NotFound"));
 const AdminEventEditorPage = lazy(() => import("@/pages/admin/AdminEventEditorPage"));
 const AdminComingSoon = lazy(() => import("@/pages/admin/AdminComingSoon"));
 
 function LoadingFallback() {
-  return <div className="flex items-center justify-center min-h-[100dvh]"><p>Loading...</p></div>;
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 min-h-[100dvh]">
+      <img src="/echo-symbol.svg" alt="ECHO" className="h-14 w-14 animate-pulse" />
+      <p className="text-sm text-muted-foreground">Loading...</p>
+    </div>
+  );
 }
 
 function App() {
@@ -127,7 +133,7 @@ function App() {
               </Route>
 
               {/* Redirects */}
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </Router>
