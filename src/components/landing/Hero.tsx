@@ -92,7 +92,7 @@ export function Hero() {
           />
         ))}
         {/* Dark overlay for readability sits ABOVE images */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/55 to-background/85 dark:from-background/80 dark:via-background/70 dark:to-background/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background/85 dark:from-background/85 dark:via-background/75 dark:to-background/92" />
         {/* Subtle grain / dots */}
         <div
           className="absolute inset-0 opacity-[0.15]"
@@ -106,6 +106,15 @@ export function Hero() {
 
       <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4">
         <div className="mx-auto max-w-4xl text-center">
+          <motion.img
+            src="/echo-logo-dark.svg"
+            alt=""
+            aria-hidden="true"
+            initial={rise(8)}
+            animate={settle}
+            transition={{ duration: 0.5 }}
+            className="h-14 w-auto mx-auto mb-4 opacity-90"
+          />
           <motion.div
             initial={rise(12)}
             animate={settle}
@@ -121,12 +130,12 @@ export function Hero() {
   initial={rise(16)}
   animate={settle}
   transition={{ duration: 0.6, delay: 0.05 }}
-  className="text-3xl leading-[1.05] font-extrabold tracking-tight md:text-6xl lg:text-7xl"
+  className="text-4xl leading-[1.05] font-black tracking-tight md:text-7xl lg:text-8xl"
 >
   <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
     ECHO
   </span>
-  <span className="block mt-2 text-foreground">
+  <span className="block mt-3 text-foreground text-2xl md:text-4xl lg:text-5xl font-extrabold">
     AI Environmental Community Health Observatory
   </span>
 </motion.h1>
@@ -160,7 +169,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <Button size="lg" className="btn-glow h-12 px-8 text-base shadow-premium" asChild>
+            <Button size="lg" className="btn-glow h-14 px-10 text-base font-bold shadow-premium" asChild>
               <Link to="/report">
                 <ShieldAlert className="mr-2 h-5 w-5" />
                 Report Environmental Hazard
@@ -169,7 +178,7 @@ export function Hero() {
             <Button
               size="lg"
               variant="outline"
-              className="h-12 border-primary/30 bg-background/60 px-8 text-base backdrop-blur"
+              className="h-14 border-primary/30 bg-background/60 px-8 text-base backdrop-blur"
               asChild
             >
               <Link to="/reports">
