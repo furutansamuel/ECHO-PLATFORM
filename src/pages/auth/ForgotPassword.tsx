@@ -46,6 +46,7 @@ export default function ForgotPasswordPage() {
           <Button variant="ghost" className="w-fit p-0 h-auto mb-4 hover:bg-transparent" onClick={() => navigate('/login')}>
             <ChevronLeft className="mr-2 h-4 w-4" /> Back to login
           </Button>
+          <img src="/echo-wordmark.svg" alt="ECHO" className="h-10 w-auto mb-3" />
           <CardTitle className="text-2xl font-bold text-primary">Reset Password</CardTitle>
           <CardDescription>Enter your email address and we'll send you a link to reset your password</CardDescription>
         </CardHeader>
