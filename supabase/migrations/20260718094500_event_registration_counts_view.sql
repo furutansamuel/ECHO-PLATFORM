@@ -5,7 +5,7 @@
 -- event, never individual user_ids, and is safe for public/anon access.
 -- Migration: 20260718094500_event_registration_counts_view.sql
 
-create view public.event_registration_counts as
+create or replace view public.event_registration_counts as
   select event_id, count(*)::integer as registered_count
   from public.event_registrations
   group by event_id;
