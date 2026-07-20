@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, Loader2, Pencil, Trash2, MapPin, Calendar } from 'lucide-react';
 import type { EventRecord } from '@/types/reports';
 
@@ -52,7 +53,19 @@ export default function AdminEventsPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="card-premium overflow-hidden">
+              <Skeleton className="aspect-video w-full rounded-none" />
+              <div className="p-4 space-y-2">
+                <Skeleton className="h-5 w-20 rounded-full" />
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : events.length === 0 ? (
         <p className="text-center text-muted-foreground py-16 text-sm">No events yet — create your first one.</p>
       ) : (
