@@ -2,7 +2,7 @@
 -- no admin control at all. This creates the real table.
 -- Migration: 20260719080000_create_faqs.sql
 
-create table public.faqs (
+create table if not exists public.faqs (
   id uuid primary key default gen_random_uuid(),
   question text not null check (char_length(question) between 3 and 300),
   answer text not null check (char_length(answer) between 3 and 3000),
@@ -13,15 +13,17 @@ create table public.faqs (
   updated_at timestamptz not null default now()
 );
 
-create index faqs_display_order_idx on public.faqs(display_order);
+create index if not exists faqs_display_order_idx on public.faqs(display_order);
 
 alter table public.faqs enable row level security;
 
 -- Public can only see visible FAQs — draft/hidden ones stay admin-only.
+drop policy if exists "Anyone can view visible FAQs" on public.faqs;
 create policy "Anyone can view visible FAQs"
   on public.faqs for select
   using (is_visible = true);
 
+drop policy if exists "Admins can view all FAQs" on public.faqs;
 create policy "Admins can view all FAQs"
   on public.faqs for select
   to authenticated
@@ -29,6 +31,7 @@ create policy "Admins can view all FAQs"
     exists (select 1 from public.profiles where id = auth.uid() and role = 'administrator')
   );
 
+drop policy if exists "Admins can create FAQs" on public.faqs;
 create policy "Admins can create FAQs"
   on public.faqs for insert
   to authenticated
@@ -36,6 +39,7 @@ create policy "Admins can create FAQs"
     exists (select 1 from public.profiles where id = auth.uid() and role = 'administrator')
   );
 
+drop policy if exists "Admins can update FAQs" on public.faqs;
 create policy "Admins can update FAQs"
   on public.faqs for update
   to authenticated
@@ -46,6 +50,7 @@ create policy "Admins can update FAQs"
     exists (select 1 from public.profiles where id = auth.uid() and role = 'administrator')
   );
 
+drop policy if exists "Admins can delete FAQs" on public.faqs;
 create policy "Admins can delete FAQs"
   on public.faqs for delete
   to authenticated
@@ -53,6 +58,7 @@ create policy "Admins can delete FAQs"
     exists (select 1 from public.profiles where id = auth.uid() and role = 'administrator')
   );
 
+drop trigger if exists set_faqs_updated_at on public.faqs;
 create trigger set_faqs_updated_at
-  before update on public.faqs
+    before update on public.faqs
   for each row execute function public.handle_updated_at();
