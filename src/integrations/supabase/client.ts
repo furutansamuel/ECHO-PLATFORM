@@ -5,7 +5,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  *
  * Reads publishable credentials from Vite env vars. If either is missing (e.g.
  * before the developer has connected Supabase) we fall back to a shallow mock
- * so the UI keeps rendering and demo mode still works — every call resolves
+ * so the UI keeps rendering instead of crashing — every call resolves
  * with `{ data: null, error: { message: "Supabase not configured" } }` instead
  * of throwing "Cannot read properties of null".
  */
