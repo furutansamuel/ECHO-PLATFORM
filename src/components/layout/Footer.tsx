@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, Youtube, Github, Twitter, MessageCircle, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { FacebookIcon, XIcon, InstagramIcon, LinkedInIcon, GitHubIcon, YouTubeIcon, WhatsAppIcon } from './SocialIcons';
 import { Button } from '@/components/ui/button';
 
 const productLinks = [
@@ -31,13 +32,13 @@ const legalLinks = [
 
 // TODO: replace '#' with your real profile URLs for each platform.
 const socials = [
-  { name: 'Facebook', icon: Facebook, href: '#' },
-  { name: 'X (Twitter)', icon: Twitter, href: '#' },
-  { name: 'Instagram', icon: Instagram, href: '#' },
-  { name: 'LinkedIn', icon: Linkedin, href: '#' },
-  { name: 'GitHub', icon: Github, href: '#' },
-  { name: 'YouTube', icon: Youtube, href: '#' },
-  { name: 'WhatsApp Channel', icon: MessageCircle, href: '#' },
+  { name: 'Facebook', icon: FacebookIcon, href: '#' },
+  { name: 'X (Twitter)', icon: XIcon, href: '#' },
+  { name: 'Instagram', icon: InstagramIcon, href: '#' },
+  { name: 'LinkedIn', icon: LinkedInIcon, href: '#' },
+  { name: 'GitHub', icon: GitHubIcon, href: '#' },
+  { name: 'YouTube', icon: YouTubeIcon, href: '#' },
+  { name: 'WhatsApp Channel', icon: WhatsAppIcon, href: '#' },
 ];
 
 export function Footer() {
