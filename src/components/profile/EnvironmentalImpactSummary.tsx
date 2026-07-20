@@ -1,6 +1,7 @@
-import { memo } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { TrendingUp, Users, Calendar, Clock, Target } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useReducedMotion } from 'framer-motion';
 
 interface ImpactStats {
   communitiesHelped: number;
@@ -11,6 +12,37 @@ interface ImpactStats {
 
 interface EnvironmentalImpactSummaryProps {
   stats: ImpactStats;
+}
+
+// Same count-up technique as the landing page's Stats.tsx — plays once
+// per mount rather than on every render, so it doesn't re-fire just
+// because a parent re-rendered.
+function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
+  const [n, setN] = useState(0);
+  const startedRef = useRef(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    if (prefersReducedMotion) {
+      setN(to);
+      return;
+    }
+    const duration = 1200;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(to * eased));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [to, prefersReducedMotion]);
+
+  return <>{n.toLocaleString('en-US')}{suffix}</>;
 }
 
 // Own component + own Card + React.memo: this section no longer re-renders
@@ -26,29 +58,33 @@ function EnvironmentalImpactSummaryBase({ stats }: EnvironmentalImpactSummaryPro
       key: 'communitiesHelped',
       icon: Users,
       value: stats.communitiesHelped,
+      suffix: '',
       label: 'Communities Helped',
-      tone: 'bg-accent/5 border-accent/10 text-accent',
+      gradient: 'gradient-community',
     },
     {
       key: 'cleanupEventsJoined',
       icon: Calendar,
       value: stats.cleanupEventsJoined,
+      suffix: '',
       label: 'Cleanup Events',
-      tone: 'bg-primary/5 border-primary/10 text-primary',
+      gradient: 'gradient-primary',
     },
     {
       key: 'volunteerHours',
       icon: Clock,
-      value: `${stats.volunteerHours}h`,
+      value: stats.volunteerHours,
+      suffix: 'h',
       label: 'Volunteer Hours',
-      tone: 'bg-accent/5 border-accent/10 text-accent',
+      gradient: 'gradient-analytics',
     },
     {
       key: 'environmentalScore',
       icon: Target,
       value: stats.environmentalScore,
+      suffix: '',
       label: 'Environmental Score',
-      tone: 'bg-primary/5 border-primary/10 text-primary',
+      gradient: 'gradient-success',
     },
   ];
 
@@ -62,10 +98,17 @@ function EnvironmentalImpactSummaryBase({ stats }: EnvironmentalImpactSummaryPro
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {items.map(({ key, icon: Icon, value, label, tone }) => (
-            <div key={key} className={`p-4 rounded-xl border text-center ${tone}`}>
-              <Icon className="h-6 w-6 mx-auto mb-2" />
-              <p className="text-2xl font-black">{value}</p>
+          {items.map(({ key, icon: Icon, value, suffix, label, gradient }) => (
+            <div
+              key={key}
+              className="card-premium p-4 rounded-xl border text-center flex flex-col items-center gap-2"
+            >
+              <div className={`icon-badge ${gradient} h-11 w-11`}>
+                <Icon className="h-5 w-5" />
+              </div>
+              <p className="text-2xl font-black">
+                <CountUp to={value} suffix={suffix} />
+              </p>
               <p className="text-[10px] font-bold uppercase text-muted-foreground">{label}</p>
             </div>
           ))}
