@@ -1,13 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { FileText, CheckCircle2, HeartPulse, Users } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
-const stats = [
-  { icon: FileText, value: 1250, label: 'Reports Submitted', suffix: '', tone: 'text-primary', bg: 'from-primary/20 to-primary/5' },
-  { icon: CheckCircle2, value: 890, label: 'Cases Resolved', suffix: '', tone: 'text-emerald-500', bg: 'from-emerald-500/20 to-emerald-500/5' },
-  { icon: HeartPulse, value: 82, label: 'Health Score', suffix: '/100', tone: 'text-sky-500', bg: 'from-sky-500/20 to-sky-500/5' },
-  { icon: Users, value: 45, label: 'Active Communities', suffix: '', tone: 'text-amber-500', bg: 'from-amber-500/20 to-amber-500/5' },
-];
+interface StatDef {
+  icon: typeof FileText;
+  value: number;
+  label: string;
+  suffix: string;
+  tone: string;
+  bg: string;
+}
+
+// Health Score doesn't have a real aggregate source yet (would need a
+// defined scoring formula across all reports, not just one community),
+// so it's left out rather than shown as a fake number — three real
+// stats beat four where one is invented.
+function buildStats(data: { total_reports: number; resolved_reports: number; active_volunteers: number; communities_reached: number }): StatDef[] {
+  return [
+    { icon: FileText, value: data.total_reports, label: 'Reports Submitted', suffix: '', tone: 'text-primary', bg: 'from-primary/20 to-primary/5' },
+    { icon: CheckCircle2, value: data.resolved_reports, label: 'Cases Resolved', suffix: '', tone: 'text-emerald-500', bg: 'from-emerald-500/20 to-emerald-500/5' },
+    { icon: Users, value: data.active_volunteers, label: 'Active Volunteers', suffix: '', tone: 'text-amber-500', bg: 'from-amber-500/20 to-amber-500/5' },
+    { icon: HeartPulse, value: data.communities_reached, label: 'Communities Reached', suffix: '', tone: 'text-sky-500', bg: 'from-sky-500/20 to-sky-500/5' },
+  ];
+}
 
 function CountUp({ to, active, duration = 1400 }: { to: number; active: boolean; duration?: number }) {
   const [n, setN] = useState(0);
@@ -40,6 +56,18 @@ export function Stats() {
   const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref, { once: true, amount: 0.25 });
   const prefersReducedMotion = useReducedMotion();
+  const [stats, setStats] = useState<StatDef[]>([]);
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.rpc('get_public_landing_stats').then(({ data, error }) => {
+      if (!error && data) {
+        setStats(buildStats(data as any));
+      }
+    });
+  }, []);
+
+  if (stats.length === 0) return null;
 
   return (
     <section
