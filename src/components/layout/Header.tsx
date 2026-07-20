@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -12,7 +13,6 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
-import { Icons } from '@/components/icons';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -25,6 +25,8 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
 const profileRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated, logout, user, profile } = useAuth();
@@ -32,11 +34,25 @@ const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const currentY = window.scrollY;
+      setIsScrolled(currentY > 10);
+
+      // Sticky reveal: hide the header while scrolling down past the
+      // point where it would otherwise float over content, reveal it
+      // again on any upward scroll. Never hides near the very top or
+      // while the mobile menu is open, so it doesn't disappear mid-tap.
+      if (!isMenuOpen) {
+        if (currentY > lastScrollY.current && currentY > 120) {
+          setIsHidden(true);
+        } else {
+          setIsHidden(false);
+        }
+      }
+      lastScrollY.current = currentY;
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMenuOpen]);
 
 useEffect(() => {
   const handleClickOutside = (event: MouseEvent) => {
@@ -105,8 +121,15 @@ useEffect(() => {
         />
       </Button>
 
+      <AnimatePresence>
       {isProfileOpen && (
-        <div className="absolute right-0 mt-3 w-64 rounded-2xl border bg-background shadow-xl">
+        <motion.div
+          initial={{ opacity: 0, y: -8, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -8, scale: 0.96 }}
+          transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute right-0 mt-3 w-64 rounded-2xl border bg-background/95 backdrop-blur-xl shadow-xl origin-top-right"
+        >
 
           <div className="border-b p-4">
             <p className="font-semibold">
@@ -153,25 +176,38 @@ useEffect(() => {
             Logout
           </button>
 
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   </div>
 );
 
   return (
-    <header
+    <motion.header
+      animate={{ y: isHidden ? '-100%' : 0 }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-500 ease-out', 
-        isScrolled
-  ? 'border-b border-border/20 bg-background/95 shadow-lg'
-  : 'bg-transparent'
+        'sticky top-0 z-50 w-full transition-all duration-500 ease-out',
+        isScrolled ? 'py-3' : 'py-0'
       )}
-      style={{ paddingTop: 'max(env(safe-area-inset-top), 0px)' }}
+      style={{ paddingTop: isScrolled ? 'max(env(safe-area-inset-top), 0.75rem)' : 'max(env(safe-area-inset-top), 0px)' }}
     >
-      <div className="container flex h-20 max-w-screen-xl items-center justify-between px-6 lg:px-8">
+      <div
+        className={cn(
+          'container mx-auto max-w-screen-xl px-4 transition-all duration-500 ease-out',
+        )}
+      >
+        <div
+          className={cn(
+            'flex h-16 items-center justify-between transition-all duration-500 ease-out',
+            isScrolled
+              ? 'rounded-2xl border border-border/30 bg-background/70 px-6 shadow-lg backdrop-blur-xl lg:px-8'
+              : 'bg-transparent px-6 lg:px-8'
+          )}
+        >
         <Link to="/" className="flex items-center gap-3">
-  <Icons.logo className="h-8 w-8 text-primary" />
+  <img src="/echo-logo-primary.svg" alt="ECHO" className="h-9 w-auto" />
 
   <div className="flex flex-col leading-none">
   <span className="text-2xl font-black tracking-wide text-primary">
@@ -185,20 +221,31 @@ useEffect(() => {
 </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-2 text-base font-medium">
-          {navLinks.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={cn(
-  location.pathname === item.href
-    ? "bg-primary text-white rounded-xl px-4 py-3 shadow-md"
-    : "rounded-xl px-4 py-3 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:-translate-y-0.5 transition-all duration-300"
-)}
-            >
-              {item.name}
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center gap-1 text-base font-medium">
+          {navLinks.map((item) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={cn(
+                  'relative rounded-xl px-4 py-3 transition-colors duration-300',
+                  isActive
+                    ? 'text-white'
+                    : 'text-muted-foreground hover:text-primary'
+                )}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="header-active-pill"
+                    className="absolute inset-0 -z-10 rounded-xl bg-primary shadow-md"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+                {item.name}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
@@ -214,11 +261,19 @@ useEffect(() => {
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
+        </div>
       </div>
 
       {/* Mobile Menu */}
+      <AnimatePresence>
       {isMenuOpen && (
-        <div className="md:hidden bg-background border-t shadow-xl animate-in fade-in zoom-in-95 duration-300">
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="md:hidden bg-background/95 backdrop-blur-xl border-t shadow-xl overflow-hidden"
+        >
           <div className="container max-w-md py-4 space-y-4">
             <nav className="flex flex-col gap-4">
               {navLinks.map((item) => (
@@ -281,8 +336,9 @@ useEffect(() => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
-    </header>
+      </AnimatePresence>
+    </motion.header>
   );
 }
