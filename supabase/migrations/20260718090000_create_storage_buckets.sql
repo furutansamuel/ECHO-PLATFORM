@@ -17,10 +17,12 @@ on conflict (id) do nothing;
 -- Any authenticated citizen can upload evidence for their own report.
 -- Files are stored under `{user_id}/{filename}` so the folder name
 -- itself is the ownership check.
+drop policy if exists "Public can view report images" on storage.objects;
 create policy "Public can view report images"
   on storage.objects for select
   using (bucket_id = 'report-images');
 
+drop policy if exists "Authenticated users can upload report images" on storage.objects;
 create policy "Authenticated users can upload report images"
   on storage.objects for insert
   to authenticated
@@ -29,6 +31,7 @@ create policy "Authenticated users can upload report images"
     and (storage.foldername(name))[1] = auth.uid()::text
   );
 
+drop policy if exists "Users can delete own report images" on storage.objects;
 create policy "Users can delete own report images"
   on storage.objects for delete
   to authenticated
@@ -41,10 +44,12 @@ create policy "Users can delete own report images"
 -- Admin-only writes (these are CMS content, not user-generated), public
 -- reads. Checks the real profiles.role column used everywhere else in
 -- the app (protected-route.tsx, DashboardLayout.tsx admin nav).
+drop policy if exists "Public can view article images" on storage.objects;
 create policy "Public can view article images"
   on storage.objects for select
   using (bucket_id = 'article-images');
 
+drop policy if exists "Admins can manage article images" on storage.objects;
 create policy "Admins can manage article images"
   on storage.objects for all
   to authenticated
@@ -63,10 +68,12 @@ create policy "Admins can manage article images"
     )
   );
 
+drop policy if exists "Public can view event images" on storage.objects;
 create policy "Public can view event images"
   on storage.objects for select
   using (bucket_id = 'event-images');
 
+drop policy if exists "Admins can manage event images" on storage.objects;
 create policy "Admins can manage event images"
   on storage.objects for all
   to authenticated
@@ -87,10 +94,12 @@ create policy "Admins can manage event images"
 
 -- ─── profile-images ─────────────────────────────────────────────────
 -- Each user manages only their own avatar, stored under `{user_id}/...`.
+drop policy if exists "Public can view profile images" on storage.objects;
 create policy "Public can view profile images"
   on storage.objects for select
   using (bucket_id = 'profile-images');
 
+drop policy if exists "Users can manage own profile image" on storage.objects;
 create policy "Users can manage own profile image"
   on storage.objects for all
   to authenticated
