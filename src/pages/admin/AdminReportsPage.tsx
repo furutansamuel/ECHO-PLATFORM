@@ -13,6 +13,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Search, Loader2, Trash2, CheckCircle, XCircle, Wrench, Eye } from 'lucide-react';
 import type { HazardReport } from '@/types/reports';
 
@@ -151,7 +152,18 @@ export default function AdminReportsPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+        <div className="rounded-xl border overflow-hidden divide-y">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <div key={i} className="flex items-center gap-4 p-4">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 flex-1 max-w-[180px]" />
+              <Skeleton className="h-4 w-24 hidden sm:block" />
+              <Skeleton className="h-5 w-16 rounded-full" />
+              <Skeleton className="h-5 w-20 rounded-full" />
+              <Skeleton className="h-4 w-16 ml-auto" />
+            </div>
+          ))}
+        </div>
       ) : filtered.length === 0 ? (
         <p className="text-center text-muted-foreground py-16 text-sm">No reports match these filters.</p>
       ) : (
