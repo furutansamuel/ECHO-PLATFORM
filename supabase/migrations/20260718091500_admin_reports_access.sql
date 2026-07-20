@@ -6,6 +6,7 @@
 -- explicitly marked share_with_community. Without this, an admin could
 -- not see (let alone verify/resolve/delete) any report a citizen chose
 -- to keep private — which defeats the purpose of an admin reports queue.
+drop policy if exists "Admins can view all reports" on public.hazard_reports;
 create policy "Admins can view all reports"
   on public.hazard_reports
   for select
@@ -17,6 +18,7 @@ create policy "Admins can view all reports"
     )
   );
 
+drop policy if exists "Admins can update all reports" on public.hazard_reports;
 create policy "Admins can update all reports"
   on public.hazard_reports
   for update
@@ -34,6 +36,7 @@ create policy "Admins can update all reports"
     )
   );
 
+drop policy if exists "Admins can delete all reports" on public.hazard_reports;
 create policy "Admins can delete all reports"
   on public.hazard_reports
   for delete
@@ -59,6 +62,7 @@ comment on column public.hazard_reports.resolution_images is 'Admin-attached "af
 -- The existing report-images INSERT policy only allows a user to write
 -- under their own {auth.uid()} folder. Admins attaching before/after
 -- resolution photos need to write into the bucket regardless of folder.
+drop policy if exists "Admins can upload any report image" on storage.objects;
 create policy "Admins can upload any report image"
   on storage.objects for insert
   to authenticated
@@ -69,4 +73,3 @@ create policy "Admins can upload any report image"
       where id = auth.uid() and role = 'administrator'
     )
   );
-
