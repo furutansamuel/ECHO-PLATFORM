@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -52,7 +53,17 @@ export default function AdminKnowledgePage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+        <div className="rounded-xl border overflow-hidden divide-y">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-3 p-4">
+              <Skeleton className="h-8 w-8 rounded" />
+              <Skeleton className="h-4 flex-1 max-w-xs" />
+              <Skeleton className="h-4 w-28 hidden sm:block" />
+              <Skeleton className="h-5 w-16 rounded-full" />
+              <Skeleton className="h-4 w-10 ml-auto" />
+            </div>
+          ))}
+        </div>
       ) : articles.length === 0 ? (
         <p className="text-center text-muted-foreground py-16 text-sm">No articles yet — write your first one.</p>
       ) : (
