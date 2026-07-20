@@ -44,6 +44,7 @@ export default function LoginPage() {
     <div className="flex items-center justify-center min-h-[calc(100vh-160px)] p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
+          <img src="/echo-wordmark.svg" alt="ECHO" className="h-10 w-auto mx-auto mb-3" />
           <CardTitle className="text-2xl font-bold text-center text-primary">Login to ECHO</CardTitle>
           <CardDescription className="text-center">Enter your credentials to access your account</CardDescription>
         </CardHeader>
@@ -87,3 +88,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
