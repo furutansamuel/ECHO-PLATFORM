@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Icons } from '@/components/icons';
 import { 
   LayoutDashboard, 
   ClipboardList, 
@@ -127,12 +126,11 @@ export function DashboardLayout() {
         <div className="flex items-center justify-between p-4">
           {!collapsed && (
             <Link to="/" className="flex items-center gap-2">
-              <Icons.logo className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold tracking-tight text-sidebar-foreground">ECHO</span>
+              <img src="/echo-wordmark.svg" alt="ECHO" className="h-8 w-auto" />
             </Link>
           )}
           {collapsed && (
-            <Icons.logo className="mx-auto h-8 w-8 text-primary" />
+            <img src="/echo-symbol.svg" alt="ECHO" className="mx-auto h-8 w-8" />
           )}
           <button
             onClick={() => setCollapsed(!collapsed)}
@@ -199,8 +197,7 @@ export function DashboardLayout() {
               <SheetContent side="left" className="w-[85vw] max-w-sm p-0">
                 <div className="border-b p-4">
                   <Link to="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Icons.logo className="h-8 w-8 text-primary" />
-                    <span className="text-xl font-bold tracking-tight">ECHO</span>
+                    <img src="/echo-wordmark.svg" alt="ECHO" className="h-8 w-auto" />
                   </Link>
                 </div>
                 <div className="max-h-[calc(100vh-80px)] space-y-4 overflow-y-auto p-4">
@@ -355,4 +352,5 @@ export function DashboardLayout() {
     </div>
   );
 }
+
 
