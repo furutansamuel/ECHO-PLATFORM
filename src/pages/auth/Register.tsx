@@ -55,6 +55,7 @@ export default function RegisterPage() {
     <div className="flex items-center justify-center min-h-[calc(100vh-160px)] p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
+          <img src="/echo-wordmark.svg" alt="ECHO" className="h-10 w-auto mx-auto mb-3" />
           <CardTitle className="text-2xl font-bold text-center text-primary">Create Account</CardTitle>
           <CardDescription className="text-center">Join the ECHO community today</CardDescription>
         </CardHeader>
