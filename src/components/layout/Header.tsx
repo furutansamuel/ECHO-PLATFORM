@@ -200,10 +200,10 @@ useEffect(() => {
       >
         <div
           className={cn(
-            'flex h-16 items-center justify-between transition-all duration-500 ease-out',
+            'flex h-20 items-center justify-between transition-all duration-500 ease-out',
             isScrolled
               ? 'rounded-2xl border border-border/30 bg-background/70 px-6 shadow-lg backdrop-blur-xl lg:px-8'
-              : 'bg-transparent px-6 lg:px-8'
+              : 'bg-transparent px-4 lg:px-8'
           )}
         >
         <Link
@@ -259,9 +259,9 @@ useEffect(() => {
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <Button
-    variant="ghost"
-    size="icon"
-    className="rounded-full hover:bg-primary/10" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+variant="ghost"
+size="icon"
+className="rounded-full hover:bg-primary/10 transition-all duration-300" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
@@ -272,22 +272,22 @@ useEffect(() => {
       <AnimatePresence>
       {isMenuOpen && (
         <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
+          initial={{ opacity: 0, y: -20 }}
+animate={{ opacity: 1, y: 0 }}
+exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="md:hidden bg-background/95 backdrop-blur-xl border-t shadow-xl overflow-hidden"
+          className="md:hidden bg-background/95 backdrop-blur-2xl border-t border-border/40 shadow-2xl overflow-hidden"
         >
-          <div className="container max-w-md py-4 space-y-4">
-            <nav className="flex flex-col gap-4">
+          <div className="container max-w-md px-6 py-6 space-y-6">
+            <nav className="flex flex-col gap-2">
               {navLinks.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   className={cn(
   location.pathname === item.href
-    ? "bg-primary text-white rounded-xl px-4 py-3 shadow-md"
-    : "rounded-xl px-4 py-3 text-muted-foreground hover:bg-primary/10 transition-colors"
+    ? "bg-primary text-white rounded-2xl px-5 py-4 font-semibold shadow-lg"
+    : "rounded-xl px-5 py-4 text-muted-foreground hover:bg-primary/10 transition-colors"
 )}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -319,7 +319,7 @@ useEffect(() => {
   </Button>
 </div>
                 ) : (
-                  <div className='grid grid-cols-2 gap-2'>
+                  <div className="grid grid-cols-2 gap-4 pt-2">
                       <Button
   variant="outline"
   asChild
