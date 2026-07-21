@@ -124,9 +124,9 @@ useEffect(() => {
       <AnimatePresence>
       {isProfileOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -8, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -8, scale: 0.96 }}
+initial={{ x: "100%" }}
+animate={{ x: 0 }}
+exit={{ x: "100%" }}
           transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
           className="absolute right-0 mt-3 w-64 rounded-2xl border bg-background/95 backdrop-blur-xl shadow-xl origin-top-right"
         >
