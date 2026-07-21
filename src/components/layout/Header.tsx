@@ -295,14 +295,14 @@ transition={{
     z-[90]
   "
 >
-  <div className="px-6 py-6">
+  <div className="px-5 py-4">
 
-    <nav className="flex flex-col gap-8">
+    <nav className="flex flex-col gap-4">
 
       <Link
         to="/report"
         onClick={() => setIsMenuOpen(false)}
-        className="text-lg font-medium text-muted-foreground"
+        className="text-base font-medium text-muted-foreground"
       >
         Report Hazard
       </Link>
@@ -310,7 +310,7 @@ transition={{
       <Link
         to="/track-report"
         onClick={() => setIsMenuOpen(false)}
-        className="text-lg font-medium text-muted-foreground"
+        className="text-base font-medium text-muted-foreground"
       >
         Track Reports
       </Link>
@@ -318,7 +318,7 @@ transition={{
       <Link
         to="/knowledge"
         onClick={() => setIsMenuOpen(false)}
-        className="text-lg font-medium text-muted-foreground"
+        className="text-base font-medium text-muted-foreground"
       >
         Learn
       </Link>
@@ -326,7 +326,7 @@ transition={{
     </nav>
 
 
-    <div className="border-t my-6" />
+    <div className="border-t my-3" />
 
 
     <div className="grid grid-cols-2 gap-3">
@@ -339,7 +339,7 @@ transition={{
       onClick={() => setIsMenuOpen(false)}
     >
       <Link to="/dashboard">
-        Dashboard
+        My Dashboard
       </Link>
     </Button>
 
