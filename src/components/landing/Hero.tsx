@@ -62,8 +62,8 @@ export function Hero() {
   <section
   className="
     relative
-    h-[85vh]
-    min-h-[620px]
+    h-[90vh]
+    min-h-[650px]
     max-h-[900px]
     overflow-hidden
   "
@@ -104,7 +104,7 @@ export function Hero() {
       </div>
 
 
-      <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4">
+      <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-center translate-y-8 px-4 pt-20">
         <div className="mx-auto max-w-4xl text-center">
 
   {/* Badge */}
