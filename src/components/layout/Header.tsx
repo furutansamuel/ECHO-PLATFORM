@@ -276,10 +276,13 @@ className="rounded-full hover:bg-primary/10 transition-all duration-300" onClick
       <AnimatePresence>
 {isMenuOpen && (
 <motion.div
-  initial={{ height: 0, opacity: 0 }}
-  animate={{ height: "auto", opacity: 1 }}
-  exit={{ height: 0, opacity: 0 }}
-  transition={{ duration: 0.3 }}
+  initial={{ opacity: 0, y: -12 }}
+animate={{ opacity: 1, y: 0 }}
+exit={{ opacity: 0, y: -12 }}
+transition={{ 
+  duration: 0.25,
+  ease: [0.16, 1, 0.3, 1]
+}}
   className="
     md:hidden
     absolute
@@ -326,121 +329,63 @@ className="rounded-full hover:bg-primary/10 transition-all duration-300" onClick
     <div className="border-t my-6" />
 
 
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-3">
 
-      <Button
-        variant="outline"
-        className="rounded-xl h-14"
-      >
+{isAuthenticated ? (
+  <>
+    <Button
+      asChild
+      className="rounded-xl h-11"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      <Link to="/dashboard">
+        Dashboard
+      </Link>
+    </Button>
+
+    <Button
+      variant="outline"
+      className="rounded-xl h-11 text-destructive"
+      onClick={() => {
+        logout();
+        setIsMenuOpen(false);
+      }}
+    >
+      Logout
+    </Button>
+  </>
+) : (
+  <>
+    <Button
+      variant="outline"
+      asChild
+      className="rounded-xl h-11"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      <Link to="/auth/login">
         Sign In
-      </Button>
+      </Link>
+    </Button>
 
-
-      <Button
-        className="rounded-xl h-14"
-      >
+    <Button
+      asChild
+      className="rounded-xl h-11"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      <Link to="/auth/register">
         Create Account
-      </Button>
+      </Link>
+    </Button>
+  </>
+)}
 
-    </div>
+</div>
 
   </div>
 
 </motion.div>
 )}
 </AnimatePresence>
-
-
-      
-      <AnimatePresence>
-      {isMenuOpen && (
-        <motion.div
-  initial={{ y: "-100%" }}
-  animate={{ y: 0 }}
-  exit={{ y: "-100%" }}
-  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-  className="
-    fixed
-    top-20
-    left-0
-    right-0
-    h-[25vh]
-    md:hidden
-    bg-background/95
-    backdrop-blur-2xl
-    border-t
-    border-border/40
-    rounded-b-3xl
-    shadow-2xl
-    overflow-y-auto
-    z-[90]
-  "
->
-          <div className="px-6 py-8 space-y-4">
-            <nav className="flex flex-col gap-2">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className={cn(
-  location.pathname === item.href
-    ? "bg-primary text-white rounded-2xl px-5 py-4 font-semibold shadow-lg"
-    : "rounded-xl px-5 py-4 text-muted-foreground hover:bg-primary/10 transition-colors"
-)}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-            <div className="border-t pt-4">
-              <div className="flex flex-col gap-2">
-                {isAuthenticated ? (
-                    <div className="space-y-2">
-  <Button
-    asChild
-    className="w-full rounded-full shadow-lg"
-    onClick={() => setIsMenuOpen(false)}
-  >
-    <Link to="/dashboard">Open Dashboard</Link>
-  </Button>
-
-  <Button
-    variant="outline"
-    className="w-full rounded-full border-destructive/20 text-destructive"
-    onClick={() => {
-      logout();
-      setIsMenuOpen(false);
-    }}
-  >
-    Logout
-  </Button>
-</div>
-                ) : (
-                  <div className="grid grid-cols-2 gap-4 pt-2">
-                      <Button
-  variant="outline"
-  asChild
-  className="rounded-full border-primary/20 hover:border-primary"
-  onClick={() => setIsMenuOpen(false)}
->
-                          <Link to="/auth/login">Login</Link>
-                      </Button>
-                      <Button
-  asChild
-  className="rounded-full px-6 shadow-lg hover:scale-105 transition-all duration-500 ease-out"
-  onClick={() => setIsMenuOpen(false)}
->
-                          <Link to="/auth/register">Get Started</Link>
-                      </Button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
-      </AnimatePresence>
     </motion.header>
   );
   }
