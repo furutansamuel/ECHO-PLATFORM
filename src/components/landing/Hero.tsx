@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ShieldAlert, LineChart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShieldAlert, LineChart, ChevronLeft, ChevronRight, Sparkles, } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -106,88 +106,77 @@ export function Hero() {
 
       <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4">
         <div className="mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={rise(12)}
-            animate={settle}
-            transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-semibold text-foreground backdrop-blur-md"
-            >
-            <span className="beacon-dot beacon-dot--active text-accent" aria-hidden="true" />
-            Real-Time Environmental Intelligence
-          </motion.div>
 
-          <motion.h1
-  id="hero-heading"
-  initial={rise(16)}
-  animate={settle}
-  transition={{ duration: 0.6, delay: 0.05 }}
-  className="text-4xl leading-[1.05] font-black tracking-tight md:text-7xl lg:text-8xl"
->
-  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-    ECHO
-  </span>
-  <span className="block mt-3 text-foreground text-2xl md:text-4xl lg:text-5xl font-extrabold">
+  {/* Badge */}
+  <motion.div
+    initial={rise(12)}
+    animate={settle}
+    transition={{ duration: 0.5 }}
+    className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/70 px-5 py-2 text-sm font-semibold text-primary backdrop-blur-md shadow-sm"
+  >
+    <Sparkles className="h-4 w-4" />
     AI Environmental Community Health Observatory
-  </span>
-</motion.h1>
+  </motion.div>
 
-          <motion.p
-  initial={rise(16)}
-  animate={settle}
-  transition={{ duration: 0.6, delay: 0.15 }}
-  className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
->
+  {/* Main Heading */}
+  <motion.h1
+    id="hero-heading"
+    initial={rise(16)}
+    animate={settle}
+    transition={{ duration: 0.6, delay: 0.05 }}
+    className="text-5xl font-black leading-tight tracking-tight text-foreground md:text-7xl lg:text-8xl"
+  >
+    Cleaner Communities,
+    <br />
+    <span className="bg-gradient-to-r from-primary via-green-500 to-accent bg-clip-text text-transparent">
+      Powered by ECHO.
+    </span>
+  </motion.h1>
 
-  {/* Mobile text */}
-  <span className="block md:hidden">
-    Monitor hazards, report incidents, and improve community health
-    with AI-powered environmental intelligence.
-  </span>
+  {/* Description */}
+  <motion.p
+    initial={rise(16)}
+    animate={settle}
+    transition={{ duration: 0.6, delay: 0.15 }}
+    className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-foreground/80 md:text-xl"
+  >
+    Report environmental hazards, monitor community health,
+    and empower faster environmental response across Nigeria
+    with AI-powered intelligence.
+  </motion.p>
 
-  {/* Desktop text */}
-  <span className="hidden md:block">
-    Monitor floods, pollution, illegal dumping, blocked drainage,
-    erosion, and other environmental hazards using AI-powered
-    environmental intelligence. Report incidents, monitor community
-    health, and enable faster environmental response across Nigeria.
-  </span>
+  {/* CTA Buttons */}
+  <motion.div
+    initial={rise(16)}
+    animate={settle}
+    transition={{ duration: 0.6, delay: 0.25 }}
+    className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
+  >
+    <Button
+      size="lg"
+      className="btn-glow h-14 rounded-2xl px-10 text-base font-bold shadow-premium"
+      asChild
+    >
+      <Link to="/report">
+        <ShieldAlert className="mr-2 h-5 w-5" />
+        Report Environmental Hazard
+      </Link>
+    </Button>
 
-</motion.p>
+    <Button
+      size="lg"
+      variant="outline"
+      className="h-14 rounded-2xl border-primary/30 bg-background/60 px-10 text-base backdrop-blur"
+      asChild
+    >
+      <Link to="/reports">
+        <LineChart className="mr-2 h-5 w-5" />
+        View Hazard Reports
+      </Link>
+    </Button>
+  </motion.div>
 
-          <motion.div
-            initial={rise(16)}
-            animate={settle}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
-          >
-            <Button size="lg" className="btn-glow h-14 px-10 text-base font-bold shadow-premium" asChild>
-              <Link to="/report">
-                <ShieldAlert className="mr-2 h-5 w-5" />
-                Report Environmental Hazard
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-14 border-primary/30 bg-background/60 px-8 text-base backdrop-blur"
-              asChild
-            >
-              <Link to="/reports">
-                <LineChart className="mr-2 h-5 w-5" />
-                View Hazard Reports
-              </Link>
-            </Button>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-6 text-sm text-muted-foreground"
-          >
-            AI Powered • Community Driven • Built for Nigeria
-          </motion.p>
-        </div>
+</div>
 
         {/* Carousel controls */}
         <div className="mt-8 flex items-center justify-center gap-4">
