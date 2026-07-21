@@ -16,7 +16,12 @@ interface StatDef {
 // defined scoring formula across all reports, not just one community),
 // so it's left out rather than shown as a fake number — three real
 // stats beat four where one is invented.
-function buildStats(data: { total_reports: number; resolved_reports: number; active_volunteers: number; communities_reached: number }): StatDef[] {
+function buildStats(data: {
+  total_reports: number;
+  resolved_reports: number;
+  active_volunteers: number;
+  communities_reached: number;
+}): StatDef[] {
   return [
     { icon: FileText, value: data.total_reports, label: 'Reports Submitted', suffix: '', tone: 'text-primary', bg: 'from-primary/20 to-primary/5' },
     { icon: CheckCircle2, value: data.resolved_reports, label: 'Cases Resolved', suffix: '', tone: 'text-emerald-500', bg: 'from-emerald-500/20 to-emerald-500/5' },
@@ -61,11 +66,15 @@ export function Stats() {
   useEffect(() => {
     if (!supabase) return;
     supabase.rpc('get_public_landing_stats').then(({ data, error }) => {
-  console.log("Stats data:", data);
-  console.log("Stats error:", error);
+  console.log("Stats:", data);
 
   if (!error && data) {
-    setStats(buildStats(data as any));
+    const parsedData =
+      typeof data === "string"
+        ? JSON.parse(data)
+        : data;
+
+    setStats(buildStats(parsedData));
   }
 });
   }, []);
