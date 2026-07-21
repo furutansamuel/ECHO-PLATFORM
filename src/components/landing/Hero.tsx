@@ -124,7 +124,7 @@ export function Hero() {
     initial={rise(16)}
     animate={settle}
     transition={{ duration: 0.6, delay: 0.05 }}
-    className="text-5xl font-black leading-tight tracking-tight text-foreground md:text-7xl lg:text-8xl"
+    className="text-4xl font-black leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl"
   >
     Cleaner Communities,
     <br />
