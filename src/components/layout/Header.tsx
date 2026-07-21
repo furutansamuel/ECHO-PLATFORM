@@ -206,18 +206,22 @@ useEffect(() => {
               : 'bg-transparent px-6 lg:px-8'
           )}
         >
-        <Link to="/" className="flex items-center gap-3">
-  <img src="/echo-logo-primary.svg" alt="ECHO" className="h-9 w-auto" />
+        <Link
+  to="/"
+  className="flex items-center gap-4 flex-1 min-w-0"
+>
+  <img
+    src="/echo-wordmark.svg"
+    alt="ECHO Logo"
+    className="h-12 w-12 object-contain shrink-0"
+  />
 
-  <div className="flex flex-col leading-none">
-  <span className="text-2xl font-black tracking-wide text-primary">
-    ECHO
-  </span>
+  <div className="flex flex-col min-w-0">
 
-  <span className="hidden sm:block text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-    Environmental Community Health Observatory
-  </span>
-</div>
+    <p className="hidden sm:block text-[11px] text-muted-foreground leading-tight truncate">
+      AI Environmental Community Health Observatory
+    </p>
+  </div>
 </Link>
 
         {/* Desktop Nav */}
