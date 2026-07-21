@@ -274,6 +274,85 @@ className="rounded-full hover:bg-primary/10 transition-all duration-300" onClick
 
       {/* Mobile Menu */}
       <AnimatePresence>
+{isMenuOpen && (
+<motion.div
+  initial={{ height: 0, opacity: 0 }}
+  animate={{ height: "auto", opacity: 1 }}
+  exit={{ height: 0, opacity: 0 }}
+  transition={{ duration: 0.3 }}
+  className="
+    md:hidden
+    absolute
+    top-full
+    left-0
+    w-full
+    bg-background
+    shadow-xl
+    overflow-hidden
+    z-[90]
+  "
+>
+  <div className="px-6 py-6">
+
+    <nav className="flex flex-col gap-8">
+
+      <Link
+        to="/report"
+        onClick={() => setIsMenuOpen(false)}
+        className="text-lg font-medium text-muted-foreground"
+      >
+        Report Hazard
+      </Link>
+
+      <Link
+        to="/track-report"
+        onClick={() => setIsMenuOpen(false)}
+        className="text-lg font-medium text-muted-foreground"
+      >
+        Track Reports
+      </Link>
+
+      <Link
+        to="/knowledge"
+        onClick={() => setIsMenuOpen(false)}
+        className="text-lg font-medium text-muted-foreground"
+      >
+        Learn
+      </Link>
+
+    </nav>
+
+
+    <div className="border-t my-6" />
+
+
+    <div className="grid grid-cols-2 gap-4">
+
+      <Button
+        variant="outline"
+        className="rounded-xl h-14"
+      >
+        Sign In
+      </Button>
+
+
+      <Button
+        className="rounded-xl h-14"
+      >
+        Create Account
+      </Button>
+
+    </div>
+
+  </div>
+
+</motion.div>
+)}
+</AnimatePresence>
+
+
+      
+      <AnimatePresence>
       {isMenuOpen && (
         <motion.div
   initial={{ y: "-100%" }}
