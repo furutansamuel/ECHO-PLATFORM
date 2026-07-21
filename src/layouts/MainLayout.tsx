@@ -6,7 +6,7 @@ export function MainLayout() {
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background font-sans">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 pt-20 md:pt-24">
         <Outlet />
       </main>
       <Footer />
