@@ -6,6 +6,7 @@ import { ProtectedRoute } from "@/components/auth/protected-route";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import ScrollToTop from "@/components/ScrollToTop";
+import AdminFAQPage from "@/pages/admin/AdminFAQPage";
 
 // Lazy-loaded pages for code splitting (reduces build memory)
 const Login = lazy(() => import("@/pages/auth/Login"));
@@ -42,7 +43,7 @@ const AdminReportsPage = lazy(() => import("@/pages/admin/AdminReportsPage"));
 const AdminKnowledgePage = lazy(() => import("@/pages/admin/AdminKnowledgePage"));
 const AdminKnowledgeEditorPage = lazy(() => import("@/pages/admin/AdminKnowledgeEditorPage"));
 const AdminEventsPage = lazy(() => import("@/pages/admin/AdminEventsPage"));
-const AdminFAQPage = lazy(() => import("@/pages/admin/AdminFAQPage"));
+
 const AdminNotificationsPage = lazy(() => import("@/pages/admin/AdminNotificationsPage"));
 const NotFound = lazy(() => import("@/pages/public/NotFound"));
 const AdminEventEditorPage = lazy(() => import("@/pages/admin/AdminEventEditorPage"));
