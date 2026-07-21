@@ -203,12 +203,11 @@ exit={{ x: "100%" }}
         )}
       >
         <div
-          className={cn(
-            'flex h-20 items-center justify-between transition-all duration-500 ease-out',
-            isScrolled
-              ? 'rounded-2xl border border-border/30 bg-background/80 px-6 shadow-lg backdrop-blur-xl lg:px-8'
-          )}
-        >
+  className={cn(
+    'flex h-20 items-center justify-between transition-all duration-500 ease-out',
+    'rounded-2xl border border-border/30 bg-background/80 px-6 shadow-lg backdrop-blur-xl lg:px-8'
+  )}
+>
         <Link
   to="/"
   className="flex items-center gap-4 flex-1 min-w-0"
