@@ -16,9 +16,9 @@ import { useAuth } from '@/hooks/use-auth';
 
 const navLinks = [
   { name: 'Home', href: '/' },
-  { name: 'Intelligence', href: '/ai-intelligence' },
-  { name: 'Community', href: '/community-insights' },
-  { name: 'Knowledge', href: '/knowledge' },
+  { name: 'Report Hazard', href: '/report' },
+  { name: 'Track Reports', href: '/track-report' },
+  { name: 'Learn', href: '/knowledge' },
 ];
 
 export function Header() {
@@ -215,7 +215,7 @@ exit={{ x: "100%" }}
   <img
     src="/echo-wordmark.svg"
     alt="ECHO Logo"
-    className="h-12 w-12 object-contain shrink-0"
+    className="h-12 w-36 object-contain shrink-0"
   />
 
   <div className="flex flex-col min-w-0">
