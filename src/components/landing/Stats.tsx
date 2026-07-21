@@ -61,13 +61,22 @@ export function Stats() {
   useEffect(() => {
     if (!supabase) return;
     supabase.rpc('get_public_landing_stats').then(({ data, error }) => {
-      if (!error && data) {
-        setStats(buildStats(data as any));
-      }
-    });
+  console.log("Stats data:", data);
+  console.log("Stats error:", error);
+
+  if (!error && data) {
+    setStats(buildStats(data as any));
+  }
+});
   }, []);
 
-  if (stats.length === 0) return null;
+  if (stats.length === 0) {
+  return (
+    <div className="py-10 text-center">
+      Loading statistics...
+    </div>
+  );
+  }
 
   return (
     <section
