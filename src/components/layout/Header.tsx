@@ -276,13 +276,28 @@ className="rounded-full hover:bg-primary/10 transition-all duration-300" onClick
       <AnimatePresence>
       {isMenuOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-animate={{ opacity: 1, y: 0 }}
-exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="md:hidden bg-background/95 backdrop-blur-2xl border-t border-border/40 shadow-2xl overflow-hidden"
-        >
-          <div className="container max-w-md px-6 py-6 space-y-6">
+  initial={{ x: "100%" }}
+  animate={{ x: 0 }}
+  exit={{ x: "100%" }}
+  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+  className="
+    fixed
+    top-20
+    right-0
+    h-[calc(100vh-5rem)]
+    w-[85%]
+    max-w-sm
+    md:hidden
+    bg-background/95
+    backdrop-blur-2xl
+    border-l
+    border-border/40
+    shadow-2xl
+    overflow-y-auto
+    z-[90]
+  "
+>
+          <div className="px-6 py-8 space-y-8">
             <nav className="flex flex-col gap-2">
               {navLinks.map((item) => (
                 <Link
