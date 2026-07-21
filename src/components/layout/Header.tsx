@@ -197,14 +197,12 @@ exit={{ x: "100%" }}
   }}
 >
       <div
-        className={cn(
-          'container mx-auto max-w-screen-xl px-4 transition-all duration-500 ease-out',
-        )}
-      >
+  className="w-full px-4 transition-all duration-500 ease-out"
+>
         <div
   className={cn(
-    'flex h-16 items-center justify-between transition-all duration-500 ease-out',
-    'border-b border-border/30 bg-background/80 px-4 shadow-lg backdrop-blur-xl lg:px-8'
+    'flex h-16 items-center justify-between',
+    'border-b border-border/30 bg-background/80 px-4 shadow-lg backdrop-blur-xl'
   )}
 >
         <Link
