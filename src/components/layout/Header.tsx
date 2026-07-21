@@ -65,8 +65,8 @@ export function Header() {
       <div ref={sentinelRef} className="absolute top-0 left-0 h-2.5 w-full pointer-events-none -z-50" aria-hidden="true" />
 
       <header
-        className={cn(
-          'sticky top-0 inset-x-0 z-40 w-full transition-all duration-200',
+  className={cn(
+    'fixed top-0 left-0 right-0 z-50 w-full transition-all duration-200',
           'supports-[padding-top:env(safe-area-inset-top)]:pt-[env(safe-area-inset-top)]',
           isScrolled
             ? 'bg-background/80 backdrop-blur-md border-b border-border/40 shadow-lg shadow-black/5'
@@ -74,9 +74,11 @@ export function Header() {
         )}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-[60px] md:h-[64px] items-center justify-between gap-4">
+          <div className="flex min-h-[64px] items-center justify-between gap-4">
             
-            <Logo />
+            <div className="flex-shrink-0">
+  <Logo />
+</div>
 
             <DesktopNav currentPath={currentPath} />
 
@@ -95,7 +97,7 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'}
-                className="h-8 w-8 rounded-lg hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+                className="h-10 w-10 rounded-lg hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
                 onClick={toggleMenu}
               >
                 {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
