@@ -187,8 +187,7 @@ exit={{ x: "100%" }}
     <motion.header
       animate={{ y: isHidden ? '-100%' : 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className={cn(
-  "fixed inset-x-0 top-0 z-[100] w-full transition-all duration-500",
+      className="fixed inset-x-0 top-0 z-[100] h-20 w-full transition-all duration-300",
         isScrolled ? 'py-3' : 'py-0'
       )}
       style={{ paddingTop: isScrolled ? 'max(env(safe-area-inset-top), 0.75rem)' : 'max(env(safe-area-inset-top), 0px)' }}
