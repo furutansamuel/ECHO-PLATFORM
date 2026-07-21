@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 
-import { Logo } from './Logo';
+
 import { DesktopNav } from './DesktopNav';
 import { ProfileDropdown } from './ProfileDropdown';
 import { MobileDrawer } from './MobileDrawer';
