@@ -109,14 +109,14 @@ export function Hero() {
 
   {/* Badge */}
   <motion.div
-    initial={rise(12)}
-    animate={settle}
-    transition={{ duration: 0.5 }}
-    className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/70 px-5 py-2 text-sm font-semibold text-primary backdrop-blur-md shadow-sm"
-  >
-    <Sparkles className="h-4 w-4" />
-    AI-Powered Environmental Community Health Observatory
-  </motion.div>
+            initial={rise(12)}
+            animate={settle}
+            transition={{ duration: 0.5 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-background/60 px-4 py-1.5 text-xs font-semibold text-primary backdrop-blur-md"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            AI-Powered Environmental Community Health Observatory
+          </motion.div>
 
   {/* Main Heading */}
   <motion.h1
@@ -135,15 +135,14 @@ export function Hero() {
 
   {/* Description */}
   <motion.p
-    initial={rise(16)}
-    animate={settle}
-    transition={{ duration: 0.6, delay: 0.15 }}
-    className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-foreground/80 md:text-xl"
-  >
-    Report environmental hazards, monitor community health,
-    and empower and drive real change across Nigeria
-    with AI-powered intelligence.
-  </motion.p>
+            initial={rise(16)}
+            animate={settle}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mx-auto mt-6 max-w-2xl text-lg text-foreground/80 md:text-xl"
+          >
+            Report environmental hazards, monitor community health, and drive real
+            change with AI-verified intelligence.
+          </motion.p>
 
   {/* CTA Buttons */}
   <motion.div
@@ -175,6 +174,14 @@ export function Hero() {
       </Link>
     </Button>
   </motion.div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mt-6 text-sm text-muted-foreground"
+          >
+            Free for citizens • Built for Nigeria • Trusted by community leaders
+          </motion.p>
 
 </div>
 
