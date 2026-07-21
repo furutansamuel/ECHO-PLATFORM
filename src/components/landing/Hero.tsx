@@ -106,15 +106,6 @@ export function Hero() {
 
       <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4">
         <div className="mx-auto max-w-4xl text-center">
-          <motion.img
-            src="/echo-logo-dark.svg"
-            alt=""
-            aria-hidden="true"
-            initial={rise(8)}
-            animate={settle}
-            transition={{ duration: 0.5 }}
-            className="h-14 w-auto mx-auto mb-4 opacity-90"
-          />
           <motion.div
             initial={rise(12)}
             animate={settle}
