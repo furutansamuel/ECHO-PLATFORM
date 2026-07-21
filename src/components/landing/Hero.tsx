@@ -112,10 +112,10 @@ export function Hero() {
     initial={rise(12)}
     animate={settle}
     transition={{ duration: 0.5 }}
-    className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/70 px-5 py-2 text-sm font-semibold text-primary backdrop-blur-md shadow-sm"
+    className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/70 px-5 py-2 text-sm font-semibold text-primary backdrop-blur-md shadow-sm"
   >
     <Sparkles className="h-4 w-4" />
-    AI Environmental Community Health Observatory
+    AI-Powered Environmental Community Health Observatory
   </motion.div>
 
   {/* Main Heading */}
@@ -126,10 +126,10 @@ export function Hero() {
     transition={{ duration: 0.6, delay: 0.05 }}
     className="text-4xl font-black leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl"
   >
-    Cleaner Communities,
+    Cleaner communities,
     <br />
     <span className="bg-gradient-to-r from-primary via-green-500 to-accent bg-clip-text text-transparent">
-      Powered by ECHO.
+      powered by ECHO.
     </span>
   </motion.h1>
 
@@ -141,7 +141,7 @@ export function Hero() {
     className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-foreground/80 md:text-xl"
   >
     Report environmental hazards, monitor community health,
-    and empower faster environmental response across Nigeria
+    and empower and drive real change across Nigeria
     with AI-powered intelligence.
   </motion.p>
 
