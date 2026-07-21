@@ -188,8 +188,7 @@ exit={{ x: "100%" }}
   animate={{ y: isHidden ? '-100%' : 0 }}
   transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
   className={cn(
-    "fixed inset-x-0 top-0 z-[200] w-full transition-all duration-300",
-    isScrolled ? "py-3" : "py-0"
+    "fixed inset-x-0 top-0 z-[200] w-full transition-all duration-300"
   )}
   style={{
     paddingTop: isScrolled
@@ -204,18 +203,18 @@ exit={{ x: "100%" }}
       >
         <div
   className={cn(
-    'flex h-20 items-center justify-between transition-all duration-500 ease-out',
-    'rounded-2xl border border-border/30 bg-background/80 px-6 shadow-lg backdrop-blur-xl lg:px-8'
+    'flex h-16 items-center justify-between transition-all duration-500 ease-out',
+    'border-b border-border/30 bg-background/80 px-4 shadow-lg backdrop-blur-xl lg:px-8'
   )}
 >
         <Link
   to="/"
-  className="flex items-center gap-4 flex-1 min-w-0"
+  className="flex items-center gap-3 flex-1 min-w-0"
 >
   <img
     src="/echo-wordmark.svg"
     alt="ECHO Logo"
-    className="h-12 w-36 object-contain shrink-0"
+    className="h-10 w-36 object-contain shrink-0"
   />
 
   <div className="flex flex-col min-w-0">
