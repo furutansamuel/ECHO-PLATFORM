@@ -116,7 +116,7 @@ export default function EvidenceUploadStep() {
 
     setUploadingFiles((prev) => ({
       ...prev,
-      [filename]: 90,
+      [filename]: 100,
     }));
 
     const { data } = supabase.storage
@@ -473,5 +473,3 @@ const Label = ({
     {children}
   </label>
 );
-
-export default EvidenceUploadStep;
