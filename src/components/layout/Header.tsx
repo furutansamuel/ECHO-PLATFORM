@@ -188,7 +188,7 @@ exit={{ x: "100%" }}
   animate={{ y: isHidden ? '-100%' : 0 }}
   transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
   className={cn(
-    "fixed inset-x-0 top-0 z-[100] w-full transition-all duration-300",
+    "fixed inset-x-0 top-0 z-[200] w-full transition-all duration-300",
     isScrolled ? "py-3" : "py-0"
   )}
   style={{
@@ -206,8 +206,7 @@ exit={{ x: "100%" }}
           className={cn(
             'flex h-20 items-center justify-between transition-all duration-500 ease-out',
             isScrolled
-              ? 'rounded-2xl border border-border/30 bg-background/70 px-6 shadow-lg backdrop-blur-xl lg:px-8'
-              : 'bg-transparent px-4 lg:px-8'
+              ? 'rounded-2xl border border-border/30 bg-background/80 px-6 shadow-lg backdrop-blur-xl lg:px-8'
           )}
         >
         <Link
@@ -292,7 +291,7 @@ transition={{
     bg-background
     shadow-xl
     overflow-hidden
-    z-[90]
+    z-[150]
   "
 >
   <div className="px-5 py-4">
