@@ -208,10 +208,7 @@ const renderStep = () => {
       return null;
   }
 };
-
-const progress =
-  const progress =
-(currentStep / 3) * 100;
+  const progress = (currentStep / 3) * 100;
 
 if (currentStep === 4) {
   return (
@@ -387,4 +384,5 @@ return (
     </FormProvider>
   </div>
 );
+  
 }
