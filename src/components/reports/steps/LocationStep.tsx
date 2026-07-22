@@ -1,163 +1,520 @@
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { 
-  MapPin, 
-  Search, 
-  Navigation, 
+import {
+  MapPin,
+  Navigation,
   Compass,
-  Map as MapIcon,
   CheckCircle2,
   AlertCircle
 } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMapEvents
+} from 'react-leaflet';
+
+import L from 'leaflet';
 import { ReportFormData } from '../report-schema';
 import { cn } from '@/lib/utils';
 
-export default function LocationStep() {
-  const { register, setValue, watch, formState: { errors } } = useFormContext<ReportFormData>();
-  const [isLocating, setIsLocating] = useState(false);
-  const [locationFound, setLocationFound] = useState(false);
 
-  const location = watch('location');
+const markerIcon = new L.Icon({
+  iconUrl:
+    'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl:
+    'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
 
-  const detectLocation = () => {
-    setIsLocating(true);
-    // Simulate GPS detection
-    setTimeout(() => {
-      setValue('location.lat', 6.4412);
-      setValue('location.lng', 3.4215);
-      setValue('location.address', '12 Industrial Way, Ikeja');
-      setValue('location.ward', 'Ward 4');
-      setValue('location.lga', 'Ikeja');
-      setValue('location.state', 'Lagos');
-      setValue('location.landmark', 'Near Gebeya Hub');
-      
-      setIsLocating(false);
-      setLocationFound(true);
-    }, 2000);
-  };
+
+function LocationMarker({
+  position,
+  setPosition
+}: {
+  position: [number, number];
+  setPosition: (pos:[number,number])=>void;
+}) {
+
+  useMapEvents({
+    click(e) {
+      setPosition([
+        e.latlng.lat,
+        e.latlng.lng
+      ]);
+    },
+  });
+
 
   return (
-    <div className="space-y-6">
-      {/* Map Preview Mockup */}
-      <div className="relative h-64 w-full rounded-xl overflow-hidden border bg-muted shadow-inner group">
-        <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/3.3792,6.5244,12,0/600x400?access_token=mock')] bg-cover bg-center opacity-60" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative">
-            <MapPin className="h-10 w-10 text-primary animate-bounce fill-primary/20" />
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 bg-black/20 rounded-full blur-[1px]" />
-          </div>
-        </div>
-        
-        <div className="absolute top-4 right-4 flex flex-col gap-2">
-          <Button 
-            type="button" 
-            size="icon" 
-            variant="secondary" 
-            className="h-8 w-8 rounded-full shadow-md"
-            onClick={detectLocation}
-            disabled={isLocating}
-          >
-            <Navigation className={cn("h-4 w-4 text-primary", isLocating && "animate-pulse")} />
-          </Button>
-          <Button 
-            type="button" 
-            size="icon" 
-            variant="secondary" 
-            className="h-8 w-8 rounded-full shadow-md"
-          >
-            <MapIcon className="h-4 w-4 text-primary" />
-          </Button>
-        </div>
+    <Marker
+      position={position}
+      icon={markerIcon}
+      draggable
+      eventHandlers={{
+        dragend(e){
+          const marker = e.target;
+          const pos = marker.getLatLng();
 
-        <div className="absolute bottom-4 left-4 right-4 bg-background/90 backdrop-blur-sm p-3 rounded-lg border shadow-lg flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-primary/10 p-2 rounded-full">
-              <Compass className="h-4 w-4 text-primary" />
-            </div>
-            <div>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Coordinates</p>
-              <p className="text-xs font-mono font-medium">
-                {location.lat.toFixed(4)}° N, {location.lng.toFixed(4)}° E
-              </p>
-            </div>
-          </div>
-          {locationFound && (
-            <div className="flex items-center gap-1 text-primary text-[10px] font-bold">
-              <CheckCircle2 className="h-3 w-3" />
-              GPS ACTIVE
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="address">Manual Address Entry</Label>
-            <div className="relative">
-              <Input
-                id="address"
-                placeholder="Enter street name and number"
-                {...register('location.address')}
-                className={errors.location?.address ? 'border-destructive' : ''}
-              />
-              <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            </div>
-            {errors.location?.address && <p className="text-xs text-destructive">{errors.location.address.message}</p>}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="ward">Ward</Label>
-              <Input
-                id="ward"
-                placeholder="e.g. Ward 4"
-                {...register('location.ward')}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="lga">LGA</Label>
-              <Input
-                id="lga"
-                placeholder="e.g. Ikeja"
-                {...register('location.lga')}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="state">State</Label>
-              <Input
-                id="state"
-                placeholder="e.g. Lagos"
-                {...register('location.state')}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="landmark">Nearest Landmark</Label>
-              <Input
-                id="landmark"
-                placeholder="e.g. Gebeya Hub"
-                {...register('location.landmark')}
-              />
-            </div>
-          </div>
-
-          <div className="bg-primary/5 border border-primary/20 p-4 rounded-xl flex items-start gap-3 mt-2">
-            <AlertCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-            <div className="text-xs text-primary/80 leading-relaxed">
-              <p className="font-bold mb-1">GPS Accuracy</p>
-              Your current location is being detected within 5-10 meters. Use the map marker to fine-tune the exact hazard location.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          setPosition([
+            pos.lat,
+            pos.lng
+          ]);
+        }
+      }}
+    />
   );
+}
+
+
+
+export default function LocationStep(){
+
+const {
+ register,
+ setValue,
+ watch,
+ formState:{errors}
+}=useFormContext<ReportFormData>();
+
+
+const [isLocating,setIsLocating]=useState(false);
+const [locationFound,setLocationFound]=useState(false);
+
+
+const location = watch('location');
+
+
+const [position,setPosition]=useState<[number,number]>([
+  location.lat || 9.0765,
+  location.lng || 7.3986
+]);
+
+
+
+const reverseGeocode = async(
+ lat:number,
+ lng:number
+)=>{
+
+try{
+
+const response =
+await fetch(
+`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+);
+
+
+const data = await response.json();
+
+
+const address=data.address || {};
+
+
+setValue(
+'location.address',
+data.display_name || ''
+);
+
+
+setValue(
+'location.state',
+address.state || ''
+);
+
+
+setValue(
+'location.lga',
+address.county || 
+address.city_district ||
+''
+);
+
+
+setValue(
+'location.landmark',
+address.suburb ||
+address.neighbourhood ||
+''
+);
+
+
+}catch(error){
+
+console.error(
+"Reverse geocode failed",
+error
+);
+
+}
+
+};
+
+
+
+
+
+const detectLocation=()=>{
+
+
+if(!navigator.geolocation){
+
+alert(
+"GPS is not supported on this device"
+);
+
+return;
+
+}
+
+
+setIsLocating(true);
+
+
+
+navigator.geolocation.getCurrentPosition(
+
+(position)=>{
+
+
+const lat=
+position.coords.latitude;
+
+
+const lng=
+position.coords.longitude;
+
+
+
+setPosition([
+lat,
+lng
+]);
+
+
+setValue(
+'location.lat',
+lat
+);
+
+
+setValue(
+'location.lng',
+lng
+);
+
+
+
+reverseGeocode(
+lat,
+lng
+);
+
+
+
+setLocationFound(true);
+setIsLocating(false);
+
+
+
+},
+
+
+(error)=>{
+
+console.error(error);
+
+alert(
+"Unable to get location. Please enable GPS permission."
+);
+
+setIsLocating(false);
+
+},
+
+
+{
+enableHighAccuracy:true,
+timeout:10000,
+maximumAge:0
+}
+
+
+);
+
+
+
+};
+
+
+
+
+return (
+
+<div className="space-y-6">
+
+
+<div className="relative h-64 rounded-xl overflow-hidden border shadow">
+
+
+<MapContainer
+
+center={position}
+
+zoom={15}
+
+className="h-full w-full"
+
+>
+
+<TileLayer
+
+url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+
+/>
+
+
+<LocationMarker
+
+position={position}
+
+setPosition={(pos)=>{
+
+setPosition(pos);
+
+setValue(
+'location.lat',
+pos[0]
+);
+
+setValue(
+'location.lng',
+pos[1]
+);
+
+
+reverseGeocode(
+pos[0],
+pos[1]
+);
+
+
+}}
+
+/>
+
+
+</MapContainer>
+
+
+
+<Button
+
+type="button"
+
+size="icon"
+
+variant="secondary"
+
+className="absolute top-4 right-4 z-[1000]"
+
+onClick={detectLocation}
+
+disabled={isLocating}
+
+>
+
+<Navigation
+className={cn(
+"h-4 w-4 text-primary",
+isLocating && "animate-spin"
+)}
+/>
+
+
+</Button>
+
+
+
+
+<div className="absolute bottom-4 left-4 right-4 z-[1000] bg-background/90 backdrop-blur p-3 rounded-lg border flex justify-between">
+
+
+<div className="flex gap-3 items-center">
+
+<Compass className="text-primary"/>
+
+
+<div>
+
+<p className="text-xs text-muted-foreground">
+Coordinates
+</p>
+
+
+<p className="font-mono text-xs">
+
+{position[0].toFixed(6)},
+{position[1].toFixed(6)}
+
+</p>
+
+</div>
+
+</div>
+
+
+{
+locationFound &&
+<div className="text-primary flex gap-1 items-center text-xs font-bold">
+
+<CheckCircle2 size={14}/>
+
+GPS ACTIVE
+
+</div>
+}
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+<div className="grid md:grid-cols-2 gap-6">
+
+
+<div className="space-y-4">
+
+
+<div>
+
+<Label>
+Address
+</Label>
+
+
+<Input
+{...register('location.address')}
+/>
+
+</div>
+
+
+
+<div className="grid grid-cols-2 gap-4">
+
+<div>
+
+<Label>
+Ward
+</Label>
+
+<Input
+{...register('location.ward')}
+/>
+
+</div>
+
+
+<div>
+
+<Label>
+LGA
+</Label>
+
+<Input
+{...register('location.lga')}
+/>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div className="space-y-4">
+
+
+<div className="grid grid-cols-2 gap-4">
+
+
+<div>
+
+<Label>
+State
+</Label>
+
+
+<Input
+{...register('location.state')}
+/>
+
+
+</div>
+
+
+
+<div>
+
+<Label>
+Landmark
+</Label>
+
+
+<Input
+{...register('location.landmark')}
+/>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div className="bg-primary/5 border border-primary/20 p-4 rounded-xl flex gap-3">
+
+
+<AlertCircle className="text-primary"/>
+
+
+<p className="text-xs text-primary">
+
+GPS detects your actual position. Drag the marker to adjust the hazard location.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+);
+
+
 }
