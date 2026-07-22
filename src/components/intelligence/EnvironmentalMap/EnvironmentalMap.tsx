@@ -80,7 +80,7 @@ const getHazardIcon = (category: string, severity: string) => {
 const EnvironmentalMap: React.FC<EnvironmentalMapProps> = ({ reports = [] }) => {
   const [filters, setFilters] = useState<any>({});
   const [showLocation, setShowLocation] = useState(false);
-  const position: [number, number] = [6.5244, 3.3792]; // Default to Lagos, Nigeria
+  const position: [number, number] = [9.0820, 8.6753]; // Nigeria center — initial overview viewport only; real user location is handled by LocationMarker below via map.locate()
 
   const handleFilterChange = (newFilters: any) => {
       setFilters(prev => ({...prev, ...newFilters}));
@@ -94,7 +94,7 @@ const EnvironmentalMap: React.FC<EnvironmentalMapProps> = ({ reports = [] }) => 
 
   return (
     <div className="relative w-full h-full">
-      <MapContainer center={position} zoom={11} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+      <MapContainer center={position} zoom={6} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
         <LayersControl position="topright">
             <LayersControl.BaseLayer checked name="Eco Topography">
                 <TileLayer
