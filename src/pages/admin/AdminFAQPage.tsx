@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, Loader2, Trash2, ArrowUp, ArrowDown, HelpCircle } from 'lucide-react';
 import type { FAQItem } from '@/types/reports';
 
@@ -112,7 +113,15 @@ export default function AdminFAQPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+        <div className="space-y-3">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="card-premium p-4 space-y-3">
+              <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-1/3" />
+            </div>
+          ))}
+        </div>
       ) : faqs.length === 0 ? (
         <p className="text-center text-muted-foreground py-12 text-sm flex flex-col items-center gap-2">
           <HelpCircle className="h-6 w-6" /> No FAQs yet — add your first one above.
