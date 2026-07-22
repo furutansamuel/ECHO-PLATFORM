@@ -138,7 +138,7 @@ export default function ReportWizard() {
       const report: Report = {
         ...(data as any),
 
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 10),
 
         createdAt: new Date().toISOString(),
 
@@ -210,7 +210,8 @@ const renderStep = () => {
 };
 
 const progress =
-  (currentStep / (STEPS.length - 1)) * 100;
+  const progress =
+(currentStep / 3) * 100;
 
 if (currentStep === 4) {
   return (
@@ -386,3 +387,4 @@ return (
     </FormProvider>
   </div>
 );
+}
