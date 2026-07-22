@@ -1,421 +1,1380 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* ECHO — "Beacon" brand system.
-   Headlines use a condensed display face for civic-signage authority.
-   Body text stays on the system-font stack below — no second font load,
-   which matters on a mobile-data-only connection. Swap=block keeps a
-   short flash of invisible text rather than a layout-shifting fallback
-   swap, since this is a headline face only (small total text volume). */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700;800&display=swap');
+
 
 @custom-variant dark (&:is(.dark *));
 
-/* See the touch-detection script in index.html. Once a real touch has
-   happened, html.is-touch is set, and every hover:/group-hover: utility
-   below is disabled — this is what stops hover-driven lift/scale/translate
-   effects from sticking or firing on scroll on touch devices, including
-   Android Chrome/Brave in "Desktop site" mode where (hover: hover) is
-   reported even though there is no mouse. :active (tap-press) still works
-   normally and is unaffected. */
-@custom-variant hover (&:hover:not(:where(html.is-touch) *));
-@custom-variant group-hover (:where(.group):hover:not(:where(html.is-touch) *) &);
+
+/* ECHO — Environmental Intelligence Design System */
 
 :root {
-  /* ECHO Design System v2 */
-  --background: #F8FAF8;
-  --foreground: #16301F;
-  --card: #FFFFFF;
-  --card-foreground: #16301F;
-  --popover: #FFFFFF;
-  --popover-foreground: #16301F;
 
-  --primary: #166534;
-  --primary-foreground: #FFFFFF;
-  --primary-rgb: 22,101,52;
+  /* Core surfaces */
+  --background:#F7FAF7;
+  --foreground:#102A1A;
 
-  --secondary: #DCFCE7;
-  --secondary-foreground: #166534;
+  --card:#FFFFFF;
+  --card-foreground:#102A1A;
 
-  --muted: #F1F5F3;
-  --muted-foreground: #5F6F64;
+  --popover:#FFFFFF;
+  --popover-foreground:#102A1A;
 
-  --accent: #84CC16;
-  --accent-foreground: #16301F;
 
-  --destructive: #DC2626;
-  --destructive-foreground: #FFFFFF;
 
-  --border: #E5E7EB;
-  --input: #E5E7EB;
-  --ring: #166534;
+  /* ECHO Brand Colors */
+
+  --primary:#14532D;
+  --primary-foreground:#FFFFFF;
+  --primary-rgb:20,83,45;
+
+
+  --secondary:#22C55E;
+  --secondary-foreground:#FFFFFF;
+
+
+  --accent:#A3E635;
+  --accent-foreground:#16301F;
+
+
+
+  /* UI */
+
+  --muted:#EFF6F1;
+  --muted-foreground:#64748B;
+
+
+  --destructive:#DC2626;
+  --destructive-foreground:#FFFFFF;
+
+
+  --border:#D9E7DE;
+  --input:#D9E7DE;
+
+  --ring:#22C55E;
+
+
+
+  /* Status */
 
   --status-safe:#16A34A;
   --status-warning:#F59E0B;
   --status-danger:#DC2626;
 
-  --chart-1: oklch(0.81 0.1 145);
-  --chart-2: oklch(0.72 0.16 145);
-  --chart-3: oklch(0.63 0.18 145);
-  --chart-4: oklch(0.56 0.16 145);
-  --chart-5: oklch(0.48 0.14 145);
 
-  --sidebar:#113A22;
+
+  /* Sidebar */
+
+  --sidebar:#10351F;
   --sidebar-foreground:#FFFFFF;
+
   --sidebar-primary:#22C55E;
   --sidebar-primary-foreground:#FFFFFF;
+
   --sidebar-accent:#1B4D2E;
   --sidebar-accent-foreground:#FFFFFF;
+
   --sidebar-border:#285C3D;
   --sidebar-ring:#22C55E;
 
-  --highlight-gold:#FACC15;
+
+
+  /* Highlight */
+
+  --highlight-gold:#F9A825;
+
+
+
+  /* Fonts */
 
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-display:"Barlow Semi Condensed","Segoe UI",Arial,sans-serif;
-  --font-serif:ui-serif,Georgia,Cambria,"Times New Roman",Times,serif;
-  --font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+
+  --font-display:
+    "Barlow Semi Condensed",
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+
+  --font-mono:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+
+
+
+  /* Radius */
 
   --radius:1rem;
 
-  --shadow-2xs:0 1px 3px rgb(0 0 0 / .04);
-  --shadow-xs:0 1px 3px rgb(0 0 0 / .05);
-  --shadow-sm:0 2px 8px rgb(0 0 0 / .05);
-  --shadow:0 4px 12px rgb(0 0 0 / .06);
-  --shadow-md:0 8px 20px rgb(0 0 0 / .07);
-  --shadow-lg:0 14px 34px rgb(22 101 52 / .08);
-  --shadow-xl:0 20px 48px rgb(22 101 52 / .10);
-  --shadow-2xl:0 30px 60px rgb(22 101 52 / .12);
-  --shadow-premium:0 18px 45px rgb(22 101 52 / .10);
+
+
+  /* Shadows */
+
+  --shadow-premium:
+  0 20px 25px -5px rgb(20 83 45 / .08),
+  0 8px 10px -6px rgb(20 83 45 / .08);
+
+
 
   --tracking-normal:0em;
+
   --spacing:.25rem;
+
 }
 
+/* =========================
+   ECHO DARK MODE
+========================= */
+
 .dark {
-  --background:#08130C;
-  --foreground:#EEF8F1;
+
+  --background:#07150C;
+  --foreground:#ECFDF5;
+
 
   --card:#102016;
-  --card-foreground:#EEF8F1;
+  --card-foreground:#ECFDF5;
+
 
   --popover:#102016;
-  --popover-foreground:#EEF8F1;
+  --popover-foreground:#ECFDF5;
+
+
+
+  /* Brand */
 
   --primary:#22C55E;
-  --primary-foreground:#08130C;
+  --primary-foreground:#07150C;
   --primary-rgb:34,197,94;
 
-  --secondary:#183322;
-  --secondary-foreground:#EEF8F1;
+
+  --secondary:#166534;
+  --secondary-foreground:#FFFFFF;
+
+
+  --accent:#A3E635;
+  --accent-foreground:#102016;
+
+
+
+  /* UI */
 
   --muted:#16301F;
   --muted-foreground:#9CB5A4;
 
-  --accent:#84CC16;
-  --accent-foreground:#08130C;
 
   --destructive:#EF4444;
   --destructive-foreground:#FFFFFF;
 
-  --border:#264332;
-  --input:#264332;
+
+  --border:#244332;
+  --input:#244332;
+
+
   --ring:#22C55E;
+
+
+
+  /* Status */
 
   --status-safe:#22C55E;
   --status-warning:#F59E0B;
   --status-danger:#EF4444;
 
-  --chart-1: oklch(0.81 0.1 145);
-  --chart-2: oklch(0.72 0.16 145);
-  --chart-3: oklch(0.63 0.18 145);
-  --chart-4: oklch(0.56 0.16 145);
-  --chart-5: oklch(0.48 0.14 145);
 
-  --sidebar:#0B1A11;
-  --sidebar-foreground:#EEF8F1;
+
+  /* Sidebar */
+
+  --sidebar:#061209;
+  --sidebar-foreground:#ECFDF5;
+
+
   --sidebar-primary:#22C55E;
-  --sidebar-primary-foreground:#08130C;
+  --sidebar-primary-foreground:#07150C;
+
+
   --sidebar-accent:#183322;
-  --sidebar-accent-foreground:#EEF8F1;
-  --sidebar-border:#264332;
+  --sidebar-accent-foreground:#ECFDF5;
+
+
+  --sidebar-border:#244332;
   --sidebar-ring:#22C55E;
+
 }
+
+
+
+
+/* =========================
+   TAILWIND THEME TOKENS
+========================= */
+
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-highlight: var(--highlight-gold);
-  --color-status-safe: var(--status-safe);
-  --color-status-warning: var(--status-warning);
-  --color-status-danger: var(--status-danger);
-  --color-primary-rgb: var(--primary-rgb);
 
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-serif: var(--font-serif);
-  --font-display: var(--font-display);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --color-background:var(--background);
+  --color-foreground:var(--foreground);
 
-  --shadow-2xs: var(--shadow-2xs);
-  --shadow-xs: var(--shadow-xs);
-  --shadow-sm: var(--shadow-sm);
-  --shadow: var(--shadow);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --shadow-xl: var(--shadow-xl);
-  --shadow-2xl: var(--shadow-2xl);
-  --shadow-premium: var(--shadow-premium);
-}
+
+  --color-card:var(--card);
+  --color-card-foreground:var(--card-foreground);
+
+
+  --color-popover:var(--popover);
+  --color-popover-foreground:var(--popover-foreground);
+
+
+
+  --color-primary:var(--primary);
+  --color-primary-foreground:var(--primary-foreground);
+
+
+  --color-secondary:var(--secondary);
+  --color-secondary-foreground:var(--secondary-foreground);
+
+
+  --color-accent:var(--accent);
+  --color-accent-foreground:var(--accent-foreground);
+
+
+
+  --color-muted:var(--muted);
+  --color-muted-foreground:var(--muted-foreground);
+
+
+
+  --color-destructive:var(--destructive);
+  --color-destructive-foreground:var(--destructive-foreground);
+
+
+
+  --color-border:var(--border);
+  --color-input:var(--input);
+
+  --color-ring:var(--ring);
+
+
+
+  --color-sidebar:var(--sidebar);
+  --color-sidebar-foreground:var(--sidebar-foreground);
+
+  --color-sidebar-primary:var(--sidebar-primary);
+  --color-sidebar-primary-foreground:
+  var(--sidebar-primary-foreground);
+
+
+  --color-sidebar-accent:var(--sidebar-accent);
+  --color-sidebar-accent-foreground:
+  var(--sidebar-accent-foreground);
+
+
+  --color-sidebar-border:var(--sidebar-border);
+  --color-sidebar-ring:var(--sidebar-ring);
+
+
+
+  --color-highlight:
+  var(--highlight-gold);
+
+
+
+  --color-status-safe:
+  var(--status-safe);
+
+  --color-status-warning:
+  var(--status-warning);
+
+  --color-status-danger:
+  var(--status-danger);
+
+
+
+  --color-primary-rgb:
+  var(--primary-rgb);
+
+
+
+  /* Fonts */
+
+  --font-sans:
+  var(--font-sans);
+
+  --font-display:
+  var(--font-display);
+
+  --font-mono:
+  var(--font-mono);
+
+
+
+  /* Radius */
+
+  --radius-sm:
+  calc(var(--radius) - 4px);
+
+  --radius-md:
+  calc(var(--radius) - 2px);
+
+  --radius-lg:
+  var(--radius);
+
+  --radius-xl:
+  calc(var(--radius) + 4px);
+
+
+
+  /* Shadows */
+
+  --shadow-premium:
+  var(--shadow-premium);
+
+	}
 
 @layer base {
+
   * {
     @apply border-border outline-ring/50;
-    letter-spacing: var(--tracking-normal);
+    letter-spacing:var(--tracking-normal);
   }
-  html, body {
-    @apply overflow-x-hidden;
-  }
+
+
+  html,
   body {
-    -webkit-tap-highlight-color: transparent;
+
+    @apply overflow-x-hidden;
+
+    background:
+    var(--background);
+
   }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+
+
+
+  body {
+
+    font-family:var(--font-sans);
+
+    color:var(--foreground);
+
+    -webkit-tap-highlight-color:transparent;
+
+    text-rendering:optimizeLegibility;
+
+    -webkit-font-smoothing:antialiased;
+
+    -moz-osx-font-smoothing:grayscale;
+
+  }
+
+
+
+  /* ECHO display hierarchy */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+
+    font-family:
+    var(--font-display);
+
     @apply font-bold tracking-tight;
+
   }
-  h1, h2 {
-    letter-spacing: -0.01em;
+
+
+
+  h1,
+  h2 {
+
+    letter-spacing:-0.02em;
+
   }
+
+
+
+  h1 {
+
+    font-weight:800;
+
+  }
+
+
+
+  p {
+
+    line-height:1.6;
+
+  }
+
+
+
+
   img {
-    max-width: 100%;
-    height: auto;
+
+    max-width:100%;
+
+    height:auto;
+
+    display:block;
+
   }
+
+
+
+  button,
+  input,
+  textarea,
+  select {
+
+    font-family:inherit;
+
+  }
+
+
+
+  /* Better mobile scrolling */
+
+  * {
+
+    scrollbar-width:thin;
+
+  }
+
+
 }
 
 @layer utilities {
-	/* Hides the native scrollbar on horizontally-scrolling rows (e.g. the
-     Knowledge Centre category filter pills) so they read as an intentional
-     swipeable row instead of a cramped, scrollbar-cluttered one on mobile. */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .glass {
-    @apply bg-white/40 backdrop-blur-xl border border-white/30 shadow-premium;
-  }
-  
-  /* Name kept for compatibility with existing call sites (bg-primary/5
-     now resolves to Beacon navy automatically, not green). */
-  .glass-green {
-    @apply bg-primary/5 backdrop-blur-xl border border-primary/10 shadow-premium;
-  }
 
-  .premium-shadow {
-    @apply shadow-premium;
-  }
 
-  .eco-gradient {
-    @apply bg-gradient-to-br from-primary via-secondary to-accent;
-  }
+/* =========================
+   SCROLL UTILITIES
+========================= */
 
-  .eco-gradient-soft {
-    @apply bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5;
-  }
+.scrollbar-hide {
 
-  /* --- ECHO gradient system (section 3) ---
-     Named, purpose-specific gradients so components reach for one
-     class instead of hand-rolling `from-x via-y to-z` combinations
-     with slightly different stops every time. Brand gradients stay in
-     the navy family; category gradients (analytics/community/ai) keep
-     distinct hues since they mark different content types, not brand. */
-  .gradient-primary   { @apply bg-gradient-to-br from-primary via-primary to-secondary; }
-  .gradient-secondary { @apply bg-gradient-to-br from-secondary via-secondary to-primary; }
-  .gradient-analytics { @apply bg-gradient-to-br from-sky-700 to-sky-500; }
-  .gradient-community { @apply bg-gradient-to-br from-amber-500 to-accent; }
-  .gradient-ai         { @apply bg-gradient-to-br from-indigo-600 to-violet-500; }
-  .gradient-success    { @apply bg-gradient-to-br from-status-safe to-emerald-500; }
+  -ms-overflow-style:none;
 
-  /* Alternating section background (section 11) — subtle, not flat white,
-     not so busy it hurts readability. */
-  .section-bg-soft {
-    @apply bg-gradient-to-b from-muted/40 via-background to-background;
-  }
+  scrollbar-width:none;
 
-  /* Gradient icon container (section 8): a circular, tinted badge behind
-     a lucide icon. Pass a gradient-* class as a sibling utility, e.g.
-     className={cn('icon-badge', 'gradient-primary')} */
-  .icon-badge {
-    @apply inline-flex h-11 w-11 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300;
-  }
-  .icon-badge:hover:not(:where(html.is-touch) *) {
-    @apply -translate-y-0.5 shadow-lg;
-  }
-
-  /* Premium card lift (section 5): opt-in, so we don't change every
-     shadcn Card used in forms/dashboards app-wide — only sections that
-     explicitly want the elevated marketing-page treatment. */
-  .card-premium {
-    @apply relative rounded-2xl border border-border/60 bg-card shadow-premium transition-all duration-300;
-  }
-  .card-premium:hover:not(:where(html.is-touch) *) {
-    @apply -translate-y-1 border-primary/20 shadow-xl;
-  }
-
-  /* Button hover glow (section 4). Kept as a separate utility rather than
-     baked into the base Button so it only applies where we opt in. */
-  .btn-glow {
-    @apply transition-all duration-300;
-    box-shadow: 0 4px 14px 0 rgb(var(--primary-rgb) / 0.25);
-  }
-  .btn-glow:hover {
-    box-shadow: 0 6px 20px 0 rgb(var(--primary-rgb) / 0.35);
-  }
-  .btn-glow:active {
-    transform: scale(0.97);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .card-premium:hover,
-    .icon-badge:hover,
-    [data-slot="button"] {
-      transform: none !important;
-    }
-  }
 }
 
-/* Hero decorative drift — slow, subtle, GPU-only (transform), and fully
-   disabled for prefers-reduced-motion below. */
+
+.scrollbar-hide::-webkit-scrollbar {
+
+  display:none;
+
+}
+
+
+
+/* =========================
+   GLASS SYSTEM
+========================= */
+
+
+.glass {
+
+  @apply 
+  bg-white/60
+  backdrop-blur-xl
+  border
+  border-green-100
+  shadow-premium;
+
+}
+
+
+
+.glass-green {
+
+  @apply
+  bg-primary/10
+  backdrop-blur-xl
+  border
+  border-primary/20
+  shadow-premium;
+
+}
+
+
+
+/* =========================
+   PREMIUM SHADOW
+========================= */
+
+
+.premium-shadow {
+
+  @apply shadow-premium;
+
+}
+
+
+
+/* =========================
+   ECHO BRAND GRADIENTS
+========================= */
+
+
+/* Main brand */
+
+.gradient-primary {
+
+  @apply
+  bg-gradient-to-br
+  from-green-900
+  via-green-700
+  to-green-500;
+
+}
+
+
+
+/* Secondary */
+
+.gradient-secondary {
+
+  @apply
+  bg-gradient-to-br
+  from-green-700
+  via-emerald-500
+  to-lime-400;
+
+}
+
+
+
+/* Analytics */
+
+.gradient-analytics {
+
+  @apply
+  bg-gradient-to-br
+  from-blue-700
+  to-cyan-500;
+
+}
+
+
+
+/* Community */
+
+.gradient-community {
+
+  @apply
+  bg-gradient-to-br
+  from-amber-600
+  to-yellow-400;
+
+}
+
+
+
+/* AI Intelligence */
+
+.gradient-ai {
+
+  @apply
+  bg-gradient-to-br
+  from-indigo-700
+  to-purple-500;
+
+}
+
+
+
+/* Success */
+
+.gradient-success {
+
+  @apply
+  bg-gradient-to-br
+  from-green-700
+  to-lime-400;
+
+}
+
+
+
+/* Soft environmental background */
+
+.eco-gradient-soft {
+
+  @apply
+  bg-gradient-to-br
+  from-green-900/10
+  via-emerald-500/10
+  to-lime-400/10;
+
+}
+
+
+
+.eco-gradient {
+
+  @apply
+  bg-gradient-to-br
+  from-green-900
+  via-green-700
+  to-emerald-500;
+
+}
+
+
+
+/* =========================
+   SECTION BACKGROUND
+========================= */
+
+
+.section-bg-soft {
+
+  @apply
+  bg-gradient-to-b
+  from-muted/50
+  via-background
+  to-background;
+
+}
+
+
+
+/* =========================
+   ICON BADGES
+========================= */
+
+
+.icon-badge {
+
+  @apply
+  inline-flex
+  h-11
+  w-11
+  items-center
+  justify-center
+  rounded-2xl
+  text-white
+  shadow-md
+  transition-transform
+  duration-300;
+
+}
+
+
+
+.icon-badge:hover {
+
+  @apply
+  -translate-y-0.5
+  shadow-lg;
+
+}
+
+
+
+
+/* =========================
+   PREMIUM CARDS
+========================= */
+
+
+.card-premium {
+
+  @apply
+  relative
+  rounded-2xl
+  border
+  border-border/60
+  bg-card
+  shadow-premium
+  transition-all
+  duration-300;
+
+}
+
+
+
+.card-premium:hover {
+
+  @apply
+  -translate-y-1
+  border-primary/20
+  shadow-xl;
+
+}
+
+
+
+
+/* =========================
+   BUTTON GLOW
+========================= */
+
+
+.btn-glow {
+
+  @apply
+  transition-all
+  duration-300;
+
+
+  box-shadow:
+
+  0 4px 14px
+  rgb(20 83 45 / .25);
+
+}
+
+
+
+.btn-glow:hover {
+
+  box-shadow:
+
+  0 6px 20px
+  rgb(20 83 45 / .35);
+
+}
+
+
+
+.btn-glow:active {
+
+  transform:scale(.97);
+
+}
+
+
+
+
+/* =========================
+   ACCESSIBILITY
+========================= */
+
+
+@media(prefers-reduced-motion:reduce){
+
+.card-premium:hover,
+.icon-badge:hover,
+[data-slot="button"]{
+
+transform:none!important;
+
+}
+
+}
+
+
+	}
+
+/* =========================
+   HERO DECORATIVE MOTION
+   ECHO SIGNAL DRIFT
+========================= */
+
+
 @keyframes hero-drift {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-20px, 24px); }
-}
-.hero-drift {
-  animation: hero-drift 14s ease-in-out infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-drift {
-    animation: none;
+
+  0%,100% {
+
+    transform:
+    translate(0,0);
+
   }
+
+
+  50% {
+
+    transform:
+    translate(-18px,22px);
+
+  }
+
 }
 
-/* React-Leaflet-MarkerCluster styles */
+
+
+.hero-drift {
+
+  animation:
+  hero-drift 14s ease-in-out infinite;
+
+}
+
+
+
+@media(prefers-reduced-motion:reduce){
+
+  .hero-drift {
+
+    animation:none;
+
+  }
+
+}
+
+
+
+
+/* =========================
+   LEAFLET MAP CLUSTERS
+========================= */
+
+
 .marker-cluster-small {
-	background-color: rgba(var(--color-primary-rgb), 0.6);
+
+  background-color:
+  rgb(34 197 94 / .45);
+
 }
+
+
+
 .marker-cluster-small div {
-	background-color: rgba(var(--color-primary-rgb), 0.8);
+
+  background-color:
+  rgb(20 83 45 / .85);
+
 }
+
+
 
 .marker-cluster-medium {
-	background-color: rgba(var(--color-primary-rgb), 0.6);
+
+  background-color:
+  rgb(34 197 94 / .55);
+
 }
+
+
+
 .marker-cluster-medium div {
-	background-color: rgba(var(--color-primary-rgb), 0.8);
+
+  background-color:
+  rgb(21 128 61 / .9);
+
 }
+
+
+
 
 .marker-cluster-large {
-	background-color: rgba(var(--color-primary-rgb), 0.6);
+
+  background-color:
+  rgb(245 158 11 / .55);
+
 }
+
+
+
 .marker-cluster-large div {
-	background-color: rgba(var(--color-primary-rgb), 0.8);
+
+  background-color:
+  rgb(217 119 6 / .9);
+
 }
+
+
 
 .marker-cluster div {
-	color: white;
-	font-weight: bold;
+
+  color:white;
+
+  font-weight:700;
+
 }
 
-/* Beacon severity badge — the signature element of the rebrand.
-   The dot pulses only while a hazard report is unresolved/active; once
-   marked resolved it goes static, so the animation itself carries real
-   status meaning instead of decorating an otherwise static pill.
-   Usage: <span class="echo-badge echo-badge--danger">
-            <span class="echo-dot echo-dot--active" /> Unresolved
-          </span> */
+
+
+/* =========================
+   ECHO BEACON STATUS BADGES
+========================= */
+
+
 .beacon-badge {
-  @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold;
+
+
+  @apply
+
+  inline-flex
+  items-center
+  gap-1.5
+  rounded-full
+  border
+  px-2.5
+  py-1
+  text-xs
+  font-semibold;
+
+
 }
+
+
+
 .beacon-badge--safe {
-  @apply border-status-safe/30 bg-status-safe/10 text-status-safe;
+
+
+  @apply
+
+  border-status-safe/30
+  bg-status-safe/10
+  text-status-safe;
+
+
 }
+
+
+
+
 .beacon-badge--warning {
-  @apply border-status-warning/30 bg-status-warning/10 text-status-warning;
+
+
+  @apply
+
+  border-status-warning/30
+  bg-status-warning/10
+  text-status-warning;
+
+
 }
+
+
+
+
 .beacon-badge--danger {
-  @apply border-status-danger/30 bg-status-danger/10 text-status-danger;
+
+
+  @apply
+
+  border-status-danger/30
+  bg-status-danger/10
+  text-status-danger;
+
+
 }
+
+
+
+
+/* Signal indicator */
+
 .beacon-dot {
-  @apply h-2 w-2 rounded-full bg-current;
+
+
+  @apply
+
+  h-2
+  w-2
+  rounded-full
+  bg-current;
+
+
 }
+
+
+
 .beacon-dot--active {
-  animation: beacon-pulse 1.6s ease-in-out infinite;
+
+
+  animation:
+  beacon-pulse 1.6s ease-in-out infinite;
+
+
 }
+
+
+
+
 @keyframes beacon-pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
-  50% { opacity: 0.6; box-shadow: 0 0 0 4px transparent; }
+
+
+0%,100% {
+
+opacity:1;
+
+box-shadow:
+0 0 0 0 currentColor;
+
 }
-@media (prefers-reduced-motion: reduce) {
-  .beacon-dot--active {
-    animation: none;
+
+
+
+50% {
+
+opacity:.6;
+
+box-shadow:
+0 0 0 5px transparent;
+
+}
+
+
+}
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+
+
+.beacon-dot--active {
+
+
+animation:none;
+
+
+}
+
+
+}
+
+/* =========================
+   ECHO MOBILE OPTIMIZATION
+========================= */
+
+
+@media (max-width:768px){
+
+  h1{
+    font-size:2.2rem;
+    line-height:1.05;
   }
+
+
+  h2{
+    font-size:1.7rem;
+  }
+
+
+  .card-premium{
+
+    border-radius:1rem;
+
+  }
+
+
+  .glass{
+
+    backdrop-filter:blur(16px);
+
+  }
+
+
 }
 
-/* Presentation Mode Styles */
-.presentation-mode aside {
-  display: none !important;
+
+
+/* =========================
+   TOUCH DEVICE FIXES
+========================= */
+
+
+@media (hover:none){
+
+  .card-premium:hover,
+  .icon-badge:hover,
+  .btn-glow:hover{
+
+    transform:none;
+
+    box-shadow:inherit;
+
+  }
+
 }
 
-.presentation-mode header {
-  display: none !important;
+
+
+/* =========================
+   LEAFLET ECHO THEME
+========================= */
+
+
+.leaflet-container{
+
+  width:100%;
+
+  height:100%;
+
+  font-family:var(--font-sans);
+
 }
 
-.presentation-mode main {
-  padding: 0 !important;
-  margin: 0 !important;
-  max-width: 100% !important;
+
+
+.leaflet-control-zoom a{
+
+  color:var(--primary);
+
 }
 
-.presentation-mode .md\:pb-6 {
-  padding-bottom: 0 !important;
+
+
+.leaflet-popup-content-wrapper{
+
+  border-radius:1rem;
+
+  box-shadow:var(--shadow-premium);
+
 }
 
+
+
+.leaflet-popup-content{
+
+  margin:14px;
+
+  color:var(--foreground);
+
+}
+
+
+
+/* =========================
+   LOADING STATE
+========================= */
+
+
+.echo-loading{
+
+  @apply
+  animate-pulse
+  rounded-xl
+  bg-muted;
+
+}
+
+
+
+/* =========================
+   SAFE AREA MOBILE
+========================= */
+
+
+.safe-bottom{
+
+  padding-bottom:
+  env(safe-area-inset-bottom);
+
+}
+
+
+
+.safe-top{
+
+  padding-top:
+  env(safe-area-inset-top);
+
+}
+
+/* =========================
+   ECHO PRODUCT UI UTILITIES
+========================= */
+
+
+/* AI Intelligence panel */
+
+.ai-panel {
+
+  @apply
+  rounded-2xl
+  border
+  border-indigo-200/50
+  bg-gradient-to-br
+  from-indigo-50
+  via-white
+  to-purple-50
+  shadow-premium;
+
+}
+
+
+
+/* Environmental score card */
+
+.health-score-card {
+
+  @apply
+  rounded-2xl
+  border
+  border-green-200/50
+  bg-gradient-to-br
+  from-green-50
+  via-white
+  to-lime-50
+  shadow-premium;
+
+}
+
+
+
+/* Report hazard card */
+
+.hazard-card {
+
+  @apply
+  rounded-2xl
+  border
+  border-border
+  bg-card
+  shadow-sm
+  transition-all
+  duration-300;
+
+}
+
+
+.hazard-card:hover {
+
+  @apply
+  shadow-lg
+  border-primary/30;
+
+}
+
+
+
+/* Dashboard metric cards */
+
+.metric-card {
+
+  @apply
+  rounded-2xl
+  border
+  border-border/60
+  bg-card
+  p-5
+  shadow-sm
+  transition-all
+  duration-300;
+
+}
+
+
+
+.metric-card:hover {
+
+  @apply
+  -translate-y-1
+  shadow-premium;
+
+}
+
+
+
+/* Map floating controls */
+
+.map-control {
+
+  @apply
+  rounded-full
+  bg-white/90
+  backdrop-blur-md
+  border
+  border-border
+  shadow-lg;
+
+}
+
+
+
+/* Community action button */
+
+.community-action {
+
+  @apply
+  rounded-xl
+  bg-gradient-to-r
+  from-green-700
+  to-emerald-500
+  text-white
+  font-semibold
+  shadow-md
+  transition-all
+  duration-300;
+
+}
+
+
+
+.community-action:hover {
+
+  @apply
+  shadow-xl
+  -translate-y-0.5;
+
+}
+
+
+
+/* AI glowing indicator */
+
+.ai-pulse {
+
+  animation:
+  ai-glow 2s ease-in-out infinite;
+
+}
+
+
+
+@keyframes ai-glow {
+
+
+0%,100%{
+
+box-shadow:
+0 0 0 0 rgb(99 102 241 / .25);
+
+}
+
+
+
+50%{
+
+box-shadow:
+0 0 0 12px rgb(99 102 241 / 0);
+
+}
+
+
+}
+
+
+
+/* Empty states */
+
+.empty-state {
+
+  @apply
+  flex
+  flex-col
+  items-center
+  justify-center
+  rounded-2xl
+  border
+  border-dashed
+  border-border
+  bg-muted/30
+  p-8
+  text-center;
+
+}
