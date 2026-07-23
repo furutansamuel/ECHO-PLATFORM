@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useIntelligenceData } from '@/hooks/use-intelligence-data';
 import { ClipboardList, BookOpen, Calendar, CheckCircle, Clock, Wrench } from 'lucide-react';
+import AdminStats from "@/components/admin/AdminStats";
+import SystemStatus from "@/components/admin/SystemStatus";
 
 export default function AdminOverviewPage() {
   const { hazardReports, articles, loading } = useIntelligenceData();
-import AdminStats from "@/components/admin/AdminStats";
-import SystemStatus from "@/components/admin/SystemStatus";
 
 
 const AdminDashboard = () => {
