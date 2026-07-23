@@ -70,7 +70,7 @@ const AdminStats = ({
       title: "Pending Review",
       value: hazardReports.filter(
         (report) =>
-          report.status?.toLowerCase() === "pending"
+          report.status?.toLowerCase().includes("pending")
       ).length,
       icon: Clock,
     },
@@ -90,7 +90,7 @@ const AdminStats = ({
       title: "Resolved Reports",
       value: hazardReports.filter(
         (report) =>
-          report.status?.toLowerCase() === "resolved"
+          report.status?.toLowerCase().includes("resolved")
       ).length,
       icon: Wrench,
     },
@@ -137,7 +137,7 @@ const AdminStats = ({
   monitoredAreas.map(
     area => `${area.ward}-${area.lga}-${area.state}`
   )
-).size
+).size,
       icon: MapPin,
     },
 
