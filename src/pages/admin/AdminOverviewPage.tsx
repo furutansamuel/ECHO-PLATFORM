@@ -7,11 +7,9 @@ import SystemStatus from "@/components/admin/SystemStatus";
 
 export default function AdminOverviewPage() {
   const { hazardReports, articles, loading } = useIntelligenceData();
-
-
-const AdminDashboard = () => {
-
-  return (
+  
+  const AdminDashboard = () => {
+    return (
     <div className="space-y-6">
 
 
