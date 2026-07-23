@@ -133,7 +133,11 @@ const AdminStats = ({
 
     {
       title: "Monitored Areas",
-      value: monitoredAreas.length,
+      value: new Set(
+  monitoredAreas.map(
+    area => `${area.ward}-${area.lga}-${area.state}`
+  )
+).size
       icon: MapPin,
     },
 
