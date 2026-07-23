@@ -32,16 +32,15 @@ interface AdminStatsProps {
 
 
 const AdminStats = ({
-  hazardReports,
-  articles,
-  users,
-  volunteers,
-  events,
-  criticalAlerts,
-  aiInsights,
-  monitoredAreas,
+  hazardReports = [],
+  articles = [],
+  users = [],
+  volunteers = [],
+  events = [],
+  criticalAlerts = [],
+  aiInsights = [],
+  monitoredAreas = [],
 }: AdminStatsProps) => {
-
 
   const stats = [
 
