@@ -3,33 +3,48 @@ import {
   ClipboardList,
   AlertTriangle,
   CheckCircle,
+  Clock,
+  Wrench,
   BookOpen,
+  Users,
+  UserCheck,
+  CalendarCheck,
+  BellRing,
+  BrainCircuit,
+  MapPin,
 } from "lucide-react";
 
 
 // ===============================
-// Live Admin Statistics Cards
+// Admin Dashboard Statistics
 // ===============================
 
 interface AdminStatsProps {
-  hazardReports: {
-    id?: string;
-    status?: string;
-  }[];
-
-  articles: {
-    id?: string;
-  }[];
+  hazardReports: any[];
+  articles: any[];
+  users: any[];
+  volunteers: any[];
+  events: any[];
+  criticalAlerts: any[];
+  aiInsights: any[];
+  monitoredAreas: any[];
 }
 
 
 const AdminStats = ({
   hazardReports,
   articles,
+  users,
+  volunteers,
+  events,
+  criticalAlerts,
+  aiInsights,
+  monitoredAreas,
 }: AdminStatsProps) => {
 
 
   const stats = [
+
     {
       title: "Total Reports",
       value: hazardReports.length,
@@ -46,36 +61,104 @@ const AdminStats = ({
     },
 
     {
+      title: "Critical Alerts",
+      value: criticalAlerts.length,
+      icon: BellRing,
+    },
+
+
+    {
+      title: "Pending Review",
+      value: hazardReports.filter(
+        (report) =>
+          report.status?.toLowerCase() === "pending"
+      ).length,
+      icon: Clock,
+    },
+
+
+    {
+      title: "Verified Reports",
+      value: hazardReports.filter(
+        (report) =>
+          report.status?.toLowerCase() === "verified"
+      ).length,
+      icon: CheckCircle,
+    },
+
+
+    {
       title: "Resolved Reports",
       value: hazardReports.filter(
         (report) =>
           report.status?.toLowerCase() === "resolved"
       ).length,
-      icon: CheckCircle,
+      icon: Wrench,
     },
+
+
+    {
+      title: "Registered Users",
+      value: users.length,
+      icon: Users,
+    },
+
+
+    {
+      title: "Active Volunteers",
+      value: volunteers.length,
+      icon: UserCheck,
+    },
+
+
+    {
+      title: "Cleanup Events",
+      value: events.length,
+      icon: CalendarCheck,
+    },
+
 
     {
       title: "Knowledge Articles",
       value: articles.length,
       icon: BookOpen,
     },
+
+
+    {
+      title: "AI Insights",
+      value: aiInsights.length,
+      icon: BrainCircuit,
+    },
+
+
+    {
+      title: "Monitored Areas",
+      value: monitoredAreas.length,
+      icon: MapPin,
+    },
+
   ];
 
 
+
   return (
+
     <div className="
       grid
       grid-cols-1
       sm:grid-cols-2
-      lg:grid-cols-4
+      lg:grid-cols-3
       gap-4
     ">
 
-      {stats.map((stat) => {
+      {stats.map((stat)=>{
 
         const Icon = stat.icon;
 
+
         return (
+
           <div
             key={stat.title}
             className="
@@ -86,10 +169,14 @@ const AdminStats = ({
               flex
               items-center
               justify-between
+              shadow-sm
+              hover:shadow-md
+              transition
             "
           >
 
             <div>
+
               <p className="
                 text-sm
                 text-gray-500
@@ -105,6 +192,7 @@ const AdminStats = ({
               ">
                 {stat.value}
               </h3>
+
             </div>
 
 
@@ -118,15 +206,18 @@ const AdminStats = ({
               items-center
               justify-center
             ">
-              <Icon size={22} />
+              <Icon size={22}/>
             </div>
 
+
           </div>
+
         );
 
       })}
 
     </div>
+
   );
 };
 
