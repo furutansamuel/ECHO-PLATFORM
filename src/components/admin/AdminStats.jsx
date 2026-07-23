@@ -13,12 +13,12 @@ import {
 
 interface AdminStatsProps {
   hazardReports: {
-    id: string;
-    status: string;
+    id?: string;
+    status?: string;
   }[];
 
   articles: {
-    id: string;
+    id?: string;
   }[];
 }
 
@@ -40,7 +40,7 @@ const AdminStats = ({
       title: "Active Hazards",
       value: hazardReports.filter(
         (report) =>
-          report.status !== "Resolved"
+          report.status?.toLowerCase() !== "resolved"
       ).length,
       icon: AlertTriangle,
     },
@@ -49,7 +49,7 @@ const AdminStats = ({
       title: "Resolved Reports",
       value: hazardReports.filter(
         (report) =>
-          report.status === "Resolved"
+          report.status?.toLowerCase() === "resolved"
       ).length,
       icon: CheckCircle,
     },
@@ -62,7 +62,6 @@ const AdminStats = ({
   ];
 
 
-
   return (
     <div className="
       grid
@@ -72,10 +71,9 @@ const AdminStats = ({
       gap-4
     ">
 
-      {stats.map((stat)=>{
+      {stats.map((stat) => {
 
         const Icon = stat.icon;
-
 
         return (
           <div
@@ -92,7 +90,6 @@ const AdminStats = ({
           >
 
             <div>
-
               <p className="
                 text-sm
                 text-gray-500
@@ -108,7 +105,6 @@ const AdminStats = ({
               ">
                 {stat.value}
               </h3>
-
             </div>
 
 
@@ -122,9 +118,8 @@ const AdminStats = ({
               items-center
               justify-center
             ">
-              <Icon size={22}/>
+              <Icon size={22} />
             </div>
-
 
           </div>
         );
