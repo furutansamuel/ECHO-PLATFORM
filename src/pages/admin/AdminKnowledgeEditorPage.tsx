@@ -48,7 +48,11 @@ export default function AdminKnowledgeEditorPage() {
   useEffect(() => {
     if (!isEdit || !supabase) return;
     (async () => {
-      const { data, error } = await supabase.from('articles').select('*').eq('id', id).single();
+      const { data, error } = await supabase
+  .from('knowledge_articles')
+  .select('*')
+  .eq('id', id)
+  .single();
       setLoading(false);
       if (error || !data) {
         toast.error('Could not load this article.');
@@ -137,8 +141,8 @@ export default function AdminKnowledgeEditorPage() {
     };
 
     const { error } = isEdit
-      ? await supabase.from('articles').update(payload).eq('id', id)
-      : await supabase.from('articles').insert({ ...payload, view_count: 0 });
+      ? await supabase.from('knowledge_articles').update(payload).eq('id', id)
+      : await supabase.from('knowledge_articles').insert({ ...payload, view_count: 0 });
 
     setSaving(false);
     if (error) {
