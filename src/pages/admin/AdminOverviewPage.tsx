@@ -13,6 +13,8 @@ import { useIntelligenceData } from "@/hooks/use-intelligence-data";
 import AdminStats from "@/components/admin/AdminStats";
 import SystemStatus from "@/components/admin/SystemStatus";
 import { useAdminStats } from "@/hooks/use-admin-stats";
+import RecentReports from "@/components/admin/RecentReports";
+import CriticalAlerts from "@/components/admin/CriticalAlerts";
 
 // ===============================
 // Admin Overview Page
@@ -133,7 +135,35 @@ const {
   monitoredAreas={monitoredAreas}
 />
 
+<div className="
+  grid
+  lg:grid-cols-2
+  gap-6
+">
 
+  <RecentReports
+    reports={hazardReports}
+  />
+
+</div>
+
+
+      <div className="
+  grid
+  lg:grid-cols-2
+  gap-6
+">
+
+  <RecentReports
+    reports={hazardReports}
+  />
+
+
+  <CriticalAlerts
+    alerts={criticalAlerts}
+  />
+
+</div>
 
       {/* System Health */}
 
