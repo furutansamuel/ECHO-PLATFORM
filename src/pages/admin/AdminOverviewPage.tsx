@@ -12,7 +12,7 @@ import {
 import { useIntelligenceData } from "@/hooks/use-intelligence-data";
 import AdminStats from "@/components/admin/AdminStats";
 import SystemStatus from "@/components/admin/SystemStatus";
-
+import { useAdminStats } from "@/hooks/use-admin-stats";
 
 // ===============================
 // Admin Overview Page
@@ -23,14 +23,18 @@ export default function AdminOverviewPage() {
   const {
   hazardReports,
   articles,
+  loading
+} = useIntelligenceData();
+
+
+const {
   users,
   volunteers,
   events,
   criticalAlerts,
   aiInsights,
   monitoredAreas,
-  loading
-} = useIntelligenceData();
+} = useAdminStats();
 
 
   const counts = useMemo(() => {
