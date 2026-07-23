@@ -130,54 +130,6 @@ export default function AdminOverviewPage() {
 />
 
 
-      {/* Existing Live Statistics */}
-
-      <div className="
-        grid
-        grid-cols-2
-        md:grid-cols-3
-        lg:grid-cols-5
-        gap-4
-      ">
-
-        {cards.map((card) => (
-
-          <Link
-            key={card.label}
-            to={card.href}
-            className="
-              card-premium
-              p-4
-              flex
-              flex-col
-              gap-2
-              hover:border-primary/30
-              transition-colors
-            "
-          >
-
-            <card.icon className="h-5 w-5 text-primary" />
-
-            <span className="text-2xl font-bold">
-              {loading ? "—" : card.value}
-            </span>
-
-            <span className="
-              text-xs
-              text-muted-foreground
-              uppercase
-              tracking-wide
-            ">
-              {card.label}
-            </span>
-
-          </Link>
-
-        ))}
-
-      </div>
-
-
 
       {/* System Health */}
 
