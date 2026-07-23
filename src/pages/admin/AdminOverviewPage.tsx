@@ -87,12 +87,12 @@ export default function AdminOverviewPage() {
 
       <div>
         <h1 className="
-          text-3xl
+          text-2xl
           font-display
           font-bold
           text-primary
         ">
-          ECHO Admin Dashboard
+          Admin Dashboard
         </h1>
 
         <p className="
@@ -108,7 +108,10 @@ export default function AdminOverviewPage() {
 
       {/* New Admin Summary Cards */}
 
-      <AdminStats />
+<AdminStats
+  hazardReports={hazardReports}
+  articles={articles}
+/>
 
 
 
