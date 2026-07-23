@@ -12,8 +12,14 @@ import {
 // ===============================
 
 interface AdminStatsProps {
-  hazardReports: any[];
-  articles: any[];
+  hazardReports: {
+    id: string;
+    status: string;
+  }[];
+
+  articles: {
+    id: string;
+  }[];
 }
 
 
