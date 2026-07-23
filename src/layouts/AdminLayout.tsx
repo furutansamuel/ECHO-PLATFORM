@@ -26,7 +26,7 @@ const adminItems = [
   { name: "Knowledge Centre", href: "/admin/knowledge", icon: BookOpen },
   { name: "Events", href: "/admin/events", icon: Calendar },
   { name: "FAQs", href: "/admin/faqs", icon: HelpCircle },
-  { name: "Notifications", href: "/admin/notifications", icon: Bell },
+  { name: "Notifications", href: "/admin/notifications", icon: Bell, badge:3 },
   { name: "User Management", href: "/admin/users", icon: Users },
   { name: "Environmental Analytics", href: "/admin/analytics", icon: BarChart3 },
   { name: "Environmental Monitoring", href: "/admin/monitoring", icon: Map },
@@ -69,6 +69,41 @@ const AdminSidebar = ({ closeMenu }) => {
         />
       </div>
 
+      {/* Admin Profile */}
+
+<div className="px-6 py-4 border-b">
+
+  <div className="flex items-center gap-3">
+
+    <div className="
+      h-10
+      w-10
+      rounded-full
+      bg-[#1B5E20]
+      text-white
+      flex
+      items-center
+      justify-center
+      font-semibold
+    ">
+      A
+    </div>
+
+
+    <div>
+      <p className="text-sm font-semibold text-gray-800">
+        Administrator
+      </p>
+
+      <p className="text-xs text-gray-500">
+        System Manager
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
 
       {/* Navigation */}
       <nav
@@ -102,7 +137,27 @@ const AdminSidebar = ({ closeMenu }) => {
 
               <Icon className="h-5 w-5" />
 
-              <span>{item.name}</span>
+              <div className="flex items-center justify-between flex-1">
+
+  <span>
+    {item.name}
+  </span>
+
+
+  {item.badge && (
+    <span className="
+      text-xs
+      bg-red-500
+      text-white
+      rounded-full
+      px-2
+      py-0.5
+    ">
+      {item.badge}
+    </span>
+  )}
+
+</div>
 
             </NavLink>
           );
@@ -284,45 +339,27 @@ const AdminLayout = () => {
 
 
         {/* Mobile Header */}
-        <header
-          className="
-            md:hidden
-            h-16
-            bg-white
-            border-b
-            flex
-            items-center
-            px-4
-            sticky
-            top-0
-            z-30
-          "
-        >
+<header className="md:hidden h-16 bg-white border-b flex items-center px-4 sticky top-0 z-30">
 
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="
-              p-2
-              rounded-lg
-              hover:bg-gray-100
-            "
-          >
-            <Menu size={24}/>
-          </button>
+  <button
+    onClick={() => setMobileOpen(true)}
+    className="p-2 rounded-lg hover:bg-gray-100"
+  >
+    <Menu size={24} />
+  </button>
 
 
-          <h1
-            className="
-              ml-4
-              font-semibold
-              text-[#1B5E20]
-            "
-          >
-            ECHO Admin
-          </h1>
+  <div className="ml-4 leading-tight">
+    <h1 className="text-sm font-semibold text-[#1B5E20]">
+      ECHO Admin
+    </h1>
 
-        </header>
+    <p className="text-[11px] text-gray-500">
+      Environmental Intelligence Control Center
+    </p>
+  </div>
 
+</header>
 
 
         <div
