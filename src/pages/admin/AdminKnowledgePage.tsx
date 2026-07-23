@@ -15,9 +15,9 @@ export default function AdminKnowledgePage() {
     if (!supabase) return;
     setLoading(true);
     const { data, error } = await supabase
-      .from('articles')
-      .select('*')
-      .order('created_at', { ascending: false });
+  .from('knowledge_articles')
+  .select('*')
+  .order('created_at', { ascending: false });
     setLoading(false);
     if (error) {
       toast.error('Failed to load articles: ' + error.message);
@@ -31,7 +31,10 @@ export default function AdminKnowledgePage() {
   const deleteArticle = async (article: KnowledgeArticle) => {
     if (!supabase) return;
     if (!confirm(`Delete "${article.title}"? This cannot be undone.`)) return;
-    const { error } = await supabase.from('articles').delete().eq('id', article.id);
+    const { error } = await supabase
+  .from('knowledge_articles')
+  .delete()
+  .eq('id', article.id);
     if (error) {
       toast.error('Failed to delete article: ' + error.message);
       return;
