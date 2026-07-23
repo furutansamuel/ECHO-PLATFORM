@@ -34,28 +34,17 @@ import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import { PremiumBottomNav } from '@/components/layout/PremiumBottomNav';
 import { useNotifications } from '@/hooks/use-notifications';
 
-const navItems = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'Track Reports', href: '/reports', icon: ClipboardList, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'Interactive Map', href: '/map', icon: MapIcon, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'AI Intelligence', href: '/ai-intelligence', icon: BrainCircuit, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'Community Health', href: '/community-health', icon: HeartPulse, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'Cleanup Events', href: '/community-insights', icon: Calendar, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'Impact Center', href: '/rewards', icon: Award, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'Community Insights', href: '/community-insights', icon: Users, roles: ['citizen', 'volunteer', 'administrator'] },
-  { name: 'Knowledge Centre', href: '/knowledge', icon: BookOpen, roles: ['citizen', 'volunteer', 'administrator'] },
-];
 
-const adminItems = [
-  { name: 'Reports', href: '/admin/reports', icon: ClipboardList, roles: ['administrator'] },
-  { name: 'Knowledge Centre', href: '/admin/knowledge', icon: BookOpen, roles: ['administrator'] },
-  { name: 'Events', href: '/admin/events', icon: Calendar, roles: ['administrator'] },
-  { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle, roles: ['administrator'] },
-  { name: 'Notifications', href: '/admin/notifications', icon: Bell, roles: ['administrator'] },
-  { name: 'User Management', href: '/admin/users', icon: Users, roles: ['administrator'] },
-  { name: 'Environmental Analytics', href: '/admin/analytics', icon: BarChart3, roles: ['administrator'] },
-  { name: 'Environmental Monitoring', href: '/admin/monitoring', icon: MapIcon, roles: ['administrator'] },
-  { name: 'System Settings', href: '/admin/settings', icon: Settings, roles: ['administrator'] },
+const navItems = [
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['citizen', 'volunteer'] },
+  { name: 'Track Reports', href: '/reports', icon: ClipboardList, roles: ['citizen', 'volunteer'] },
+  { name: 'Interactive Map', href: '/map', icon: MapIcon, roles: ['citizen', 'volunteer'] },
+  { name: 'AI Intelligence', href: '/ai-intelligence', icon: BrainCircuit, roles: ['citizen', 'volunteer'] },
+  { name: 'Community Health', href: '/community-health', icon: HeartPulse, roles: ['citizen', 'volunteer'] },
+  { name: 'Cleanup Events', href: '/community-insights', icon: Calendar, roles: ['citizen', 'volunteer'] },
+  { name: 'Impact Center', href: '/rewards', icon: Award, roles: ['citizen', 'volunteer'] },
+  { name: 'Community Insights', href: '/community-insights', icon: Users, roles: ['citizen', 'volunteer'] },
+  { name: 'Knowledge Centre', href: '/knowledge', icon: BookOpen, roles: ['citizen', 'volunteer'] },
 ];
 
 const footerItems = [
@@ -83,8 +72,7 @@ export function DashboardLayout() {
   };
 
   const filteredNavItems = navItems.filter(item => item.roles.includes(profile?.role || ''));
-  const filteredAdminItems = adminItems.filter(item => item.roles.includes(profile?.role || ''));
-
+  
   const NavLink = ({ item, isCollapsed }: { item: any, isCollapsed?: boolean }) => {
     const isActive = location.pathname === item.href;
     const Icon = item.icon;
@@ -146,15 +134,7 @@ export function DashboardLayout() {
               <NavLink key={item.href} item={item} isCollapsed={collapsed} />
             ))}
           </div>
-          {filteredAdminItems.length > 0 && (
-            <div className="space-y-1 pt-4">
-              <Separator />
-              <p className={cn('px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground', collapsed && 'text-center')}>Admin</p>
-              {filteredAdminItems.map((item) => (
-                <NavLink key={item.href} item={item} isCollapsed={collapsed} />
-              ))}
-            </div>
-          )}
+          
         </nav>
 
         <div className="space-y-1 border-t p-3">
@@ -219,28 +199,7 @@ export function DashboardLayout() {
                       </Link>
                     ))}
                   </nav>
-                  {filteredAdminItems.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Admin
-                      </p>
-                      {filteredAdminItems.map((item) => (
-                        <Link
-                          key={item.href}
-                          to={item.href}
-                          className={cn(
-                            'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all', location.pathname === item.href
-                              ? 'bg-primary text-white'
-                              : 'text-foreground hover:bg-secondary'
-                          )}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          <item.icon className="h-5 w-5" />
-                          <span>{item.name}</span>
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                  
                   <Separator />
                   <div className="space-y-1">
                     {footerItems.map((item) => (
