@@ -2,40 +2,60 @@ import React from "react";
 import {
   ClipboardList,
   AlertTriangle,
-  Users,
-  CalendarCheck,
+  CheckCircle,
+  BookOpen,
 } from "lucide-react";
 
 
 // ===============================
-// Admin Dashboard Statistics Cards
+// Live Admin Statistics Cards
 // ===============================
 
-const stats = [
-  {
-    title: "Total Reports",
-    value: "1,245",
-    icon: ClipboardList,
-  },
-  {
-    title: "Active Hazards",
-    value: "34",
-    icon: AlertTriangle,
-  },
-  {
-    title: "Registered Users",
-    value: "8,520",
-    icon: Users,
-  },
-  {
-    title: "Cleanup Events",
-    value: "76",
-    icon: CalendarCheck,
-  },
-];
+interface AdminStatsProps {
+  hazardReports: any[];
+  articles: any[];
+}
 
 
-const AdminStats = () => {
+const AdminStats = ({
+  hazardReports,
+  articles,
+}: AdminStatsProps) => {
+
+
+  const stats = [
+    {
+      title: "Total Reports",
+      value: hazardReports.length,
+      icon: ClipboardList,
+    },
+
+    {
+      title: "Active Hazards",
+      value: hazardReports.filter(
+        (report) =>
+          report.status !== "Resolved"
+      ).length,
+      icon: AlertTriangle,
+    },
+
+    {
+      title: "Resolved Reports",
+      value: hazardReports.filter(
+        (report) =>
+          report.status === "Resolved"
+      ).length,
+      icon: CheckCircle,
+    },
+
+    {
+      title: "Knowledge Articles",
+      value: articles.length,
+      icon: BookOpen,
+    },
+  ];
+
+
 
   return (
     <div className="
@@ -46,9 +66,10 @@ const AdminStats = () => {
       gap-4
     ">
 
-      {stats.map((stat) => {
+      {stats.map((stat)=>{
 
         const Icon = stat.icon;
+
 
         return (
           <div
@@ -61,11 +82,11 @@ const AdminStats = () => {
               flex
               items-center
               justify-between
-              shadow-sm
             "
           >
 
             <div>
+
               <p className="
                 text-sm
                 text-gray-500
@@ -78,7 +99,6 @@ const AdminStats = () => {
                 text-2xl
                 font-bold
                 text-gray-800
-                mt-1
               ">
                 {stat.value}
               </h3>
@@ -96,10 +116,9 @@ const AdminStats = () => {
               items-center
               justify-center
             ">
-
-              <Icon size={24}/>
-
+              <Icon size={22}/>
             </div>
+
 
           </div>
         );
