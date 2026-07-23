@@ -20,7 +20,17 @@ import SystemStatus from "@/components/admin/SystemStatus";
 
 export default function AdminOverviewPage() {
 
-  const { hazardReports, articles, loading } = useIntelligenceData();
+  const {
+  hazardReports,
+  articles,
+  users,
+  volunteers,
+  events,
+  criticalAlerts,
+  aiInsights,
+  monitoredAreas,
+  loading
+} = useIntelligenceData();
 
 
   const counts = useMemo(() => {
@@ -111,8 +121,13 @@ export default function AdminOverviewPage() {
 <AdminStats
   hazardReports={hazardReports}
   articles={articles}
+  users={users}
+  volunteers={volunteers}
+  events={events}
+  criticalAlerts={criticalAlerts}
+  aiInsights={aiInsights}
+  monitoredAreas={monitoredAreas}
 />
-
 
 
       {/* Existing Live Statistics */}
