@@ -15,6 +15,9 @@ import SystemStatus from "@/components/admin/SystemStatus";
 import { useAdminStats } from "@/hooks/use-admin-stats";
 import RecentReports from "@/components/admin/RecentReports";
 import CriticalAlerts from "@/components/admin/CriticalAlerts";
+import RecentActivity from "@/components/admin/RecentActivity";
+import EnvironmentalAnalytics from "@/components/admin/EnvironmentalAnalytics";
+
 
 // ===============================
 // Admin Overview Page
@@ -134,20 +137,8 @@ const {
   aiInsights={aiInsights}
   monitoredAreas={monitoredAreas}
 />
-
-<div className="
-  grid
-  lg:grid-cols-2
-  gap-6
-">
-
-  <RecentReports
-    reports={hazardReports}
-  />
-
-</div>
-
-
+      
+      
       <div className="
   grid
   lg:grid-cols-2
@@ -164,7 +155,25 @@ const {
   />
 
 </div>
+      <div className="
+  grid
+  lg:grid-cols-2
+  gap-6
+">
 
+  <RecentActivity
+    users={users}
+    reports={hazardReports}
+    events={events}
+  />
+
+</div>
+      <EnvironmentalAnalytics
+  reports={hazardReports}
+/>
+
+
+      
       {/* System Health */}
 
       <SystemStatus />
