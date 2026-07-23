@@ -5,7 +5,56 @@ import { ClipboardList, BookOpen, Calendar, CheckCircle, Clock, Wrench } from 'l
 
 export default function AdminOverviewPage() {
   const { hazardReports, articles, loading } = useIntelligenceData();
+import AdminStats from "@/components/admin/AdminStats";
+import SystemStatus from "@/components/admin/SystemStatus";
 
+
+const AdminDashboard = () => {
+
+  return (
+    <div className="space-y-6">
+
+
+      {/* Page Header */}
+
+      <div>
+        <h1 className="
+          text-2xl
+          font-bold
+          text-gray-800
+        ">
+          Admin Dashboard
+        </h1>
+
+        <p className="
+          text-sm
+          text-gray-500
+        ">
+          Monitor and manage ECHO environmental operations
+        </p>
+      </div>
+
+
+
+      {/* Statistics */}
+
+      <AdminStats />
+
+
+
+      {/* System Health */}
+
+      <SystemStatus />
+
+
+    </div>
+  );
+};
+
+
+export default AdminDashboard;
+
+  
   const counts = useMemo(() => {
     return {
       total: hazardReports.length,
