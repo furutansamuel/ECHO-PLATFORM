@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
+import AdminLayout  from "@/layouts/AdminLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import ScrollToTop from "@/components/ScrollToTop";
 import AdminFAQPage from "@/pages/admin/AdminFAQPage";
@@ -112,10 +113,8 @@ function App() {
                 <Route path="/search" element={<GlobalSearchPage />} />
               </Route>
 
-              {/* Admin Routes — same DashboardLayout shell, gated to
-                  the administrator role. Nav links for these already
-                  existed in the sidebar before any of these pages did. */}
-              <Route element={<ProtectedRoute allowedRoles={['administrator']}><DashboardLayout /></ProtectedRoute>}>
+              {/* Admin Routes — dedicated admin shell. */}
+              <Route element={<ProtectedRoute allowedRoles={['administrator']}><AdminLayout /></ProtectedRoute>}>
                 <Route path="/admin" element={<AdminOverviewPage />} />
                 <Route path="/admin/reports" element={<AdminReportsPage />} />
                 <Route path="/admin/verify" element={<AdminReportsPage />} />
