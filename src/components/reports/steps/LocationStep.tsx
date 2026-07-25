@@ -22,6 +22,7 @@ import {
 import L from 'leaflet';
 import { ReportFormData } from '../report-schema';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 
 const markerIcon = new L.Icon({
@@ -228,9 +229,13 @@ setIsLocating(false);
 
 console.error(error);
 
-alert(
-"Unable to get location. Please enable GPS permission."
-);
+if (error.code === error.PERMISSION_DENIED) {
+  toast.error("Location access denied. You can still enter your address, ward, and LGA manually below.");
+} else if (error.code === error.TIMEOUT) {
+  toast.error("Location request timed out. Enter your address manually or try again.");
+} else {
+  toast.error("Couldn't detect your location. Enter your address manually below.");
+}
 
 setIsLocating(false);
 
@@ -518,3 +523,4 @@ GPS detects your actual position. Drag the marker to adjust the hazard location.
 
 
 }
+
