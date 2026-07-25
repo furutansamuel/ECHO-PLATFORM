@@ -33,6 +33,7 @@ import { Badge } from '@/components/ui/badge';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import { PremiumBottomNav } from '@/components/layout/PremiumBottomNav';
 import { useNotifications } from '@/hooks/use-notifications';
+import { LocationPermissionCard } from '@/components/dashboard/LocationPermissionCard';
 
 
 const navItems = [
@@ -303,6 +304,7 @@ export function DashboardLayout() {
           className="flex-1 p-4 pb-28 md:p-8 md:pb-12"
           style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 7rem)' }}
         >
+          <LocationPermissionCard />
           <Outlet />
         </main>
 
@@ -311,5 +313,3 @@ export function DashboardLayout() {
     </div>
   );
 }
-
-
