@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -11,15 +12,33 @@ interface MapFiltersProps {
 }
 
 const MapFilters: React.FC<MapFiltersProps> = ({ onFilterChange }) => {
+  const [locationQuery, setLocationQuery] = useState('');
+
+  const handleReset = () => {
+    setLocationQuery('');
+    onFilterChange({});
+  };
+
   return (
     <div className="absolute top-4 left-4 z-[1000] bg-card p-4 rounded-2xl shadow-lg w-72 space-y-4 glass-green">
         <div className="flex items-center justify-between">
             <h3 className="font-bold text-lg">Filters</h3>
-            <Button variant="ghost" size="sm" onClick={() => onFilterChange({})}> <X className="h-4 w-4 mr-1" /> Reset</Button>
+            <Button variant="ghost" size="sm" onClick={handleReset}> <X className="h-4 w-4 mr-1" /> Reset</Button>
         </div>
         <div className="space-y-2">
             <Label>Search Location</Label>
-            <Input placeholder="Enter address, ward, or LGA..." />
+            <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                    value={locationQuery}
+                    onChange={(e) => {
+                        setLocationQuery(e.target.value);
+                        onFilterChange({ locationQuery: e.target.value });
+                    }}
+                    placeholder="Enter address, ward, or LGA..."
+                    className="pl-9"
+                />
+            </div>
         </div>
       <div className="space-y-2">
         <Label>Hazard Category</Label>
