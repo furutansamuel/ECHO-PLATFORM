@@ -1,3 +1,46 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/use-auth";
+import { useUpcomingEvents } from "@/hooks/use-events";
+import { useEventRegistrations } from "@/hooks/use-event-registrations";
+import {
+  Card,
+  CardContent,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Calendar,
+  CalendarDays,
+  UsersRound,
+  MapPinned,
+  Loader2,
+} from "lucide-react";
+
+const { user } = useAuth();
+
+const { events: upcomingEvents, loading: upcomingLoading } =
+  useUpcomingEvents();
+
+const { events: completedEvents, loading: completedLoading } =
+  useUpcomingEvents(undefined, ["completed"]);
+
+const {
+  registeredIds,
+  register,
+  unregister,
+  pendingId,
+} = useEventRegistrations();
+
+const [selectedEvent, setSelectedEvent] = useState<any>(null);
+
+
 return (
   <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-8">
 
@@ -181,8 +224,7 @@ className="h-full w-full object-cover"
 
 <p className="mt-3 text-gray-600">
 
-{upcomingEvents[0].description}
-
+{upcomingEvents[0].description ?? "No description available."}
 </p>
 
 </CardContent>
@@ -325,11 +367,31 @@ onOpenChange={() => setSelectedEvent(null)}
 
 </DialogHeader>
 
-<p>
+<div className="space-y-4">
 
-{selectedEvent?.description}
+  <p>
+    {selectedEvent?.description ?? "No description available."}
+  </p>
 
-</p>
+  <Button
+    className="w-full"
+    onClick={() => {
+      if (!selectedEvent) return;
+
+      if (registeredIds.has(selectedEvent.id)) {
+        unregister(selectedEvent.id);
+      } else {
+        register(selectedEvent.id);
+      }
+    }}
+  >
+    {selectedEvent &&
+    registeredIds.has(selectedEvent.id)
+      ? "Registered ✓"
+      : "Join Event"}
+  </Button>
+
+</div>
 
 </DialogContent>
 
