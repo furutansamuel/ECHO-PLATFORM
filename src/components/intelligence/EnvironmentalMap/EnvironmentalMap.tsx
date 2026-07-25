@@ -89,6 +89,18 @@ const EnvironmentalMap: React.FC<EnvironmentalMapProps> = ({ reports = [] }) => 
   const filteredReports = reports.filter(report => {
       if(filters.category && filters.category !== 'all' && report.category !== filters.category) return false;
       if(filters.severity && filters.severity !== 'all' && report.severity !== filters.severity) return false;
+      if(filters.locationQuery) {
+          const q = filters.locationQuery.trim().toLowerCase();
+          if (q.length > 0) {
+              const haystack = [
+                  report.location?.address,
+                  report.location?.ward,
+                  report.location?.lga,
+                  report.location?.state,
+              ].filter(Boolean).join(' ').toLowerCase();
+              if (!haystack.includes(q)) return false;
+          }
+      }
       return true;
   })
 
