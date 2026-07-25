@@ -1,3 +1,5 @@
+
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -46,7 +48,7 @@ export default function LoginPage() {
         <CardHeader>
           <img src="/echo-wordmark.svg" alt="ECHO" className="h-10 w-auto mx-auto mb-3" />
           <CardTitle className="text-2xl font-bold text-center text-primary">Login to ECHO</CardTitle>
-          <CardDescription className="text-center">Enter your credentials to access your account</CardDescription>
+          <CardDescription className="text-center">Enter your email and password to access your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
@@ -64,7 +66,7 @@ export default function LoginPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Button variant="link" className="px-0 h-auto text-xs" onClick={() => navigate('/forgot-password')}>Forgot password?</Button>
+                <Button type="button" variant="link" className="px-0 h-auto text-xs" onClick={() => navigate('/auth/forgot-password')}>Forgot password?</Button>
               </div>
               <Input 
                 id="password" 
@@ -81,7 +83,7 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex flex-col gap-4 border-t pt-6">
           <div className="text-center text-sm text-muted-foreground w-full">
-            Don't have an account? <Button variant="link" className="px-0" onClick={() => navigate('/register')}>Register</Button>
+            Don't have an account? <Button variant="link" className="px-0" onClick={() => navigate('/auth/register')}>Register</Button>
           </div>
                   </CardFooter>
       </Card>
