@@ -2,7 +2,6 @@ return (
   <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-8">
 
     {/* Hero */}
-    <HeroSection />
     <Card className="overflow-hidden border-0 shadow-xl bg-gradient-to-r from-primary via-primary/90 to-green-700 text-white">
 
   <CardContent className="p-8">
@@ -40,7 +39,6 @@ return (
 </Card>
 
     {/* Statistics */}
-    <StatisticsSection />
     <div className="grid gap-4 md:grid-cols-3">
 
 <Card>
@@ -143,7 +141,6 @@ Completed Events
 </div>
 
     {/* Featured Event */}
-    <FeaturedEvent />
     {upcomingEvents.length > 0 && (
 
 <Card className="overflow-hidden shadow-xl">
@@ -182,7 +179,7 @@ className="h-full w-full object-cover"
 
 </h2>
 
-<p className="mt-3 text-muted-foreground">
+<p className="mt-3 text-gray-600">
 
 {upcomingEvents[0].description}
 
@@ -197,7 +194,6 @@ className="h-full w-full object-cover"
 )}
 
     {/* Upcoming Events */}
-    <UpcomingEventsSection />
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
 {upcomingEvents.map(event=>{
@@ -253,8 +249,10 @@ className="h-full w-full object-cover"
 
 <Button
 className="w-full"
-variant={joined?"outline":"default"}
-onClick={()=>joined?unregister(event.id):register(event.id)}
+variant={joined ? "outline" : "default"}
+onClick={() => {
+  setSelectedEvent(event);
+}}
 >
 
 {joined?"Registered ✓":"Join Event"}
@@ -272,7 +270,6 @@ onClick={()=>joined?unregister(event.id):register(event.id)}
 </div>
 
     {/* Completed Events */}
-    <CompletedEventsSection />
     <div className="grid gap-6 md:grid-cols-2">
 
 {completedEvents.map(event=>(
@@ -311,7 +308,6 @@ Completed
 </div>
 
     {/* Event Details Dialog */}
-    <EventDetailsDialog />
     <Dialog
 open={!!selectedEvent}
 onOpenChange={() => setSelectedEvent(null)}
