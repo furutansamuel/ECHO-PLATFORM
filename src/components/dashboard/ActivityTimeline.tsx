@@ -2,9 +2,6 @@ import React, { useMemo } from 'react';
 import { 
   FileText, 
   CheckCircle2, 
-  Zap, 
-  Users, 
-  Award,
   ChevronRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,83 +9,49 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useIntelligenceData } from '@/hooks/use-intelligence-data';
 import { useAuth } from '@/hooks/use-auth';
 
-// Illustrative placeholder activity feed — kept intentionally to fill
-// out the timeline visually. Not demo-mode gated; shows for every
-// account alongside real submitted reports below.
-const mockActivities = [
-  {
-    type: 'Hazard Submitted',
-    title: 'New report: Improper Waste Disposal',
-    description: 'Reported at Mushin Central, Lagos.',
-    time: '2 hours ago',
-    icon: FileText,
-    color: 'text-orange-500',
-    bg: 'bg-orange-500/10'
-  },
-  {
-    type: 'Report Verified',
-    title: 'Community verified your report',
-    description: 'Flood Risk at Lekki Phase 2 was verified by 5 users.',
-    time: '5 hours ago',
-    icon: CheckCircle2,
-    color: 'text-blue-500',
-    bg: 'bg-blue-500/10'
-  },
-  {
-    type: 'AI Insight Generated',
-    title: 'New environmental health insight',
-    description: 'AI detected a 15% improvement in your local air quality.',
-    time: 'Yesterday',
-    icon: Zap,
-    color: 'text-yellow-500',
-    bg: 'bg-yellow-500/10'
-  },
-  {
-    type: 'Cleanup Joined',
-    title: 'Joined Victoria Island Clean-up',
-    description: 'You successfully registered for the upcoming event.',
-    time: '2 days ago',
-    icon: Users,
-    color: 'text-purple-500',
-    bg: 'bg-purple-500/10'
-  },
-  {
-    type: 'Reward Earned',
-    title: 'Earned 50 Impact Points',
-    description: 'Awarded for verification of 3 community reports.',
-    time: '3 days ago',
-    icon: Award,
-    color: 'text-green-500',
-    bg: 'bg-green-500/10'
-  }
-];
-
 const ActivityTimeline = () => {
   const { user } = useAuth();
   const { hazardReports } = useIntelligenceData();
-  const storeReports = hazardReports.filter((r) => r.reporter_id === user?.id);
+  // Real hazard_reports schema uses `user_id` as the owner column and a
+  // nested `location` JSONB object (not a flat `reporter_id`/`address`) —
+  // verified against supabase/migrations/20260115120000_create_hazard_reports.sql.
+  const storeReports = hazardReports.filter((r: any) => r.user_id === user?.id);
   const prefersReducedMotion = useReducedMotion();
 
-  // Memoized so a stable list is only recomputed when the underlying
-  // reports actually change, and each item gets an identity (`id`) that
-  // survives new reports being added to the front of the list. Without
-  // a stable id, using the array index as the React key meant every
-  // existing activity got remounted (and replayed its entrance
-  // animation) whenever a new report shifted everyone's index down.
+  const formatRelativeTime = (iso: string) => {
+    const diffMs = Date.now() - new Date(iso).getTime();
+    const mins = Math.round(diffMs / 60_000);
+    if (mins < 1) return 'Just now';
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.round(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    const days = Math.round(hrs / 24);
+    return days === 1 ? 'Yesterday' : `${days}d ago`;
+  };
+
+  const statusMeta = (status: string) => {
+    if (status === 'Verified' || status === 'Resolved' || status === 'Closed') {
+      return { type: 'Report Verified', icon: CheckCircle2, color: 'text-blue-500', bg: 'bg-blue-500/10' };
+    }
+    return { type: 'Hazard Submitted', icon: FileText, color: 'text-orange-500', bg: 'bg-orange-500/10' };
+  };
+
   const allActivities = useMemo(
-    () => [
-      ...storeReports.map((report) => ({
-        id: `report-${report.id}`,
-        type: 'Hazard Submitted',
-        title: `New report: ${report.title}`,
-        description: `Reported at ${report.address || 'Unknown Location'}.`,
-        time: 'Just now',
-        icon: FileText,
-        color: 'text-orange-500',
-        bg: 'bg-orange-500/10',
-      })),
-      ...mockActivities.map((activity, i) => ({ id: `mock-${i}`, ...activity })),
-    ].slice(0, 10),
+    () => storeReports
+      .map((report: any) => {
+        const meta = statusMeta(report.status);
+        return {
+          id: `report-${report.id}`,
+          type: meta.type,
+          title: meta.type === 'Report Verified' ? `Verified: ${report.title}` : `New report: ${report.title}`,
+          description: `Reported at ${report.location?.address || report.location?.ward || 'Unknown location'}.`,
+          time: formatRelativeTime(report.created_at),
+          icon: meta.icon,
+          color: meta.color,
+          bg: meta.bg,
+        };
+      })
+      .slice(0, 10),
     [storeReports]
   );
 
@@ -99,6 +62,11 @@ const ActivityTimeline = () => {
       </div>
       <div className="flex-1 overflow-y-auto p-6 scrollbar-none">
         <div className="relative space-y-6 before:absolute before:inset-0 before:ml-4 before:translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-border before:to-transparent">
+          {allActivities.length === 0 && (
+            <p className="text-xs text-muted-foreground italic text-center py-6">
+              No activity yet — submit your first hazard report to see it here.
+            </p>
+          )}
           {allActivities.map((activity, index) => (
             <motion.div 
               key={activity.id} 
