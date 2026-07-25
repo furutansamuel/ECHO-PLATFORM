@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 
@@ -11,6 +12,7 @@ export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -18,6 +20,10 @@ export default function RegisterPage() {
     e.preventDefault();
     if (!name || !email || !password) {
       toast.error('Please fill in all fields');
+      return;
+    }
+    if (!agreedToTerms) {
+      toast.error('Please agree to the Privacy Policy and Terms of Service to continue');
       return;
     }
 
@@ -92,6 +98,31 @@ export default function RegisterPage() {
                 required
                 minLength={6}
               />
+            </div>
+            <div className="rounded-lg border bg-muted/30 p-3 space-y-2.5">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                ECHO collects your <span className="font-medium text-foreground">location</span> and any{' '}
+                <span className="font-medium text-foreground">photos</span> you submit with hazard reports to
+                verify and map environmental issues in your community.
+              </p>
+              <div className="flex items-start gap-2">
+                <Checkbox
+                  id="terms"
+                  checked={agreedToTerms}
+                  onCheckedChange={(checked) => setAgreedToTerms(checked === true)}
+                  className="mt-0.5"
+                />
+                <Label htmlFor="terms" className="text-xs font-normal leading-relaxed cursor-pointer">
+                  I agree to the{' '}
+                  <Link to="/privacy-policy" target="_blank" className="text-primary underline underline-offset-2">
+                    Privacy Policy
+                  </Link>{' '}
+                  and{' '}
+                  <Link to="/terms-of-service" target="_blank" className="text-primary underline underline-offset-2">
+                    Terms of Service
+                  </Link>
+                </Label>
+              </div>
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Creating Account...' : 'Register'}
