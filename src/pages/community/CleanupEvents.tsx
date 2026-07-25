@@ -17,10 +17,112 @@ export default function CleanupEvents() {
   return (
     <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-8">
 
-      <h1 className="text-3xl font-black">
-        Cleanup Events
-      </h1>
+      {/* Hero Section */}
+<Card className="border-none shadow-lg bg-gradient-to-r from-primary/10 to-green-50">
+  <CardContent className="p-6 md:p-8">
 
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+      {/* Left */}
+      <div className="space-y-3">
+
+        <div className="flex items-center gap-3">
+          <Calendar className="h-10 w-10 text-primary" />
+
+          <div>
+            <h1 className="text-3xl md:text-4xl font-black">
+              Cleanup Events
+            </h1>
+
+            <p className="text-muted-foreground mt-1">
+              Join environmental cleanup campaigns and help keep your community clean.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Right */}
+      <Button size="lg" className="rounded-full">
+        Join a Cleanup
+      </Button>
+
+    </div>
+
+  </CardContent>
+</Card>
+
+      {/* Statistics Cards */}
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+  {/* Upcoming Events */}
+  <Card className="border border-gray-100 shadow-sm hover:shadow-md transition-all">
+    <CardContent className="flex items-center gap-4 p-5">
+
+      <div className="rounded-full bg-primary/10 p-3">
+        <Calendar className="h-6 w-6 text-primary" />
+      </div>
+
+      <div>
+        <p className="text-2xl font-black">
+          {upcomingEvents.length}
+        </p>
+
+        <p className="text-sm text-muted-foreground">
+          Upcoming Events
+        </p>
+      </div>
+
+    </CardContent>
+  </Card>
+
+  {/* Completed Events */}
+  <Card className="border border-gray-100 shadow-sm hover:shadow-md transition-all">
+    <CardContent className="flex items-center gap-4 p-5">
+
+      <div className="rounded-full bg-green-100 p-3">
+        <Award className="h-6 w-6 text-green-600" />
+      </div>
+
+      <div>
+        <p className="text-2xl font-black">
+          {completedEvents.length}
+        </p>
+
+        <p className="text-sm text-muted-foreground">
+          Completed Events
+        </p>
+      </div>
+
+    </CardContent>
+  </Card>
+
+  {/* Volunteers */}
+  <Card className="border border-gray-100 shadow-sm hover:shadow-md transition-all">
+    <CardContent className="flex items-center gap-4 p-5">
+
+      <div className="rounded-full bg-blue-100 p-3">
+        <Users className="h-6 w-6 text-blue-600" />
+      </div>
+
+      <div>
+        <p className="text-2xl font-black">
+          {upcomingEvents.reduce(
+            (total, event) => total + (event.registered_count || 0),
+            0
+          )}
+        </p>
+
+        <p className="text-sm text-muted-foreground">
+          Registered Volunteers
+        </p>
+      </div>
+
+    </CardContent>
+  </Card>
+
+</div>
+      
       {/* EVENTS TAB */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
