@@ -1,4 +1,27 @@
-{/* EVENTS TAB */}
+export default function CleanupEvents() {
+  const { user } = useAuth();
+
+  const { events: upcomingEvents, loading: upcomingLoading } =
+    useUpcomingEvents();
+
+  const { events: completedEvents, loading: completedLoading } =
+    useUpcomingEvents(undefined, ["completed"]);
+
+  const {
+    registeredIds,
+    register,
+    unregister,
+    pendingId,
+  } = useEventRegistrations();
+
+  return (
+    <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-8">
+
+      <h1 className="text-3xl font-black">
+        Cleanup Events
+      </h1>
+
+      {/* EVENTS TAB */}
         <TabsContent value="events" className="m-0 space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
@@ -75,4 +98,8 @@
             </div>
           </div>
         </TabsContent>
+    </div>
+  );
+}
 
+export default CleanupEvents;
