@@ -8,6 +8,7 @@ import AdminLayout  from "@/layouts/AdminLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import ScrollToTop from "@/components/ScrollToTop";
 import AdminFAQPage from "@/pages/admin/AdminFAQPage";
+import CleanupEvents from "@/pages/community/CleanupEvents";
 
 // Lazy-loaded pages for code splitting (reduces build memory)
 const Login = lazy(() => import("@/pages/auth/Login"));
@@ -88,6 +89,7 @@ function App() {
                 <Route path="/knowledge" element={<KnowledgeCentre />} />
                 <Route path="/knowledge/:slug" element={<ArticleDetailsPage />} />
                 <Route path="/community-insights" element={<CommunityInsights />} />
+                <Route path="/cleanup-events" element={<CleanupEvents />} />
               </Route>
               
               {/* Auth Routes */}
