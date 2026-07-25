@@ -23,22 +23,32 @@ import {
   Loader2,
 } from "lucide-react";
 
-const { user } = useAuth();
+export default function CleanupEvents() {
 
-const { events: upcomingEvents, loading: upcomingLoading } =
-  useUpcomingEvents();
+  const { user } = useAuth();
 
-const { events: completedEvents, loading: completedLoading } =
-  useUpcomingEvents(undefined, ["completed"]);
+  const { events: upcomingEvents, loading: upcomingLoading } =
+    useUpcomingEvents();
 
-const {
-  registeredIds,
-  register,
-  unregister,
-  pendingId,
-} = useEventRegistrations();
+  const { events: completedEvents, loading: completedLoading } =
+    useUpcomingEvents(undefined, ["completed"]);
 
-const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const {
+    registeredIds,
+    register,
+    unregister,
+    pendingId,
+  } = useEventRegistrations();
+
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  
+  if (upcomingLoading || completedLoading) {
+  return (
+    <div className="flex justify-center py-20">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    </div>
+  );
+  }
 
 
 return (
@@ -227,6 +237,22 @@ className="h-full w-full object-cover"
 {upcomingEvents[0].description ?? "No description available."}
 </p>
 
+<div className="space-y-2 pt-4 text-sm">
+
+<p>
+📅 {new Date(upcomingEvents[0].event_date).toLocaleDateString()}
+</p>
+
+<p>
+📍 {upcomingEvents[0].location_name}
+</p>
+
+<p>
+👥 {upcomingEvents[0].registered_count} Volunteers
+</p>
+
+</div>
+
 </CardContent>
 
 </div>
@@ -292,10 +318,10 @@ className="h-full w-full object-cover"
 <Button
 className="w-full"
 variant={joined ? "outline" : "default"}
-onClick={() => {
-  setSelectedEvent(event);
-}}
+onClick={() => setSelectedEvent(event)}
 >
+{joined ? "View Registration" : "View Details"}
+</Button>
 
 {joined?"Registered ✓":"Join Event"}
 
@@ -373,23 +399,41 @@ onOpenChange={() => setSelectedEvent(null)}
     {selectedEvent?.description ?? "No description available."}
   </p>
 
-  <Button
-    className="w-full"
-    onClick={() => {
-      if (!selectedEvent) return;
+<Button
+className="w-full"
+disabled={pendingId === selectedEvent?.id}
+onClick={() => {
 
-      if (registeredIds.has(selectedEvent.id)) {
-        unregister(selectedEvent.id);
-      } else {
-        register(selectedEvent.id);
-      }
-    }}
-  >
-    {selectedEvent &&
-    registeredIds.has(selectedEvent.id)
-      ? "Registered ✓"
-      : "Join Event"}
-  </Button>
+if (!selectedEvent) return;
+
+if (registeredIds.has(selectedEvent.id)) {
+
+unregister(selectedEvent.id);
+
+} else {
+
+register(selectedEvent.id);
+
+}
+
+}}
+>
+
+{pendingId === selectedEvent?.id ? (
+
+<Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+
+) : registeredIds.has(selectedEvent?.id) ? (
+
+"Registered ✓"
+
+) : (
+
+"Join Event"
+
+)}
+
+</Button>
 
 </div>
 
