@@ -257,7 +257,7 @@ export function DashboardLayout() {
 
       <div className="flex flex-1 flex-col">
         <header
-          className="sticky top-0 z-20 flex min-h-20 items-center justify-between border-b border-border/40 bg-background px-4 py-2 md:px-8"
+          className="sticky top-0 z-20 flex min-h-20 items-center justify-between border-b border-gray-200 bg-white px-4 py-2 md:px-8"
           style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
         >
           <div className="flex items-center gap-4">
@@ -576,7 +576,5 @@ export function DashboardLayout() {
       </div>
 
     </div>
-  );
-              }
   );
 }
