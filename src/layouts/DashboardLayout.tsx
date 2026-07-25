@@ -50,7 +50,7 @@ const navItems = [
   { name: 'Interactive Map', href: '/map', icon: MapIcon, roles: ['citizen', 'volunteer'] },
   { name: 'AI Intelligence', href: '/ai-intelligence', icon: BrainCircuit, roles: ['citizen', 'volunteer'] },
   { name: 'Community Health', href: '/community-health', icon: HeartPulse, roles: ['citizen', 'volunteer'] },
-  { name: 'Cleanup Events', href: '/community-insights', icon: Calendar, roles: ['citizen', 'volunteer'] },
+  { name: 'Cleanup Events', href: '/cleanup-events', icon: Calendar, roles: ['citizen', 'volunteer'] },
   { name: 'Impact Center', href: '/rewards', icon: Award, roles: ['citizen', 'volunteer'] },
   { name: 'Community Insights', href: '/community-insights', icon: Users, roles: ['citizen', 'volunteer'] },
   { name: 'Knowledge Centre', href: '/knowledge', icon: BookOpen, roles: ['citizen', 'volunteer'] },
