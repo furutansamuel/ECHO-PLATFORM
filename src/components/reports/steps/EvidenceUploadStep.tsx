@@ -79,10 +79,12 @@ export default function EvidenceUploadStep() {
   ) => {
     if (!validateFile(file, type)) return;
 
-    const bucket =
-      type === "image"
-        ? "report-images"
-        : "report-videos";
+    // Both images and videos live in the single 'report-evidence' bucket —
+    // that's the only bucket that actually exists with a matching storage
+    // RLS policy (see docs/echo-supabase-sync.sql). Uploading to
+    // 'report-images'/'report-videos' always failed with "new row violates
+    // row-level security policy" because those buckets don't exist at all.
+    const bucket = "report-evidence";
 
     const extension = file.name.split(".").pop();
 
@@ -171,7 +173,7 @@ export default function EvidenceUploadStep() {
 
       if (path) {
         await supabase.storage
-          .from("report-images")
+          .from("report-evidence")
           .remove([path]);
       }
     } catch {}
@@ -192,7 +194,7 @@ export default function EvidenceUploadStep() {
 
       if (path) {
         await supabase.storage
-          .from("report-videos")
+          .from("report-evidence")
           .remove([path]);
       }
     } catch {}
@@ -473,3 +475,4 @@ const Label = ({
     {children}
   </label>
 );
+
