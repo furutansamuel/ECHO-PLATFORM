@@ -26,7 +26,7 @@ function ComingSoon({ label }: { label: string }) {
         <h3 className="font-bold">{label} are coming soon</h3>
         <p className="text-sm text-muted-foreground max-w-md mx-auto">
           We're building this out for a future release. Check back soon, or explore
-          Campaigns, Events, and the community Feed in the meantime.
+          Campaigns and the community Feed in the meantime.
         </p>
       </CardContent>
     </Card>
@@ -153,7 +153,6 @@ const CommunityInsights: React.FC = () => {
           <TabsTrigger value="challenges" className="rounded-full px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-white text-xs">Challenges</TabsTrigger>
           <TabsTrigger value="leaderboard" className="rounded-full px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-white text-xs">Leaderboard</TabsTrigger>
           <TabsTrigger value="feed" className="rounded-full px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-white text-xs">Feed</TabsTrigger>
-          <TabsTrigger value="events" className="rounded-full px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-white text-xs">Events</TabsTrigger>
           <TabsTrigger value="recognition" className="rounded-full px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-white text-xs">Recognition</TabsTrigger>
         </TabsList>
 
