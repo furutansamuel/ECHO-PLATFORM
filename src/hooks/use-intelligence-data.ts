@@ -47,10 +47,12 @@ export const useIntelligenceData = () => {
   const [campaigns, setCampaigns] = useState<CommunityCampaign[]>([]);
   const [alerts, setAlerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!supabase) return;
     setLoading(true);
+    setError(null);
     try {
       const reportsPromise = supabase.from('hazard_reports').select('*').order('created_at', { ascending: false });
       const statsPromise = user 
@@ -117,9 +119,10 @@ export const useIntelligenceData = () => {
         trend: 'stable',
         categories: { flood_risk: 65, waste_management: 78, air_quality: 82, water_quality: 70 }
       });
-    } catch (error: any) {
-      console.error('Error fetching intelligence data:', error);
-      Sonner.toast.error('Failed to load environmental intelligence: ' + error.message);
+    } catch (err: any) {
+      console.error('Error fetching intelligence data:', err);
+      setError(err?.message || 'Failed to load environmental intelligence data.');
+      Sonner.toast.error('Failed to load environmental intelligence: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -175,6 +178,7 @@ export const useIntelligenceData = () => {
     campaigns,
     alerts,
     loading,
+    error,
     refetch: fetchData 
   };
 };
