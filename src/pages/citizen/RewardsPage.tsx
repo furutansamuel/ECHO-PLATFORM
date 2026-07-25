@@ -3,6 +3,9 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/use-auth";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useEventRegistrations } from "@/hooks/use-event-registrations";
 import { 
   Award, 
   TrendingUp, 
@@ -16,38 +19,92 @@ import {
   Zap,
   Leaf,
   Globe,
-  Heart
+  Heart,
+  MapPin
 } from 'lucide-react';
 import { 
   ACHIEVEMENT_BADGES,
   calculateProgressToNextLevel 
 } from '@/lib/impact-constants';
 
+interface RecentReport {
+  id: string;
+  title: string;
+  status: string;
+  verification_status?: string;
+  created_at: string;
+  location: { ward?: string; lga?: string } | null;
+}
+
 export default function RewardsPage() {
-  const { userStats } = useAuth();
+  const { user, userStats } = useAuth();
+  const { registeredIds } = useEventRegistrations();
+  const [recentReports, setRecentReports] = useState<RecentReport[]>([]);
+  const [rank, setRank] = useState<number | null>(null);
 
   const impactPoints = userStats?.eco_points ?? 0;
 
-const impactStats = userStats ?? {
-  reportsSubmitted: 0,
-  verifiedReports: 0,
-  cleanupEventsJoined: 0,
-  environmentalScore: 0,
-  communitiesHelped: 0,
-  volunteerHours: 0,
-};
+  // user_stats columns are snake_case (total_reports, verified_reports, ...);
+  // only fields that actually exist on that table are used here. There's no
+  // table tracking cleanup events, an environmental score, or volunteer
+  // hours yet, so those are left out rather than shown as fabricated zeros.
+  const impactStats = {
+    reportsSubmitted: userStats?.total_reports ?? 0,
+    verifiedReports: userStats?.verified_reports ?? 0,
+    resolvedReports: userStats?.resolved_reports ?? 0,
+  };
 
-const pointHistory = userStats?.point_history ?? [];
+  useEffect(() => {
+    if (!user || !supabase) return;
+    let alive = true;
 
-// ACHIEVEMENT_BADGES is the real catalog of badge names/descriptions/
-// point thresholds, kept as legitimate reference data. But it also ships
-// hardcoded earned:true/false + earnedDate per badge, which would show
-// as real accomplishments for any account — so earned status here is
-// recomputed from the account's actual earned-badge list instead.
-const earnedBadgeIds = new Set((userStats?.badges ?? []).map((b: any) => b.id));
+    (async () => {
+      const { data } = await supabase
+        .from('hazard_reports')
+        .select('id, title, status, verification_status, created_at, location')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(8);
+      if (alive && data) setRecentReports(data as RecentReport[]);
+
+      const { count } = await supabase
+        .from('user_stats')
+        .select('user_id', { count: 'exact', head: true })
+        .gt('eco_points', impactPoints);
+      if (alive && typeof count === 'number') setRank(count + 1);
+    })();
+
+    return () => { alive = false; };
+  }, [user, impactPoints]);
+
+  // Wards touched by this user's own reports — a real, derivable proxy
+  // for "communities helped" instead of an untracked column.
+  const wardsHelped = new Set(
+    recentReports.map((r) => r.location?.ward || r.location?.lga).filter(Boolean)
+  ).size;
+
+  // Recent activity built from the user's actual report submissions —
+  // point values shown match the "How to Earn Impact Points" rules below,
+  // not a separate ledger (none exists yet), so they're a label, not a
+  // literal per-event transaction log.
+  const pointHistory = recentReports.map((r) => ({
+    id: r.id,
+    type: r.status === 'Verified' || r.status === 'Resolved' ? 'verification' : 'report',
+    description: r.status === 'Verified' || r.status === 'Resolved'
+      ? `Report verified: ${r.title}`
+      : `Report submitted: ${r.title}`,
+    date: r.created_at,
+    points: r.status === 'Verified' || r.status === 'Resolved' ? 100 : 50,
+  }));
+
+// Badge unlock is derived from real eco_points against each badge's
+// pointsRequired threshold — there's no per-badge tracking table, so
+// this is the honest substitute for the catalog's hardcoded earned/
+// earnedDate fields (which would otherwise show as real for every account).
 const badges = ACHIEVEMENT_BADGES.map((b) => ({
   ...b,
-  earned: earnedBadgeIds.has(b.id),
+  earned: impactPoints >= b.pointsRequired,
+  earnedDate: undefined as string | undefined,
 }));
   const { currentLevel, nextLevel, progress, pointsToNext } =
     calculateProgressToNextLevel(impactPoints);
@@ -104,9 +161,9 @@ const badges = ACHIEVEMENT_BADGES.map((b) => ({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
                 { label: 'Reports', value: impactStats.reportsSubmitted, icon: FileText },
-{ label: 'Verified', value: impactStats.verifiedReports, icon: CheckCircle },
-{ label: 'Events', value: impactStats.cleanupEventsJoined, icon: Calendar },
-                { label: 'Rank', value: '#42', icon: TrendingUp },
+                { label: 'Verified', value: impactStats.verifiedReports, icon: CheckCircle },
+                { label: 'Events', value: registeredIds.size, icon: Calendar },
+                { label: 'Rank', value: rank ? `#${rank}` : '—', icon: TrendingUp },
               ].map((stat, i) => (
                 <div key={i} className="p-4 rounded-2xl bg-muted/30 border border-muted/10 text-center">
                   <stat.icon className="h-5 w-5 mx-auto mb-2 text-primary" />
@@ -128,16 +185,16 @@ const badges = ACHIEVEMENT_BADGES.map((b) => ({
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
-              <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Environmental Score</p>
-              <p className="text-3xl font-black italic">{impactStats.environmentalScore}/100</p>
+              <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Current Level</p>
+              <p className="text-3xl font-black italic">{currentLevel.emoji} {currentLevel.name}</p>
             </div>
             <div className="p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
-              <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Communities Helped</p>
-              <p className="text-3xl font-black italic">{impactStats.communitiesHelped} Areas</p>
+              <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Wards Reported</p>
+              <p className="text-3xl font-black italic">{wardsHelped} Area{wardsHelped === 1 ? '' : 's'}</p>
             </div>
             <div className="p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
-              <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Volunteer Hours</p>
-              <p className="text-3xl font-black italic">{impactStats.volunteerHours}h</p>
+              <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Reports Resolved</p>
+              <p className="text-3xl font-black italic">{impactStats.resolvedReports}</p>
             </div>
           </CardContent>
         </Card>
@@ -220,6 +277,11 @@ const badges = ACHIEVEMENT_BADGES.map((b) => ({
         <Card className="border-muted/20 shadow-sm">
           <CardContent className="pt-6">
             <div className="space-y-4">
+              {pointHistory.length === 0 && (
+                <p className="text-sm text-muted-foreground italic text-center py-6">
+                  No activity yet — submit your first hazard report to start earning points.
+                </p>
+              )}
               {pointHistory.map((entry: any, index: number) => (
                 <div key={entry.id}>
                   <div className="flex items-center justify-between">
