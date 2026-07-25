@@ -71,7 +71,7 @@ export default function RegisterPage() {
               <Label htmlFor="name">Full Name</Label>
               <Input 
                 id="name" 
-                placeholder="John Doe" 
+                placeholder="John Musa" 
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
                 required
@@ -82,7 +82,7 @@ export default function RegisterPage() {
               <Input 
                 id="email" 
                 type="email" 
-                placeholder="john@example.com" 
+                placeholder="johnmusa@example.com" 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 required
@@ -131,7 +131,7 @@ export default function RegisterPage() {
         </CardContent>
         <CardFooter className="flex justify-center border-t pt-6">
           <div className="text-sm text-muted-foreground">
-            Already have an account? <Button variant="link" className="px-0" onClick={() => navigate('/login')}>Login</Button>
+            Already have an account? <Button variant="link" className="px-0" onClick={() => navigate('/auth/login')}>Login</Button>
           </div>
         </CardFooter>
       </Card>
