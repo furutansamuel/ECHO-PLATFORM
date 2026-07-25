@@ -258,7 +258,7 @@ const CommunityInsights: React.FC = () => {
                   Sign in to share environmental reports and community updates.
                 </p>
                 <Button asChild>
-                  <Link to="/login">Sign In</Link>
+                  <Link to="/auth/login">Sign In</Link>
                 </Button>
               </CardContent>
             </Card>
