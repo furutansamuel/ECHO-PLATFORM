@@ -89,7 +89,7 @@ function App() {
                 <Route path="/knowledge" element={<KnowledgeCentre />} />
                 <Route path="/knowledge/:slug" element={<ArticleDetailsPage />} />
                 <Route path="/community-insights" element={<CommunityInsights />} />
-                <Route path="/cleanup-events" element={<CleanupEvents />} />
+                
               </Route>
               
               {/* Auth Routes */}
@@ -110,6 +110,7 @@ function App() {
                 <Route path="/notifications" element={<NotificationsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/cleanup-events" element={<CleanupEvents />} />
                 
                {/* Intelligence Routes */}
                 <Route path="/analytics" element={<AnalyticsPage />} />
