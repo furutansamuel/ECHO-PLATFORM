@@ -140,7 +140,14 @@ export default function PreviewStep({ onEdit }: PreviewStepProps) {
               </div>
               
               <div className="relative rounded-xl overflow-hidden border aspect-video">
-                <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/3.3792,6.5244,12,0/600x400?access_token=mock')] bg-cover bg-center" />
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={
+                    data.location.lat && data.location.lng
+                      ? { backgroundImage: `url('https://staticmap.openstreetmap.de/staticmap.php?center=${data.location.lat},${data.location.lng}&zoom=15&size=600x400&markers=${data.location.lat},${data.location.lng},red-pushpin')` }
+                      : { backgroundColor: 'hsl(var(--muted))' }
+                  }
+                />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <MapPin className="h-6 w-6 text-primary" />
                 </div>
