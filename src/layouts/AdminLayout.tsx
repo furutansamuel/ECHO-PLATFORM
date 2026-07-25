@@ -226,7 +226,7 @@ const AdminLayout = () => {
 
   // Protect admin route
   if (!user || !profile) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/auth/login" replace />;
   }
 
 
