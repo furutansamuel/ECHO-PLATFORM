@@ -22,7 +22,6 @@ export default function CleanupEvents() {
       </h1>
 
       {/* EVENTS TAB */}
-        <TabsContent value="events" className="m-0 space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-bold uppercase tracking-tight mb-4">Upcoming Events</h3>
@@ -97,9 +96,6 @@ export default function CleanupEvents() {
               )}
             </div>
           </div>
-        </TabsContent>
-    </div>
+     </div>
   );
 }
-
-export default CleanupEvents;
