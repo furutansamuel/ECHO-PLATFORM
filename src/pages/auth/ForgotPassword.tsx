@@ -23,14 +23,14 @@ export default function ForgotPasswordPage() {
     setLoading(true);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${window.location.origin}/auth/reset-password`,
       });
 
       if (error) {
         toast.error(error.message);
       } else {
         toast.success('Password reset link sent to your email');
-        navigate('/login');
+        navigate('/auth/login');
       }
     } catch {
       toast.error('An unexpected error occurred');
@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
     <div className="flex items-center justify-center min-h-[calc(100vh-160px)] p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <Button variant="ghost" className="w-fit p-0 h-auto mb-4 hover:bg-transparent" onClick={() => navigate('/login')}>
+          <Button variant="ghost" className="w-fit p-0 h-auto mb-4 hover:bg-transparent" onClick={() => navigate('/auth/login')}>
             <ChevronLeft className="mr-2 h-4 w-4" /> Back to login
           </Button>
           <img src="/echo-wordmark.svg" alt="ECHO" className="h-10 w-auto mb-3" />
@@ -72,3 +72,4 @@ export default function ForgotPasswordPage() {
     </div>
   );
 }
+
