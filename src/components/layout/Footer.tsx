@@ -143,17 +143,19 @@ export function Footer() {
                   href={s.href}
                   aria-label={s.name}
                   className="
-                    inline-flex
-                    h-9
-                    w-9
-                    items-center
-                    justify-center
-                    rounded-lg
-                    bg-[#2E7D32]
-                    text-white
-                    transition
-                    hover:bg-white/20
-                  "
+  inline-flex
+  h-9
+  w-9
+  items-center
+  justify-center
+  rounded-full
+  bg-white
+  text-[#1B5E20]
+  shadow-sm
+  transition
+  hover:bg-[#F9A825]
+  hover:text-white
+"
                 >
                   <s.icon className="h-4 w-4" />
                 </a>
