@@ -70,6 +70,45 @@ export interface EchoNotification {
 const STORAGE_KEY_DRAFTS = 'echo_drafts';
 const STORAGE_KEY_NOTIFICATIONS = 'echo_notifications';
 
+/** Calls the generate-report-assessment edge function (real Gemini call)
+ * and, on success, updates the report row with the real assessment,
+ * overwriting the instant heuristic values set by the DB trigger at
+ * insert time. Silently leaves the heuristic in place on any failure —
+ * this must never surface an error to the user, since submission
+ * already succeeded before this runs. */
+async function requestRealAiAssessment(reportId: string, report: Report) {
+  if (!supabase) return;
+
+  const { data, error } = await supabase.functions.invoke('generate-report-assessment', {
+    body: {
+      category: report.category,
+      title: report.title,
+      description: report.description,
+      ward: report.location?.ward,
+      lga: report.location?.lga,
+    },
+  });
+
+  if (error || !data?.result) {
+    throw error || new Error('No result returned');
+  }
+
+  const { severity, risk_score, priority, impact, summary } = data.result;
+
+  await supabase
+    .from('hazard_reports')
+    .update({
+      severity,
+      ai_risk_score: risk_score,
+      ai_priority: priority,
+      ai_impact: impact,
+      ai_summary: summary,
+      ai_generated_at: new Date().toISOString(),
+      ai_model: data.model || 'gemini-1.5-flash',
+    })
+    .eq('id', reportId);
+}
+
 export const useReportsStore = () => {
   const { user, userStats } = useAuth();
   const [draft, setDraft] = useState<Partial<Report> | null>(null);
@@ -185,6 +224,16 @@ export const useReportsStore = () => {
     // number back to the caller and refreshes local stats optimistically.
     report.referenceNumber = data.reference_number;
     report.id = data.id;
+
+    // Real AI assessment: fired off in the background, not awaited.
+    // The row already has an instant heuristic assessment from the
+    // BEFORE INSERT trigger, so the user sees *something* immediately;
+    // this silently upgrades it to a real model result a few seconds
+    // later if it succeeds, and just leaves the heuristic in place
+    // (ai_model stays 'heuristic') if it fails for any reason.
+    requestRealAiAssessment(data.id, report).catch((err) => {
+      console.warn('AI assessment upgrade failed, heuristic result stands:', err);
+    });
 
     // Update local stats optimistically; the real numbers will refresh
     // from userStats once the DB trigger/RPC (if any) recalculates them.
