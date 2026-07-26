@@ -26,7 +26,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-12 lg:py-24 section-bg-soft">
+    <section className="py-12 lg:py-16 section-bg-soft">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-4xl font-bold text-primary">How ECHO Works</h2>
