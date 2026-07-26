@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
@@ -47,6 +48,8 @@ export default function ReportWizard() {
   const { saveReport, saveDraft, draft } =
     useReportsStore();
 
+  const [searchParams] = useSearchParams();
+
   const methods = useForm<ReportFormData>({
     resolver: zodResolver(reportSchema) as any,
     defaultValues: (draft as any) || defaultValues,
@@ -57,7 +60,20 @@ export default function ReportWizard() {
     watch,
     trigger,
     handleSubmit,
+    setValue,
   } = methods;
+
+  // Deep-link support: /report?category=Flood pre-selects that category
+  // (used by the landing page's hazard-category cards). Only applies
+  // when there's no existing draft, so it never overwrites in-progress
+  // work.
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && !draft) {
+      setValue('category', categoryParam as any);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const formData = watch();
 
