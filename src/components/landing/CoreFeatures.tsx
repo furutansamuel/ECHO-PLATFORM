@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BrainCircuit, Users, Map, Landmark, BarChart3, Award } from 'lucide-react';
+import { Users, Landmark, Award } from 'lucide-react';
 
 const features = [
-  {
-    icon: BrainCircuit,
-    title: 'AI Environmental Intelligence',
-    desc: 'Verified insights, hotspot detection and risk prediction powered by machine learning.',
-    href: '/ai-intelligence',
-    tone: 'from-primary/20 to-emerald-400/10',
-    solid: 'from-primary to-emerald-600',
-  },
   {
     icon: Users,
     title: 'Community Reporting',
@@ -18,14 +10,6 @@ const features = [
     href: '/report',
     tone: 'from-sky-500/20 to-cyan-400/10',
     solid: 'from-sky-500 to-cyan-500',
-  },
-  {
-    icon: Map,
-    title: 'Interactive GIS Mapping',
-    desc: 'Explore live incidents, clusters and environmental layers across your region.',
-    href: '/map',
-    tone: 'from-emerald-500/20 to-teal-400/10',
-    solid: 'from-emerald-500 to-teal-500',
   },
   {
     icon: Landmark,
@@ -36,16 +20,8 @@ const features = [
     solid: 'from-amber-500 to-yellow-500',
   },
   {
-    icon: BarChart3,
-    title: 'Environmental Analytics',
-    desc: 'Trends, community health scores and long-term impact dashboards.',
-    href: '/community-health',
-    tone: 'from-violet-500/20 to-purple-400/10',
-    solid: 'from-violet-500 to-purple-500',
-  },
-  {
     icon: Award,
-    title: 'Rewards & Community Impact',
+    title: 'Rewards & Recognition',
     desc: 'Earn points and recognition for contributions that improve your community.',
     href: '/rewards',
     tone: 'from-rose-500/20 to-pink-400/10',
@@ -102,7 +78,7 @@ function FeatureCard({ f }: { f: Feature }) {
 
 export function CoreFeatures() {
   return (
-    <section className="bg-background py-16 lg:py-24">
+    <section className="bg-background py-16 lg:py-20">
       <div className="container mx-auto px-4">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl">
