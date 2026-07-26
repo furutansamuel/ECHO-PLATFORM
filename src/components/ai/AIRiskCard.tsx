@@ -23,6 +23,7 @@ interface AIRiskCardProps {
   duplicateId?: string | null;
   verificationStatus?: string;
   verificationConfidence?: number;
+  aiModel?: string;
 }
 
 export const AIRiskCard: React.FC<AIRiskCardProps> = ({
@@ -35,6 +36,7 @@ export const AIRiskCard: React.FC<AIRiskCardProps> = ({
   duplicateId,
   verificationStatus,
   verificationConfidence,
+  aiModel,
 }) => {
   const getScoreColor = (s: number) => {
     if (s >= 80) return 'text-destructive';
@@ -68,6 +70,15 @@ export const AIRiskCard: React.FC<AIRiskCardProps> = ({
         <CardTitle className="text-sm font-semibold flex items-center gap-2">
           <Brain className="w-4 h-4 text-primary" />
           AI Environmental Insight
+          {aiModel && aiModel !== 'heuristic' ? (
+            <Badge variant="outline" className="text-[9px] font-normal border-primary/30 text-primary">
+              Gemini AI
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="text-[9px] font-normal text-muted-foreground">
+              Automated
+            </Badge>
+          )}
         </CardTitle>
         <Badge variant="outline" className={getPriorityColor(priority)}>
           {priority} Priority
