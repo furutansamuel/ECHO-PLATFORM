@@ -13,7 +13,7 @@ const productLinks = [
 
 const resourceLinks = [
   { name: 'Knowledge Centre', href: '/knowledge' },
-  { name: 'Cleanup Events', href: '/community-insights' },
+  { name: 'Cleanup Events', href: '/community-events' },
   { name: 'Impact Center', href: '/rewards' },
   { name: 'FAQ', href: '/faq' },
 ];
@@ -45,7 +45,7 @@ export function Footer() {
   const isLandingPage = location.pathname === '/';
 
   return (
-    <footer className="relative border-t border-white/10 bg-[#1B5E20]">
+    <footer className="relative border-t border-white/10 bg-[#0F4D26]">
 
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
 
@@ -62,7 +62,7 @@ export function Footer() {
               justify-between
               gap-6
               rounded-3xl
-              bg-white/10
+              bg-[#FAFAFA]
               backdrop-blur-xl
               p-8
               text-center
@@ -75,7 +75,7 @@ export function Footer() {
                   Ready to make a difference?
                 </h3>
 
-                <p className="mt-1 text-sm text-white/70">
+                <p className="mt-1 text-sm text-white/85">
                   Join citizens across Nigeria reporting hazards and building healthier communities.
                 </p>
               </div>
@@ -130,7 +130,7 @@ export function Footer() {
               </span>
             </Link>
 
-            <p className="mt-3 max-w-xs text-sm text-white/70">
+            <p className="mt-3 max-w-xs text-sm text-white/85">
               Environmental Community Health Observatory — AI-powered environmental intelligence for cleaner, safer communities.
             </p>
 
@@ -149,7 +149,7 @@ export function Footer() {
                     items-center
                     justify-center
                     rounded-lg
-                    bg-white/10
+                    bg-[#2E7D32]
                     text-white
                     transition
                     hover:bg-white/20
@@ -208,7 +208,7 @@ export function Footer() {
           border-white/10
           pt-6
           text-xs
-          text-white/60
+          text-white/75
           sm:flex-row
         ">
 
