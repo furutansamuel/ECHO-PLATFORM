@@ -24,13 +24,8 @@ export interface Report {
   category: HazardCategory;
   title: string;
   description: string;
-  estimatedSize: string;
-  affectedArea: string;
   dateObserved: string;
   timeObserved: string;
-  immediateRisk: string;
-  environmentalImpact: string;
-  requiredAction: string;
   images: string[];
   video?: string;
   location: {
@@ -42,7 +37,6 @@ export interface Report {
     state: string;
     landmark: string;
   };
-  severity: Severity;
   isAnonymous: boolean;
   notifyVolunteers: boolean;
   shareWithCommunity: boolean;
@@ -149,22 +143,22 @@ export const useReportsStore = () => {
     // let a citizen edit/delete their own report specifically check
     // status = 'Pending'. reference_number is left out entirely so the
     // auto_generate_reference_number() trigger assigns the real
-    // ECHO-YY-NNNNN number — the client-generated placeholder is
-    // overwritten by reading it back below.
+    // ECHO-YYYYMMDD-XXXXXX number — the client-generated placeholder is
+    // overwritten by reading it back below. severity is also left out —
+    // auto_generate_ai_assessment() now computes and sets it from
+    // category + description instead of a user-supplied value.
+    // estimated_size/affected_area/immediate_risk/environmental_impact/
+    // required_action are no longer collected from the user at all
+    // (those columns are now nullable — see
+    // docs/migrations/2026-07-25-fix-reference-number-and-simplify-report.sql).
     const { data, error } = await supabase
       .from('hazard_reports')
       .insert({
         title: report.title,
         description: report.description,
         category: report.category,
-        estimated_size: report.estimatedSize,
-        affected_area: report.affectedArea,
         date_observed: report.dateObserved,
         time_observed: report.timeObserved,
-        immediate_risk: report.immediateRisk,
-        environmental_impact: report.environmentalImpact,
-        required_action: report.requiredAction,
-        severity: report.severity,
         status: 'Pending',
         location: report.location,
         images: report.images,
