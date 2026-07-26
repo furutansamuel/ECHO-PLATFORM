@@ -47,12 +47,14 @@ export function PremiumBottomNav({
   );
 
   const prefersReducedMotion = useReducedMotion();
-  const indicatorTransition = prefersReducedMotion
+
+  const transition = prefersReducedMotion
     ? { duration: 0 }
-    : { type: 'spring' as const, stiffness: 260, damping: 26 };
-  const iconTransition = prefersReducedMotion
-    ? { duration: 0 }
-    : { type: 'spring' as const, stiffness: 320, damping: 22 };
+    : {
+        type: 'spring' as const,
+        stiffness: 300,
+        damping: 25,
+      };
 
   return (
     <nav
@@ -62,28 +64,25 @@ export function PremiumBottomNav({
         paddingBottom: 'max(env(safe-area-inset-bottom),0.75rem)',
       }}
     >
-      <div className="pointer-events-auto mx-auto w-[min(94vw,26rem)]">
+      <div className="pointer-events-auto mx-auto w-[min(92vw,25rem)]">
         <div className="relative">
 
-          {/* Navigation Bar */}
+          {/* Modern Floating Navbar */}
           <div
             className="
               relative
               h-16
               rounded-[2rem]
+              bg-[#1B5E20]/95
+              backdrop-blur-xl
               border
-              border-white/15
-              bg-gradient-to-r
-              from-primary/95
-              via-secondary/95
-              to-accent/95
-              backdrop-blur-2xl
-              shadow-[0_20px_60px_-15px_rgba(27,94,32,0.45)]
+              border-white/10
+              shadow-[0_20px_50px_-15px_rgba(0,0,0,0.45)]
             "
           >
 
-            {/* Navigation Items */}
             <ul className="relative flex h-full items-center">
+
               {enriched.map((item, index) => {
                 const isActive = index === activeIndex;
                 const Icon = item.icon;
@@ -93,73 +92,60 @@ export function PremiumBottomNav({
                     key={item.href}
                     className="relative flex-1"
                   >
+
+                    {/* Active Floating Circle */}
                     {isActive && (
-                      <>
-                        {/* Liquid Scoop — position is driven by layoutId (transform/FLIP), never `left` */}
-                        <motion.div
-                          layoutId="bottom-nav-scoop"
-                          aria-hidden
-                          className="
-                            absolute
-                            -top-4
-                            left-1/2
-                            h-8
-                            w-16
-                            -translate-x-1/2
-                            rounded-b-[2rem]
-                            bg-gradient-to-r
-                            from-primary/95
-                            via-secondary/95
-                            to-accent/95
-                          "
-                          transition={indicatorTransition}
-                        />
-                        {/* Active Button glow */}
-                        <motion.div
-                          layoutId="bottom-nav-glow"
-                          aria-hidden
-                          className="
-                            absolute
-                            -top-5
-                            left-1/2
-                            h-14
-                            w-14
-                            -translate-x-1/2
-                            rounded-full
-                            bg-gradient-to-br
-                            from-white
-                            via-green-50
-                            to-accent
-                            ring-4
-                            ring-primary/30
-                            shadow-[0_12px_30px_rgba(67,160,71,0.45)]
-                          "
-                          transition={indicatorTransition}
-                        />
-                      </>
+                      <motion.div
+                        layoutId="active-nav"
+                        className="
+                          absolute
+                          -top-5
+                          left-1/2
+                          h-14
+                          w-14
+                          -translate-x-1/2
+                          rounded-full
+                          bg-white
+                          shadow-lg
+                          ring-4
+                          ring-[#1B5E20]/40
+                        "
+                        transition={transition}
+                      />
                     )}
+
                     <Link
                       to={item.href}
                       aria-label={item.name}
-                      aria-current={isActive ? 'page' : undefined}
-                      className={cn(
-                        'group relative mx-auto flex h-12 w-12 items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
-                      )}
+                      aria-current={
+                        isActive ? 'page' : undefined
+                      }
+                      className="
+                        relative
+                        mx-auto
+                        flex
+                        h-12
+                        w-12
+                        items-center
+                        justify-center
+                      "
                     >
+
                       <motion.span
                         initial={false}
                         animate={{
-                          y: isActive ? -22 : 0,
-                          scale: isActive ? 1.18 : 1,
+                          y: isActive ? -20 : 0,
+                          scale: isActive ? 1.2 : 1,
                         }}
-                        transition={iconTransition}
+                        transition={transition}
                         className={cn(
-                          'relative flex items-center justify-center',
+                          "relative flex items-center justify-center",
                           isActive
-                            ? 'text-primary'
-                            : 'text-white/75 group-hover:text-white'
+                            ? "text-[#1B5E20]"
+                            : "text-white"
                         )}
                       >
+
                         <Icon className="h-5 w-5" />
 
                         {item.badge && item.badge > 0 && (
@@ -167,10 +153,10 @@ export function PremiumBottomNav({
                             className="
                               absolute
                               -right-2
-                              -top-1
+                              -top-2
                               flex
                               h-4
-                              min-w-[1rem]
+                              min-w-4
                               items-center
                               justify-center
                               rounded-full
@@ -180,7 +166,7 @@ export function PremiumBottomNav({
                               font-bold
                               text-white
                               ring-2
-                              ring-primary
+                              ring-[#1B5E20]
                             "
                           >
                             {item.badge > 9
@@ -188,8 +174,10 @@ export function PremiumBottomNav({
                               : item.badge}
                           </span>
                         )}
+
                       </motion.span>
 
+                      {/* Label */}
                       <motion.span
                         initial={false}
                         animate={{
@@ -200,19 +188,24 @@ export function PremiumBottomNav({
                           bottom-1
                           text-[10px]
                           font-medium
-                          text-white/75
+                          text-white
                         "
                       >
                         {item.name}
                       </motion.span>
+
                     </Link>
+
                   </li>
                 );
               })}
+
             </ul>
+
           </div>
+
         </div>
       </div>
     </nav>
   );
-}
+          }
