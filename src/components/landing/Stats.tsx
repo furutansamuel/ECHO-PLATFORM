@@ -76,7 +76,7 @@ export function Stats() {
 
 
   return (
-    <section className="py-16 lg:py-24">
+    <section className="py-16 lg:py-20">
       <div className="container mx-auto px-4">
 
         <motion.div
