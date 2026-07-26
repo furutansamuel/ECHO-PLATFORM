@@ -20,7 +20,6 @@ const LandingPage = () => {
         <Stats />
         <CoreFeatures />
         <HowItWorks />
-        <HazardCategories />
         <IntelligenceBento />
         <CommunityImpact />
         <UpcomingEvents />
