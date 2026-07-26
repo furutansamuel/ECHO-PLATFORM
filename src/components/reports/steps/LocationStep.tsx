@@ -5,7 +5,9 @@ import {
   Navigation,
   Compass,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Loader2,
+  Search as SearchIcon
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -104,6 +106,31 @@ const [position,setPosition]=useState<[number,number]>([
 ]);
 
 
+
+const [searchQuery, setSearchQuery] = useState('');
+const [isSearching, setIsSearching] = useState(false);
+
+const searchLocation = async () => {
+  if (!searchQuery.trim()) return;
+  setIsSearching(true);
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ng&q=${encodeURIComponent(searchQuery)}`
+    );
+    const results = await response.json();
+    if (!results || results.length === 0) {
+      toast.error("Couldn't find that location. Try a more specific address.");
+      return;
+    }
+    const lat = parseFloat(results[0].lat);
+    const lng = parseFloat(results[0].lon);
+    applyCoords(lat, lng);
+  } catch {
+    toast.error("Location search failed. Please try again.");
+  } finally {
+    setIsSearching(false);
+  }
+};
 
 const reverseGeocode = async(
  lat:number,
@@ -229,6 +256,27 @@ return (
 
 <div className="space-y-6">
 
+<Button
+  type="button"
+  onClick={detectLocation}
+  disabled={isLocating}
+  className="w-full gap-2 h-12 text-base font-semibold"
+>
+  <Navigation className={cn("h-5 w-5", isLocating && "animate-spin")} />
+  {isLocating ? 'Getting GPS...' : locationFound ? '✅ Location detected successfully' : '📍 Use My Current Location'}
+</Button>
+
+<div className="flex gap-2">
+  <Input
+    placeholder="Search Location (e.g. Shabu, Lafia)"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), searchLocation())}
+  />
+  <Button type="button" variant="outline" onClick={searchLocation} disabled={isSearching}>
+    {isSearching ? <Loader2 className="h-4 w-4 animate-spin" /> : <SearchIcon className="h-4 w-4" />}
+  </Button>
+</div>
 
 <div className="relative h-64 rounded-xl overflow-hidden border shadow">
 
@@ -281,35 +329,6 @@ pos[1]
 
 
 </MapContainer>
-
-
-
-<Button
-
-type="button"
-
-size="icon"
-
-variant="secondary"
-
-className="absolute top-4 right-4 z-[1000]"
-
-onClick={detectLocation}
-
-disabled={isLocating}
-
->
-
-<Navigation
-className={cn(
-"h-4 w-4 text-primary",
-isLocating && "animate-spin"
-)}
-/>
-
-
-</Button>
-
 
 
 
