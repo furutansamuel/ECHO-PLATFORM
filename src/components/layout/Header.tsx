@@ -197,7 +197,7 @@ exit={{ x: "100%" }}
   }}
 >
       <div
-  className="w-full px-4 transition-all duration-500 ease-out"
+  className="w-full transition-all duration-500 ease-out"
 >
         <div
   className={cn(
@@ -384,3 +384,4 @@ transition={{
     </motion.header>
   );
   }
+
