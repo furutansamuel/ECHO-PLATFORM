@@ -16,7 +16,7 @@ export function UpcomingEvents() {
   const { registeredIds, register, unregister, pendingId } = useEventRegistrations();
 
   return (
-    <section className="py-12 lg:py-24 section-bg-soft">
+    <section className="py-12 lg:py-16 section-bg-soft">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center mb-12">
           <div>
