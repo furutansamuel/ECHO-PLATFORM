@@ -45,7 +45,7 @@ const reports = [
   },
 ];
 
-export function LatestCommunityReports() {
+export function HazardCategories() {
   return (
     <section className="py-12 lg:py-16 bg-background">
       <div className="container mx-auto px-4 max-w-6xl">
