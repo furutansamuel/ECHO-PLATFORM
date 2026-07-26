@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { ReportFormData } from "../report-schema";
+import { compressImage } from "@/lib/image-compression";
 
 export default function EvidenceUploadStep() {
   const {
@@ -52,8 +53,8 @@ export default function EvidenceUploadStep() {
         return false;
       }
 
-      if (images.length >= 5) {
-        toast.error("Maximum of 5 images allowed.");
+      if (images.length >= 10) {
+        toast.error("Maximum of 10 images allowed.");
         return false;
       }
     }
@@ -86,20 +87,27 @@ export default function EvidenceUploadStep() {
     // row-level security policy" because those buckets don't exist at all.
     const bucket = "report-evidence";
 
-    const extension = file.name.split(".").pop();
+    let uploadFile = file;
+    if (type === "image") {
+      setUploadingFiles((prev) => ({ ...prev, [file.name]: 5 }));
+      uploadFile = await compressImage(file);
+    }
+
+    const extension = uploadFile.name.split(".").pop();
 
     const filename = `${Date.now()}-${Math.random()
       .toString(36)
       .substring(2)}.${extension}`;
 
-    setUploadingFiles((prev) => ({
-      ...prev,
-      [filename]: 15,
-    }));
+    setUploadingFiles((prev) => {
+      const next = { ...prev };
+      delete next[file.name];
+      return { ...next, [filename]: 25 };
+    });
 
     const { error } = await supabase.storage
       .from(bucket)
-      .upload(filename, file, {
+      .upload(filename, uploadFile, {
         cacheControl: "3600",
         upsert: false,
       });
@@ -212,7 +220,7 @@ return (
         </Label>
 
         <span className="text-xs text-muted-foreground">
-          {images.length}/5 Images
+          {images.length}/10 Images
         </span>
       </div>
 
@@ -382,7 +390,7 @@ return (
             </motion.div>
           ))}
 
-          {images.length < 5 && (
+          {images.length < 10 && (
             <button
               type="button"
               onClick={() =>
