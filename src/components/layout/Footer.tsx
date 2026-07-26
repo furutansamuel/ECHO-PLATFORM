@@ -221,17 +221,23 @@ export function Footer() {
             <div className="col-span-2 md:col-span-2">
 
               <Link
-                to="/"
-                className="inline-flex items-center"
-              >
-
-                <img
-                  src="/echo-logo-primary.svg"
-                  alt="ECHO"
-                  className="h-16 w-auto"
-                />
-
-              </Link>
+  to="/"
+  className="
+    flex
+    justify-center
+    md:justify-start
+  "
+>
+  <img
+    src="/echo-logo-primary.svg"
+    alt="ECHO"
+    className="
+      h-24
+      w-auto
+      md:h-16
+    "
+  />
+</Link>
 
 
               <p
