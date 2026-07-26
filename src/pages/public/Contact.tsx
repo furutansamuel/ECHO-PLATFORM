@@ -51,106 +51,103 @@ export default function ContactPage() {
 
 </section>
 
-      <section className="py-16">
-        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16">
-            <div className="space-y-6">
+<section className="py-16">
+  <div className="container mx-auto px-4">
+    <div className="grid md:grid-cols-2 gap-16 items-start">
 
-  {/* Intro */}
-  <div>
-    <h2 className="text-3xl font-bold text-primary">
-      Get in Touch
-    </h2>
+      {/* LEFT COLUMN */}
+      <div className="space-y-6">
 
-    <p className="mt-3 text-muted-foreground leading-7">
-      We'd love to hear your ideas, feedback, partnership proposals,
-      or answer any questions about ECHO. Your message helps us build
-      a stronger environmental community.
-    </p>
-  </div>
+        {/* Intro */}
+        <div>
+          <h2 className="text-3xl font-bold text-primary">
+            Get in Touch
+          </h2>
 
-  {/* Location */}
-  <Card className="border-0 shadow-md hover:shadow-xl transition-all duration-300">
-    <CardContent className="flex items-start gap-4 p-6">
+          <p className="mt-3 text-muted-foreground leading-7">
+            We'd love to hear your ideas, feedback, partnership proposals,
+            or answer any questions about ECHO. Your message helps us build
+            a stronger environmental community.
+          </p>
+        </div>
 
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-        <MapPin className="h-7 w-7 text-primary" />
+        {/* Location */}
+        <Card className="border-0 shadow-md hover:shadow-xl transition-all duration-300">
+          <CardContent className="flex items-start gap-4 p-6">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+              <MapPin className="h-7 w-7 text-primary" />
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold">Location</h3>
+
+              <p className="mt-2 text-muted-foreground">
+                Lafia, Nasarawa State
+              </p>
+
+              <p className="text-muted-foreground">
+                Nigeria
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Email */}
+        <Card className="border-0 shadow-md hover:shadow-xl transition-all duration-300">
+          <CardContent className="flex items-start gap-4 p-6">
+
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+              <Mail className="h-7 w-7 text-primary" />
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold">Email</h3>
+
+              <p className="mt-2 text-muted-foreground">
+                Replace this with your email
+              </p>
+
+              <a
+                href="mailto:your@email.com"
+                className="text-primary hover:underline"
+              >
+                your@email.com
+              </a>
+            </div>
+
+          </CardContent>
+        </Card>
+
+        {/* Partnership */}
+        <Card className="border-0 shadow-md hover:shadow-xl transition-all duration-300">
+          <CardContent className="flex items-start gap-4 p-6">
+
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+              <Phone className="h-7 w-7 text-primary" />
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold">
+                Partnerships & Collaboration
+              </h3>
+
+              <p className="mt-2 text-muted-foreground leading-7">
+                Interested in collaborating with ECHO on environmental
+                initiatives, research, education or community projects?
+                We'd be happy to connect.
+              </p>
+            </div>
+
+          </CardContent>
+        </Card>
+
       </div>
 
-      <div>
-        <h3 className="text-lg font-bold">
-          Location
-        </h3>
+      {/* RIGHT COLUMN */}
+      <Card className="border-0 rounded-3xl shadow-xl">
+        <CardContent className="p-8 md:p-10">
 
-        <p className="mt-2 text-muted-foreground">
-          Lafia, Nasarawa State
-        </p>
-
-        <p className="text-muted-foreground">
-          Nigeria
-        </p>
-      </div>
-
-    </CardContent>
-  </Card>
-
-  {/* Email */}
-  <Card className="border-0 shadow-md hover:shadow-xl transition-all duration-300">
-    <CardContent className="flex items-start gap-4 p-6">
-
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-        <Mail className="h-7 w-7 text-primary" />
-      </div>
-
-      <div>
-        <h3 className="text-lg font-bold">
-          Email
-        </h3>
-
-        <p className="mt-2 text-muted-foreground">
-          Replace this with your email
-        </p>
-
-        <a
-          href="mailto:your@email.com"
-          className="text-primary hover:underline font-medium"
-        >
-          your@email.com
-        </a>
-      </div>
-
-    </CardContent>
-  </Card>
-
-  {/* Partnerships */}
-  <Card className="border-0 shadow-md hover:shadow-xl transition-all duration-300">
-    <CardContent className="flex items-start gap-4 p-6">
-
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-        <Phone className="h-7 w-7 text-primary" />
-      </div>
-
-      <div>
-        <h3 className="text-lg font-bold">
-          Partnerships & Collaboration
-        </h3>
-
-        <p className="mt-2 text-muted-foreground leading-7">
-          Interested in collaborating with ECHO on environmental
-          initiatives, research, education, or community projects?
-          We'd be happy to connect.
-        </p>
-      </div>
-
-    </CardContent>
-  </Card>
-
-</div>
-          </div>
-
-          <Card className="border-0 rounded-3xl shadow-xl">
-  <CardContent className="p-8 md:p-10">
-
-    <div className="mb-8">
+      <div className="mb-8">
       <span className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
         Send us a Message
       </span>
@@ -191,7 +188,6 @@ export default function ContactPage() {
           placeholder="example@email.com"
         />
       </div>
-
       {/* Organisation */}
       <div className="space-y-2">
         <label
@@ -231,7 +227,6 @@ export default function ContactPage() {
           placeholder="Type your message here..."
         />
       </div>
-
       {/* Button */}
       <Button
         type="submit"
@@ -246,11 +241,14 @@ export default function ContactPage() {
       </p>
 
     </form>
+        </CardContent>
+      </Card>
 
-  </CardContent>
-</Card>
-        </div>
-      </section>
+    </div>
+  </div>
+</section>
+      
+      
     {/* FAQ Section */}
 <section className="py-20 bg-primary/5">
 
