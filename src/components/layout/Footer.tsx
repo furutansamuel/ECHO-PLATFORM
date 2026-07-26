@@ -218,77 +218,98 @@ export function Footer() {
 
 
             {/* Brand */}
-            <div className="col-span-2 md:col-span-2">
-
-              <Link
-  to="/"
+            
+<div
   className="
+    col-span-2
     flex
-    justify-center
-    md:justify-start
-  "
+    flex-col
+    items-center
+    text-center
+    md:col-span-2
+    md:items-start
+    md:text-left
+"
 >
-  <img
-    src="/echo-logo-primary.svg"
-    alt="ECHO"
+
+  <Link
+    to="/"
     className="
-      h-24
-      w-auto
-      md:h-16
+      flex
+      justify-center
+      md:justify-start
     "
-  />
-</Link>
+  >
+    <img
+      src="/echo-logo-primary.svg"
+      alt="ECHO"
+      className="
+        h-28
+        w-auto
+        md:h-16
+      "
+    />
+  </Link>
 
 
-              <p
-                className="
-                  mt-3
-                  max-w-xs
-                  text-sm
-                  text-white/85
-                "
-              >
-                Environmental Community Health Observatory — AI-powered environmental intelligence for cleaner, safer communities.
-              </p>
+  <p
+    className="
+      mt-3
+      max-w-xs
+      text-sm
+      text-white/85
+    "
+  >
+    Environmental Community Health Observatory — AI-powered environmental intelligence for cleaner, safer communities.
+  </p>
 
 
+  {/* Social Icons */}
+  <div
+    className="
+      mt-4
+      flex
+      flex-wrap
+      items-center
+      justify-center
+      gap-2
+      md:justify-start
+    "
+  >
 
-              {/* Social Icons */}
-              <div className="mt-4 flex flex-wrap items-center gap-2">
+    {socials.map((s) => (
 
-                {socials.map((s) => (
+      <a
+        key={s.name}
+        href={s.href}
+        aria-label={s.name}
+        className="
+          inline-flex
+          h-10
+          w-10
+          items-center
+          justify-center
+          rounded-full
+          bg-white
+          text-[#1B5E20]
+          shadow-sm
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          hover:bg-[#F9A825]
+          hover:text-white
+        "
+      >
 
-                  <a
-                    key={s.name}
-                    href={s.href}
-                    aria-label={s.name}
-                    className="
-                      inline-flex
-                      h-10
-                      w-10
-                      items-center
-                      justify-center
-                      rounded-full
-                      bg-white
-                      text-[#1B5E20]
-                      shadow-sm
-                      transition-all
-                      duration-300
-                      hover:-translate-y-1
-                      hover:bg-[#F9A825]
-                      hover:text-white
-                    "
-                  >
+        <s.icon className="h-5 w-5" />
 
-                    <s.icon className="h-5 w-5" />
+      </a>
 
-                  </a>
+    ))}
 
-                ))}
+  </div>
 
-              </div>
-
-            </div>
+</div>
 
 
 
