@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/use-auth";
 import { GeolocationProvider } from "@/hooks/use-geolocation";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import AdminLayout  from "@/layouts/AdminLayout";
@@ -64,6 +65,7 @@ function LoadingFallback() {
 
 function App() {
   return (
+    <ErrorBoundary>
     <AuthProvider>
       <GeolocationProvider>
       <Router>
@@ -147,8 +149,10 @@ function App() {
         <Toaster position="top-right" richColors closeButton />
       </GeolocationProvider>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
 export default App;
+
 
