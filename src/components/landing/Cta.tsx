@@ -1,50 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ShieldAlert, Map } from 'lucide-react';
+import { ShieldAlert, Map } from 'lucide-react';
 
 export function Cta() {
   return (
-    <section className="relative overflow-hidden py-16 lg:py-24">
+    <section className="relative overflow-hidden py-10 lg:py-12">
       <div className="container mx-auto px-4">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-emerald-700 p-10 shadow-premium md:p-16">
-          <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl" />
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-emerald-700 px-6 py-8 md:px-10 md:py-10 shadow-premium">
+          <div className="pointer-events-none absolute -top-16 -right-16 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
 
-          <div className="relative mx-auto max-w-2xl text-center text-primary-foreground">
-            <h2 className="text-3xl font-black tracking-tight md:text-4xl">
-              Ready to build cleaner, safer communities?
+          <div className="relative flex flex-col items-center justify-between gap-5 text-center sm:flex-row sm:text-left">
+            <h2 className="text-xl font-black tracking-tight text-primary-foreground md:text-2xl">
+              Ready to improve your community?
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-primary-foreground/85 md:text-lg">
-              Join thousands of citizens using ECHO to report, monitor and improve
-              environmental health across Nigeria.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button size="lg" variant="secondary" className="h-12 px-8" asChild>
+            <div className="flex flex-col gap-3 sm:flex-row shrink-0">
+              <Button size="lg" variant="secondary" className="h-11 px-6" asChild>
                 <Link to="/report">
-                  <ShieldAlert className="mr-2 h-5 w-5" />
+                  <ShieldAlert className="mr-2 h-4 w-4" />
                   Report a Hazard
                 </Link>
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="h-12 border-primary-foreground/40 bg-transparent px-8 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                className="h-11 border-primary-foreground/40 bg-transparent px-6 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
                 asChild
               >
                 <Link to="/map">
-                  <Map className="mr-2 h-5 w-5" />
-                  Explore Live Map
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="ghost"
-                className="h-12 px-6 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-                asChild
-              >
-                <Link to="/auth/login">
-                  Sign In <ArrowRight className="ml-1 h-4 w-4" />
+                  <Map className="mr-2 h-4 w-4" />
+                  Explore the Map
                 </Link>
               </Button>
             </div>
