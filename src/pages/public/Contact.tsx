@@ -3,10 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { Mail, Phone, MapPin } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks/use-document-title';
 
 import {
+  Mail,
+  Phone,
+  MapPin,
   ChevronDown,
   HelpCircle,
 } from "lucide-react";
@@ -18,6 +20,7 @@ export default function ContactPage() {
     'Have a question, suggestion, or want to partner with ECHO? Get in touch with our team.'
   );
   return (
+    <div className="bg-background">
     {/* Hero */}
 <section className="relative overflow-hidden py-20 bg-gradient-to-br from-primary/5 via-background to-green-50">
 
@@ -50,7 +53,6 @@ export default function ContactPage() {
 
       <section className="py-16">
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16">
-          <div className="space-y-8">
             <div className="space-y-6">
 
   {/* Intro */}
