@@ -227,6 +227,7 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
             duplicateId={report.duplicate_id}
             verificationStatus={report.verification_status}
             verificationConfidence={report.verification_confidence}
+            aiModel={report.ai_model}
           />
 
           {/* Interactive Map Preview */}
