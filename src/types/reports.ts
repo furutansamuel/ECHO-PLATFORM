@@ -36,13 +36,13 @@ export interface HazardReport {
   title: string;
   description: string;
   category: string;
-  estimated_size: string;
-  affected_area: string;
+  estimated_size?: string;
+  affected_area?: string;
   date_observed: string;
   time_observed: string;
-  immediate_risk: string;
-  environmental_impact: string;
-  required_action: string;
+  immediate_risk?: string;
+  environmental_impact?: string;
+  required_action?: string;
   severity: 'Low' | 'Medium' | 'High' | 'Critical';
   status: ReportStatus;
   location: ReportLocation;
