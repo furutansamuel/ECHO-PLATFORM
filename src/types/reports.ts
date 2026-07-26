@@ -65,6 +65,7 @@ export interface HazardReport {
   ai_impact?: string;
   ai_summary?: string;
   ai_generated_at?: string;
+  ai_model?: string;
 }
 
 // Matches supabase/migrations/20260718093000_create_events.sql
