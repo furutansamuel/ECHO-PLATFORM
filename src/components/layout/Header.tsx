@@ -303,7 +303,7 @@ transition={{
       </Link>
 
       <Link
-        to="/track-report"
+        to="/reports"
         onClick={() => setIsMenuOpen(false)}
         className="text-base font-medium text-muted-foreground"
       >
