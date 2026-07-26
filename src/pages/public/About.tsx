@@ -55,24 +55,113 @@ export default function AboutPage() {
         </div>
       </section>
       
-      {/* Team Section */}
-      <section className="py-16 bg-primary/5">
-          <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold text-primary">Meet the Team</h2>
-                  <p className="text-lg text-muted-foreground mt-2">The passionate minds behind ECHO</p>
+      {/* Founder Section */}
+<section className="py-20 bg-primary/5">
+  <div className="container mx-auto px-4">
+
+    <div className="text-center mb-14">
+      <h2 className="text-3xl md:text-4xl font-bold text-primary">
+        Meet the Founder
+      </h2>
+
+      <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto">
+        The vision behind ECHO is driven by a passion for technology,
+        environmental sustainability, and community impact.
+      </p>
+    </div>
+
+    <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+
+      {/* Founder Image */}
+      <div className="flex justify-center">
+
+        <div className="relative">
+
+          {/* Replace this div with your image later */}
+          <div className="h-72 w-72 rounded-3xl border-4 border-primary/20 bg-primary/5 flex items-center justify-center shadow-xl">
+
+            <div className="text-center px-6">
+              <div className="mx-auto h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl">
+                👤
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                  {teamMembers.map(member => (
-                      <div key={member.name} className="text-center">
-                          <img src={member.image} alt={member.name} className="h-32 w-32 rounded-full mx-auto mb-4 premium-shadow" />
-                          <h3 className="font-bold text-lg">{member.name}</h3>
-                          <p className="text-muted-foreground text-sm">{member.role}</p>
-                      </div>
-                  ))}
-              </div>
+
+              <p className="mt-5 text-sm text-muted-foreground">
+                Upload your professional photo here later.
+              </p>
+            </div>
+
           </div>
-      </section>
+
+          {/* Example after upload:
+          <img
+            src="/images/founder.jpg"
+            alt="Founder"
+            className="h-72 w-72 rounded-3xl object-cover shadow-xl"
+          />
+          */}
+
+        </div>
+
+      </div>
+
+      {/* Founder Details */}
+      <div>
+
+        <span className="inline-flex rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary">
+          Founder & Lead Developer
+        </span>
+
+        <h3 className="mt-4 text-3xl font-bold">
+          Furutan Lawrence Samuel
+        </h3>
+
+        <p className="mt-2 text-primary font-medium">
+          📍 Based in Lafia, Nasarawa State, Nigeria
+        </p>
+
+        <p className="mt-6 text-muted-foreground leading-8">
+          ECHO (Environmental Community Health Observatory) was created to
+          empower citizens with modern digital tools for reporting
+          environmental hazards, monitoring community health risks, and
+          supporting data-driven environmental action.
+
+          Inspired by the environmental challenges faced across Nigerian
+          communities, ECHO combines technology, mapping, artificial
+          intelligence, and community participation to promote a cleaner,
+          healthier, and more resilient future.
+        </p>
+
+        <div className="grid grid-cols-2 gap-4 mt-8">
+
+          <div className="rounded-xl bg-background p-5 shadow-sm border">
+            <h4 className="font-bold text-primary text-lg">
+              Mission
+            </h4>
+
+            <p className="text-sm text-muted-foreground mt-2">
+              Empower communities through technology-driven environmental
+              reporting.
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-background p-5 shadow-sm border">
+            <h4 className="font-bold text-primary text-lg">
+              Vision
+            </h4>
+
+            <p className="text-sm text-muted-foreground mt-2">
+              Build safer, cleaner and smarter communities across Nigeria.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
     </div>
   );
 }
