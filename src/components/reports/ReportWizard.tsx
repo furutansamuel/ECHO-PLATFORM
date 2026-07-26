@@ -31,9 +31,9 @@ import SuccessStep from "./steps/SuccessStep";
 
 const STEPS = [
   "Hazard",
-  "Details",
-  "Evidence & Location",
-  "Preview",
+  "Location",
+  "Evidence",
+  "Review",
   "Success",
 ];
 
@@ -74,24 +74,20 @@ export default function ReportWizard() {
 
     switch (currentStep) {
       case 0:
-        fields = ["category"];
+        fields = ["category", "title", "description"];
         break;
 
       case 1:
         fields = [
-          "title",
-          "description",
-          "severity",
+          "location.address",
+          "location.state",
+          "location.lga",
+          "location.ward",
         ];
         break;
 
       case 2:
-        fields = [
-          "images",
-          "location.address",
-          "location.state",
-          "location.lga",
-        ];
+        fields = ["images"];
         break;
 
       default:
@@ -130,19 +126,25 @@ export default function ReportWizard() {
     setIsSubmitting(true);
 
     try {
-      const referenceNumber = `ECHO-${Math.random()
-        .toString(36)
-        .substring(2, 8)
-        .toUpperCase()}`;
-
       const report: Report = {
         ...(data as any),
+
+        // Captured fresh at the moment of submission rather than relying
+        // on the value from when the form first mounted (defaultValues
+        // only runs once, so a report started 20 minutes before
+        // submitting would otherwise show a stale timestamp).
+        dateObserved: new Date().toISOString().split('T')[0],
+        timeObserved: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
 
         id: Math.random().toString(36).substring(2, 10),
 
         createdAt: new Date().toISOString(),
 
-        referenceNumber,
+        // Placeholder only — saveReport() overwrites this with the real
+        // reference number the database trigger assigns. The previous
+        // version displayed this random client-side placeholder on the
+        // success screen instead of the real saved value.
+        referenceNumber: "",
 
         status: "Pending",
       };
@@ -154,7 +156,7 @@ export default function ReportWizard() {
         return;
       }
 
-      setReferenceNumber(referenceNumber);
+      setReferenceNumber(report.referenceNumber);
       setSubmittedReportId(report.id);
 
       setCurrentStep(4);
@@ -174,18 +176,18 @@ export default function ReportWizard() {
 const renderStep = () => {
   switch (currentStep) {
     case 0:
-      return <HazardSelectStep />;
-
-    case 1:
-      return <HazardDetailsStep />;
-
-    case 2:
       return (
         <div className="space-y-8">
-          <EvidenceUploadStep />
-          <LocationStep />
+          <HazardSelectStep />
+          <HazardDetailsStep />
         </div>
       );
+
+    case 1:
+      return <LocationStep />;
+
+    case 2:
+      return <EvidenceUploadStep />;
 
     case 3:
       return (
