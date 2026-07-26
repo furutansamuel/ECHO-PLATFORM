@@ -1,17 +1,19 @@
 import { z } from 'zod';
 
+// Simplified per the reporting-module redesign: estimatedSize,
+// affectedArea, immediateRisk, environmentalImpact, requiredAction, and
+// severity are no longer collected from the user — severity and impact
+// are now assessed automatically (generate_ai_assessment) after
+// submission based on category + description, instead of asking the
+// user to self-report them. date/time observed are silently captured
+// at submission time rather than typed in.
 export const reportSchema = z.object({
   category: z.string().min(1, 'Please select a hazard category'),
   title: z.string().min(5, 'Title must be at least 5 characters').max(100),
   description: z.string().min(10, 'Description must be at least 10 characters').max(1000),
-  estimatedSize: z.string().min(1, 'Please estimate the size'),
-  affectedArea: z.string().min(1, 'Please describe the affected area'),
-  dateObserved: z.string().min(1, 'Date is required'),
-  timeObserved: z.string().min(1, 'Time is required'),
-  immediateRisk: z.string().min(1, 'Risk assessment is required'),
-  environmentalImpact: z.string().min(1, 'Impact assessment is required'),
-  requiredAction: z.string().min(1, 'Action recommendation is required'),
-  images: z.array(z.string()).min(1, 'At least one image is required'),
+  dateObserved: z.string().min(1),
+  timeObserved: z.string().min(1),
+  images: z.array(z.string()).min(1, 'At least one photo is required'),
   video: z.string().optional(),
   location: z.object({
     lat: z.number(),
@@ -22,7 +24,6 @@ export const reportSchema = z.object({
     state: z.string().min(1, 'State is required'),
     landmark: z.string().optional(),
   }),
-  severity: z.enum(['Low', 'Medium', 'High', 'Critical']),
   isAnonymous: z.boolean(),
   notifyVolunteers: z.boolean(),
   shareWithCommunity: z.boolean(),
@@ -35,13 +36,8 @@ export const defaultValues: Partial<ReportFormData> = {
   category: '',
   title: '',
   description: '',
-  estimatedSize: '',
-  affectedArea: '',
   dateObserved: new Date().toISOString().split('T')[0],
   timeObserved: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
-  immediateRisk: '',
-  environmentalImpact: '',
-  requiredAction: '',
   images: [],
   location: {
     lat: 9.0820,
@@ -52,7 +48,6 @@ export const defaultValues: Partial<ReportFormData> = {
     state: '',
     landmark: '',
   },
-  severity: 'Medium',
   isAnonymous: false,
   notifyVolunteers: true,
   shareWithCommunity: true,
