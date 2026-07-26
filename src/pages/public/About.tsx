@@ -26,34 +26,80 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission & Vision Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <Target className="h-12 w-12 text-primary mt-1" />
-              <div>
-                <h2 className="text-2xl font-bold text-primary">Our Mission</h2>
-                <p className="text-muted-foreground mt-2">
-                  To empower every Nigerian citizen with the tools and data to monitor their environment, report hazards, and drive meaningful community-led action for a sustainable future.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Leaf className="h-12 w-12 text-primary mt-1" />
-              <div>
-                <h2 className="text-2xl font-bold text-primary">Our Vision</h2>
-                <p className="text-muted-foreground mt-2">
-                  We envision a Nigeria where communities are proactive custodians of their environment, where data-driven decisions lead to healthier ecosystems, and where technology bridges the gap between citizens and governance.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="h-80 rounded-lg overflow-hidden premium-shadow">
-            <img src="https://storage.googleapis.com/dala-prod-public-storage/generated-images/060df7fc-fb5a-4109-890a-cb6e43e9b598/community-cleanup-nigeria-ea6844ea-1782830747692.webp" alt="Community working together" className="w-full h-full object-cover" />
-          </div>
+      {/* Our Story, Mission & Vision */}
+<section className="py-20">
+  <div className="container mx-auto px-4">
+
+    <div className="text-center max-w-3xl mx-auto mb-14">
+      <span className="inline-block rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+        Our Story
+      </span>
+
+      <h2 className="mt-5 text-3xl md:text-4xl font-bold text-primary">
+        Inspired by Communities, Built for Nigeria
+      </h2>
+
+      <p className="mt-6 text-lg text-muted-foreground leading-8">
+        ECHO (Environmental Community Health Observatory) was founded in
+        Lafia, Nasarawa State, with a vision to help communities tackle
+        environmental challenges through technology. From illegal waste
+        dumping and flooding to pollution and sanitation issues, many hazards
+        go unreported or receive delayed attention.
+      </p>
+
+      <p className="mt-5 text-muted-foreground leading-8">
+        ECHO bridges this gap by enabling citizens to report environmental
+        hazards, monitor community risks, and support informed action through
+        mapping, real-time reporting, and environmental intelligence.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-2 gap-8">
+
+      {/* Mission */}
+      <div className="rounded-3xl border bg-background p-8 shadow-sm hover:shadow-lg transition-all">
+
+        <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+          <Target className="h-8 w-8 text-primary" />
         </div>
-      </section>
+
+        <h3 className="text-2xl font-bold text-primary">
+          Our Mission
+        </h3>
+
+        <p className="mt-4 text-muted-foreground leading-8">
+          To empower communities with digital tools that make environmental
+          reporting simple, transparent, and actionable while encouraging
+          collaboration between citizens, organisations, and government
+          agencies.
+        </p>
+
+      </div>
+
+      {/* Vision */}
+      <div className="rounded-3xl border bg-background p-8 shadow-sm hover:shadow-lg transition-all">
+
+        <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100">
+          <Leaf className="h-8 w-8 text-green-700" />
+        </div>
+
+        <h3 className="text-2xl font-bold text-primary">
+          Our Vision
+        </h3>
+
+        <p className="mt-4 text-muted-foreground leading-8">
+          To become Nigeria's leading community environmental intelligence
+          platform, creating cleaner, healthier, safer, and more resilient
+          communities through innovation, citizen participation, and
+          data-driven environmental action.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
       
       {/* Founder Section */}
 <section className="py-20 bg-primary/5">
