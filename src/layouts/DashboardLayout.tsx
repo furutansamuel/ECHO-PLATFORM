@@ -17,7 +17,8 @@ import {
   ChevronRight,
   Search,
   BrainCircuit,
-  Users
+  Users,
+  ShieldCheck
 } from 'lucide-react';
 
 import { useAuth } from '@/hooks/use-auth';
@@ -43,8 +44,10 @@ import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import { PremiumBottomNav } from '@/components/layout/PremiumBottomNav';
 import { useNotifications } from '@/hooks/use-notifications';
 import { LocationPermissionCard } from '@/components/dashboard/LocationPermissionCard';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 const navItems = [
+  { name: 'Admin Panel', href: '/admin', icon: ShieldCheck, roles: ['administrator'] },
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['citizen', 'volunteer'] },
   { name: 'Track Reports', href: '/reports', icon: ClipboardList, roles: ['citizen', 'volunteer'] },
   { name: 'Interactive Map', href: '/map', icon: MapIcon, roles: ['citizen', 'volunteer'] },
@@ -397,6 +400,9 @@ export function DashboardLayout() {
               />
             </form>
 
+            {/* Theme toggle */}
+            <ThemeToggle />
+
             {/* Notifications */}
             <Popover>
 
@@ -578,3 +584,4 @@ export function DashboardLayout() {
     </div>
   );
 }
+
