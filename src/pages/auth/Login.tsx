@@ -1,5 +1,4 @@
 
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -24,7 +23,7 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -33,7 +32,27 @@ export default function LoginPage() {
         toast.error(error.message);
       } else {
         toast.success('Logged in successfully');
-        navigate('/dashboard');
+
+        // The AuthProvider's profile fetch runs asynchronously off the
+        // auth-state-change event, so its 'profile.role' isn't
+        // guaranteed to be populated yet at this exact moment — this
+        // was why login always fell through to '/dashboard' even for
+        // administrator accounts. Query the role directly here instead
+        // of relying on that context state.
+        let destination = '/dashboard';
+        if (data.user) {
+          const { data: profileRow } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', data.user.id)
+            .maybeSingle();
+
+          if (profileRow?.role === 'administrator') {
+            destination = '/admin';
+          }
+        }
+
+        navigate(destination);
       }
     } catch {
       toast.error('An unexpected error occurred');
