@@ -165,16 +165,33 @@ address.state || ''
 
 setValue(
 'location.lga',
-address.county || 
+address.county ||
+address.state_district ||
 address.city_district ||
+''
+);
+
+
+// This field was never being set at all before — reverseGeocode
+// only wrote address/state/lga/landmark, so 'ward' stayed empty on
+// every GPS/map-click detection no matter what the API returned.
+// Nominatim has no direct "ward" concept for Nigeria, so this falls
+// back through the closest OSM equivalents.
+setValue(
+'location.ward',
+address.suburb ||
+address.neighbourhood ||
+address.quarter ||
 ''
 );
 
 
 setValue(
 'location.landmark',
-address.suburb ||
 address.neighbourhood ||
+address.quarter ||
+address.hamlet ||
+address.suburb ||
 ''
 );
 
