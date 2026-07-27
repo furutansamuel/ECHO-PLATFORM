@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 interface AiValidation {
   matches: boolean;
   suggested_category: string;
+  suggested_title: string;
   related: string[];
 }
 
@@ -73,6 +74,9 @@ export default function HazardDetailsStep() {
   const useAiSuggestion = () => {
     if (!validation) return;
     setValue('category', validation.suggested_category as any, { shouldValidate: true });
+    if (validation.suggested_title) {
+      setValue('title', validation.suggested_title, { shouldValidate: true });
+    }
     setDismissed(true);
   };
 
@@ -145,6 +149,11 @@ export default function HazardDetailsStep() {
           <p className="text-sm text-foreground">
             This appears to be: <span className="font-semibold">✔ {categoryLabel(validation!.suggested_category)}</span>
           </p>
+          {validation!.suggested_title && (
+            <p className="text-sm text-foreground">
+              Suggested title: <span className="font-semibold">"{validation!.suggested_title}"</span>
+            </p>
+          )}
           {validation!.related.length > 0 && (
             <div className="text-xs text-muted-foreground">
               Also Related:
