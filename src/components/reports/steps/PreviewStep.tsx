@@ -61,7 +61,7 @@ export default function PreviewStep({ onEdit }: PreviewStepProps) {
                 <FileText className="h-5 w-5 text-primary" />
                 Hazard
               </h3>
-              <Button variant="ghost" size="sm" onClick={() => onEdit(STEP_HAZARD)} className="h-8 text-primary">
+              <Button type="button" variant="ghost" size="sm" onClick={() => onEdit(STEP_HAZARD)} className="h-8 text-primary">
                 <Edit3 className="h-3 w-3 mr-2" /> Edit
               </Button>
             </div>
@@ -95,7 +95,7 @@ export default function PreviewStep({ onEdit }: PreviewStepProps) {
                 <MapPin className="h-5 w-5 text-primary" />
                 Location
               </h3>
-              <Button variant="ghost" size="sm" onClick={() => onEdit(STEP_LOCATION)} className="h-8 text-primary">
+              <Button type="button" variant="ghost" size="sm" onClick={() => onEdit(STEP_LOCATION)} className="h-8 text-primary">
                 <Edit3 className="h-3 w-3 mr-2" /> Edit
               </Button>
             </div>
@@ -147,7 +147,7 @@ export default function PreviewStep({ onEdit }: PreviewStepProps) {
                 <ImageIcon className="h-5 w-5 text-primary" />
                 Evidence
               </h3>
-              <Button variant="ghost" size="sm" onClick={() => onEdit(STEP_EVIDENCE)} className="h-8 text-primary">
+              <Button type="button" variant="ghost" size="sm" onClick={() => onEdit(STEP_EVIDENCE)} className="h-8 text-primary">
                 <Edit3 className="h-3 w-3 mr-2" /> Edit
               </Button>
             </div>
