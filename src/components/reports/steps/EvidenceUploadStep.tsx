@@ -22,6 +22,7 @@ import { compressImage } from "@/lib/image-compression";
 export default function EvidenceUploadStep() {
   const {
     setValue,
+    getValues,
     watch,
     formState: { errors },
   } = useFormContext<ReportFormData>();
@@ -134,9 +135,20 @@ export default function EvidenceUploadStep() {
       .getPublicUrl(filename);
 
     if (type === "image") {
+      // Read the CURRENT images array at the moment this upload
+      // finishes, not the 'images' variable captured when uploadFile()
+      // was first called. Multiple images upload concurrently
+      // (handleFileSelect fires uploadFile for each file without
+      // awaiting), and they all closed over the same stale snapshot of
+      // 'images' from that render — so each completed upload was
+      // overwriting the previous one's addition instead of appending
+      // to it, leaving only the last image that finished. getValues()
+      // always reads the live form state, so each completion correctly
+      // appends onto whatever is there right now.
+      const currentImages = getValues("images") || [];
       setValue(
         "images",
-        [...images, data.publicUrl],
+        [...currentImages, data.publicUrl],
         {
           shouldValidate: true,
         }
@@ -378,6 +390,7 @@ return (
 
               <div className="absolute inset-0 flex items-center justify-center bg-black/45 opacity-0 transition group-hover:opacity-100">
                 <Button
+                  type="button"
                   size="icon"
                   variant="destructive"
                   onClick={() =>
