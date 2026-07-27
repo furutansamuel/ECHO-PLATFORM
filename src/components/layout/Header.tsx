@@ -13,6 +13,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -202,7 +203,7 @@ exit={{ x: "100%" }}
         <div
   className={cn(
     'flex h-16 items-center justify-between',
-    'border-b border-border/30 bg-background/80 px-4 shadow-lg backdrop-blur-xl'
+    'border-b border-border/30 bg-background px-4 shadow-lg backdrop-blur-xl'
   )}
 >
         <Link
@@ -252,11 +253,13 @@ exit={{ x: "100%" }}
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
+          <ThemeToggle />
           {isAuthenticated ? authenticatedLinks : authLinks}
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-1">
+          <ThemeToggle />
           <Button
 variant="ghost"
 size="icon"
