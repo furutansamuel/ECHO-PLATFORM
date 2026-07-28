@@ -7,7 +7,7 @@ interface ImpactStats {
   communitiesHelped: number;
   cleanupEventsJoined: number;
   volunteerHours: number;
-  environmentalScore: number;
+  verificationRate: number;
 }
 
 interface EnvironmentalImpactSummaryProps {
@@ -79,11 +79,11 @@ function EnvironmentalImpactSummaryBase({ stats }: EnvironmentalImpactSummaryPro
       gradient: 'gradient-analytics',
     },
     {
-      key: 'environmentalScore',
+      key: 'verificationRate',
       icon: Target,
-      value: stats.environmentalScore,
-      suffix: '',
-      label: 'Environmental Score',
+      value: stats.verificationRate,
+      suffix: '%',
+      label: 'Verification Rate',
       gradient: 'gradient-success',
     },
   ];
