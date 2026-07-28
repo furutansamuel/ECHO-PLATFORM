@@ -170,7 +170,7 @@ const ProfilePage: React.FC = () => {
         </div>
 
         <CardContent className="relative px-4 sm:px-6 md:px-8">
-          <div className="flex flex-col md:flex-row items-center md:items-end gap-5 -mt-12 mb-8 text-center md:text-left">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 -mt-16 mb-8">
             <Avatar className="h-32 w-32 md:h-36 md:w-36 border-4 border-background shadow-2xl">
               <AvatarImage src={profile?.avatar_url || ""} className="object-cover" />
               <AvatarFallback className="bg-primary text-primary-foreground text-4xl font-black">
@@ -178,7 +178,7 @@ const ProfilePage: React.FC = () => {
               </AvatarFallback>
             </Avatar>
 
-            <div className="flex-1 space-y-2">
+            <div className="flex items-center gap-6 flex-1">
               <div className="flex flex-col md:flex-row items-center gap-3">
                 <h1 className="text-3xl font-black tracking-tight">{profile?.full_name || "Guest User"}</h1>
                 <Badge className="bg-primary/10 text-primary border-primary/20 uppercase text-[10px] font-black">
@@ -350,24 +350,23 @@ const ProfilePage: React.FC = () => {
           </div>
 
           {/* Account Information */}
-          <div className="mb-8">
-            <Card className="border-muted/20 shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-5">
-                  <User className="h-6 w-6 text-primary" />
-                  <div>
-                    <h3 className="text-xl font-black">Account Information</h3>
-                    <p className="text-sm text-muted-foreground">Your ECHO membership details</p>
-                  </div>
-                </div>
-                <AccountInformation
-                  memberSince={profile?.created_at}
-                  region={profile?.region}
-                  organization={profile?.organization}
-                />
-              </CardContent>
-            </Card>
-          </div>
+<div className="mb-8">
+  <div className="flex items-center gap-3 mb-5">
+    <User className="h-6 w-6 text-primary" />
+    <div>
+      <h3 className="text-xl font-black">Account Information</h3>
+      <p className="text-sm text-muted-foreground">
+        Your ECHO membership details
+      </p>
+    </div>
+  </div>
+
+  <AccountInformation
+    memberSince={profile?.created_at}
+    region={profile?.region}
+    organization={profile?.organization}
+  />
+</div>
 
           {/* Recent Impact Activity */}
           <div className="mb-8">
