@@ -634,9 +634,9 @@
 
   @apply
   bg-gradient-to-br
-  from-green-900/10
-  via-emerald-500/10
-  to-lime-400/10;
+  from-primary/10
+  via-secondary/10
+  to-highlight/10;
 
 }
 
@@ -646,9 +646,9 @@
 
   @apply
   bg-gradient-to-br
-  from-green-900
-  via-green-700
-  to-emerald-500;
+  from-primary
+  via-primary
+  to-secondary;
 
 }
 
