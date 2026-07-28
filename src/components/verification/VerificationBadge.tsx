@@ -19,7 +19,7 @@ export const VerificationBadge: React.FC<VerificationBadgeProps> = ({
   
   if (isVerified) {
     return (
-      <Badge className={cn("bg-emerald-500 hover:bg-emerald-600 gap-1.5", size === 'sm' && "text-[10px] px-1.5", className)}>
+      <Badge className={cn("bg-status-safe hover:bg-status-safe/90 text-white gap-1.5", size === 'sm' && "text-[10px] px-1.5", className)}>
         <ShieldCheck className={cn(size === 'sm' ? "w-3 h-3" : "w-4 h-4")} />
         Verified Hazard
       </Badge>
@@ -28,7 +28,7 @@ export const VerificationBadge: React.FC<VerificationBadgeProps> = ({
 
   if (isPending) {
     return (
-      <Badge variant="secondary" className={cn("gap-1.5 bg-amber-500/10 text-amber-600 border-amber-500/20", size === 'sm' && "text-[10px] px-1.5", className)}>
+      <Badge variant="secondary" className={cn("gap-1.5 bg-status-warning/10 text-status-warning border-status-warning/20", size === 'sm' && "text-[10px] px-1.5", className)}>
         <Shield className={cn(size === 'sm' ? "w-3 h-3" : "w-4 h-4")} />
         Verification Pending
       </Badge>
