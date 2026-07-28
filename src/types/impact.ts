@@ -1,4 +1,10 @@
-// Impact System Types for ECHO
+// ECHO Impact Framework types.
+//
+// Per the ECHO Impact Framework, Eco Points, Reputation, and Level are three
+// independent systems — see src/lib/impact-constants.ts for the values and
+// src/pages/citizen/RewardsPage.tsx / ProfilePage.tsx for how they're
+// populated from real user_stats data. Nothing here should hold mock values;
+// these are shape-only definitions.
 
 export interface ImpactLevel {
   id: number;
@@ -15,37 +21,12 @@ export interface AchievementBadge {
   emoji: string;
   description: string;
   pointsRequired: number;
-  earned: boolean;
-  earnedDate?: string;
 }
 
-export interface ImpactStats {
-  reportsSubmitted: number;
-  verifiedReports: number;
-  communitiesHelped: number;
-  cleanupEventsJoined: number;
-  knowledgeArticlesRead: number;
-  volunteerHours: number;
-  environmentalScore: number;
-}
-
-export interface PointHistoryEntry {
-  id: string;
+export interface TrustLevel {
+  id: number;
+  name: string;
+  minReputation: number;
+  maxReputation: number;
   description: string;
-  points: number;
-  date: string;
-  type: 'report' | 'verification' | 'article' | 'campaign' | 'cleanup' | 'community';
-}
-
-export interface UserProfile {
-  fullName: string;
-  email: string;
-  avatarUrl?: string;
-  role: string;
-  impactPoints: number;
-  currentLevel: ImpactLevel;
-  badges: AchievementBadge[];
-  stats: ImpactStats;
-  pointHistory: PointHistoryEntry[];
-  communityRank: number;
 }
