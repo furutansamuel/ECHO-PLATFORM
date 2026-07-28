@@ -8,18 +8,30 @@ interface StatusTimelineProps {
   activities: { status: ReportStatus; timestamp: string; description: string }[];
 }
 
-const statusConfig: Record<ReportStatus, { icon: React.ElementType; color: string; description: string }> = {
-  'Draft': { icon: Info, color: 'text-muted-foreground bg-muted', description: 'Report is being prepared' },
-  'Pending': { icon: Clock, color: 'text-blue-500 bg-blue-50', description: 'Report received and awaiting review' },
-  'Submitted': { icon: Clock, color: 'text-blue-500 bg-blue-50', description: 'Report received and awaiting review' },
-  'Under Review': { icon: Eye, color: 'text-amber-500 bg-amber-50', description: 'Environmental officers are reviewing the report' },
-  'Pending Verification': { icon: UserPlus, color: 'text-indigo-500 bg-indigo-50', description: 'Awaiting field verification by authorized personnel' },
-  'Verified': { icon: ShieldCheck, color: 'text-emerald-500 bg-emerald-50', description: 'Hazard presence has been confirmed' },
-  'Assigned': { icon: PlayCircle, color: 'text-cyan-500 bg-cyan-50', description: 'Response team has been assigned' },
-  'In Progress': { icon: PlayCircle, color: 'text-primary bg-primary/10', description: 'Mitigation or cleanup is currently underway' },
-  'Resolved': { icon: CheckCircle2, color: 'text-green-600 bg-green-50', description: 'The hazard has been addressed and mitigated' },
-  'Closed': { icon: CheckCircle, color: 'text-muted-foreground bg-muted', description: 'The case is officially closed' },
-  'Rejected': { icon: XCircle, color: 'text-destructive bg-destructive/10', description: 'This report was reviewed and rejected' },
+const statusConfig: Record<ReportStatus, { icon: React.ElementType; token: string; description: string }> = {
+  'Draft': { icon: Info, token: 'muted-foreground', description: 'Report is being prepared' },
+  'Pending': { icon: Clock, token: 'status-warning', description: 'Report received and awaiting review' },
+  'Submitted': { icon: Clock, token: 'status-warning', description: 'Report received and awaiting review' },
+  'Under Review': { icon: Eye, token: 'status-warning', description: 'Environmental officers are reviewing the report' },
+  'Pending Verification': { icon: UserPlus, token: 'status-warning', description: 'Awaiting field verification by authorized personnel' },
+  'Verified': { icon: ShieldCheck, token: 'status-safe', description: 'Hazard presence has been confirmed' },
+  'Assigned': { icon: PlayCircle, token: 'info', description: 'Response team has been assigned' },
+  'In Progress': { icon: PlayCircle, token: 'primary', description: 'Mitigation or cleanup is currently underway' },
+  'Resolved': { icon: CheckCircle2, token: 'status-safe', description: 'The hazard has been addressed and mitigated' },
+  'Closed': { icon: CheckCircle, token: 'muted-foreground', description: 'The case is officially closed' },
+  'Rejected': { icon: XCircle, token: 'destructive', description: 'This report was reviewed and rejected' },
+};
+
+// Tailwind can't resolve class names built by string interpolation at build
+// time, so each semantic token needs its literal classes spelled out here
+// rather than assembled from statusConfig.token dynamically.
+const tokenClasses: Record<string, { solid: string; soft: string }> = {
+  'status-warning': { solid: 'bg-status-warning border-status-warning text-white', soft: 'bg-status-warning/10 text-status-warning' },
+  'status-safe': { solid: 'bg-status-safe border-status-safe text-white', soft: 'bg-status-safe/10 text-status-safe' },
+  'info': { solid: 'bg-info border-info text-white', soft: 'bg-info/10 text-info' },
+  'primary': { solid: 'bg-primary border-primary text-white', soft: 'bg-primary/10 text-primary' },
+  'destructive': { solid: 'bg-destructive border-destructive text-white', soft: 'bg-destructive/10 text-destructive' },
+  'muted-foreground': { solid: 'bg-muted-foreground border-muted-foreground text-white', soft: 'bg-muted text-muted-foreground' },
 };
 
 const statusOrder: ReportStatus[] = [
@@ -75,7 +87,11 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({ currentStatus, a
                 <div 
                   className={cn(
                     "relative z-10 flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors",
-                    isCompleted ? "bg-primary border-primary text-white shadow-sm" : "bg-background border-muted-foreground/30 text-muted-foreground"
+                    isCurrent
+                      ? tokenClasses[config.token].solid + " shadow-sm"
+                      : isCompleted
+                        ? "bg-primary border-primary text-white shadow-sm"
+                        : "bg-background border-muted-foreground/30 text-muted-foreground"
                   )}
                 >
                   <config.icon className="w-4 h-4" />
@@ -98,7 +114,10 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({ currentStatus, a
                     {activity?.description || config.description}
                   </p>
                   {isCurrent && (
-                    <div className="mt-2 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-primary/10 text-primary animate-pulse">
+                    <div className={cn(
+                      "mt-2 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium animate-pulse",
+                      tokenClasses[config.token].soft
+                    )}>
                       Current Status
                     </div>
                   )}
