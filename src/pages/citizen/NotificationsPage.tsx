@@ -9,7 +9,7 @@ import { ClipboardList, BrainCircuit, AlertTriangle, Calendar, Award, Trash2, Be
 const TYPE_CONFIG: Record<Notification['type'], { icon: React.ElementType; gradient: string; label: string }> = {
   report: { icon: ClipboardList, gradient: 'gradient-primary', label: 'Status' },
   ai: { icon: BrainCircuit, gradient: 'gradient-ai', label: 'AI Insight' },
-  alert: { icon: AlertTriangle, gradient: 'gradient-community', label: 'Alert' },
+  alert: { icon: AlertTriangle, gradient: 'gradient-warning', label: 'Alert' },
   event: { icon: Calendar, gradient: 'gradient-analytics', label: 'Event' },
   reward: { icon: Award, gradient: 'gradient-success', label: 'Achievement' },
 };
