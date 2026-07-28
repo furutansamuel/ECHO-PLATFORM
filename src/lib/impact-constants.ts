@@ -1,10 +1,13 @@
-import type { ImpactLevel, AchievementBadge, ImpactStats, PointHistoryEntry } from '@/types/impact';
+import type { ImpactLevel, AchievementBadge, TrustLevel } from '@/types/impact';
 
-// Impact Levels - User progression system
+// ECHO Impact Framework — Level system.
+// "ECHO doesn't reward activity. ECHO rewards environmental impact."
+// Level reflects long-term, overall contribution (currently approximated
+// from Eco Points; it stays a separate concept from Reputation/Trust below).
 export const IMPACT_LEVELS: ImpactLevel[] = [
   {
     id: 1,
-    name: 'Eco Explorer',
+    name: 'Eco Starter',
     emoji: '🌱',
     minPoints: 0,
     maxPoints: 499,
@@ -12,57 +15,61 @@ export const IMPACT_LEVELS: ImpactLevel[] = [
   },
   {
     id: 2,
-    name: 'Community Guardian',
+    name: 'Eco Explorer',
     emoji: '🌿',
     minPoints: 500,
     maxPoints: 1499,
-    description: 'Actively protecting your community',
+    description: 'Building a habit of environmental reporting',
   },
   {
     id: 3,
-    name: 'Environmental Champion',
+    name: 'Community Guardian',
     emoji: '🌳',
     minPoints: 1500,
     maxPoints: 3499,
-    description: 'A leading force for environmental change',
+    description: 'Actively protecting your community',
   },
   {
     id: 4,
-    name: 'Sustainability Ambassador',
-    emoji: '🌎',
+    name: 'Environmental Champion',
+    emoji: '🦅',
     minPoints: 3500,
     maxPoints: 7499,
-    description: 'Inspiring others to take action',
+    description: 'A leading force for environmental change',
   },
   {
     id: 5,
-    name: 'Earth Protector',
+    name: 'ECHO Ambassador',
     emoji: '🌍',
     minPoints: 7500,
     maxPoints: Infinity,
-    description: 'A true guardian of our planet',
+    description: 'A trusted, long-term guardian of your community',
   },
 ];
 
-// Achievement Badges
+// Reputation — trust, not redeemable. Independent from Eco Points and Level.
+// Increases with verified reports, resolutions, cleanup participation and
+// helpful behaviour; decreases with confirmed spam, duplicates, or repeated
+// rejected reports. AI never sets this directly — only confirmed moderation
+// decisions do ("AI assists. Humans decide.").
+export const TRUST_LEVELS: TrustLevel[] = [
+  { id: 1, name: 'New Reporter', minReputation: 0, maxReputation: 24, description: 'Building a track record' },
+  { id: 2, name: 'Reliable Reporter', minReputation: 25, maxReputation: 74, description: 'Consistently accurate reports' },
+  { id: 3, name: 'Trusted Community Reporter', minReputation: 75, maxReputation: 149, description: 'A dependable, verified voice in the community' },
+  { id: 4, name: 'Senior Community Reporter', minReputation: 150, maxReputation: Infinity, description: 'Sustained, high-trust contribution over time' },
+];
+
+// Achievement Badge catalog. earned/earnedDate are never stored here — they
+// are always derived at render time from a user's real Eco Points (see
+// RewardsPage.tsx / ProfilePage.tsx), since there is no per-badge tracking
+// table yet.
 export const ACHIEVEMENT_BADGES: AchievementBadge[] = [
-  {
-    id: 'first-report',
-    name: 'First Report',
-    emoji: '🥇',
-    description: 'Submit your first hazard report',
-    pointsRequired: 100,
-    earned: true,
-    earnedDate: '2024-01-15',
-  },
   {
     id: 'verified-contributor',
     name: 'Verified Contributor',
     emoji: '✅',
     description: 'Have 5 reports verified by the community',
     pointsRequired: 500,
-    earned: true,
-    earnedDate: '2024-02-20',
   },
   {
     id: 'cleanup-champion',
@@ -70,16 +77,6 @@ export const ACHIEVEMENT_BADGES: AchievementBadge[] = [
     emoji: '🧹',
     description: 'Join 3 cleanup events',
     pointsRequired: 300,
-    earned: false,
-  },
-  {
-    id: 'knowledge-explorer',
-    name: 'Knowledge Explorer',
-    emoji: '📚',
-    description: 'Read 10 knowledge articles',
-    pointsRequired: 200,
-    earned: true,
-    earnedDate: '2024-03-05',
   },
   {
     id: 'community-volunteer',
@@ -87,86 +84,38 @@ export const ACHIEVEMENT_BADGES: AchievementBadge[] = [
     emoji: '🤝',
     description: 'Volunteer for 5 community activities',
     pointsRequired: 750,
-    earned: false,
   },
   {
     id: 'green-advocate',
     name: 'Green Advocate',
     emoji: '🌱',
-    description: 'Earn 1000 Impact Points',
+    description: 'Earn 1000 Eco Points',
     pointsRequired: 1000,
-    earned: true,
-    earnedDate: '2024-03-15',
   },
   {
     id: 'environmental-champion',
     name: 'Environmental Champion',
     emoji: '🏆',
-    description: 'Reach Level 3 - Environmental Champion',
-    pointsRequired: 1500,
-    earned: false,
+    description: 'Reach the Environmental Champion level',
+    pointsRequired: 3500,
   },
 ];
 
-// Points Rules
+// Eco Points rules — what actually earns points.
+// Per the ECHO Impact Framework: users are NOT rewarded for merely
+// submitting a report. Points only come from verified/high-priority/
+// critical/resolved outcomes, cleanup participation and organising, and
+// community awareness activities. Mirrored server-side in the
+// handle_new_report / handle_report_status_change triggers
+// (supabase/migrations) — keep both in sync if these change.
 export const POINTS_RULES = {
-  submitReport: 50,
   verifiedReport: 100,
-  readArticle: 10,
-  joinCampaign: 25,
+  highPriorityOrCriticalBonus: 50, // additional bonus when a verified report is High/Critical severity
+  resolvedReport: 200,
   cleanupParticipation: 75,
-  communityContribution: 30,
+  cleanupOrganizing: 150,
+  communityAwareness: 30,
 };
-
-// Mock Impact Stats
-export const MOCK_IMPACT_STATS: ImpactStats = {
-  reportsSubmitted: 24,
-  verifiedReports: 18,
-  communitiesHelped: 8,
-  cleanupEventsJoined: 3,
-  knowledgeArticlesRead: 15,
-  volunteerHours: 42,
-  environmentalScore: 87,
-};
-
-// Mock Point History
-export const MOCK_POINT_HISTORY: PointHistoryEntry[] = [
-  {
-    id: '1',
-    description: 'Submitted hazard report',
-    points: 50,
-    date: '2024-03-20',
-    type: 'report',
-  },
-  {
-    id: '2',
-    description: 'Report verified by community',
-    points: 100,
-    date: '2024-03-19',
-    type: 'verification',
-  },
-  {
-    id: '3',
-    description: 'Read knowledge article',
-    points: 10,
-    date: '2024-03-18',
-    type: 'article',
-  },
-  {
-    id: '4',
-    description: 'Joined cleanup campaign',
-    points: 25,
-    date: '2024-03-17',
-    type: 'campaign',
-  },
-  {
-    id: '5',
-    description: 'Cleanup event participation',
-    points: 75,
-    date: '2024-03-15',
-    type: 'cleanup',
-  },
-];
 
 // Helper function to calculate current level based on points
 export function calculateLevel(points: number): ImpactLevel {
@@ -201,5 +150,12 @@ export function calculateProgressToNextLevel(points: number): {
   return { currentLevel, nextLevel, progress, pointsToNext };
 }
 
-// Mock user impact points
-export const MOCK_IMPACT_POINTS = 1250;
+// Helper function to calculate current trust level based on reputation
+export function calculateTrustLevel(reputation: number): TrustLevel {
+  for (let i = TRUST_LEVELS.length - 1; i >= 0; i--) {
+    if (reputation >= TRUST_LEVELS[i].minReputation) {
+      return TRUST_LEVELS[i];
+    }
+  }
+  return TRUST_LEVELS[0];
+}
