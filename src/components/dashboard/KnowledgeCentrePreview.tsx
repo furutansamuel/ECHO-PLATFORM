@@ -17,29 +17,29 @@ const topics = [
     title: 'Flood Prevention',
     description: 'Protect your community from seasonal flooding risks.',
     icon: Droplets,
-    color: 'text-blue-500',
-    bg: 'bg-blue-500/10'
+    color: 'text-info',
+    bg: 'bg-info/10'
   },
   {
     title: 'Waste Management',
     description: 'Learn efficient ways to handle domestic waste.',
     icon: Trash2,
-    color: 'text-green-500',
-    bg: 'bg-green-500/10'
+    color: 'text-secondary',
+    bg: 'bg-secondary/10'
   },
   {
     title: 'Air Quality',
     description: 'Tips for reducing local air pollution levels.',
     icon: Wind,
-    color: 'text-gray-500',
-    bg: 'bg-gray-500/10'
+    color: 'text-muted-foreground',
+    bg: 'bg-muted'
   },
   {
     title: 'Climate Awareness',
     description: 'Understand global climate change impacts locally.',
     icon: Sun,
-    color: 'text-orange-500',
-    bg: 'bg-orange-500/10'
+    color: 'text-status-warning',
+    bg: 'bg-status-warning/10'
   }
 ];
 
