@@ -293,10 +293,10 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
 
           {/* Verification Workflow (if applicable) */}
           {report.assigned_verifier && (
-            <Card className="border-amber-500/20 bg-amber-500/5">
+            <Card className="border-status-warning/20 bg-status-warning/5">
               <CardHeader className="p-4">
                 <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-amber-600" />
+                  <Shield className="w-4 h-4 text-status-warning" />
                   Verification Details
                 </CardTitle>
               </CardHeader>
@@ -314,7 +314,7 @@ export const ReportDetailsView: React.FC<ReportDetailsViewProps> = ({
                 <div className="flex justify-between items-center">
                   <div className="space-y-1">
                     <p className="text-[10px] text-muted-foreground uppercase">Confidence</p>
-                    <p className="text-xs font-bold text-amber-600">{report.verification_confidence}%</p>
+                    <p className="text-xs font-bold text-status-warning">{report.verification_confidence}%</p>
                   </div>
                   <div className="space-y-1 text-right">
                     <p className="text-[10px] text-muted-foreground uppercase">Date</p>
