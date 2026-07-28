@@ -6,25 +6,25 @@ const actions = [
     title: "Report Hazard",
     icon: AlertTriangle,
     href: "/report",
-    tone: "bg-rose-500/10 text-rose-600 hover:bg-rose-500/15 border-rose-500/20",
+    tone: "bg-destructive/10 text-destructive hover:bg-destructive/15 border-destructive/20",
   },
   {
     title: "Join Cleanup",
     icon: Users,
-    href: "/community-insights",
-    tone: "bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/15 border-emerald-500/20",
+    href: "/cleanup-events",
+    tone: "bg-secondary/10 text-secondary hover:bg-secondary/15 border-secondary/20",
   },
   {
     title: "View Live Map",
     icon: Map,
     href: "/map",
-    tone: "bg-sky-500/10 text-sky-600 hover:bg-sky-500/15 border-sky-500/20",
+    tone: "bg-info/10 text-info hover:bg-info/15 border-info/20",
   },
   {
     title: "Impact Center",
     icon: Award,
     href: "/rewards",
-    tone: "bg-violet-500/10 text-violet-600 hover:bg-violet-500/15 border-violet-500/20",
+    tone: "bg-primary/10 text-primary hover:bg-primary/15 border-primary/20",
   },
 ];
 
