@@ -237,11 +237,14 @@ export const useReportsStore = () => {
 
     // Update local stats optimistically; the real numbers will refresh
     // from userStats once the DB trigger/RPC (if any) recalculates them.
+    // Eco Points are NOT awarded for merely submitting — only verified,
+    // high-priority/critical, or resolved outcomes earn points (see
+    // handle_report_status_change in supabase/migrations), so ecoPoints
+    // is left untouched here.
     const updatedStats = {
       ...stats,
       totalReports: stats.totalReports + 1,
       pendingReports: stats.pendingReports + 1,
-      ecoPoints: stats.ecoPoints + 50, // Award 50 points for reporting
     };
     setStats(updatedStats);
 
