@@ -31,9 +31,9 @@ const ActivityTimeline = () => {
 
   const statusMeta = (status: string) => {
     if (status === 'Verified' || status === 'Resolved' || status === 'Closed') {
-      return { type: 'Report Verified', icon: CheckCircle2, color: 'text-blue-500', bg: 'bg-blue-500/10' };
+      return { type: 'Report Verified', icon: CheckCircle2, color: 'text-status-safe', bg: 'bg-status-safe/10' };
     }
-    return { type: 'Hazard Submitted', icon: FileText, color: 'text-orange-500', bg: 'bg-orange-500/10' };
+    return { type: 'Hazard Submitted', icon: FileText, color: 'text-status-warning', bg: 'bg-status-warning/10' };
   };
 
   const allActivities = useMemo(
