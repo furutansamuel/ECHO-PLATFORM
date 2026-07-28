@@ -60,10 +60,10 @@ export default function SuccessStep({ referenceNumber, reportId, title, category
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="absolute -bottom-4 -right-4 bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full font-bold text-sm shadow-lg flex items-center gap-2"
+            className="absolute -bottom-4 -right-4 bg-amber-400 text-amber-900 px-4 py-2 rounded-full font-bold text-sm shadow-lg flex items-center gap-2"
           >
             <Award className="h-4 w-4" />
-            +50 Impact Points
+            Pending Review
           </motion.div>
         </div>
       </motion.div>
@@ -77,6 +77,9 @@ export default function SuccessStep({ referenceNumber, reportId, title, category
         <h1 className="text-3xl font-extrabold text-foreground tracking-tight">Report Successfully Submitted!</h1>
         <p className="text-lg text-muted-foreground">
           Thank you for helping us keep our community clean and safe. Your contribution has been recorded.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          You'll earn Eco Points once this report is verified — more if it turns out to be high-priority or critical.
         </p>
         
         <div className="bg-muted/50 p-6 rounded-2xl border-2 border-dashed border-primary/20 my-8 inline-block">
