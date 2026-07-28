@@ -13,17 +13,16 @@ import {
   CheckCircle, 
   Users, 
   Calendar, 
-  BookOpen, 
   Clock, 
   Target,
   Zap,
   Leaf,
   Globe,
-  Heart,
-  MapPin
+  Heart
 } from 'lucide-react';
 import { 
   ACHIEVEMENT_BADGES,
+  POINTS_RULES,
   calculateProgressToNextLevel 
 } from '@/lib/impact-constants';
 
@@ -32,6 +31,7 @@ interface RecentReport {
   title: string;
   status: string;
   verification_status?: string;
+  severity?: string;
   created_at: string;
   location: { ward?: string; lga?: string } | null;
 }
@@ -61,7 +61,7 @@ export default function RewardsPage() {
     (async () => {
       const { data } = await supabase
         .from('hazard_reports')
-        .select('id, title, status, verification_status, created_at, location')
+        .select('id, title, status, verification_status, severity, created_at, location')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(8);
@@ -83,24 +83,33 @@ export default function RewardsPage() {
     recentReports.map((r) => r.location?.ward || r.location?.lga).filter(Boolean)
   ).size;
 
-  // Recent activity built from the user's actual report submissions —
-  // point values shown match the "How to Earn Impact Points" rules below,
-  // not a separate ledger (none exists yet), so they're a label, not a
-  // literal per-event transaction log.
-  const pointHistory = recentReports.map((r) => ({
-    id: r.id,
-    type: r.status === 'Verified' || r.status === 'Resolved' ? 'verification' : 'report',
-    description: r.status === 'Verified' || r.status === 'Resolved'
-      ? `Report verified: ${r.title}`
-      : `Report submitted: ${r.title}`,
-    date: r.created_at,
-    points: r.status === 'Verified' || r.status === 'Resolved' ? 100 : 50,
-  }));
+  // Recent activity built from the user's actual report submissions.
+  // Points shown mirror POINTS_RULES / the server-side trigger exactly —
+  // submitting alone earns nothing; verification and resolution do.
+  const pointHistory = recentReports.map((r) => {
+    const isResolved = r.status === 'Resolved';
+    const isVerified = r.status === 'Verified';
+    let points: number | null = null;
+    let description = `Report submitted: ${r.title}`;
+    let type: 'report' | 'verification' = 'report';
+
+    if (isResolved) {
+      points = POINTS_RULES.resolvedReport;
+      description = `Report resolved: ${r.title}`;
+      type = 'verification';
+    } else if (isVerified) {
+      points = POINTS_RULES.verifiedReport +
+        (r.severity === 'High' || r.severity === 'Critical' ? POINTS_RULES.highPriorityOrCriticalBonus : 0);
+      description = `Report verified: ${r.title}`;
+      type = 'verification';
+    }
+
+    return { id: r.id, type, description, date: r.created_at, points };
+  });
 
 // Badge unlock is derived from real eco_points against each badge's
-// pointsRequired threshold — there's no per-badge tracking table, so
-// this is the honest substitute for the catalog's hardcoded earned/
-// earnedDate fields (which would otherwise show as real for every account).
+// pointsRequired threshold — the catalog itself carries no earned state,
+// since there's no per-badge tracking table yet.
 const badges = ACHIEVEMENT_BADGES.map((b) => ({
   ...b,
   earned: impactPoints >= b.pointsRequired,
@@ -221,7 +230,7 @@ const badges = ACHIEVEMENT_BADGES.map((b) => ({
                   </div>
                   <h3 className="font-black uppercase tracking-tight text-sm">{badge.name}</h3>
                   <p className="text-xs text-muted-foreground italic leading-snug">{badge.description}</p>
-                  <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-none font-black text-[10px] uppercase tracking-widest">
+                  <Badge className="border-status-safe/30 bg-status-safe/10 text-status-safe hover:bg-status-safe/10 font-black text-[10px] uppercase tracking-widest">
                     Earned • +{badge.pointsRequired} pts
                   </Badge>
                   {badge.earnedDate && (
@@ -279,20 +288,16 @@ const badges = ACHIEVEMENT_BADGES.map((b) => ({
             <div className="space-y-4">
               {pointHistory.length === 0 && (
                 <p className="text-sm text-muted-foreground italic text-center py-6">
-                  No activity yet — submit your first hazard report to start earning points.
+                  No activity yet — submit your first hazard report to start building your impact record.
                 </p>
               )}
-              {pointHistory.map((entry: any, index: number) => (
+              {pointHistory.map((entry, index: number) => (
                 <div key={entry.id}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-primary/10 rounded-lg">
                         {entry.type === 'report' && <FileText className="h-4 w-4 text-primary" />}
                         {entry.type === 'verification' && <CheckCircle className="h-4 w-4 text-primary" />}
-                        {entry.type === 'article' && <BookOpen className="h-4 w-4 text-primary" />}
-                        {entry.type === 'campaign' && <Users className="h-4 w-4 text-primary" />}
-                        {entry.type === 'cleanup' && <Calendar className="h-4 w-4 text-primary" />}
-                        {entry.type === 'community' && <Heart className="h-4 w-4 text-primary" />}
                       </div>
                       <div>
                         <p className="font-bold text-sm">{entry.description}</p>
@@ -301,10 +306,12 @@ const badges = ACHIEVEMENT_BADGES.map((b) => ({
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Zap className="h-4 w-4 text-primary" />
-                      <span className="font-black text-primary">+{entry.points}</span>
-                    </div>
+                    {entry.points !== null && (
+                      <div className="flex items-center gap-2">
+                        <Zap className="h-4 w-4 text-primary" />
+                        <span className="font-black text-primary">+{entry.points}</span>
+                      </div>
+                    )}
                   </div>
                   {index < pointHistory.length - 1 && <Separator className="my-4" />}
                 </div>
@@ -323,47 +330,50 @@ const badges = ACHIEVEMENT_BADGES.map((b) => ({
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <p className="text-xs text-muted-foreground italic mb-4 -mt-2">
+            Submitting a report is always free to do — points come from what happens next.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-muted/20">
-              <FileText className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-bold text-sm">Submit Report</p>
-                <p className="text-xs text-muted-foreground">+50 points</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-muted/20">
+            <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-muted/20">
               <CheckCircle className="h-5 w-5 text-primary" />
               <div>
                 <p className="font-bold text-sm">Verified Report</p>
-                <p className="text-xs text-muted-foreground">+100 points</p>
+                <p className="text-xs text-muted-foreground">+{POINTS_RULES.verifiedReport} points</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-muted/20">
-              <BookOpen className="h-5 w-5 text-primary" />
+            <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-muted/20">
+              <Zap className="h-5 w-5 text-destructive" />
               <div>
-                <p className="font-bold text-sm">Read Article</p>
-                <p className="text-xs text-muted-foreground">+10 points</p>
+                <p className="font-bold text-sm">High Priority / Critical Bonus</p>
+                <p className="text-xs text-muted-foreground">+{POINTS_RULES.highPriorityOrCriticalBonus} points</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-muted/20">
-              <Users className="h-5 w-5 text-primary" />
+            <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-muted/20">
+              <Award className="h-5 w-5 text-primary" />
               <div>
-                <p className="font-bold text-sm">Join Campaign</p>
-                <p className="text-xs text-muted-foreground">+25 points</p>
+                <p className="font-bold text-sm">Resolved Report</p>
+                <p className="text-xs text-muted-foreground">+{POINTS_RULES.resolvedReport} points</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-muted/20">
+            <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-muted/20">
               <Calendar className="h-5 w-5 text-primary" />
               <div>
-                <p className="font-bold text-sm">Cleanup Event</p>
-                <p className="text-xs text-muted-foreground">+75 points</p>
+                <p className="font-bold text-sm">Cleanup Participation</p>
+                <p className="text-xs text-muted-foreground">+{POINTS_RULES.cleanupParticipation} points</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-muted/20">
+            <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-muted/20">
+              <Users className="h-5 w-5 text-primary" />
+              <div>
+                <p className="font-bold text-sm">Organize a Cleanup</p>
+                <p className="text-xs text-muted-foreground">+{POINTS_RULES.cleanupOrganizing} points</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-muted/20">
               <Heart className="h-5 w-5 text-primary" />
               <div>
-                <p className="font-bold text-sm">Community Contribution</p>
-                <p className="text-xs text-muted-foreground">+30 points</p>
+                <p className="font-bold text-sm">Community Awareness</p>
+                <p className="text-xs text-muted-foreground">+{POINTS_RULES.communityAwareness} points</p>
               </div>
             </div>
           </div>
