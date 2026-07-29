@@ -85,7 +85,7 @@ export function EchoPulseHero({ healthScore, communityStatus, confidence, totalR
       <div className="relative z-10 space-y-5">
         {/* Top row */}
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80">
+          <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/100">
             🌍 ECHO Status
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 border border-white/25 px-2.5 py-1 text-[10px] font-extrabold">
@@ -97,13 +97,10 @@ export function EchoPulseHero({ healthScore, communityStatus, confidence, totalR
           </span>
         </div>
 
-        <p className="text-xs font-semibold text-white/70">
+        <p className="text-xs font-semibold text-white/90">
   {profile?.region ? `Community: ${profile.region}` : 'Your Local Community'}
 </p>
 
-
-        <p className="text-xs font-semibold text-white/70">Community: {profile?.region ? profile.region : 'Your Community'}
-        </p>
 
         {/* Ring */}
         <div className="flex flex-col items-center py-2">
