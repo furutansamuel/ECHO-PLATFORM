@@ -1389,6 +1389,14 @@ animation:none;
 
 
 
+.leaflet-tile-pane{
+
+  filter: saturate(0.85) hue-rotate(6deg);
+
+}
+
+
+
 .leaflet-control-zoom a{
 
   color:var(--primary);
