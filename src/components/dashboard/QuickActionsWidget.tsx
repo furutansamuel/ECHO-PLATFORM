@@ -1,47 +1,70 @@
 import { Link } from "react-router-dom";
-import { AlertTriangle, Users, Map, Award } from "lucide-react";
+import { AlertTriangle, Users, Map, Award, ChevronRight } from "lucide-react";
 
 const actions = [
   {
     title: "Report Hazard",
     icon: AlertTriangle,
     href: "/report",
-    tone: "bg-destructive/10 text-destructive hover:bg-destructive/15 border-destructive/20",
+    badge: "bg-destructive/15 text-destructive",
+    arrowBg: "bg-destructive/10 text-destructive",
+    hoverBorder: "hover:border-destructive/40",
   },
   {
     title: "Join Cleanup",
     icon: Users,
     href: "/cleanup-events",
-    tone: "bg-secondary/10 text-secondary hover:bg-secondary/15 border-secondary/20",
+    badge: "bg-secondary/15 text-secondary",
+    arrowBg: "bg-secondary/10 text-secondary",
+    hoverBorder: "hover:border-secondary/40",
   },
   {
     title: "View Live Map",
     icon: Map,
     href: "/map",
-    tone: "bg-info/10 text-info hover:bg-info/15 border-info/20",
+    badge: "bg-info/15 text-info",
+    arrowBg: "bg-info/10 text-info",
+    hoverBorder: "hover:border-info/40",
   },
   {
     title: "Impact Center",
     icon: Award,
     href: "/rewards",
-    tone: "bg-primary/10 text-primary hover:bg-primary/15 border-primary/20",
+    badge: "bg-primary/15 text-primary",
+    arrowBg: "bg-primary/10 text-primary",
+    hoverBorder: "hover:border-primary/40",
   },
 ];
 
 export function QuickActionsWidget() {
   return (
-    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-      {actions.map((action) => (
-        <Link
-          key={action.title}
-          to={action.href}
-          aria-label={action.title}
-          className={`group flex min-h-[92px] flex-col items-center justify-center gap-2 rounded-2xl border bg-card p-3 text-center text-xs font-semibold shadow-premium transition-all hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[104px] sm:text-sm ${action.tone}`}
-        >
-          <action.icon className="h-5 w-5 sm:h-6 sm:w-6" />
-          <span className="leading-tight">{action.title}</span>
-        </Link>
-      ))}
+    /* Constrains max width so cards don't stretch too wide on large screens */
+    <div className="mx-auto w-full max-w-2xl"> 
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
+        {actions.map((action) => (
+          <Link
+            key={action.title}
+            to={action.href}
+            aria-label={action.title}
+            className={`group relative flex flex-col items-center justify-between p-3 sm:p-3.5 rounded-2xl border border-border/60 bg-card/80 backdrop-blur-md shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${action.hoverBorder}`}
+          >
+            {/* Centered Main Icon */}
+            <div className={`p-2.5 rounded-full ${action.badge} transition-transform group-hover:scale-105 duration-200`}>
+              <action.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+            </div>
+
+            {/* Title */}
+            <span className="my-1.5 text-xs font-bold text-foreground text-center line-clamp-1">
+              {action.title}
+            </span>
+
+            {/* Bottom Arrow Indicator (matches screenshot style) */}
+            <div className={`flex items-center justify-center h-5 w-5 rounded-full ${action.arrowBg} transition-transform group-hover:translate-y-0.5`}>
+              <ChevronRight className="h-3 w-3" />
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
