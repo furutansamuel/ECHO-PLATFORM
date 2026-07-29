@@ -16,8 +16,7 @@ import {
   Layers,
   ChevronDown,
   FilterX,
-  X,
-  Filter
+  X
 } from 'lucide-react';
 
 export default function InteractiveMapPage() {
@@ -276,21 +275,39 @@ export default function InteractiveMapPage() {
                         </Badge>
                       </button>
 
-                      {/* Moderate Filter Toggle */}
+                      {/* High Filter Toggle */}
                       <button 
                         className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
-                          selectedSeverity === 'moderate' 
+                          selectedSeverity === 'high' 
+                            ? 'bg-orange-500/15 font-bold border border-orange-500/30' 
+                            : 'hover:bg-muted/60'
+                        }`}
+                        onClick={() => setSelectedSeverity(selectedSeverity === 'high' ? null : 'high')}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="h-2.5 w-2.5 rounded-full bg-orange-500" />
+                          <span>High</span>
+                        </div>
+                        <Badge variant="outline" className="text-[9px] py-0 h-4">
+                          {hazardReports?.filter((r: any) => r.severity?.toLowerCase() === 'high').length || 0}
+                        </Badge>
+                      </button>
+
+                      {/* Medium Filter Toggle */}
+                      <button 
+                        className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
+                          selectedSeverity === 'medium' 
                             ? 'bg-amber-500/15 font-bold border border-amber-500/30' 
                             : 'hover:bg-muted/60'
                         }`}
-                        onClick={() => setSelectedSeverity(selectedSeverity === 'moderate' ? null : 'moderate')}
+                        onClick={() => setSelectedSeverity(selectedSeverity === 'medium' ? null : 'medium')}
                       >
                         <div className="flex items-center gap-2">
                           <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-                          <span>Moderate</span>
+                          <span>Medium</span>
                         </div>
                         <Badge variant="outline" className="text-[9px] py-0 h-4">
-                          {hazardReports?.filter((r: any) => r.severity?.toLowerCase() === 'moderate' || r.severity?.toLowerCase() === 'warning').length || 0}
+                          {hazardReports?.filter((r: any) => r.severity?.toLowerCase() === 'medium').length || 0}
                         </Badge>
                       </button>
 
@@ -305,7 +322,7 @@ export default function InteractiveMapPage() {
                       >
                         <div className="flex items-center gap-2">
                           <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-                          <span>Low / Monitoring</span>
+                          <span>Low</span>
                         </div>
                         <Badge variant="outline" className="text-[9px] py-0 h-4">
                           {hazardReports?.filter((r: any) => r.severity?.toLowerCase() === 'low').length || 0}
