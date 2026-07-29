@@ -15,7 +15,9 @@ import {
   Search,
   Layers,
   ChevronDown,
-  FilterX
+  FilterX,
+  X,
+  Filter
 } from 'lucide-react';
 
 export default function InteractiveMapPage() {
@@ -24,9 +26,12 @@ export default function InteractiveMapPage() {
   // State for Map Overlay Controls
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSeverity, setSelectedSeverity] = useState<string | null>(null);
+  
+  // Collapsible States
+  const [searchOpen, setSearchOpen] = useState(true);
   const [legendOpen, setLegendOpen] = useState(true);
 
-  // Safely normalize AI Confidence Score (Handles both 0.70 and 70 gracefully)
+  // Safely normalize AI Confidence Score
   const formattedConfidence = useMemo(() => {
     const rawScore = aiAnalysis?.confidence_score ?? 0;
     if (rawScore <= 0) return '0%';
@@ -84,33 +89,31 @@ export default function InteractiveMapPage() {
               <h3 className="text-xl font-black text-destructive">{hazardReports?.filter((r: any) => r.severity === 'Critical').length || 0}</h3>
             </div>
           </div>
-{/* AI Hotspots Card (ECHO Branded) */}
-<Card className="border border-emerald-500/20 shadow-lg bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 text-emerald-50 relative overflow-hidden">
-  {/* Ambient Background Glow & Watermark Icon */}
-  <div className="absolute -bottom-6 -right-6 text-emerald-500/10 pointer-events-none">
-    <BrainCircuit className="h-28 w-28" />
-  </div>
-  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
 
-  <CardHeader className="pb-2 relative z-10">
-    <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-emerald-400">
-      <BrainCircuit className="h-4 w-4 text-emerald-400 animate-pulse" />
-      AI Hotspot Detection
-    </CardTitle>
-  </CardHeader>
+          {/* AI Hotspots Card (ECHO Branded) */}
+          <Card className="border border-emerald-500/20 shadow-lg bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 text-emerald-50 relative overflow-hidden">
+            <div className="absolute -bottom-6 -right-6 text-emerald-500/10 pointer-events-none">
+              <BrainCircuit className="h-28 w-28" />
+            </div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
 
-  <CardContent className="space-y-3 relative z-10">
-    <p className="text-[11px] italic text-emerald-100/90 leading-relaxed">
-      3 high-density clusters detected in the last 48 hours. Primary risk: <strong className="text-emerald-300 font-semibold">{aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'}</strong>
-    </p>
+            <CardHeader className="pb-2 relative z-10">
+              <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-emerald-400">
+                <BrainCircuit className="h-4 w-4 text-emerald-400 animate-pulse" />
+                AI Hotspot Detection
+              </CardTitle>
+            </CardHeader>
 
-    {/* ECHO Cyan/Emerald Confidence Badge */}
-    <Badge className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 uppercase text-[9px] font-black tracking-wider shadow-sm backdrop-blur-sm">
-      Confidence: {formattedConfidence}
-    </Badge>
-  </CardContent>
-</Card>
+            <CardContent className="space-y-3 relative z-10">
+              <p className="text-[11px] italic text-emerald-100/90 leading-relaxed">
+                3 high-density clusters detected in the last 48 hours. Primary risk: <strong className="text-emerald-300 font-semibold">{aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'}</strong>
+              </p>
 
+              <Badge className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 uppercase text-[9px] font-black tracking-wider shadow-sm backdrop-blur-sm">
+                Confidence: {formattedConfidence}
+              </Badge>
+            </CardContent>
+          </Card>
 
           {/* Recent Alerts */}
           <div className="space-y-4">
@@ -152,37 +155,64 @@ export default function InteractiveMapPage() {
       {/* Map Area with Overlay Controls */}
       <main className="flex-1 relative">
         
-        {/* Floating Map Controls */}
+        {/* Floating Map Controls Wrapper */}
         <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between z-10">
           
-          {/* Top Floating Search Card */}
-          <div className="pointer-events-auto max-w-sm w-full">
-            <Card className="shadow-lg border-border/60 bg-background/95 backdrop-blur">
-              <CardContent className="p-2 flex items-center gap-2">
-                <Search className="h-4 w-4 text-muted-foreground ml-2 shrink-0" />
-                <Input 
-                  value={searchQuery}
-                  placeholder="Search map location or hazard..." 
-                  className="border-none focus-visible:ring-0 text-xs h-8 shadow-none bg-transparent"
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                {searchQuery && (
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-6 w-6 text-muted-foreground hover:text-foreground shrink-0"
-                    onClick={() => setSearchQuery('')}
+          {/* TOP OVERLAY: Collapsible Search Bar */}
+          <div className="pointer-events-auto max-w-sm w-full transition-all duration-300">
+            {searchOpen ? (
+              <Card className="shadow-lg border-border/60 bg-background/95 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
+                <CardContent className="p-2 flex items-center gap-2">
+                  <Search className="h-4 w-4 text-muted-foreground ml-2 shrink-0" />
+                  <Input 
+                    value={searchQuery}
+                    placeholder="Search map location or hazard..." 
+                    className="border-none focus-visible:ring-0 text-xs h-8 shadow-none bg-transparent"
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    autoFocus
+                  />
+                  {searchQuery && (
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-6 w-6 text-muted-foreground hover:text-foreground shrink-0"
+                      onClick={() => setSearchQuery('')}
+                    >
+                      <FilterX className="h-3 w-3" />
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 text-muted-foreground hover:text-foreground shrink-0 border-l rounded-none pl-2"
+                    onClick={() => setSearchOpen(false)}
+                    title="Collapse search"
                   >
-                    <FilterX className="h-3 w-3" />
+                    <X className="h-3.5 w-3.5" />
                   </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-background/90 backdrop-blur-md shadow-md gap-2 border-border/60 font-semibold text-xs rounded-full pointer-events-auto"
+                onClick={() => setSearchOpen(true)}
+              >
+                <Search className="h-3.5 w-3.5 text-primary" />
+                <span>Search Map</span>
+                {searchQuery && (
+                  <Badge variant="secondary" className="text-[9px] px-1.5 h-4 ml-1">
+                    Active
+                  </Badge>
                 )}
-              </CardContent>
-            </Card>
+              </Button>
+            )}
           </div>
 
-          {/* Bottom Right Collapsible Legend & Severity Filter Card */}
+          {/* BOTTOM RIGHT OVERLAY: Collapsible Legend Card */}
           <div className="self-end pointer-events-auto max-w-xs w-full transition-all duration-300 ease-in-out">
-            <Card className="shadow-xl border-border/60 bg-background/95 backdrop-blur transition-all duration-300">
+            <Card className="shadow-xl border-border/60 bg-background/95 backdrop-blur-md transition-all duration-300">
               <CardHeader 
                 className="p-3 flex flex-row items-center justify-between space-y-0 cursor-pointer select-none hover:bg-muted/40 transition-colors rounded-t-xl"
                 onClick={() => setLegendOpen(!legendOpen)}
@@ -191,7 +221,7 @@ export default function InteractiveMapPage() {
                   <Layers className="h-4 w-4 text-primary shrink-0" />
                   <span>Map Legend & Filters</span>
                   
-                  {/* Indicator when card is collapsed with an active filter */}
+                  {/* Indicator when card is collapsed with active filter */}
                   {!legendOpen && selectedSeverity && (
                     <Badge variant="destructive" className="ml-1 text-[8px] h-4 px-1.5 uppercase font-bold">
                       {selectedSeverity}
@@ -228,7 +258,7 @@ export default function InteractiveMapPage() {
                         )}
                       </div>
 
-                      {/* Critical Toggle */}
+                      {/* Critical Filter Toggle */}
                       <button 
                         className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
                           selectedSeverity === 'critical' 
@@ -246,7 +276,7 @@ export default function InteractiveMapPage() {
                         </Badge>
                       </button>
 
-                      {/* Moderate / Warning Toggle */}
+                      {/* Moderate Filter Toggle */}
                       <button 
                         className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
                           selectedSeverity === 'moderate' 
@@ -264,7 +294,7 @@ export default function InteractiveMapPage() {
                         </Badge>
                       </button>
 
-                      {/* Low Toggle */}
+                      {/* Low Filter Toggle */}
                       <button 
                         className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
                           selectedSeverity === 'low' 
@@ -290,7 +320,7 @@ export default function InteractiveMapPage() {
 
         </div>
 
-        {/* Map Component */}
+        {/* Map Rendering */}
         {loading ? (
           <Skeleton className="w-full h-full" />
         ) : (
