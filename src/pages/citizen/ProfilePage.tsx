@@ -479,13 +479,13 @@ const EchoDnaMetrics: React.FC<EchoDnaProps> = ({
 
 interface StreaksAndGoalsProps {
   streakDays: number;
-  volunteerWeeks: number;
+  activeWeeks: number;
   goals: GoalItem[];
 }
 
 const StreaksAndGoals: React.FC<StreaksAndGoalsProps> = ({
   streakDays,
-  volunteerWeeks,
+  activeWeeks,
   goals,
 }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -505,8 +505,8 @@ const StreaksAndGoals: React.FC<StreaksAndGoalsProps> = ({
         </div>
         <Separator />
         <div>
-          <p className="text-3xl font-black text-foreground">{volunteerWeeks} Weeks</p>
-          <p className="text-xs text-muted-foreground font-bold">Continuous Volunteer Streak</p>
+          <p className="text-3xl font-black text-foreground">{activeWeeks} Weeks</p>
+          <p className="text-xs text-muted-foreground font-bold">Weeks With Reporting Activity</p>
         </div>
       </CardContent>
     </Card>
@@ -951,6 +951,44 @@ const ProfilePage: React.FC = () => {
     { id: "2", title: "Submit Verified Reports", current: impactStats.verifiedReports, target: 10, unit: "reports", category: "reports" },
   ];
 
+  // Real streak/active-weeks derived from the user's own report timestamps
+  // (recentReports), not fabricated placeholders. streakDays = consecutive
+  // days ending today or yesterday with at least one report. activeWeeks =
+  // count of distinct ISO weeks with at least one report.
+  const { streakDays, activeWeeks } = useMemo(() => {
+    const dates = recentReports
+      .map((r) => r.created_at)
+      .filter((d): d is string => Boolean(d))
+      .map((d) => new Date(d));
+
+    if (dates.length === 0) return { streakDays: 0, activeWeeks: 0 };
+
+    const dayKeys = new Set(dates.map((d) => d.toISOString().slice(0, 10)));
+
+    let streak = 0;
+    const cursor = new Date();
+    cursor.setHours(0, 0, 0, 0);
+    if (!dayKeys.has(cursor.toISOString().slice(0, 10))) {
+      cursor.setDate(cursor.getDate() - 1);
+    }
+    while (dayKeys.has(cursor.toISOString().slice(0, 10))) {
+      streak += 1;
+      cursor.setDate(cursor.getDate() - 1);
+    }
+
+    const weekKeys = new Set(
+      dates.map((d) => {
+        const onejan = new Date(d.getFullYear(), 0, 1);
+        const week = Math.ceil(
+          ((d.getTime() - onejan.getTime()) / 86400000 + onejan.getDay() + 1) / 7
+        );
+        return `${d.getFullYear()}-W${week}`;
+      })
+    );
+
+    return { streakDays: streak, activeWeeks: weekKeys.size };
+  }, [recentReports]);
+
   const sampleCertificates: Certificate[] = [
     {
       id: "c1",
@@ -1020,7 +1058,7 @@ const ProfilePage: React.FC = () => {
         <AiCitizenInsights insights={aiInsights} />
 
         {/* 5. Streaks and Goals */}
-        <StreaksAndGoals streakDays={12} volunteerWeeks={4} goals={sampleGoals} />
+        <StreaksAndGoals streakDays={streakDays} activeWeeks={activeWeeks} goals={sampleGoals} />
 
         {/* 6. Environmental Journey Timeline */}
         <JourneyTimeline events={journeyEvents} />
