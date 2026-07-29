@@ -7,8 +7,6 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import L from 'leaflet';
 import { HazardReport } from '@/types/reports';
 import { HazardPopup } from './HazardPopup';
-import MapFilters from './MapFilters';
-import MapLegend from './MapLegend';
 // @ts-ignore
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
@@ -78,31 +76,8 @@ const getHazardIcon = (category: string, severity: string) => {
 }
 
 const EnvironmentalMap: React.FC<EnvironmentalMapProps> = ({ reports = [] }) => {
-  const [filters, setFilters] = useState<any>({});
   const [showLocation, setShowLocation] = useState(false);
   const position: [number, number] = [9.0820, 8.6753]; // Nigeria center — initial overview viewport only; real user location is handled by LocationMarker below via map.locate()
-
-  const handleFilterChange = (newFilters: any) => {
-      setFilters(prev => ({...prev, ...newFilters}));
-  }
-
-  const filteredReports = reports.filter(report => {
-      if(filters.category && filters.category !== 'all' && report.category !== filters.category) return false;
-      if(filters.severity && filters.severity !== 'all' && report.severity !== filters.severity) return false;
-      if(filters.locationQuery) {
-          const q = filters.locationQuery.trim().toLowerCase();
-          if (q.length > 0) {
-              const haystack = [
-                  report.location?.address,
-                  report.location?.ward,
-                  report.location?.lga,
-                  report.location?.state,
-              ].filter(Boolean).join(' ').toLowerCase();
-              if (!haystack.includes(q)) return false;
-          }
-      }
-      return true;
-  })
 
   return (
     <div className="relative w-full h-full">
@@ -123,7 +98,7 @@ const EnvironmentalMap: React.FC<EnvironmentalMapProps> = ({ reports = [] }) => 
             
             <LayersControl.Overlay checked name="Hazards">
                 <MarkerClusterGroup>
-                    {filteredReports.map(report => (
+                    {reports.map(report => (
                         <Marker 
                             key={report.id} 
                             position={[report.location.lat, report.location.lng]}
@@ -156,9 +131,6 @@ const EnvironmentalMap: React.FC<EnvironmentalMapProps> = ({ reports = [] }) => 
             <Navigation className="h-5 w-5" />
         </button>
       </div>
-
-      <MapFilters onFilterChange={handleFilterChange} />
-      <MapLegend />
     </div>
   );
 };
