@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { Link } from "react-router-dom";
+
 
 // Modal & Skeleton components
 import EditProfileModal from "@/components/profile/EditProfileModal";
@@ -1027,18 +1029,26 @@ const ProfilePage: React.FC = () => {
         />
 
         {/* 10. Footer */}
-        <div className="pt-4 border-t border-border flex flex-col sm:flex-row justify-between gap-3">
-          <Button variant="ghost" className="gap-2 text-muted-foreground rounded-xl text-xs font-semibold">
-            <Settings className="h-3.5 w-3.5" /> Settings
-          </Button>
-          <Button
-            variant="ghost"
-            className="gap-2 text-destructive hover:bg-destructive/10 rounded-xl text-xs font-semibold"
-            onClick={() => logout()}
-          >
-            <LogOut className="h-3.5 w-3.5" /> Sign Out
-          </Button>
-        </div>
+<div className="pt-4 border-t border-border flex flex-col sm:flex-row justify-between gap-3">
+  <Button
+    asChild
+    variant="ghost"
+    className="gap-2 text-muted-foreground rounded-xl text-xs font-semibold"
+  >
+    <Link to="/settings">
+      <Settings className="h-3.5 w-3.5" /> Settings
+    </Link>
+  </Button>
+  
+  <Button
+    variant="ghost"
+    className="gap-2 text-destructive hover:bg-destructive/10 rounded-xl text-xs font-semibold"
+    onClick={() => logout()}
+  >
+    <LogOut className="h-3.5 w-3.5" /> Sign Out
+  </Button>
+</div>
+
 
       </div>
 
