@@ -397,6 +397,17 @@ export function DashboardLayout() {
               />
             </form>
 
+            {/* Mobile-only search icon — the inline search bar above is hidden below sm, so this is the only way to reach search on a phone */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="sm:hidden hover:bg-primary/10"
+              onClick={() => navigate('/search')}
+              aria-label="Search"
+            >
+              <Search className="h-5 w-5 text-primary" />
+            </Button>
+
             {/* Theme toggle */}
             <ThemeToggle />
 
