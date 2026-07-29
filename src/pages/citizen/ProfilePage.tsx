@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 
-
 // Modal & Skeleton components
 import EditProfileModal from "@/components/profile/EditProfileModal";
 import ProfileSkeleton from "@/components/profile/ProfileSkeleton";
@@ -156,7 +155,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       .slice(0, 2);
   }, [profile?.full_name]);
 
-  const activeBanner = profile?.cover_url || COVER_THEMES[coverTheme] || COVER_THEMES.nature;
+  const activeBanner =
+    profile?.cover_url && profile.cover_url.trim() !== ""
+      ? profile.cover_url
+      : COVER_THEMES[coverTheme] || COVER_THEMES.nature;
 
   return (
     <div className="relative rounded-3xl overflow-hidden border border-border/50 shadow-xl bg-card">
@@ -166,9 +168,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           src={activeBanner}
           alt="ECHO Header Banner"
           className="w-full h-full object-cover transition-all duration-700 brightness-95"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = COVER_THEMES.nature;
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-black/20" />
-        
+
         <div className="absolute top-4 right-4 flex items-center gap-2">
           <Button
             size="sm"
@@ -188,7 +193,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       {/* Header Info */}
       <div className="relative px-4 sm:px-6 md:px-8 pb-6 -mt-16 sm:-mt-20">
         <div className="flex flex-col items-center text-center">
-          
           <div className="relative mb-3">
             <div className="p-1 rounded-3xl bg-background border border-border shadow-xl">
               <Avatar className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 rounded-2xl object-cover">
@@ -212,28 +216,26 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
-  {/* Level Badge */}
-  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800">
-    <Leaf className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-    {currentLevelName}
-  </span>
+            {/* Level Badge */}
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800">
+              <Leaf className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              {currentLevelName}
+            </span>
 
-  {/* Verified Badge */}
-  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-800 border border-sky-300 dark:bg-sky-950/50 dark:text-sky-300 dark:border-sky-800">
-    <ShieldCheck className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
-    {verificationRate}% Verified
-  </span>
+            {/* Verified Badge */}
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-800 border border-sky-300 dark:bg-sky-950/50 dark:text-sky-300 dark:border-sky-800">
+              <ShieldCheck className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
+              {verificationRate}% Verified
+            </span>
 
-  {/* Region Badge */}
-  {profile?.region && (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
-      <MapPin className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-      {profile.region}
-    </span>
-  )}
-</div>
-
-
+            {/* Region Badge */}
+            {profile?.region && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+                <MapPin className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                {profile.region}
+              </span>
+            )}
+          </div>
 
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full mt-6">
@@ -261,7 +263,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               <p className="text-[10px] font-medium text-muted-foreground">Badges</p>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -612,7 +613,7 @@ const EnvironmentalPortfolio: React.FC<EnvironmentalPortfolioProps> = ({
       <Layers className="h-4 w-4 text-primary" />
       <h3 className="text-sm font-bold text-foreground">Activity & Achievements</h3>
     </div>
-    
+
     <Tabs defaultValue="reports" className="w-full">
       <TabsList className="grid grid-cols-3 bg-muted/50 rounded-2xl p-1 mb-4">
         <TabsTrigger value="reports" className="rounded-xl text-xs font-semibold">Reports</TabsTrigger>
@@ -965,7 +966,6 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="p-4 md:p-6 lg:p-8 space-y-6 max-w-5xl mx-auto pb-24">
-        
         {dataError && (
           <div className="p-3.5 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive flex items-center gap-2.5 text-xs font-medium">
             <AlertCircle className="h-4 w-4 shrink-0" />
@@ -1029,33 +1029,28 @@ const ProfilePage: React.FC = () => {
         />
 
         {/* 10. Footer */}
-<div className="pt-4 border-t border-border flex flex-col sm:flex-row justify-between gap-3">
-  <Button
-    asChild
-    variant="ghost"
-    className="gap-2 text-muted-foreground rounded-xl text-xs font-semibold"
-  >
-    <Link to="/settings">
-      <Settings className="h-3.5 w-3.5" /> Settings
-    </Link>
-  </Button>
-  
-  <Button
-    variant="ghost"
-    className="gap-2 text-destructive hover:bg-destructive/10 rounded-xl text-xs font-semibold"
-    onClick={() => logout()}
-  >
-    <LogOut className="h-3.5 w-3.5" /> Sign Out
-  </Button>
-</div>
+        <div className="pt-4 border-t border-border flex flex-col sm:flex-row justify-between gap-3">
+          <Button
+            asChild
+            variant="ghost"
+            className="gap-2 text-muted-foreground rounded-xl text-xs font-semibold"
+          >
+            <Link to="/settings">
+              <Settings className="h-3.5 w-3.5" /> Settings
+            </Link>
+          </Button>
 
-
+          <Button
+            variant="ghost"
+            className="gap-2 text-destructive hover:bg-destructive/10 rounded-xl text-xs font-semibold"
+            onClick={() => logout()}
+          >
+            <LogOut className="h-3.5 w-3.5" /> Sign Out
+          </Button>
+        </div>
       </div>
 
-      <EditProfileModal
-        open={editOpen}
-        onOpenChange={setEditOpen}
-      />
+      <EditProfileModal open={editOpen} onOpenChange={setEditOpen} />
 
       <ShareCardModal
         open={shareOpen}
@@ -1071,4 +1066,3 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
-
