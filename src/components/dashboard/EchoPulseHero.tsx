@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Globe2, Sparkles } from 'lucide-react';
+import { Globe2, Sparkles, Award, Trophy, TrendingUp, Zap } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { calculateLevel } from '@/lib/impact-constants';
@@ -12,9 +12,7 @@ interface EchoPulseHeroProps {
   totalReports: number;
 }
 
-// Real Community Health -> ring/status language. Kept in sync with the
-// same band logic the diagnostic metrics below already use, just applied
-// to the aggregate score instead of a single risk metric.
+// Real Community Health -> ring/status language.
 function pulseBand(score: number): 'healthy' | 'monitoring' | 'critical' {
   if (score >= 70) return 'healthy';
   if (score >= 40) return 'monitoring';
@@ -52,8 +50,6 @@ export function EchoPulseHero({ healthScore, communityStatus, confidence, totalR
   const band = pulseBand(healthScore);
   const copy = bandCopy[band];
 
-  // Same live-rank computation RewardsSummaryWidget uses (no
-  // community_rank column is ever populated server-side).
   useEffect(() => {
     if (!supabase) return;
     let alive = true;
@@ -140,31 +136,55 @@ export function EchoPulseHero({ healthScore, communityStatus, confidence, totalR
           <p className="mt-1 max-w-[240px] text-center text-xs text-white/75">{copy.quote}</p>
         </div>
 
-        {/* Stat grid */}
-        <div className="space-y-3 border-t border-white/20 pt-4">
-          <div className="grid grid-cols-2 gap-y-3">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/60">⭐ My Impact</p>
-              <p className="text-lg font-black">{points.toLocaleString()}</p>
+        {/* Stat grid: Aligned 4-column layout on desktop, 2-column on mobile */}
+        <div className="border-t border-white/20 pt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-4">
+            
+            {/* 1. Eco Points / Impact */}
+            <div className="flex flex-col justify-between min-w-0">
+              <div className="flex items-center gap-1.5 h-4 text-white/60">
+                <Zap className="h-3 w-3 shrink-0" />
+                <p className="text-[10px] font-black uppercase tracking-widest truncate">My Impact</p>
+              </div>
+              <p className="text-lg font-black truncate mt-1">{points.toLocaleString()} pts</p>
             </div>
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/60">🏅 Level</p>
-              <p className="text-lg font-black">{level.emoji} {level.name}</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-y-3 border-t border-white/10 pt-3">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/60">📈 Community Rank</p>
-              <p className="text-lg font-black">{rank ? `#${rank}` : '—'}</p>
-            </div>
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/60 flex items-center gap-1">
-                <Sparkles className="h-2.5 w-2.5" /> AI Confidence
+
+            {/* 2. Level */}
+            <div className="flex flex-col justify-between min-w-0">
+              <div className="flex items-center gap-1.5 h-4 text-white/60">
+                <Award className="h-3 w-3 shrink-0" />
+                <p className="text-[10px] font-black uppercase tracking-widest truncate">Level</p>
+              </div>
+              <p className="text-lg font-black truncate mt-1">
+                {level.emoji} {level.name}
               </p>
-              <p className="text-lg font-black">{totalReports > 0 ? `${confidence}%` : '—'}</p>
             </div>
+
+            {/* 3. Community Rank */}
+            <div className="flex flex-col justify-between min-w-0">
+              <div className="flex items-center gap-1.5 h-4 text-white/60">
+                <Trophy className="h-3 w-3 shrink-0" />
+                <p className="text-[10px] font-black uppercase tracking-widest truncate">Community Rank</p>
+              </div>
+              <p className="text-lg font-black truncate mt-1">
+                {rank ? `#${rank}` : '—'}
+              </p>
+            </div>
+
+            {/* 4. AI Confidence */}
+            <div className="flex flex-col justify-between min-w-0">
+              <div className="flex items-center gap-1.5 h-4 text-white/60">
+                <Sparkles className="h-3 w-3 shrink-0 text-white/80" />
+                <p className="text-[10px] font-black uppercase tracking-widest truncate">AI Confidence</p>
+              </div>
+              <p className="text-lg font-black truncate mt-1">
+                {totalReports > 0 ? `${confidence}%` : '—'}
+              </p>
+            </div>
+
           </div>
         </div>
+
       </div>
     </div>
   );
