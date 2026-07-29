@@ -6,6 +6,7 @@ import { GeolocationProvider } from "@/hooks/use-geolocation";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
+import { AdaptiveLayout } from "@/layouts/AdaptiveLayout";
 import AdminLayout  from "@/layouts/AdminLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -85,15 +86,6 @@ function App() {
 <Route path="/terms-of-service" element={<TermsOfService />} />
 <Route path="/cookie-policy" element={<CookiePolicy />} />
 <Route path="/accessibility" element={<Accessibility />} />
-                
-                {/* Intelligence Routes */}
-                <Route path="/map" element={<InteractiveMapPage />} />
-                
-                <Route path="/community-health" element={<CommunityHealthPage />} />
-                <Route path="/knowledge" element={<KnowledgeCentre />} />
-                <Route path="/knowledge/:slug" element={<ArticleDetailsPage />} />
-                <Route path="/community-insights" element={<CommunityInsights />} />
-                
               </Route>
               
               {/* Auth Routes */}
@@ -120,6 +112,18 @@ function App() {
                 <Route path="/analytics" element={<AnalyticsPage />} />
                 <Route path="/ai-intelligence" element={<AIIntelligencePage />} />
                 <Route path="/search" element={<GlobalSearchPage />} />
+              </Route>
+
+              {/* Shared Routes — reachable by both logged-in members and
+                  logged-out visitors. Members stay in DashboardLayout
+                  (their normal nav shell never changes); visitors get the
+                  public MainLayout. See AdaptiveLayout for how. */}
+              <Route element={<AdaptiveLayout />}>
+                <Route path="/map" element={<InteractiveMapPage />} />
+                <Route path="/community-health" element={<CommunityHealthPage />} />
+                <Route path="/knowledge" element={<KnowledgeCentre />} />
+                <Route path="/knowledge/:slug" element={<ArticleDetailsPage />} />
+                <Route path="/community-insights" element={<CommunityInsights />} />
               </Route>
 
               {/* Admin Routes — dedicated admin shell. */}
