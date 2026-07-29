@@ -1,78 +1,85 @@
-import React, { Suspense, lazy, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Map as MapIcon, ChevronRight, ChevronDown, Filter } from 'lucide-react';
-import type { HazardReport } from '@/types/reports';
+import React, { useState } from 'react';
+import { Layers, ChevronDown, Filter, Eye, EyeOff } from 'lucide-react';
 
-// The real map pulls in Leaflet + marker clustering — lazy-load it so it
-// never blocks first paint of the rest of the dashboard.
-const EnvironmentalMap = lazy(() => import('@/components/intelligence/EnvironmentalMap/EnvironmentalMap'));
-
-interface CommunityMapPreviewProps {
-  reports: HazardReport[];
-}
-
-export function CommunityMapPreview({ reports }: CommunityMapPreviewProps) {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+export function MapFilterOverlay() {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="rounded-3xl border bg-card p-5 shadow-sm">
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <div className="rounded-xl bg-primary/10 p-2 text-primary">
-            <MapIcon className="h-4 w-4" />
-          </div>
-          <h3 className="text-sm font-bold">Community Map</h3>
-        </div>
-
-        {/* Collapsible Filter Toggle & Content */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center gap-1.5 rounded-lg border bg-muted/30 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
-            aria-label="Toggle map filters"
-          >
-            <Filter className="h-3 w-3" />
-            <span>Legend</span>
-            <ChevronDown
-              className={`h-3 w-3 transition-transform duration-200 ${
-                isFilterOpen ? 'rotate-180' : ''
-              }`}
-            />
-          </button>
-
-          {/* Collapsible Legend Items */}
-          {isFilterOpen && (
-            <div className="flex items-center gap-3 text-[10px] font-bold animate-in fade-in slide-in-from-top-1 duration-150 bg-card border rounded-lg px-2.5 py-1 shadow-sm">
-              <span className="flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-status-safe" /> Safe
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-status-warning" /> Watch
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-destructive" /> Critical
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="relative h-56 w-full overflow-hidden rounded-2xl">
-        <Suspense fallback={<div className="h-full w-full animate-pulse bg-muted/40" />}>
-          <EnvironmentalMap reports={reports} />
-        </Suspense>
-      </div>
-
-      <div className="mt-4 flex justify-end">
-        <Link
-          to="/map"
-          className="flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-primary hover:underline"
+    /* Absolute overlay on top of the Leaflet canvas */
+    <div className="absolute top-3 right-3 z-[1000]">
+      <div className="flex flex-col items-end gap-2">
+        
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-2 rounded-xl bg-card/90 backdrop-blur-md px-3 py-2 text-xs font-bold shadow-lg border border-border/80 hover:bg-card transition-all"
         >
-          Open Full Map <ChevronRight className="h-3 w-3" />
-        </Link>
+          <Filter className="h-3.5 w-3.5 text-primary" />
+          <span>Filters & Legend</span>
+          <ChevronDown
+            className={`h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {/* Collapsible Panel */}
+        {isOpen && (
+          <div className="w-56 rounded-2xl bg-card/95 backdrop-blur-md p-3.5 border border-border/80 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200 space-y-3">
+            
+            {/* Status Legend */}
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-2">
+                Status Legend
+              </p>
+              <div className="space-y-1.5 text-xs font-semibold">
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-status-safe" />
+                    <span>Safe / Resolved</span>
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">🟢</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-status-warning" />
+                    <span>Watch Needed</span>
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">🟡</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-destructive" />
+                    <span>Critical Hazard</span>
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">🔴</span>
+                </div>
+              </div>
+            </div>
+
+            <hr className="border-border/60" />
+
+            {/* Quick Filter Controls */}
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-2">
+                Filter Layers
+              </p>
+              <div className="space-y-1 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1.5 rounded-lg">
+                  <input type="checkbox" defaultChecked className="rounded accent-primary h-3.5 w-3.5" />
+                  <span>Show Verified Hazards</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer hover:bg-muted/40 p-1.5 rounded-lg">
+                  <input type="checkbox" defaultChecked className="rounded accent-primary h-3.5 w-3.5" />
+                  <span>Show Active Cleanups</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+        )}
+
       </div>
     </div>
   );
 }
-
-export default React.memo(CommunityMapPreview);
