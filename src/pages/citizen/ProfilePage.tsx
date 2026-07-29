@@ -364,7 +364,7 @@ const ReputationScoreCard: React.FC<ReputationScoreCardProps> = ({
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-primary" />
                 <h3 className="text-xs uppercase font-bold text-muted-foreground tracking-wider">
-                  Community Eco Score
+                  Community Impact Score
                 </h3>
               </div>
               <p className="text-lg font-bold text-foreground mt-0.5">{level}</p>
@@ -447,7 +447,7 @@ const EchoDnaMetrics: React.FC<EchoDnaProps> = ({
         </div>
         <div>
           <p className="text-[10px] font-bold text-muted-foreground uppercase">Monthly Pace</p>
-          <p className="text-xs font-bold text-foreground">{ecoContribution} pts/mo</p>
+          <p className="text-xs font-bold text-foreground">{ecoContribution} pts/Month</p>
         </div>
       </CardContent>
     </Card>
@@ -741,11 +741,11 @@ const ShareCardModal: React.FC<ShareCardModalProps> = ({
 
         <div className="grid grid-cols-3 gap-2 border-t border-b border-border/60 py-2.5 text-center">
           <div>
-            <p className="text-[9px] uppercase font-bold text-muted-foreground">Eco Score</p>
+            <p className="text-[9px] uppercase font-bold text-muted-foreground">Impact Score</p>
             <p className="text-xs font-bold text-primary">{reputationScore}/100</p>
           </div>
           <div>
-            <p className="text-[9px] uppercase font-bold text-muted-foreground">Points</p>
+            <p className="text-[9px] uppercase font-bold text-muted-foreground">Impact Points</p>
             <p className="text-xs font-bold text-foreground">{impactPoints}</p>
           </div>
           <div>
@@ -756,7 +756,7 @@ const ShareCardModal: React.FC<ShareCardModalProps> = ({
 
         <div className="flex items-center justify-between pt-1">
           <div className="text-left">
-            <p className="text-[9px] uppercase font-bold text-muted-foreground">ECHO Intelligence</p>
+            <p className="text-[9px] uppercase font-bold text-muted-foreground">Impact Status</p>
             <p className="text-xs font-semibold text-foreground">Active Member</p>
           </div>
           <QrCode className="h-8 w-8 text-foreground/70" />
@@ -904,7 +904,7 @@ const ProfilePage: React.FC = () => {
   );
 
   const sampleGoals: GoalItem[] = [
-    { id: "1", title: "Reach Next Eco Level", current: impactPoints, target: 500, unit: "pts", category: "points" },
+    { id: "1", title: "Reach Next ECHO Level", current: impactPoints, target: 500, unit: "pts", category: "points" },
     { id: "2", title: "Submit Verified Reports", current: impactStats.verifiedReports, target: 10, unit: "reports", category: "reports" },
   ];
 
@@ -993,7 +993,7 @@ const ProfilePage: React.FC = () => {
         {/* 2. Eco Score */}
         <ReputationScoreCard
           score={reputationScore}
-          level="Active Eco Contributor"
+          level="Active ECHO Contributor"
           trend="Steady (+4%)"
           confidence={94}
         />
