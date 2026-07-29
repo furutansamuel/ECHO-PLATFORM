@@ -47,6 +47,14 @@ function forecastBadge(value: number | undefined, invert = false) {
 const AIIntelligencePage: React.FC = () => {
   const { hazardReports, intelligenceSummary, aiAnalysis, loading, error, refetch } = useIntelligenceData();
 
+  // Normalize confidence score to prevent unexpected 7000% outputs
+  const displayConfidence = React.useMemo(() => {
+    const raw = aiAnalysis?.confidence_score ?? 0;
+    if (raw > 100) return Math.min(Math.round(raw / 100), 100);
+    if (raw <= 1 && raw > 0) return Math.round(raw * 100);
+    return Math.min(Math.round(raw), 100);
+  }, [aiAnalysis?.confidence_score]);
+
   // Real hotspots: group hazard_reports by ward, rank by report count,
   // label severity by the most severe report seen in that ward.
   const hotspots = React.useMemo(() => {
@@ -191,7 +199,7 @@ const AIIntelligencePage: React.FC = () => {
           <AIKeyMetrics
             avgRiskScore={intelligenceSummary?.avg_risk_score || 0}
             resolutionRate={intelligenceSummary?.resolution_rate}
-            confidenceScore={aiAnalysis?.confidence_score || 0}
+            confidenceScore={displayConfidence}
             totalReports={intelligenceSummary?.total_reports}
             climateImpact={aiAnalysis?.climate_impact}
           />
@@ -297,9 +305,9 @@ const AIIntelligencePage: React.FC = () => {
           <div>
             <div className="flex justify-between mb-2">
               <span>Prediction Confidence</span>
-              <span className="font-bold">{aiAnalysis?.confidence_score ?? 0}%</span>
+              <span className="font-bold">{displayConfidence}%</span>
             </div>
-            <Progress value={aiAnalysis?.confidence_score ?? 0} />
+            <Progress value={displayConfidence} />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -468,3 +476,4 @@ const AIIntelligencePage: React.FC = () => {
 };
 
 export default AIIntelligencePage;
+
