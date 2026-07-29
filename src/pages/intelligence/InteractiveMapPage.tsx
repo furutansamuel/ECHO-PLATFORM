@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import EnvironmentalMap from '@/components/intelligence/EnvironmentalMap/EnvironmentalMap';
 import { useIntelligenceData } from '@/hooks/use-intelligence-data';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -28,7 +29,7 @@ export default function InteractiveMapPage() {
   
   // Collapsible States
   const [searchOpen, setSearchOpen] = useState(true);
-  const [legendOpen, setLegendOpen] = useState(true);
+  const [legendOpen, setLegendOpen] = useState(false);
 
   // Safely normalize AI Confidence Score
   const formattedConfidence = useMemo(() => {
@@ -71,7 +72,7 @@ export default function InteractiveMapPage() {
         <div className="p-6 border-b">
           <h1 className="text-2xl font-black uppercase tracking-tight flex items-center gap-2">
             <MapIcon className="h-6 w-6 text-primary" />
-            Live Hazard Map
+            Environmental Map
           </h1>
           <p className="text-xs text-muted-foreground italic mt-1">Real-time geospatial environmental intelligence</p>
         </div>
@@ -90,29 +91,29 @@ export default function InteractiveMapPage() {
           </div>
 
           {/* AI Hotspots Card (ECHO Branded) */}
-          <Card className="border border-emerald-500/20 shadow-lg bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 text-emerald-50 relative overflow-hidden">
-            <div className="absolute -bottom-6 -right-6 text-emerald-500/10 pointer-events-none">
-              <BrainCircuit className="h-28 w-28" />
-            </div>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+<Card className="border border-sidebar-primary/20 shadow-lg bg-gradient-to-br from-sidebar via-background to-black text-white relative overflow-hidden">
+  <div className="absolute -bottom-6 -right-6 text-sidebar-primary/10 pointer-events-none">
+    <BrainCircuit className="h-28 w-28" />
+  </div>
+  <div className="absolute top-0 right-0 w-32 h-32 bg-sidebar-primary/10 rounded-full blur-2xl pointer-events-none" />
 
-            <CardHeader className="pb-2 relative z-10">
-              <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-emerald-400">
-                <BrainCircuit className="h-4 w-4 text-emerald-400 animate-pulse" />
-                AI Hotspot Detection
-              </CardTitle>
-            </CardHeader>
+  <CardHeader className="pb-2 relative z-10">
+    <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-sidebar-primary">
+      <BrainCircuit className="h-4 w-4 text-sidebar-primary animate-pulse" />
+      AI Hotspot Detection
+    </CardTitle>
+  </CardHeader>
 
-            <CardContent className="space-y-3 relative z-10">
-              <p className="text-[11px] italic text-emerald-100/90 leading-relaxed">
-                3 high-density clusters detected in the last 48 hours. Primary risk: <strong className="text-emerald-300 font-semibold">{aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'}</strong>
-              </p>
+  <CardContent className="space-y-3 relative z-10">
+    <p className="text-[11px] italic text-white/80 leading-relaxed">
+      3 high-density clusters detected in the last 48 hours. Primary risk: <strong className="text-sidebar-primary font-semibold">{aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'}</strong>
+    </p>
 
-              <Badge className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 uppercase text-[9px] font-black tracking-wider shadow-sm backdrop-blur-sm">
-                Confidence: {formattedConfidence}
-              </Badge>
-            </CardContent>
-          </Card>
+    <Badge className="bg-sidebar-primary/20 hover:bg-sidebar-primary/30 text-sidebar-primary border border-sidebar-primary/30 uppercase text-[9px] font-black tracking-wider shadow-sm backdrop-blur-sm">
+      Confidence: {formattedConfidence}
+    </Badge>
+  </CardContent>
+</Card>
 
           {/* Recent Alerts */}
           <div className="space-y-4">
@@ -143,10 +144,12 @@ export default function InteractiveMapPage() {
         </div>
 
         <div className="p-6 border-t bg-muted/20">
-          <Button className="w-full gap-2 rounded-full uppercase text-xs font-black shadow-lg shadow-primary/20">
-            <AlertTriangle className="h-4 w-4" />
-            Report New Hazard
-            <ArrowRight className="h-4 w-4 ml-auto" />
+          <Button asChild className="w-full gap-2 rounded-full uppercase text-xs font-black shadow-lg shadow-primary/20">
+            <Link to="/report">
+              <AlertTriangle className="h-4 w-4" />
+              Report New Hazard
+              <ArrowRight className="h-4 w-4 ml-auto" />
+            </Link>
           </Button>
         </div>
       </aside>
@@ -155,7 +158,7 @@ export default function InteractiveMapPage() {
       <main className="flex-1 relative">
         
         {/* Floating Map Controls Wrapper */}
-        <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between z-10">
+        <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between z-[1100]">
           
           {/* TOP OVERLAY: Collapsible Search Bar */}
           <div className="pointer-events-auto max-w-sm w-full transition-all duration-300">
@@ -210,7 +213,7 @@ export default function InteractiveMapPage() {
           </div>
 
           {/* BOTTOM RIGHT OVERLAY: Collapsible Legend Card */}
-          <div className="self-end pointer-events-auto max-w-xs w-full transition-all duration-300 ease-in-out">
+          <div className="self-end pointer-events-auto max-w-[260px] w-full transition-all duration-300 ease-in-out">
             <Card className="shadow-xl border-border/60 bg-background/95 backdrop-blur-md transition-all duration-300">
               <CardHeader 
                 className="p-3 flex flex-row items-center justify-between space-y-0 cursor-pointer select-none hover:bg-muted/40 transition-colors rounded-t-xl"
