@@ -21,7 +21,7 @@ function AIKeyMetricsBase({
   const metrics = [
     { key: 'risk', icon: ShieldAlert, tone: 'text-destructive', label: 'Avg Risk', value: (avgRiskScore * 10).toFixed(1) },
     { key: 'resolution', icon: Activity, tone: 'text-info', label: 'Resol. Rate', value: `${resolutionRate ?? 0}%` },
-    { key: 'confidence', icon: Zap, tone: 'text-status-warning', label: 'Confidence', value: `${(confidenceScore * 100).toFixed(0)}%` },
+    { key: 'confidence', icon: Zap, tone: 'text-status-warning', label: 'Confidence', value: `${Math.round(confidenceScore)}%` },
     { key: 'reports', icon: AlertCircle, tone: 'text-primary', label: 'Reports', value: totalReports ?? 0 },
   ];
 
