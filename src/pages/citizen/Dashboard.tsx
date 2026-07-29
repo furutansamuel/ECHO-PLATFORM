@@ -94,8 +94,7 @@ const statusStyles: Record<EnvironmentalStatus, { bg: string; border: string; te
   },
 };
 
-// Real category groupings the AI analysis RPC uses server-side —
-// kept in sync with get_ai_environmental_analysis() in supabase/migrations.
+// Real category groupings the AI analysis RPC uses server-side
 const CATEGORY_GROUPS: Record<string, string[]> = {
   flood: ['Flood'],
   waste: ['Plastic Waste', 'Illegal Dumpsite'],
@@ -119,8 +118,7 @@ export default function Dashboard() {
   const communityStatus = intelligenceSummary?.community_status ?? 'Moderate';
   const confidence = aiAnalysis?.confidence_score ?? 0;
 
-  // Real affected wards per category — derived from the user's own visible
-  // hazard reports (high/critical severity, not yet resolved), not invented.
+  // Real affected wards per category
   const affectedWardsFor = (categories: string[]): string[] => {
     const wards = new Set<string>();
     for (const r of hazardReports) {
@@ -206,7 +204,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto space-y-4">
+      <div className="space-y-4 w-full max-w-full overflow-x-hidden">
         <Skeleton className="h-10 w-64" />
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
           <Skeleton className="col-span-1 h-96 rounded-[24px] lg:col-span-4" />
@@ -219,7 +217,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-5">
+    <div className="space-y-5 w-full max-w-full overflow-x-hidden min-w-0">
       {/* 1. ECHO Pulse hero */}
       <EchoPulseHero
         healthScore={healthScore}
@@ -231,7 +229,7 @@ export default function Dashboard() {
       <QuickActionsWidget />
 
       {error ? (
-        <Card className="border-none shadow-md border-l-4 border-l-destructive">
+        <Card className="border-none shadow-md border-l-4 border-l-destructive min-w-0">
           <CardContent className="p-8 text-center space-y-2">
             <Radio className="h-8 w-8 mx-auto text-destructive" />
             <p className="text-sm font-semibold text-foreground">Couldn't load environmental intelligence</p>
@@ -239,7 +237,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       ) : totalReports === 0 ? (
-        <Card className="border-none shadow-md">
+        <Card className="border-none shadow-md min-w-0">
           <CardContent className="p-8 text-center space-y-2">
             <Radio className="h-8 w-8 mx-auto text-muted-foreground" />
             <p className="text-sm font-semibold text-foreground">Not enough data yet</p>
@@ -256,8 +254,8 @@ export default function Dashboard() {
           {/* 3. Community Goal */}
           <CommunityGoalCard summary={intelligenceSummary} />
 
-          {/* Diagnostic metrics grid — kept as an expandable detail layer under the goal card */}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {/* Diagnostic metrics grid */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 w-full min-w-0">
             {metrics.map((m) => {
               const style = statusStyles[m.status];
               const IconComponent = m.icon;
@@ -266,29 +264,29 @@ export default function Dashboard() {
                 <Card
                   key={m.id}
                   onClick={() => setSelectedMetric(m)}
-                  className={`group relative border cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg rounded-[20px] ${style.bg} ${style.border}`}
+                  className={`group relative border cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg rounded-[20px] min-w-0 overflow-hidden ${style.bg} ${style.border}`}
                 >
-                  <CardContent className="flex flex-col justify-between p-4 h-full">
-                    <div className="flex items-center justify-between">
-                      <div className={`p-2 rounded-xl bg-background/80 backdrop-blur-md shadow-sm ${style.text}`}>
+                  <CardContent className="flex flex-col justify-between p-4 h-full min-w-0">
+                    <div className="flex items-center justify-between gap-1">
+                      <div className={`p-2 rounded-xl bg-background/80 backdrop-blur-md shadow-sm shrink-0 ${style.text}`}>
                         <IconComponent className="h-4 w-4" />
                       </div>
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider ${style.badgeBg}`}>
-                        <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider truncate ${style.badgeBg}`}>
+                        <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${style.dot}`} />
                         {m.statusLabel}
                       </span>
                     </div>
 
-                    <div className="mt-3">
-                      <p className="text-xs font-semibold text-muted-foreground">{m.label}</p>
-                      <p className="text-xl font-black tracking-tight text-foreground mt-0.5">
+                    <div className="mt-3 min-w-0">
+                      <p className="text-xs font-semibold text-muted-foreground truncate">{m.label}</p>
+                      <p className="text-xl font-black tracking-tight text-foreground mt-0.5 truncate">
                         {m.value}
                       </p>
-                      <div className="mt-1.5 flex items-center justify-between border-t border-border/40 pt-1.5">
-                        <span className="text-[10px] font-medium text-muted-foreground">
+                      <div className="mt-1.5 flex items-center justify-between border-t border-border/40 pt-1.5 gap-1 min-w-0">
+                        <span className="text-[10px] font-medium text-muted-foreground truncate">
                           {m.subtext}
                         </span>
-                        <ExternalLink className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                        <ExternalLink className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                       </div>
                     </div>
                   </CardContent>
@@ -320,11 +318,11 @@ export default function Dashboard() {
           <DialogContent className="sm:max-w-[485px] rounded-[24px]">
             <DialogHeader>
               <div className="flex items-center gap-2">
-                <div className="p-2.5 rounded-xl bg-primary/10 text-primary">
+                <div className="p-2.5 rounded-xl bg-primary/10 text-primary shrink-0">
                   <selectedMetric.icon className="h-5 w-5" />
                 </div>
-                <div>
-                  <DialogTitle className="text-lg font-bold">{selectedMetric.label}</DialogTitle>
+                <div className="min-w-0">
+                  <DialogTitle className="text-lg font-bold truncate">{selectedMetric.label}</DialogTitle>
                   <DialogDescription className="text-xs">
                     Derived from real community hazard reports
                   </DialogDescription>
@@ -376,7 +374,7 @@ export default function Dashboard() {
 
               <div className="rounded-2xl border border-status-safe/30 bg-status-safe/10 p-3.5">
                 <div className="flex items-center gap-1.5 font-bold text-xs mb-1 text-status-safe">
-                  <ShieldCheck className="h-4 w-4" />
+                  <ShieldCheck className="h-4 w-4 shrink-0" />
                   Recommended Community Action
                 </div>
                 <p className="text-xs text-foreground/90 leading-relaxed">
