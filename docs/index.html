@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ECHO - Environmental Community Health Observatory</title>
+    <meta name="description" content="An AI-powered environmental intelligence platform that enables users to report, monitor, and respond to environmental hazards in real time.">
+    <meta name="author" content="ECHO" />
+    <meta
+      name="keywords"
+      content="ECHO, environmental intelligence, hazard reporting, community health, AI analytics, 3MTT"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#166534" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/echo-app-icon-512.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="google-site-verification" content="ncA2fU42R1c6zTQiMHOmefzGZVNHvtlJe3e4bUP2JRU" />
+    <meta name="msvalidate.01" content="7B89EB6E2D6965B8EF3B3A8A608A6CDA" />
+
+    <!-- TODO: replace with your real deployed domain once you have one
+         (e.g. https://echo-yourname.vercel.app or a custom domain) -->
+    <link rel="canonical" href="https://echo-ng.vercel.app/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ECHO" />
+    <meta property="og:title" content="ECHO - Environmental Community Health Observatory" />
+    <meta property="og:description" content="An AI-powered environmental intelligence platform that enables users to report, monitor, and respond to environmental hazards in real time." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ECHO - Environmental Community Health Observatory" />
+    <meta name="twitter:description" content="An AI-powered environmental intelligence platform that enables users to report, monitor, and respond to environmental hazards in real time." />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <!-- iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="ECHO" />
+<meta name="format-detection" content="telephone=no" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ECHO",
+      "alternateName": "Environmental Community Health Observatory",
+      "description": "An AI-powered environmental intelligence platform that enables users to report, monitor, and respond to environmental hazards in real time.",
+      "url": "https://echo-ng.vercel.app/"
+    }
+    </script>
+    <script>
+      // Real touch can't be spoofed by "Request Desktop Site" the way the
+      // CSS (hover) / (pointer) media features can. As soon as a genuine
+      // touch happens, mark <html> so hover-driven effects (which have no
+      // reliable "un-hover" event on touch and would otherwise stick/bounce)
+      // are switched off for the rest of the session.
+      (function () {
+        window.addEventListener(
+          "touchstart",
+          function () {
+            document.documentElement.classList.add("is-touch");
+          },
+          { once: true, passive: true }
+        );
+      })();
+    </script>
+  </head>
+  <body>
+  <h1 class="sr-only">
+    Environmental Community Health Observatory (ECHO)
+  </h1>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
