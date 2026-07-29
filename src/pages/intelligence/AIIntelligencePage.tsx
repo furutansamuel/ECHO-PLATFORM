@@ -184,7 +184,7 @@ const AIIntelligencePage: React.FC = () => {
             </div>
           </CardContent>
           <CardFooter className="bg-primary/5 border-t border-primary/10 py-3 flex justify-center">
-            <p className="text-xs italic text-primary/70">Next update in approx. 12 hours</p>
+            <p className="text-xs italic text-primary/90">Next update in approx. 12 hours</p>
           </CardFooter>
         </Card>
 
