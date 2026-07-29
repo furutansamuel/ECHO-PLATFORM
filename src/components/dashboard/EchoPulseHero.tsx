@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Globe2, Sparkles, Award, Trophy, TrendingUp, Zap } from 'lucide-react';
+import { Globe2, Sparkles, Award, Trophy, Zap } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { calculateLevel } from '@/lib/impact-constants';
@@ -136,48 +136,48 @@ export function EchoPulseHero({ healthScore, communityStatus, confidence, totalR
           <p className="mt-1 max-w-[240px] text-center text-xs text-white/75">{copy.quote}</p>
         </div>
 
-        {/* Stat grid: Aligned 4-column layout on desktop, 2-column on mobile */}
+        {/* Stat grid: Fully centered 4-column layout on desktop, 2-column on mobile */}
         <div className="border-t border-white/20 pt-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-4">
             
             {/* 1. Eco Points / Impact */}
-            <div className="flex flex-col justify-between min-w-0">
-              <div className="flex items-center gap-1.5 h-4 text-white/60">
+            <div className="flex flex-col items-center justify-center text-center min-w-0">
+              <div className="flex items-center justify-center gap-1.5 h-4 text-white/60 w-full">
                 <Zap className="h-3 w-3 shrink-0" />
                 <p className="text-[10px] font-black uppercase tracking-widest truncate">My Impact</p>
               </div>
-              <p className="text-lg font-black truncate mt-1">{points.toLocaleString()} pts</p>
+              <p className="text-lg font-black truncate mt-1 w-full">{points.toLocaleString()} pts</p>
             </div>
 
             {/* 2. Level */}
-            <div className="flex flex-col justify-between min-w-0">
-              <div className="flex items-center gap-1.5 h-4 text-white/60">
+            <div className="flex flex-col items-center justify-center text-center min-w-0">
+              <div className="flex items-center justify-center gap-1.5 h-4 text-white/60 w-full">
                 <Award className="h-3 w-3 shrink-0" />
                 <p className="text-[10px] font-black uppercase tracking-widest truncate">Level</p>
               </div>
-              <p className="text-lg font-black truncate mt-1">
+              <p className="text-lg font-black truncate mt-1 w-full">
                 {level.emoji} {level.name}
               </p>
             </div>
 
             {/* 3. Community Rank */}
-            <div className="flex flex-col justify-between min-w-0">
-              <div className="flex items-center gap-1.5 h-4 text-white/60">
+            <div className="flex flex-col items-center justify-center text-center min-w-0">
+              <div className="flex items-center justify-center gap-1.5 h-4 text-white/60 w-full">
                 <Trophy className="h-3 w-3 shrink-0" />
                 <p className="text-[10px] font-black uppercase tracking-widest truncate">Community Rank</p>
               </div>
-              <p className="text-lg font-black truncate mt-1">
+              <p className="text-lg font-black truncate mt-1 w-full">
                 {rank ? `#${rank}` : '—'}
               </p>
             </div>
 
             {/* 4. AI Confidence */}
-            <div className="flex flex-col justify-between min-w-0">
-              <div className="flex items-center gap-1.5 h-4 text-white/60">
+            <div className="flex flex-col items-center justify-center text-center min-w-0">
+              <div className="flex items-center justify-center gap-1.5 h-4 text-white/60 w-full">
                 <Sparkles className="h-3 w-3 shrink-0 text-white/80" />
                 <p className="text-[10px] font-black uppercase tracking-widest truncate">AI Confidence</p>
               </div>
-              <p className="text-lg font-black truncate mt-1">
+              <p className="text-lg font-black truncate mt-1 w-full">
                 {totalReports > 0 ? `${confidence}%` : '—'}
               </p>
             </div>
@@ -191,3 +191,4 @@ export function EchoPulseHero({ healthScore, communityStatus, confidence, totalR
 }
 
 export default React.memo(EchoPulseHero);
+
