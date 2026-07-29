@@ -206,7 +206,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="max-w-6xl mx-auto space-y-4">
         <Skeleton className="h-10 w-64" />
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
           <Skeleton className="col-span-1 h-96 rounded-[24px] lg:col-span-4" />
@@ -219,7 +219,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="max-w-6xl mx-auto space-y-5">
       {/* 1. ECHO Pulse hero */}
       <EchoPulseHero
         healthScore={healthScore}
