@@ -24,7 +24,7 @@ import ActivityTimeline from '@/components/dashboard/ActivityTimeline';
 import { EchoPulseHero } from '@/components/dashboard/EchoPulseHero';
 import { AIEnvironmentalBrief } from '@/components/dashboard/AIEnvironmentalBrief';
 import { CommunityGoalCard } from '@/components/dashboard/CommunityGoalCard';
-import CommunityMapPreview from '@/components/dashboard/CommunityMapPreview';
+import { CommunityMapPreview } from '@/components/dashboard/CommunityMapPreview';
 import { EnvironmentalUpdatesCarousel } from '@/components/dashboard/EnvironmentalUpdatesCarousel';
 import { UpcomingCleanupFeatured } from '@/components/dashboard/UpcomingCleanupFeatured';
 import { LearnTodayCard } from '@/components/dashboard/LearnTodayCard';
@@ -387,4 +387,4 @@ export default function Dashboard() {
       </Dialog>
     </div>
   );
-}
+                                 }
