@@ -211,25 +211,26 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
           <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
   {/* Level Badge */}
-  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-    <Leaf className="h-3.5 w-3.5" />
+  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800">
+    <Leaf className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
     {currentLevelName}
   </span>
 
   {/* Verified Badge */}
-  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400">
-    <ShieldCheck className="h-3.5 w-3.5" />
+  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-800 border border-sky-300 dark:bg-sky-950/50 dark:text-sky-300 dark:border-sky-800">
+    <ShieldCheck className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
     {verificationRate}% Verified
   </span>
 
   {/* Region Badge */}
   {profile?.region && (
-    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-muted border border-border text-muted-foreground">
-      <MapPin className="h-3.5 w-3.5 text-emerald-500" />
+    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+      <MapPin className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
       {profile.region}
     </span>
   )}
 </div>
+
 
 
           {/* Quick Stats Grid */}
