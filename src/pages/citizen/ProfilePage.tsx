@@ -210,23 +210,27 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 border border-primary/20 text-primary">
-              <Leaf className="h-3.5 w-3.5" />
-              {currentLevelName}
-            </span>
+  {/* Level Badge */}
+  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+    <Leaf className="h-3.5 w-3.5" />
+    {currentLevelName}
+  </span>
 
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-info/10 border border-info/20 text-info">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              {verificationRate}% Verified
-            </span>
+  {/* Verified Badge */}
+  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400">
+    <ShieldCheck className="h-3.5 w-3.5" />
+    {verificationRate}% Verified
+  </span>
 
-            {profile?.region && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-muted border border-border text-muted-foreground">
-                <MapPin className="h-3.5 w-3.5 text-primary" />
-                {profile.region}
-              </span>
-            )}
-          </div>
+  {/* Region Badge */}
+  {profile?.region && (
+    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-muted border border-border text-muted-foreground">
+      <MapPin className="h-3.5 w-3.5 text-emerald-500" />
+      {profile.region}
+    </span>
+  )}
+</div>
+
 
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full mt-6">
@@ -245,7 +249,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 text-center">
               <TrendingUp className="h-4 w-4 mx-auto mb-1 text-secondary" />
               <p className="text-lg sm:text-xl font-bold text-foreground">{rank ? `#${rank}` : "—"}</p>
-              <p className="text-[10px] font-medium text-muted-foreground">Local Rank</p>
+              <p className="text-[10px] font-medium text-muted-foreground">Community Rank</p>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 text-center">
