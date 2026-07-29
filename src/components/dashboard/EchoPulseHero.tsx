@@ -97,8 +97,12 @@ export function EchoPulseHero({ healthScore, communityStatus, confidence, totalR
           </span>
         </div>
 
-        <p className="text-xs font-semibold text-white/70">Community:
-          {profile?.region ? profile.region : 'Your Community'}
+        <p className="text-xs font-semibold text-white/70">
+  {profile?.region ? `Community: ${profile.region}` : 'Your Local Community'}
+</p>
+
+
+        <p className="text-xs font-semibold text-white/70">Community: {profile?.region ? profile.region : 'Your Community'}
         </p>
 
         {/* Ring */}
