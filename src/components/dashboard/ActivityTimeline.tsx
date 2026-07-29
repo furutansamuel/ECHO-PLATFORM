@@ -51,7 +51,7 @@ const ActivityTimeline = () => {
           bg: meta.bg,
         };
       })
-      .slice(0, 10),
+      .slice(0, 5),
     [storeReports]
   );
 
