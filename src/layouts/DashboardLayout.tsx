@@ -154,220 +154,217 @@ export function DashboardLayout() {
 
   
   return (
-  <div className="flex min-h-screen w-full bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary">
+    <div className="flex min-h-screen w-full max-w-full overflow-x-hidden bg-background font-sans text-foreground selection:bg-primary/10 selection:text-primary">
 
-    {/* =========================
-        Desktop Sidebar
-    ========================== */}
-    <aside
-      className={cn(
-        "hidden md:flex flex-col w-64 bg-card border-r border-border shadow-sm transition-all duration-300 ease-in-out z-30",
-        collapsed && "w-[70px]"
-      )}
-    >
-      {/* Logo */}
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        {!collapsed ? (
-          <Link to="/" className="flex items-center gap-2">
-            <img
-              src="/echo-wordmark.svg"
-              alt="ECHO"
-              className="h-8 w-auto"
-            />
-          </Link>
-        ) : (
-          <img
-            src="/echo-symbol.svg"
-            alt="ECHO"
-            className="mx-auto h-8 w-8"
-          />
+      {/* Desktop Sidebar */}
+      <aside
+        className={cn(
+          "hidden md:flex flex-col w-64 bg-card border-r border-border shadow-sm transition-all duration-300 ease-in-out z-30 shrink-0",
+          collapsed && "w-[70px]"
         )}
-
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-border hover:bg-primary/10 transition-colors"
-        >
-          {collapsed ? (
-            <ChevronRight className="h-4 w-4 text-primary" />
+      >
+        {/* Logo */}
+        <div className="flex items-center justify-between p-4 border-b border-border">
+          {!collapsed ? (
+            <Link to="/" className="flex items-center gap-2">
+              <img
+                src="/echo-wordmark.svg"
+                alt="ECHO"
+                className="h-8 w-auto"
+              />
+            </Link>
           ) : (
-            <ChevronLeft className="h-4 w-4 text-primary" />
+            <img
+              src="/echo-symbol.svg"
+              alt="ECHO"
+              className="mx-auto h-8 w-8"
+            />
           )}
-        </button>
-      </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4">
-        <div className="space-y-1">
-          {filteredNavItems.map((item) => (
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border hover:bg-primary/10 transition-colors"
+          >
+            {collapsed ? (
+              <ChevronRight className="h-4 w-4 text-primary" />
+            ) : (
+              <ChevronLeft className="h-4 w-4 text-primary" />
+            )}
+          </button>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4">
+          <div className="space-y-1">
+            {filteredNavItems.map((item) => (
+              <NavLink
+                key={item.href}
+                item={item}
+                isCollapsed={collapsed}
+              />
+            ))}
+          </div>
+        </nav>
+
+        {/* Footer */}
+        <div className="border-t border-border p-3 space-y-1">
+
+          {footerItems.map((item) => (
             <NavLink
               key={item.href}
               item={item}
               isCollapsed={collapsed}
             />
           ))}
+
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+
+              <TooltipTrigger asChild>
+
+                <Button
+                  variant="ghost"
+                  onClick={logout}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-3 rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive",
+                    collapsed && "justify-center"
+                  )}
+                >
+                  <LogOut className="h-5 w-5" />
+
+                  {!collapsed && (
+                    <span className="font-medium">
+                      Logout
+                    </span>
+                  )}
+
+                </Button>
+
+              </TooltipTrigger>
+
+              {collapsed && (
+                <TooltipContent side="right">
+                  Logout
+                </TooltipContent>
+              )}
+
+            </Tooltip>
+          </TooltipProvider>
+
         </div>
-      </nav>
 
-      {/* Footer */}
-      <div className="border-t border-border p-3 space-y-1">
+      </aside>
 
-        {footerItems.map((item) => (
-          <NavLink
-            key={item.href}
-            item={item}
-            isCollapsed={collapsed}
-          />
-        ))}
-
-        <TooltipProvider delayDuration={0}>
-          <Tooltip>
-
-            <TooltipTrigger asChild>
-
-              <Button
-                variant="ghost"
-                onClick={logout}
-                className={cn(
-                  "w-full flex items-center gap-3 px-3 py-3 rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive",
-                  collapsed && "justify-center"
-                )}
-              >
-                <LogOut className="h-5 w-5" />
-
-                {!collapsed && (
-                  <span className="font-medium">
-                    Logout
-                  </span>
-                )}
-
-              </Button>
-
-            </TooltipTrigger>
-
-            {collapsed && (
-              <TooltipContent side="right">
-                Logout
-              </TooltipContent>
-            )}
-
-          </Tooltip>
-        </TooltipProvider>
-
-      </div>
-
-    </aside>
-    
-
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col min-w-0 w-full overflow-x-hidden">
         <header
           className="sticky top-0 z-20 flex min-h-20 items-center justify-between border-b border-border bg-card px-4 py-2 md:px-8"
           style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
         >
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 min-w-0">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
+                <Button variant="ghost" size="icon" className="md:hidden shrink-0">
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
               <SheetContent
-  side="left"
-  className="w-[85vw] max-w-sm p-0 bg-card"
->
-  {/* Logo */}
-  <div className="border-b border-border p-4 bg-card">
-    <Link
-      to="/"
-      className="flex items-center gap-2"
-      onClick={() => setIsMobileMenuOpen(false)}
-    >
-      <img
-        src="/echo-wordmark.svg"
-        alt="ECHO"
-        className="h-8 w-auto"
-      />
-    </Link>
-  </div>
+                side="left"
+                className="w-[85vw] max-w-sm p-0 bg-card"
+              >
+                {/* Logo */}
+                <div className="border-b border-border p-4 bg-card">
+                  <Link
+                    to="/"
+                    className="flex items-center gap-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <img
+                      src="/echo-wordmark.svg"
+                      alt="ECHO"
+                      className="h-8 w-auto"
+                    />
+                  </Link>
+                </div>
 
-  {/* Navigation */}
-  <div className="max-h-[calc(100vh-80px)] overflow-y-auto p-4 bg-card">
+                {/* Navigation */}
+                <div className="max-h-[calc(100vh-80px)] overflow-y-auto p-4 bg-card">
 
-    <nav className="space-y-1">
+                  <nav className="space-y-1">
 
-      {filteredNavItems.map((item) => {
-        const isActive = location.pathname === item.href;
+                    {filteredNavItems.map((item) => {
+                      const isActive = location.pathname === item.href;
 
-        return (
-          <Link
-            key={item.href}
-            to={item.href}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={cn(
-              "flex items-center gap-3 rounded-xl px-4 py-3 font-semibold transition-all duration-200",
+                      return (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={cn(
+                            "flex items-center gap-3 rounded-xl px-4 py-3 font-semibold transition-all duration-200",
 
-              isActive
-                ? "bg-primary/10 text-primary"
-                : "text-primary hover:bg-primary/5 hover:text-primary"
-            )}
-          >
-            <item.icon className="h-5 w-5 text-primary" />
+                            isActive
+                              ? "bg-primary/10 text-primary"
+                              : "text-primary hover:bg-primary/5 hover:text-primary"
+                          )}
+                        >
+                          <item.icon className="h-5 w-5 text-primary" />
 
-            <span>{item.name}</span>
-          </Link>
-        );
-      })}
+                          <span>{item.name}</span>
+                        </Link>
+                      );
+                    })}
 
-    </nav>
+                  </nav>
 
-    <Separator className="my-4" />
+                  <Separator className="my-4" />
 
-    {/* Footer */}
-    <div className="space-y-1">
+                  {/* Footer */}
+                  <div className="space-y-1">
 
-      {footerItems.map((item) => {
-        const isActive = location.pathname === item.href;
+                    {footerItems.map((item) => {
+                      const isActive = location.pathname === item.href;
 
-        return (
-          <Link
-            key={item.href}
-            to={item.href}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={cn(
-              "flex items-center gap-3 rounded-xl px-4 py-3 font-semibold transition-all duration-200",
+                      return (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={cn(
+                            "flex items-center gap-3 rounded-xl px-4 py-3 font-semibold transition-all duration-200",
 
-              isActive
-                ? "bg-primary/10 text-primary"
-                : "text-primary hover:bg-primary/5 hover:text-primary"
-            )}
-          >
-            <item.icon className="h-5 w-5 text-primary" />
+                            isActive
+                              ? "bg-primary/10 text-primary"
+                              : "text-primary hover:bg-primary/5 hover:text-primary"
+                          )}
+                        >
+                          <item.icon className="h-5 w-5 text-primary" />
 
-            <span>{item.name}</span>
-          </Link>
-        );
-      })}
+                          <span>{item.name}</span>
+                        </Link>
+                      );
+                    })}
 
-      <button
-        type="button"
-        onClick={() => {
-          setIsMobileMenuOpen(false);
-          logout();
-        }}
-        className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-destructive transition-colors hover:bg-destructive/10"
-      >
-        <LogOut className="h-5 w-5" />
-        <span className="font-semibold">Logout</span>
-      </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        logout();
+                      }}
+                      className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-destructive transition-colors hover:bg-destructive/10"
+                    >
+                      <LogOut className="h-5 w-5" />
+                      <span className="font-semibold">Logout</span>
+                    </button>
 
-    </div>
+                  </div>
 
-  </div>
-</SheetContent>
+                </div>
+              </SheetContent>
             </Sheet>
             <WelcomeHeader />
           </div>
 
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2 md:gap-4 shrink-0">
 
             {/* Search */}
             <form
@@ -562,7 +559,7 @@ export function DashboardLayout() {
 
         <main
           data-scroll-root
-          className="flex-1 p-4 pb-28 md:p-8 md:pb-12"
+          className="flex-1 w-full min-w-0 overflow-x-hidden p-4 pb-28 md:p-8 md:pb-12"
           style={{
             paddingBottom:
               "calc(env(safe-area-inset-bottom,0px) + 7rem)",
