@@ -70,8 +70,18 @@ export default function ReportWizard({ editReport }: { editReport?: HazardReport
         dateObserved: editReport.date_observed,
         timeObserved: editReport.time_observed,
         images: editReport.images,
-        video: editReport.video,
-        location: editReport.location,
+        // Postgres returns an empty column as null, but zod's .optional()
+        // only accepts `string | undefined` — it rejects null outright.
+        // video is null on every report that has no video attached (the
+        // common case), so this was failing validation before the form
+        // even reached the server.
+        video: editReport.video ?? undefined,
+        location: {
+          ...editReport.location,
+          landmark: editReport.location?.landmark ?? undefined,
+          ward: editReport.location?.ward ?? undefined,
+          lga: editReport.location?.lga ?? undefined,
+        },
         isAnonymous: editReport.is_anonymous,
         notifyVolunteers: editReport.notify_volunteers,
         shareWithCommunity: editReport.share_with_community,
@@ -502,6 +512,5 @@ return (
       </form>
     </FormProvider>
   </div>
-);
-  
+); 
 }
