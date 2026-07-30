@@ -90,7 +90,20 @@ export default function ReportWizard({ editReport }: { editReport?: HazardReport
     trigger,
     handleSubmit,
     setValue,
+    formState: { errors },
   } = methods;
+
+  // A submit that fails validation (react-hook-form's handleSubmit simply
+  // does not call onSubmit when this happens — no error, no navigation,
+  // nothing visible) previously looked identical to a dead button. This
+  // makes any current or future validation gap visible instead of silent.
+  const onInvalidSubmit = () => {
+    const firstError = Object.values(errors)[0] as any;
+    const message =
+      (firstError?.message as string) ||
+      "Please check the highlighted fields — something needed for submission is missing.";
+    toast.error(message);
+  };
 
   // Deep-link support: /report?category=Flood pre-selects that category
   // (used by the landing page's hazard-category cards). Only applies
@@ -365,7 +378,7 @@ return (
     {/* Form */}
     <FormProvider {...methods}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onInvalidSubmit)}
         onKeyDown={(e) => {
           // Pressing Enter in any text field defaults to submitting the
           // nearest <form> — since this one <form> wraps every step,
