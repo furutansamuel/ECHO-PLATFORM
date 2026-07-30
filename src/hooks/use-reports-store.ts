@@ -133,15 +133,15 @@ export const useReportsStore = () => {
 
     if (user && userStats) {
       setStats({
-        totalReports: userStats.reportsSubmitted ?? 0,
-        verifiedReports: userStats.verifiedReports ?? 0,
-        pendingReports: userStats.pendingReports ?? 0,
-        resolvedReports: userStats.resolvedReports ?? 0,
+        totalReports: userStats.total_reports ?? 0,
+        verifiedReports: userStats.verified_reports ?? 0,
+        pendingReports: userStats.pending_reports ?? 0,
+        resolvedReports: userStats.resolved_reports ?? 0,
         ecoPoints: userStats.eco_points ?? 0,
-        cleanupEvents: userStats.cleanupEventsJoined ?? 0,
-        volunteerHours: userStats.volunteerHours ?? 0,
-        hazardsReported: userStats.hazardsReported ?? 0,
-        reportsVerified: userStats.verifiedReports ?? 0,
+        cleanupEvents: userStats.cleanup_events ?? 0,
+        volunteerHours: userStats.volunteer_hours ?? 0,
+        hazardsReported: userStats.total_reports ?? 0,
+        reportsVerified: userStats.verified_reports ?? 0,
       });
     } else {
       setStats(EMPTY_STATS);
