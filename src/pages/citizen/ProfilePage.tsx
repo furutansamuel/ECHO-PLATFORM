@@ -12,6 +12,7 @@ import { useEventRegistrations } from "@/hooks/use-event-registrations";
 
 // Integrations & Utilities
 import { supabase } from "@/integrations/supabase/client";
+import { nativeOrFallbackShare } from "@/lib/share-utils";
 import {
   ACHIEVEMENT_BADGES,
   calculateProgressToNextLevel,
@@ -764,7 +765,16 @@ const ShareCardModal: React.FC<ShareCardModalProps> = ({
       </div>
 
       <div className="flex gap-2 mt-2">
-        <Button className="w-full font-bold rounded-xl h-9">
+        <Button
+          className="w-full font-bold rounded-xl h-9"
+          onClick={() =>
+            nativeOrFallbackShare({
+              title: "My ECHO Member Card",
+              text: `I'm ${profile?.full_name || "a Community Member"} on ECHO — ${levelName}, ${impactPoints} Impact Points, ${reportsSubmitted} reports submitted. Join me in reporting environmental hazards.`,
+              url: window.location.origin,
+            })
+          }
+        >
           Share Card
         </Button>
       </div>
