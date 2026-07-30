@@ -285,7 +285,7 @@ export const useReportsStore = () => {
       return false;
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('hazard_reports')
       .update({
         title: report.title,
@@ -302,11 +302,21 @@ export const useReportsStore = () => {
         receive_updates: report.receiveUpdates,
       })
       .eq('id', reportId)
-      .eq('status', 'Pending');
+      .eq('status', 'Pending')
+      .select('id');
 
     if (error) {
       console.error('Error updating report:', error);
       toast.error('Failed to update report: ' + error.message);
+      return false;
+    }
+
+    // .update() without .select() returns no error even when the WHERE
+    // clause (or RLS) matched zero rows — it would otherwise silently
+    // report success on a report that's no longer Pending, or was
+    // deleted, without saving anything.
+    if (!data || data.length === 0) {
+      toast.error('This report can no longer be edited — it may have already been reviewed.');
       return false;
     }
 
