@@ -111,6 +111,7 @@ const ReportDetailsPage: React.FC = () => {
     <ReportDetailsView 
       report={report} 
       activities={activities} 
+      onEdit={() => navigate(`/reports/${report.id}/edit`)}
       onWithdraw={handleWithdraw}
     />
   );
