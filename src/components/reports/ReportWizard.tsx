@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 
 import { useReportsStore, Report } from "@/hooks/use-reports-store";
+import { HazardReport } from "@/types/reports";
 
 import {
   reportSchema,
@@ -38,21 +39,49 @@ const STEPS = [
   "Success",
 ];
 
-export default function ReportWizard() {
+export default function ReportWizard({ editReport }: { editReport?: HazardReport }) {
   const [currentStep, setCurrentStep] = useState(0);
+
+  // Guards against a known browser race: when the footer swaps the Next
+  // button for the Submit button at the same screen position, a tap/click
+  // gesture that is still in progress can activate the newly-mounted Submit
+  // button — submitting the form without the user ever seeing Review.
+  const [isAdvancing, setIsAdvancing] = useState(false);
+  const advancingRef = useRef(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [referenceNumber, setReferenceNumber] = useState("");
+  const [referenceNumber, setReferenceNumber] = useState(editReport?.reference_number || "");
   const [submittedReportId, setSubmittedReportId] = useState("");
 
-  const { saveReport, saveDraft, draft } =
+  const { saveReport, updateReport, saveDraft, draft } =
     useReportsStore();
 
   const [searchParams] = useSearchParams();
 
+  // Editing an existing report seeds the form from that report and
+  // ignores any unrelated local draft — a stale draft from a different,
+  // unfinished report should never silently overwrite the one the user
+  // came here to edit.
+  const editDefaultValues: Partial<ReportFormData> | undefined = editReport
+    ? {
+        category: editReport.category,
+        title: editReport.title,
+        description: editReport.description,
+        dateObserved: editReport.date_observed,
+        timeObserved: editReport.time_observed,
+        images: editReport.images,
+        video: editReport.video,
+        location: editReport.location,
+        isAnonymous: editReport.is_anonymous,
+        notifyVolunteers: editReport.notify_volunteers,
+        shareWithCommunity: editReport.share_with_community,
+        receiveUpdates: editReport.receive_updates,
+      }
+    : undefined;
+
   const methods = useForm<ReportFormData>({
     resolver: zodResolver(reportSchema) as any,
-    defaultValues: (draft as any) || defaultValues,
+    defaultValues: editDefaultValues || (draft as any) || defaultValues,
     mode: "onChange",
   });
 
@@ -69,7 +98,7 @@ export default function ReportWizard() {
   // work.
   useEffect(() => {
     const categoryParam = searchParams.get('category');
-    if (categoryParam && !draft) {
+    if (categoryParam && !draft && !editReport) {
       setValue('category', categoryParam as any);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,14 +107,17 @@ export default function ReportWizard() {
   const formData = watch();
 
   useEffect(() => {
+    if (editReport) return;
     const subscription = watch((value) => {
       saveDraft(value as Partial<Report>);
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, saveDraft]);
+  }, [watch, saveDraft, editReport]);
 
   const nextStep = async () => {
+    if (advancingRef.current || isSubmitting) return;
+
     let fields: string[] = [];
 
     switch (currentStep) {
@@ -110,10 +142,15 @@ export default function ReportWizard() {
         fields = [];
     }
 
+    advancingRef.current = true;
+    setIsAdvancing(true);
+
     const valid = await trigger(fields as any);
 
     if (!valid) {
       toast.error("Please complete the required fields.");
+      advancingRef.current = false;
+      setIsAdvancing(false);
       return;
     }
 
@@ -122,9 +159,22 @@ export default function ReportWizard() {
       behavior: "smooth",
     });
 
-    setCurrentStep((prev) =>
-      Math.min(prev + 1, STEPS.length - 1)
-    );
+    // Defer the step commit until the current click/tap gesture has fully
+    // completed. Without this, the commit can land mid-gesture: the footer
+    // swaps Next for the Submit button at the same position, and the browser
+    // activates the freshly-mounted submit button, instantly submitting the
+    // form and skipping the Review step.
+    window.setTimeout(() => {
+      setCurrentStep((prev) =>
+        Math.min(prev + 1, STEPS.length - 1)
+      );
+      // Keep the footer buttons disabled briefly so a still-in-progress
+      // gesture can never activate the newly-mounted Submit button.
+      window.setTimeout(() => {
+        advancingRef.current = false;
+        setIsAdvancing(false);
+      }, 250);
+    }, 0);
   };
 
   const prevStep = () => {
@@ -138,10 +188,28 @@ export default function ReportWizard() {
     );
   };
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data: ReportFormData) => {
+    // Backstop for the gesture race described above: a submit that fires
+    // while a step transition is still settling did not come from a real
+    // tap on "Submit Report" — ignore it and leave the Review step visible.
+    if (advancingRef.current) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
+      if (editReport) {
+        const success = await updateReport(editReport.id, data as Partial<Report>);
+        setIsSubmitting(false);
+        if (success) {
+          navigate(`/reports/${editReport.id}`);
+        }
+        return;
+      }
+
       const report: Report = {
         ...(data as any),
 
@@ -182,7 +250,7 @@ export default function ReportWizard() {
       );
     } catch {
       toast.error(
-        "Unable to submit report."
+        editReport ? "Unable to update report." : "Unable to submit report."
       );
     } finally {
       setIsSubmitting(false);
@@ -246,7 +314,7 @@ return (
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">
-            Report Environmental Hazard
+            {editReport ? "Edit Report" : "Report Environmental Hazard"}
           </h1>
 
           <p className="text-muted-foreground">
@@ -261,7 +329,9 @@ return (
           onClick={() => {
             if (
               confirm(
-                "Cancel report? Your draft will be saved."
+                editReport
+                  ? "Discard your changes to this report?"
+                  : "Cancel report? Your draft will be saved."
               )
             ) {
               window.history.back();
@@ -296,6 +366,20 @@ return (
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={(e) => {
+          // Pressing Enter in any text field defaults to submitting the
+          // nearest <form> — since this one <form> wraps every step,
+          // that meant Enter on step 0/1/2 skipped straight to
+          // onSubmit() (which always jumps to the Success screen),
+          // bypassing the Review step entirely. Only allow Enter to
+          // submit once the user is actually on the Review step. This
+          // is a separate failure mode from the button-swap gesture
+          // race guarded above — both can independently cause the same
+          // "skips Review" symptom, so both guards are needed.
+          if (e.key === "Enter" && currentStep !== 3) {
+            e.preventDefault();
+          }
+        }}
         className="space-y-8"
       >
         <AnimatePresence mode="wait">
@@ -328,7 +412,8 @@ return (
             variant="outline"
             disabled={
               currentStep === 0 ||
-              isSubmitting
+              isSubmitting ||
+              isAdvancing
             }
             onClick={prevStep}
           >
@@ -337,29 +422,31 @@ return (
           </Button>
 
           <div className="flex gap-3">
-            <Button
-              type="button"
-              variant="ghost"
-              disabled={isSubmitting}
-              onClick={() => {
-                saveDraft(
-                  formData as Partial<Report>
-                );
+            {!editReport && (
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isSubmitting}
+                onClick={() => {
+                  saveDraft(
+                    formData as Partial<Report>
+                  );
 
-                toast.success(
-                  "Draft saved."
-                );
-              }}
-              className="hidden sm:flex"
-            >
-              <Save className="mr-2 h-4 w-4" />
-              Save Draft
-            </Button>
+                  toast.success(
+                    "Draft saved."
+                  );
+                }}
+                className="hidden sm:flex"
+              >
+                <Save className="mr-2 h-4 w-4" />
+                Save Draft
+              </Button>
+            )}
 
             {currentStep === 3 ? (
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || isAdvancing}
               >
                 {isSubmitting ? (
                   <>
@@ -376,11 +463,11 @@ return (
                       <CheckCircle2 className="mr-2 h-4 w-4" />
                     </motion.div>
 
-                    Submitting...
+                    {editReport ? "Saving..." : "Submitting..."}
                   </>
                 ) : (
                   <>
-                    Submit Report
+                    {editReport ? "Save Changes" : "Submit Report"}
 
                     <ChevronRight className="ml-2 h-4 w-4" />
                   </>
@@ -389,6 +476,7 @@ return (
             ) : (
               <Button
                 type="button"
+                disabled={isAdvancing || isSubmitting}
                 onClick={nextStep}
               >
                 Next
