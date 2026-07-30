@@ -30,6 +30,7 @@ const Dashboard = lazy(() => import("@/pages/citizen/Dashboard"));
 const ReportHazard = lazy(() => import("@/pages/citizen/ReportHazard"));
 const TrackReportsPage = lazy(() => import("@/pages/citizen/TrackReportsPage"));
 const ReportDetailsPage = lazy(() => import("@/pages/citizen/ReportDetailsPage"));
+const EditReportPage = lazy(() => import("@/pages/citizen/EditReportPage"));
 const NotificationsPage = lazy(() => import("@/pages/citizen/NotificationsPage"));
 const RewardsPage = lazy(() => import("@/pages/citizen/RewardsPage"));
 const ProfilePage = lazy(() => import("@/pages/citizen/ProfilePage"));
@@ -102,6 +103,7 @@ function App() {
                 <Route path="/report" element={<ReportHazard />} />
                 <Route path="/reports" element={<TrackReportsPage />} />
                 <Route path="/reports/:id" element={<ReportDetailsPage />} />
+                <Route path="/reports/:id/edit" element={<EditReportPage />} />
                 <Route path="/rewards" element={<RewardsPage />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
