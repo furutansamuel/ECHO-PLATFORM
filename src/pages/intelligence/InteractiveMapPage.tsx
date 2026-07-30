@@ -91,41 +91,41 @@ export default function InteractiveMapPage() {
           </div>
 
           {/* AI Hotspots Card (ECHO Branded) — compact strip on mobile, full card on desktop */}
-<Card className="border border-primary/20 shadow-md bg-card text-foreground relative overflow-hidden">
-  <div className="absolute -bottom-6 -right-6 text-primary/10 pointer-events-none hidden lg:block">
-    <BrainCircuit className="h-28 w-28" />
-  </div>
-  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
+          <Card className="border border-primary/20 shadow-md bg-card text-foreground relative overflow-hidden">
+            <div className="absolute -bottom-6 -right-6 text-primary/10 pointer-events-none hidden lg:block">
+              <BrainCircuit className="h-28 w-28" />
+            </div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
 
-  <CardContent className="relative z-10 flex items-center gap-2 py-3.5 px-3 lg:hidden">
-    <BrainCircuit className="h-3.5 w-3.5 text-primary shrink-0 animate-pulse" />
-    <p className="flex-1 text-[10px] font-semibold text-muted-foreground truncate">
-      {aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'} risk detected
-    </p>
-    <Badge className="shrink-0 bg-primary/10 text-primary border border-primary/20 text-[8px] font-black px-1.5 py-0 h-4">
-      Confidence: {formattedConfidence}
-    </Badge>
-  </CardContent>
+            <CardContent className="relative z-10 flex items-center gap-2 py-3.5 px-3 lg:hidden">
+              <BrainCircuit className="h-3.5 w-3.5 text-primary shrink-0 animate-pulse" />
+              <p className="flex-1 text-[10px] font-semibold text-muted-foreground truncate">
+                {aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'} risk detected
+              </p>
+              <Badge className="shrink-0 bg-primary/10 text-primary border border-primary/20 text-[8px] font-black px-1.5 py-0 h-4">
+                Confidence: {formattedConfidence}
+              </Badge>
+            </CardContent>
 
-  <div className="hidden lg:block">
-    <CardHeader className="pb-2 relative z-10">
-      <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-primary">
-        <BrainCircuit className="h-4 w-4 text-primary animate-pulse" />
-        AI Hotspot Detection
-      </CardTitle>
-    </CardHeader>
+            <div className="hidden lg:block">
+              <CardHeader className="pb-2 relative z-10">
+                <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-primary">
+                  <BrainCircuit className="h-4 w-4 text-primary animate-pulse" />
+                  AI Hotspot Detection
+                </CardTitle>
+              </CardHeader>
 
-    <CardContent className="space-y-3 relative z-10">
-      <p className="text-[11px] italic text-muted-foreground leading-relaxed">
-        3 high-density clusters detected in the last 48 hours. Primary risk: <strong className="text-primary font-semibold">{aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'}</strong>
-      </p>
+              <CardContent className="space-y-3 relative z-10">
+                <p className="text-[11px] italic text-muted-foreground leading-relaxed">
+                  3 high-density clusters detected in the last 48 hours. Primary risk: <strong className="text-primary font-semibold">{aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'}</strong>
+                </p>
 
-      <Badge className="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 uppercase text-[9px] font-black tracking-wider shadow-sm">
-        Confidence: {formattedConfidence}
-      </Badge>
-    </CardContent>
-  </div>
-</Card>
+                <Badge className="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 uppercase text-[9px] font-black tracking-wider shadow-sm">
+                  Confidence: {formattedConfidence}
+                </Badge>
+              </CardContent>
+            </div>
+          </Card>
 
           {/* Recent Alerts */}
           <div className="space-y-2 lg:space-y-4">
@@ -255,7 +255,7 @@ export default function InteractiveMapPage() {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <CardContent className="p-3 pt-0 space-y-2 text-xs">
+                  <CardContent className="max-h-[32vh] overflow-y-auto p-3 pt-0 space-y-2 text-xs">
                     <div className="border-t pt-2 space-y-1">
                       <div className="flex items-center justify-between pb-1">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase">Severity Level</p>
@@ -274,7 +274,7 @@ export default function InteractiveMapPage() {
 
                       {/* Critical Filter Toggle */}
                       <button 
-                        className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
+                        className={`w-full flex items-center justify-between px-2 py-1.5 rounded-lg transition-all text-left ${
                           selectedSeverity === 'critical' 
                             ? 'bg-severity-critical/15 font-bold border border-severity-critical/30' 
                             : 'hover:bg-muted/60'
@@ -292,7 +292,7 @@ export default function InteractiveMapPage() {
 
                       {/* High Filter Toggle */}
                       <button 
-                        className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
+                        className={`w-full flex items-center justify-between px-2 py-1.5 rounded-lg transition-all text-left ${
                           selectedSeverity === 'high' 
                             ? 'bg-severity-high/15 font-bold border border-severity-high/30' 
                             : 'hover:bg-muted/60'
@@ -310,7 +310,7 @@ export default function InteractiveMapPage() {
 
                       {/* Medium Filter Toggle */}
                       <button 
-                        className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
+                        className={`w-full flex items-center justify-between px-2 py-1.5 rounded-lg transition-all text-left ${
                           selectedSeverity === 'medium' 
                             ? 'bg-severity-medium/15 font-bold border border-severity-medium/30' 
                             : 'hover:bg-muted/60'
@@ -328,7 +328,7 @@ export default function InteractiveMapPage() {
 
                       {/* Low Filter Toggle */}
                       <button 
-                        className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
+                        className={`w-full flex items-center justify-between px-2 py-1.5 rounded-lg transition-all text-left ${
                           selectedSeverity === 'low' 
                             ? 'bg-severity-low/15 font-bold border border-severity-low/30' 
                             : 'hover:bg-muted/60'
