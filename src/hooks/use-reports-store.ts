@@ -269,6 +269,51 @@ export const useReportsStore = () => {
     return true;
   };
 
+  // Updates an existing report in place (used by the Edit flow reached
+  // from ActionButtons' Edit button on a report's detail page). RLS only
+  // permits this while status = 'Pending' — the same rule that already
+  // governs deletion in ReportDetailsPage's handleWithdraw — so a report
+  // that's moved past Pending will fail here with a clear error instead
+  // of silently pretending to succeed.
+  const updateReport = async (reportId: string, report: Partial<Report>): Promise<boolean> => {
+    if (!supabase) {
+      toast.error('Unable to update report: backend not configured.');
+      return false;
+    }
+    if (!user) {
+      toast.error('You must be signed in to edit a report.');
+      return false;
+    }
+
+    const { error } = await supabase
+      .from('hazard_reports')
+      .update({
+        title: report.title,
+        description: report.description,
+        category: report.category,
+        date_observed: report.dateObserved,
+        time_observed: report.timeObserved,
+        location: report.location,
+        images: report.images,
+        video: report.video || null,
+        is_anonymous: report.isAnonymous,
+        notify_volunteers: report.notifyVolunteers,
+        share_with_community: report.shareWithCommunity,
+        receive_updates: report.receiveUpdates,
+      })
+      .eq('id', reportId)
+      .eq('status', 'Pending');
+
+    if (error) {
+      console.error('Error updating report:', error);
+      toast.error('Failed to update report: ' + error.message);
+      return false;
+    }
+
+    toast.success('Report updated successfully.');
+    return true;
+  };
+
   const saveDraft = (partialReport: Partial<Report>) => {
     setDraft(partialReport);
     sessionStorage.setItem(STORAGE_KEY_DRAFTS, JSON.stringify(partialReport));
@@ -290,6 +335,7 @@ export const useReportsStore = () => {
     stats,
     notifications,
     saveReport,
+    updateReport,
     saveDraft,
     deleteDraft,
     markNotificationAsRead,
