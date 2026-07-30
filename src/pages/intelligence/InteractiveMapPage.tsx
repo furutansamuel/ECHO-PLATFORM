@@ -91,41 +91,41 @@ export default function InteractiveMapPage() {
           </div>
 
           {/* AI Hotspots Card (ECHO Branded) — compact strip on mobile, full card on desktop */}
-          <Card className="border border-sidebar-primary/20 shadow-md bg-gradient-to-br from-sidebar to-black text-white relative overflow-hidden">
-            <div className="absolute -bottom-6 -right-6 text-sidebar-primary/10 pointer-events-none hidden lg:block">
-              <BrainCircuit className="h-28 w-28" />
-            </div>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-sidebar-primary/10 rounded-full blur-2xl pointer-events-none" />
+<Card className="border border-primary/20 shadow-md bg-card text-foreground relative overflow-hidden">
+  <div className="absolute -bottom-6 -right-6 text-primary/10 pointer-events-none hidden lg:block">
+    <BrainCircuit className="h-28 w-28" />
+  </div>
+  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
 
-            <CardContent className="relative z-10 flex items-center gap-2 p-2.5 lg:hidden">
-              <BrainCircuit className="h-3.5 w-3.5 text-sidebar-primary shrink-0 animate-pulse" />
-              <p className="flex-1 text-[10px] font-semibold text-white/85 truncate">
-                {aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'} risk detected
-              </p>
-              <Badge className="shrink-0 bg-sidebar-primary/20 text-sidebar-primary border border-sidebar-primary/30 text-[8px] font-black px-1.5 py-0 h-4">
-                {formattedConfidence}
-              </Badge>
-            </CardContent>
+  <CardContent className="relative z-10 flex items-center gap-2 py-3.5 px-3 lg:hidden">
+    <BrainCircuit className="h-3.5 w-3.5 text-primary shrink-0 animate-pulse" />
+    <p className="flex-1 text-[10px] font-semibold text-muted-foreground truncate">
+      {aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'} risk detected
+    </p>
+    <Badge className="shrink-0 bg-primary/10 text-primary border border-primary/20 text-[8px] font-black px-1.5 py-0 h-4">
+      Confidence: {formattedConfidence}
+    </Badge>
+  </CardContent>
 
-            <div className="hidden lg:block">
-              <CardHeader className="pb-2 relative z-10">
-                <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-sidebar-primary">
-                  <BrainCircuit className="h-4 w-4 text-sidebar-primary animate-pulse" />
-                  AI Hotspot Detection
-                </CardTitle>
-              </CardHeader>
+  <div className="hidden lg:block">
+    <CardHeader className="pb-2 relative z-10">
+      <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-primary">
+        <BrainCircuit className="h-4 w-4 text-primary animate-pulse" />
+        AI Hotspot Detection
+      </CardTitle>
+    </CardHeader>
 
-              <CardContent className="space-y-3 relative z-10">
-                <p className="text-[11px] italic text-white/80 leading-relaxed">
-                  3 high-density clusters detected in the last 48 hours. Primary risk: <strong className="text-sidebar-primary font-semibold">{aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'}</strong>
-                </p>
+    <CardContent className="space-y-3 relative z-10">
+      <p className="text-[11px] italic text-muted-foreground leading-relaxed">
+        3 high-density clusters detected in the last 48 hours. Primary risk: <strong className="text-primary font-semibold">{aiAnalysis?.recommendations?.[0]?.type || 'Waste Accumulation'}</strong>
+      </p>
 
-                <Badge className="bg-sidebar-primary/20 hover:bg-sidebar-primary/30 text-sidebar-primary border border-sidebar-primary/30 uppercase text-[9px] font-black tracking-wider shadow-sm backdrop-blur-sm">
-                  Confidence: {formattedConfidence}
-                </Badge>
-              </CardContent>
-            </div>
-          </Card>
+      <Badge className="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 uppercase text-[9px] font-black tracking-wider shadow-sm">
+        Confidence: {formattedConfidence}
+      </Badge>
+    </CardContent>
+  </div>
+</Card>
 
           {/* Recent Alerts */}
           <div className="space-y-2 lg:space-y-4">
