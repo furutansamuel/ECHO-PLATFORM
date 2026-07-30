@@ -1,12 +1,12 @@
 # 🌍 ECHO – Environmental Community Health Observatory
 
-![ECHO Banner](public/echo-logo-primary.svg)
+![ECHO Banner](public/echo-logo-primary1.svg)
 
 > **Empowering communities through environmental intelligence, citizen participation, artificial intelligence, and real-time data.**
 
-ECHO (Environmental Community Health Observatory) is a next-generation Environmental Intelligence Platform designed to help citizens, communities, organizations, and government agencies collaboratively monitor, report, analyze, and respond to environmental and public health challenges.
+ECHO (Environmental Community Health Observatory) is an AI-powered Environmental Intelligence Platform built for citizens, communities, and government agencies — starting in Nasarawa State, Nigeria — to collaboratively report, monitor, analyze, and respond to environmental and public health challenges.
 
-The platform combines **AI-powered insights**, **community-driven reporting**, **interactive GIS mapping**, **real-time analytics**, and **data visualization** to promote cleaner, safer, and healthier communities.
+The platform combines **AI-powered hazard assessment**, **community-driven reporting**, **interactive GIS mapping**, **real-time analytics**, and **data visualization** to promote cleaner, safer, and healthier communities.
 
 ---
 
@@ -23,8 +23,8 @@ ECHO empowers people to:
 - Report environmental hazards quickly
 - Monitor environmental conditions
 - Participate in community cleanup initiatives
-- Receive environmental alerts
-- Access environmental intelligence
+- Receive real-time notifications and alerts
+- Access AI-generated environmental intelligence
 - Promote healthier and more sustainable communities
 
 ---
@@ -33,21 +33,18 @@ ECHO empowers people to:
 
 ## 🤖 AI Environmental Intelligence
 
-- AI-assisted environmental insights
-- Risk prediction
-- Environmental trend analysis
-- Smart recommendations
-- Environmental hotspot detection
+- Every hazard report is sent to a Supabase Edge Function that calls Google Gemini
+- Returns a structured assessment: severity (Low/Medium/High/Critical), a 0–1 risk score, priority, likely impact, and a short summary
+- Surfaced automatically in both the citizen and admin report views — no manual triage required
 
 ---
 
 ## 🗺️ Interactive GIS Mapping
 
-- Interactive environmental maps
-- Hazard visualization
-- Geographic clustering
-- Community incident locations
-- Environmental heatmaps
+- Leaflet-based interactive map with marker clustering
+- Hazard report and cleanup event visualization
+- Geographic clustering of incidents
+- Hotspot-style density visualization
 
 ---
 
@@ -68,9 +65,10 @@ Reports include:
 
 - Photos
 - GPS location
-- Severity level
+- Category
 - Description
-- Status tracking
+- AI-assessed severity/risk/priority
+- Status tracking through an activity log, from submission to resolution
 
 ---
 
@@ -82,36 +80,31 @@ Features include:
 
 - Upcoming events
 - Event registration
-- Attendance tracking
-- Volunteer participation
-- Event history
+- Attendance/registration counts
+- Admin event creation and editing
 - Interactive event maps
 
 ---
 
-## 👥 Community Hub
+## 👥 Community & Insights
 
-A dedicated community engagement space for:
+A dedicated space for community engagement, including:
 
-- Discussions
-- Announcements
-- Volunteers
-- Community leaderboards
-- Environmental campaigns
-- Local initiatives
+- Community Insights page
+- Environmental campaigns and local initiatives context
+- Community health scoring
 
 ---
 
 ## 📊 Analytics Dashboard
 
-Interactive dashboards displaying:
+Interactive dashboards (citizen and admin) built on Recharts and Supabase RPCs, displaying:
 
 - Environmental statistics
-- Community reports
-- Trends
+- Community reports and trends
 - Active incidents
-- Environmental scores
-- Performance metrics
+- Community health scores
+- Platform-wide stats on the public landing page
 
 ---
 
@@ -119,10 +112,9 @@ Interactive dashboards displaying:
 
 Real-time notifications for:
 
-- New reports
+- Report status updates
 - Cleanup events
-- Community announcements
-- Environmental alerts
+- Admin broadcast announcements
 - System updates
 
 ---
@@ -134,14 +126,13 @@ Encourages community participation through:
 - Points
 - Achievements
 - Badges
-- Community recognition
 - Leaderboards
 
 ---
 
 ## 📚 Knowledge Centre
 
-Educational resources covering:
+Admin-authored educational resources covering:
 
 - Environmental awareness
 - Recycling
@@ -149,6 +140,14 @@ Educational resources covering:
 - Public health
 - Sustainability
 - Community best practices
+
+Includes a public reading view and slug-based article pages.
+
+---
+
+## 🔍 Global Search
+
+Cross-entity search across reports, knowledge articles, and events via a dedicated Supabase RPC.
 
 ---
 
@@ -159,8 +158,19 @@ Users can:
 - Manage personal information
 - View contribution history
 - Track rewards
-- Monitor reports
-- Update preferences
+- Monitor their reports
+- Update settings and preferences
+
+---
+
+## 🔐 Admin Panel
+
+A dedicated, role-gated admin shell for:
+
+- Reviewing and verifying reports (pre-sorted by AI-assessed priority)
+- Managing knowledge articles, events, FAQs
+- Sending broadcast notifications
+- Viewing platform-wide overview stats
 
 ---
 
@@ -174,7 +184,7 @@ Optimized for:
 - 💻 Laptop
 - 📱 Tablets
 
-Responsive layouts ensure consistent performance across all supported devices.
+Responsive layouts ensure consistent performance across all supported devices, including safe-area handling for mobile notches and a dedicated bottom nav on small screens.
 
 ---
 
@@ -182,14 +192,17 @@ Responsive layouts ensure consistent performance across all supported devices.
 
 ### Frontend
 
-- React
+- React 19
 - TypeScript
-- Vite
-- Tailwind CSS
-- shadcn/ui
+- Vite 5
+- Tailwind CSS v4
+- shadcn/ui (Radix primitives)
 - Framer Motion
-- React Router
+- React Router v7 (route-based code splitting)
 - Lucide Icons
+- Leaflet / React-Leaflet (+ marker clustering)
+- Recharts
+- React Hook Form + Zod
 
 ### Backend
 
@@ -202,7 +215,12 @@ Including:
 - Row Level Security (RLS)
 - Storage
 - Realtime
-- Edge-ready APIs
+- Edge Functions (Deno) — AI hazard assessment via Gemini
+
+### Tooling
+
+- Bun (primary package manager) — npm also supported
+- ESLint + TypeScript for linting/type-checking
 
 ---
 
@@ -216,22 +234,23 @@ Features include:
 - User Registration
 - Password Reset
 - Protected Routes
-- Role-based Access (RLS)
+- Role-based Access (RLS) — citizen vs. administrator
 
 ---
 
 # 🗄 Database
 
-The platform utilizes Supabase PostgreSQL.
+The platform utilizes Supabase PostgreSQL, managed through 20 migrations covering schema, RLS policies, triggers, and RPCs.
 
-Core tables include:
+Core tables and areas include:
 
-- Profiles
-- Reports
-- Notifications
-- Cleanup Events
-- Event Registrations
-- User Roles
+- Hazard Reports (+ report drafts, activities, AI verification fields)
+- Notifications (incl. admin broadcast)
+- User Stats / Rewards
+- Cleanup Events + Event Registrations
+- FAQs
+- Storage buckets for report photos and media
+- Public landing stats & global search support
 
 Additional tables may be added as the platform evolves.
 
@@ -240,13 +259,11 @@ Additional tables may be added as the platform evolves.
 # 🎨 UI/UX Highlights
 
 - Premium modern interface
-- Glassmorphism
-- Responsive layouts
-- Smooth animations
+- Responsive layouts across mobile, tablet, and desktop
+- Smooth, reduced-motion-aware animations (Framer Motion)
 - AI-inspired design language
 - Interactive dashboards
-- Accessible components
-- Dark mode support
+- Accessible components (shadcn/ui + Radix)
 
 ---
 
@@ -254,13 +271,11 @@ Additional tables may be added as the platform evolves.
 
 The application is optimized for:
 
-- Fast rendering
-- GPU-accelerated animations
-- Responsive layouts
-- Mobile performance
+- Fast rendering via route-based code splitting (`React.lazy`)
+- Responsive layouts with no horizontal-scroll/CLS issues
+- Mobile performance (safe-area padding, sticky headers)
 - Accessibility
-- Lazy loading
-- Optimized assets
+- Lazy-loaded images and optimized assets
 
 ---
 
@@ -268,17 +283,35 @@ The application is optimized for:
 
 ```text
 src/
-├── components/
+├── App.tsx                # Route table (public, auth, citizen, intelligence, community, admin)
+├── main.tsx
+├── layouts/                # MainLayout, DashboardLayout, AdminLayout, AdaptiveLayout
 ├── pages/
-├── layouts/
-├── features/
-├── hooks/
-├── integrations/
-├── lib/
-├── utils/
-├── styles/
-├── assets/
-└── App.tsx
+│   ├── public/             # Landing, About, Contact, FAQ, NotFound
+│   ├── auth/                # Login, Register, ForgotPassword, ResetPassword
+│   ├── citizen/             # Dashboard, ReportHazard, TrackReports, ReportDetails,
+│   │                        #   Notifications, Rewards, Profile, Settings
+│   ├── intelligence/        # AI Intelligence, Analytics, Interactive Map,
+│   │                        #   Community Health, Global Search
+│   ├── community/           # Knowledge Centre, Article Details, Cleanup Events,
+│   │                        #   Community Insights
+│   ├── admin/                # Overview, Reports, Knowledge editor, Events editor,
+│   │                        #   FAQs, Notifications, "coming soon" stubs
+│   └── legal/                # Privacy Policy, Terms, Cookie Policy, Accessibility
+├── components/               # Mirrors the page groups above (landing, dashboard,
+│                              #   reports, events, rewards, admin, ai, verification,
+│                              #   notifications, profile, community, intelligence, ui)
+├── hooks/                    # use-auth, use-geolocation, use-events,
+│                              #   use-reports-store, use-notifications, use-intelligence-data …
+├── integrations/              # Supabase client
+├── lib/                        # storage-upload, image-compression, impact-constants,
+│                              #   fallback-articles, share-utils, status-colors, utils
+└── types/
+
+supabase/
+├── functions/
+│   └── generate-report-assessment/   # Edge function: AI severity/risk scoring (Gemini)
+└── migrations/                        # 20 migrations — schema, RLS, triggers, RPCs
 ```
 
 ---
@@ -288,18 +321,18 @@ src/
 ## Clone the repository
 
 ```bash
-git clone https://github.com/your-username/echo.git
+git clone <your-repo-url>
 ```
 
 ## Navigate to the project
 
 ```bash
-cd echo
+cd ECHO-PLATFORM
 ```
 
 ## Install dependencies
 
-Using Bun
+Using Bun (recommended)
 
 ```bash
 bun install
@@ -330,9 +363,17 @@ to
 Then update:
 
 ```env
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
+VITE_SUPABASE_URL=https://YOUR-PROJECT-REF.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_ANON_KEY
 ```
+
+Never put the Supabase **service-role** key here — it must stay server-side only.
+
+---
+
+## Apply Database Migrations
+
+Run the SQL files in `supabase/migrations/` against your Supabase project (via the Supabase CLI or SQL editor), in order, to set up tables, RLS policies, triggers, and RPCs.
 
 ---
 
@@ -347,6 +388,8 @@ or
 ```bash
 npm run dev
 ```
+
+The dev server runs at `http://localhost:8080`.
 
 ---
 
@@ -378,28 +421,39 @@ npm run preview
 
 ---
 
+## Other Scripts
+
+```bash
+bun run build:dev   # development-mode build
+bun run typecheck   # tsc --noEmit
+bun run lint         # eslint .
+```
+
+---
+
 # 🔒 Security
 
 - Environment variables are excluded from version control.
-- Row Level Security (RLS) protects user data.
+- Row Level Security (RLS) protects user data at the database layer.
 - Authentication is handled securely through Supabase.
-- Sensitive credentials are never committed to the repository.
+- Admin routes are protected both client-side (route guards) and server-side (RLS).
+- Sensitive credentials (service-role key) are never committed to the repository.
 
 ---
 
 # 🧪 Project Status
 
-Current Stage:
+**Actively developed.**
 
-**Minimum Viable Product (MVP)**
+Recent work has focused on stabilizing animations, fixing routing/link consistency, hardening the AI assessment pipeline, and adding platform-wide stats, global search, and an expanded impact-tracking framework.
 
 Future roadmap includes:
 
-- AI-powered environmental forecasting
+- Expanded AI-powered environmental forecasting
 - IoT sensor integration
 - Satellite imagery
 - Advanced GIS analytics
-- Government administration portal
+- Deeper government administration tooling
 - Offline reporting
 - Progressive Web App (PWA)
 - Multi-language support
@@ -431,3 +485,4 @@ Building technology for cleaner, healthier, and smarter communities.
 ---
 
 ⭐ If you found this project interesting, consider giving it a star on GitHub!
+
