@@ -19,8 +19,17 @@ export const reportSchema = z.object({
     lat: z.number(),
     lng: z.number(),
     address: z.string().min(1, 'Address is required'),
-    ward: z.string().min(1, 'Ward is required'),
-    lga: z.string().min(1, 'LGA is required'),
+    // ward/lga fall back through several OSM address fields
+    // (suburb/neighbourhood/quarter, county/state_district/city_district)
+    // that frequently don't exist for Nigerian locations — required here
+    // meant the form could reach the Review step looking complete, then
+    // silently refuse to submit (react-hook-form just doesn't call
+    // onSubmit on a failed validation, with no visible error) whenever
+    // reverse geocoding couldn't find a value for either field. state is
+    // left required since Nominatim reliably returns it for any
+    // Nigerian coordinate.
+    ward: z.string().optional(),
+    lga: z.string().optional(),
     state: z.string().min(1, 'State is required'),
     landmark: z.string().optional(),
   }),
