@@ -86,7 +86,7 @@ export function Footer() {
           h-72
           w-72
           rounded-full
-          bg-status-safe/20
+          bg-secondary/20
           blur-3xl
         "
       />
@@ -406,4 +406,4 @@ export function Footer() {
 
     </footer>
   );
-                }
+}
