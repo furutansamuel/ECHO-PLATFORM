@@ -31,7 +31,7 @@ interface GeolocationContextValue extends GeolocationState {
 }
 
 const SESSION_CACHE_KEY = 'echo-geo-coords';
-const GEO_OPTIONS: PositionOptions = { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 };
+const GEO_OPTIONS: PositionOptions = { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 };
 
 const GeolocationContext = createContext<GeolocationContextValue | null>(null);
 
