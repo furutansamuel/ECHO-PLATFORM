@@ -85,6 +85,10 @@ export function PremiumBottomNav({
                 if (isFab) {
                   return (
                     <li key={item.href} className="relative flex-1">
+                      {/* Report FAB: blue-to-green gradient disc with a
+                          white ring, floating above the bar in place —
+                          same position/behavior as before, just recolored
+                          away from the flat gold fill. */}
                       <motion.div
                         aria-hidden
                         className="
@@ -95,10 +99,12 @@ export function PremiumBottomNav({
                           w-14
                           -translate-x-1/2
                           rounded-full
-                          bg-highlight
+                          bg-gradient-to-br
+                          from-info
+                          to-primary
                           shadow-lg
                           ring-4
-                          ring-white/20
+                          ring-white/80
                         "
                         whileTap={{ scale: 0.92 }}
                       />
@@ -120,27 +126,6 @@ export function PremiumBottomNav({
                     className="relative flex-1"
                   >
 
-                    {/* Active Floating Circle */}
-                    {isActive && (
-                      <motion.div
-                        layoutId="active-nav"
-                        className="
-                          absolute
-                          -top-5
-                          left-1/2
-                          h-14
-                          w-14
-                          -translate-x-1/2
-                          rounded-full
-                          bg-white
-                          shadow-lg
-                          ring-4
-                          ring-primary/40
-                        "
-                        transition={transition}
-                      />
-                    )}
-
                     <Link
                       to={item.href}
                       aria-label={item.name}
@@ -153,23 +138,25 @@ export function PremiumBottomNav({
                         flex
                         h-12
                         w-12
+                        flex-col
                         items-center
                         justify-center
+                        gap-1
                       "
                     >
 
+                      {/* No floating circle for the active tab anymore —
+                          just a color change on the icon and label,
+                          same as every other icon's resting state. */}
                       <motion.span
                         initial={false}
                         animate={{
-                          y: isActive ? -20 : 0,
-                          scale: isActive ? 1.2 : 1,
+                          scale: isActive ? 1.1 : 1,
                         }}
                         transition={transition}
                         className={cn(
                           "relative flex items-center justify-center",
-                          isActive
-                            ? "text-primary"
-                            : "text-white"
+                          isActive ? "text-highlight" : "text-white/70"
                         )}
                       >
 
@@ -177,22 +164,18 @@ export function PremiumBottomNav({
 
                       </motion.span>
 
-                      {/* Label */}
-                      <motion.span
-                        initial={false}
-                        animate={{
-                          opacity: isActive ? 0 : 1,
-                        }}
-                        className="
-                          absolute
-                          bottom-1
-                          text-[10px]
-                          font-medium
-                          text-white
-                        "
+                      {/* Label stays visible at all times (previously
+                          faded out on the active tab, which meant the
+                          current page had the least text feedback of
+                          any tab). */}
+                      <span
+                        className={cn(
+                          "text-[10px] font-medium",
+                          isActive ? "text-highlight" : "text-white/70"
+                        )}
                       >
                         {item.name}
-                      </motion.span>
+                      </span>
 
                     </Link>
 
@@ -208,4 +191,4 @@ export function PremiumBottomNav({
       </div>
     </nav>
   );
-          }
+}
