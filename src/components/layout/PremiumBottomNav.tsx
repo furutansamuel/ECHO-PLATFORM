@@ -100,11 +100,12 @@ export function PremiumBottomNav({
                           -translate-x-1/2
                           rounded-full
                           bg-gradient-to-br
-                          from-info
-                          to-primary
+                          from-highlight
+                          to-amber-600
+                        
                           shadow-lg
                           ring-4
-                          ring-white/80
+                          ring-white/100
                         "
                         whileTap={{ scale: 0.92 }}
                       />
